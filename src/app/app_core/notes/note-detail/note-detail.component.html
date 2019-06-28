@@ -1,0 +1,24 @@
+<div class="row" *ngIf="!_showCampaignSettings_">
+
+
+  <div class="col-md-4 " *ngFor="let note of notes | async">
+    <div class="card my-3 text-white mb-3 no-b" style="background: rgb(93, 93, 248)">
+      <div class="card-header no-b"></div>
+      <div class="card-body text-success">
+        <h5 class="card-title">{{ note?.name }}</h5>
+        <p class="card-text">{{note?.status}}</p>
+        <button type="button" class="btn btn-warning btn-lg r-20"
+          (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id)"><i
+            class="icon-settings mr-2"></i>Administrer</button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<div *ngIf="_showCampaignSettings_">
+  <app-campaign-settings [id_campagne]="id_campagne" [id]="id" [name]="name" [_showCamp]="_showCampaignSettings_"
+    [status]="status" [ad_group_id]="ad_group_id"></app-campaign-settings>
+</div>
+
+<!--   <td style="float: right"><a class="btn-fab btn-fab-sm shadow btn-primary" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status)"><i class="icon-arrow-right"></i></a></td> -->

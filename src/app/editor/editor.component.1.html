@@ -1,0 +1,1129 @@
+
+<div id="loader" class="loader">
+    <div class="plane-container">
+        <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="app" class="container">
+    <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas'>
+        <div class="sidebar" >
+            <div class="d-flex hv-100 align-items-stretch">
+                <div class="indigo text-white" style="background-color: #1A1110 !important;  width: 120px !important">
+                    <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist"
+                        aria-orientation="vertical" >
+                        <a class="nav-link" (click)="triggerImage()" title="Ajouter une image"><i class="fa fa-plus-circle" aria-hidden="true" style=""></i></a>
+                        <a class="nav-link" (click)="triggerText()" title="Ajouter un texte"><i class="fa fa-plus-circle" aria-hidden="true" ></i></a>
+                        <a class="nav-link" (click)="triggerFigure()" title="Ajouter une figure géométrique"><i class="fas fa-circle" aria-hidden="true"></i></a>
+                        <!-- <a class="nav-link blink skin_handle" href="#"><i class="icon-lightbulb_outline"></i></a>
+                        <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
+                        <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a> -->
+                        <!--   <a href="">
+                            <figure class="avatar">
+                                <img src="assets/img/dummy/u3.png" alt="">
+                                <span class="avatar-badge online"></span>
+                            </figure>
+                        </a> -->
+                    </div>
+                </div>
+                <div class="tab-content flex-grow-1" id="v-pills-tabContent" style="">
+                    <div class="tab-pane fade show tab" id="v-pills-home" role="tabpanel"
+                        aria-labelledby="v-pills-home-tab">
+                        <div class="relative brand-wrapper sticky b-b">
+                            <div class="d-flex justify-content-between align-items-center p-3">
+                                <div class="text-xs-center">
+                                    <span class="font-weight-bold s-18">Menu</span>
+                                </div>
+                                <div class="badge badge-danger r-0">Images</div>
+                            </div>
+                        </div>
+                        <ul class="sidebar-menu" style="display: flex; flex-direction: column-reverse">
+                            
+                                <div class="container-fluid" style="margin-left: 20px">
+                                    <div class="row">
+                                        <div class="row">
+                                           
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/01.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/02.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/03.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/04.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/05.jpg" style="width: 90px; height:90px;">
+                                            
+                                    </div>
+                                    <div class="row">
+                                           
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/23.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/31.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/36.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/37.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/44.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/48.jpg" style="width: 90px; height:90px;">
+                                            
+                                    </div>
+                                    <div class="row">
+                                           
+                                             <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/01.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/02.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/03.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/04.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/05.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/06.png" style="width: 90px; height:90px;">
+                                    </div>
+                                    <div class="row">
+                                           
+                                             <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/01.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/02.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/03.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/04.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                                    </div>
+                                     <div class="row">
+                                           
+                                             <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/02.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/03.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/04.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/01.jpg" style="width: 90px; height:90px;">
+                                    </div>
+                                    </div>
+                                    </div>
+                                     
+                            <!-- <li class="treeview"><a href="#"><i class="icon icon-account_box s-24"></i>Parametres
+                                    du canvas<i class=" icon-angle-left  pull-right"></i></a>
+
+
+
+                                <ul class="treeview-menu">
+                                  <li>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" [(ngModel)]="size.width"
+                                                    (keyup)="changeSize()">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        Longueur
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-group">
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" [(ngModel)]="size.height"
+                                                    (keyup)="changeSize()">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        Largeur
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li> 
+                                    <li>
+                                        <div class="" *ngIf="!selected">
+
+                                            <div class="custom-item" *ngIf="!props.canvasImage">
+                                                <div class="custom-item-title">Background Color</div>
+                                                <div class="custom-item-body">
+                                                    <input type="text" class="form-control" [cpPosition]="'bottom'"
+                                                        [(colorPicker)]="props.canvasFill"
+                                                        style="width: 250px; height: 30%"
+                                                        [style.background]=" props.canvasFill"
+                                                        [value]="props.canvasFill"
+                                                        (colorPickerChange)="setCanvasFill()">
+                                                </div>
+                                            </div>
+                                            <div class="custom-item">
+                                                <div class="custom-item-title">Background Image (url)</div>
+                                                <div class="custom-item-body">
+                                                    <input type="text" class="form-control"
+                                                        style="width: 250px; height: 30%"
+                                                        placeholder=" http://example.jpg"
+                                                        [(ngModel)]="props.canvasImage" (keyup)="setCanvasImage()">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li class="treeview"><a href="#"><i class="icon icon-account_box s-24"></i>Image<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+
+                                <ul class="treeview-menu">
+
+                                    <li class="text-center">
+                                        <img id="testImage" *ngIf="url" class="images-item-upload" [src]="url"
+                                            (click)="addImageOnCanvas(url);">
+                                        <input type="file" (change)="readUrl($event);" id="image" style="display:none">
+                                        <button class="btn btn-info" (click)="triggerImage()">Ajouter une image</button>
+                                        <br />
+                                        <br />
+                                        <div class="btn-group btn-group-justified enlever" role="group" aria-label="..."
+                                            style="display: none">
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    (click)="removeWhite(url);">
+                                                    <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="treeview"><a href="#"><i class="icon icon-account_box s-24"></i>Texte<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <div class="custom-item" *ngIf="selected && textEditor">
+                                            <div class="custom-item-title">Font family</div>
+                                            <div class="custom-item-body">
+                                                <select [(ngModel)]="props.fontFamily" class="form-control"
+                                                    (change)="setFontFamily()">
+                                                    <option value="arial">Arial</option>
+                                                    <option value="helvetica" selected>Helvetica</option>
+                                                    <option value="verdana">Verdana</option>
+                                                    <option value="courier">Courier</option>
+                                                    <option value="Roboto">Roboto</option>
+                                                    <option value="Open Sans">Open Sans</option>
+                                                    <option value="Zilla Slab">Zilla Slab</option>
+                                                    <option value="Lato">Lato</option>
+                                                    <option value="Bellefair">Bellefair</option>
+                                                    <option value="Fresca">Fresca</option>
+                                                    <option value="Raleway">Raleway</option>
+                                                    <option value="Open Sans Condensed">Open Sans Condensed</option>
+                                                    <option value="Indie Flower">Indie Flower</option>
+                                                    <option value="Josefin Sans">Josefin Sans</option>
+                                                    <option value="Inconsolata">Inconsolata</option>
+                                                    <option value="Pacifico">Pacifico</option>
+                                                    <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+ -->
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+                        aria-labelledby="v-pills-profile-tab">
+                        <div class="relative brand-wrapper sticky b-b p-3">
+                            <form>
+                                <div class="form-group input-group-sm has-right-icon">
+                                    <input class="form-control form-control-sm light r-30" placeholder="Search"
+                                        type="text">
+                                    <i class="icon-search"></i>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="has-sidebar-left">
+        <div class="pos-f-t">
+            <div class="collapse" id="navbarToggleExternalContent">
+                <div class="bg-dark pt-2 pb-2 pl-4 pr-2">
+                    <div class="search-bar">
+                        <input class="transparent s-24 text-white b-0 font-weight-lighter w-128 height-50" type="text"
+                            placeholder="start typing...">
+                    </div>
+                    <a href="#" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-expanded="false"
+                        aria-label="Toggle navigation" class="paper-nav-toggle paper-nav-white active "><i></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed" (click)="showTab()">
+            <i ></i>
+
+    </a>
+    <div class="has-sidebar-left has-sidebar-tabs">
+        <!--navbar-->
+        <div class="sticky">
+            <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow"
+                style=" height: 70px">
+                <div class="relative">
+                    <div class="d-flex">
+                        <div class="d-none d-md-block">
+
+                          <h1 style="font-weight: bold; margin-left: -10px"><div><span style="color:#ff0000;">C</span><span style="color:#ff2000;">o</span><span style="color:#ff4000;">m</span><span style="color:#ff5f00;">p</span><span style="color:#ff7f00;">a</span><span style="color:#ff9f00;">r</span><span style="color:#ffbf00;">e</span><span style="color:#ffdf00;">z</span><span style="color:#ffff00;"> </span><span style="color:#bfff00;">B</span><span style="color:#80ff00;">a</span><span style="color:#40ff00;">n</span><span style="color:#00ff00;">n</span><span style="color:#00ff40;">e</span><span style="color:#00ff80;">r</span><span style="color:#00ffbf;"> </span><span style="color:#00ffff;">M</span><span style="color:#00bfff;">a</span><span style="color:#0080ff;">k</span><span style="color:#0040ff;">e</span><span style="color:#0000ff;">r</span></div></h1>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!--Top Menu Start -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages-->
+                        <!--                   <li class="dropdown custom-dropdown messages-menu">
+                            <a href="#" class="nav-link" data-toggle="dropdown">
+                                <i class="icon-envelope-o"></i>
+                                <span class="badge badge-success badge-mini rounded-circle">4</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                       
+                                    <ul class="menu pl-2 pr-2">
+                                     
+                                        <li>
+                                            <a href="#">
+                                                <div class="avatar float-left">
+                                                    <img src="assets/img/dummy/u4.png" alt="">
+                                                    <span class="avatar-badge busy"></span>
+                                                </div>
+                                                <h4>
+                                                    Support Team
+                                                    <small><i class="icon icon-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                      
+                                        <li>
+                                            <a href="#">
+                                                <div class="avatar float-left">
+                                                    <img src="assets/img/dummy/u1.png" alt="">
+                                                    <span class="avatar-badge online"></span>
+                                                </div>
+                                                <h4>
+                                                    Support Team
+                                                    <small><i class="icon icon-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                       
+                                    
+                                        <li>
+                                            <a href="#">
+                                                <div class="avatar float-left">
+                                                    <img src="assets/img/dummy/u2.png" alt="">
+                                                    <span class="avatar-badge idle"></span>
+                                                </div>
+                                                <h4>
+                                                    Support Team
+                                                    <small><i class="icon icon-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                      
+                                        <li>
+                                            <a href="#">
+                                                <div class="avatar float-left">
+                                                    <img src="assets/img/dummy/u3.png" alt="">
+                                                    <span class="avatar-badge busy"></span>
+                                                </div>
+                                                <h4>
+                                                    Support Team
+                                                    <small><i class="icon icon-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                         
+                                    </ul>
+                                </li>
+                                <li class="footer s-12 p-2 text-center"><a href="#">See All Messages</a></li>
+                            </ul>
+                        </li> -->
+                        <!-- Notifications -->
+                        <!--  <li class="dropdown custom-dropdown notifications-menu">
+                            <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
+                                <i class="icon-notifications_none"></i>
+                                <span class="badge badge-danger badge-mini rounded-circle">4</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="header">You have 10 notifications</li>
+                                <li>
+                                
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="#">
+                                                <i class="icon icon-data_usage text-success"></i> 5 new members
+                                                joined today
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="icon icon-data_usage text-danger"></i> 5 new members
+                                                joined today
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="icon icon-data_usage text-yellow"></i> 5 new members
+                                                joined today
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer p-2 text-center"><a href="#">View all</a></li>
+                            </ul>
+                        </li>-->
+                        <li>
+                            <a class="nav-link" (click)="rasterize();">
+                                <i class="fa fa-download" aria-hidden="true" style="color: #0d47a1; margin-top: 20px"></i>
+                            </a>
+                        </li>
+                  
+                        <li (click)="triggerImage()">
+                            <a class="nav-link ml-2" data-toggle="control-sidebar">
+                                <i class="fa fa-picture-o" aria-hidden="true" style="color: #0d47a1; margin-top: 20px"></i>
+                            </a>
+                        </li> 
+                         <li (click)="confirmClear();">
+                            <a class="nav-link ml-2" data-toggle="control-sidebar">
+                                <i class="fa fa-eraser" aria-hidden="true" style="color: #0d47a1; margin-top: 20px"></i>
+                            </a>
+                        </li> 
+                           <li (click)="auth.logout()" title="deconnexion">
+                            <a class="nav-link ml-2" data-toggle="control-sidebar">
+                              
+                                <i class="fa fas fa-sign-out-alt" aria-hidden="true" style="color: #0d47a1; margin-top: 20px" ></i>
+                            </a>
+                        </li> 
+                        <!-- User Account-->
+                        <!--  <li>
+                            <a class="nav-link" data-toggle="collapse">
+                             <button type="button" class="btn btn-primary" (click)="rasterize();">Exporter</button>
+                            </a>
+                        </li>
+                  
+                       <li>
+                            <a class="nav-link" data-toggle="collapse">
+                             <button type="button" class="btn btn-outline-info" (click)="triggerImage()">Charger une image</button>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" data-toggle="collapse">
+                             <button type="button" class="btn btn-info" (click)="confirmClear();">Tout néttoyer</button>
+                            </a>
+                        </li>
+                        <li> -->
+                        
+                        <li class="dropdown custom-dropdown user user-menu ">
+                            <a href="#" class="nav-link" data-toggle="dropdown">
+                                <img src="http://137.74.199.121/static/ads/2.jpg" class="user-image" alt="User Image"
+                                    style="width: 60px; height: 60px; float: unset">
+                            </a>
+
+                           
+                                            
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--#navbar-->
+        <div class="container-fluid animatedParent animateOnce my-3 text-center principal" >
+            <div class="row text-center">
+                <div class="col-md-3 text-center">
+                    <div class="col">
+                        <canvas id="canvas" style="width: 300px; border-color: black; height: 400px" ></canvas> 
+                    </div>
+                    <div class="col">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="btn1" style="float: left; margin-left: 100px; margin-top: 70px; border-radius: 20px;" (click)="terminer()">
+  Terminer
+</button>
+                    </div>
+                </div>
+        
+            <div class="col-md-9 block" style="display: flex">
+                <div class="col tools draggable" style="display: none">
+                        <div class="card">
+                                <div class="card-header">Options</div>
+                    
+                                <div class="card-body text-center">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Supprimer l'élément" type="button"
+                                            class="btn btn-outline-danger" [disabled]="!selected" (click)="removeSelected();">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                        
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Cloner" type="button"
+                                            class="btn btn-outline-danger" [disabled]="!selected || selected.type == 'group'"
+                                            (click)="clone();">
+                                            <i class="fa fa-clone" aria-hidden="true"></i>
+                                        </button>
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Nettoyer la toile" type="button"
+                                            class="btn btn-outline-danger" [disabled]="!selected" (click)="cleanSelect()">
+                                            <i class="fa fa-remove" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                </div>
+                <div class="col text-block draggable" style="display: none">
+                    <div class=" card b-0">
+                        <div class="card-body p-5">
+                                <div class="custom-item" *ngIf="selected && selected.type != 'group'">
+                                        <div class="custom-item-title">Opacité du texte</div>
+                                        <div class="custom-item-body">
+                                            <input type="range" [(ngModel)]="props.opacity" (change)="setOpacity()">{{props.opacity}}
+                                        </div>
+                                    </div>
+                                    <div class="custom-item" *ngIf="selected && textEditor || selected && figureEditor">
+                                        <div class="custom-item-title">Couleur du texte</div>
+                                        <div class="custom-item-body">
+                                            <input type="text" class="form-control" [cpPosition]="'bottom'" [(colorPicker)]="props.fill"
+                                                [style.background]="props.fill" [value]="props.fill" (colorPickerChange)="setFill()">
+                                        </div>
+                                    </div>
+                                    <div class="custom-item" *ngIf="selected && textEditor">
+                                            <div class="custom-item-title">Police de caractères</div>
+                                            <div class="custom-item-body">
+                                                <select [(ngModel)]="props.fontFamily" class="form-control"
+                                                    (change)="setFontFamily()">
+                                                    <option value="arial">Arial</option>
+                                                    <option value="helvetica" selected>Helvetica</option>
+                                                    <option value="verdana">Verdana</option>
+                                                    <option value="courier">Courier</option>
+                                                    <option value="Roboto">Roboto</option>
+                                                    <option value="Open Sans">Open Sans</option>
+                                                    <option value="Zilla Slab">Zilla Slab</option>
+                                                    <option value="Lato">Lato</option>
+                                                    <option value="Bellefair">Bellefair</option>
+                                                    <option value="Fresca">Fresca</option>
+                                                    <option value="Raleway">Raleway</option>
+                                                    <option value="Open Sans Condensed">Open Sans Condensed</option>
+                                                    <option value="Indie Flower">Indie Flower</option>
+                                                    <option value="Josefin Sans">Josefin Sans</option>
+                                                    <option value="Inconsolata">Inconsolata</option>
+                                                    <option value="Pacifico">Pacifico</option>
+                                                    <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                                         <div class="custom-item" *ngIf="selected && textEditor">
+                                        <div class="custom-item-title">Style</div>
+                                        <div class="custom-item-body text-center">
+                                            <div class="btn-group" role="group" aria-label="...">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    [ngClass]="{'active': props.fontWeight }" (click)="setBold()">
+                                                    <i class="fa fa-bold"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    [ngClass]="{'active': props.fontStyle }" (click)="setFontStyle()">
+                                                    <i class="fa fa-italic"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    [ngClass]="{'active': hasTextDecoration('underline') }"
+                                                    (click)="setTextDecoration('underline')">
+                                                    <i class="fa fa-underline"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    [ngClass]="{'active': hasTextDecoration('overline') }"
+                                                    (click)="setTextDecoration('overline')">
+                                                    <i class="fa fa-underline fa-flip-vertical"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    [ngClass]="{'active': hasTextDecoration('line-through') }"
+                                                    (click)="setTextDecoration('line-through')">
+                                                    <i class="fa fa-strikethrough"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- <div class="custom-item" *ngIf="selected && textEditor">
+                                        <div class="custom-item-title">Alignement du texte</div>
+                                        <div class="custom-item-body text-center">
+                                            <div class="btn-group" role="group" aria-label="...">
+                                                <button type="button" class="btn btn-primary"
+                                                    [ngClass]="{'active': props.textAlign == 'left' }" (click)="setTextAlign('left')">
+                                                    <i class="fa fa-align-left"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary"
+                                                    [ngClass]="{'active': props.textAlign == 'center' }"
+                                                    (click)="setTextAlign('center')">
+                                                    <i class="fa fa-align-center"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary"
+                                                    [ngClass]="{'active': props.textAlign == 'right' }" (click)="setTextAlign('right')">
+                                                    <i class="fa fa-align-right"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary"
+                                                    [ngClass]="{'active': props.textAlign == 'justify' }"
+                                                    (click)="setTextAlign('justify')">
+                                                    <i class="fa fa-align-justify"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div> -->
+           
+                                    <div class="custom-item" *ngIf="selected && textEditor">
+                                        <div class="custom-item-title">Taille de la police</div>
+                                        <div class="custom-item-body">
+                                            <input type="range" [(ngModel)]="props.fontSize" (change)="setFontSize()" step="1" min="1"
+                                                max="120">{{props.fontSize}}</div>
+                                    </div>
+                                    <div class="custom-item" *ngIf="selected && textEditor">
+                                        <div class="custom-item-title">Largeur de ligne</div>
+                                        <div class="custom-item-body">
+                                            <input type="range" [(ngModel)]="props.lineHeight" (change)="setLineHeight()" step="0.1"
+                                                min="0" max="10">{{props.lineHeight}}</div>
+                                    </div>
+                                    <div class="custom-item" *ngIf="selected && textEditor">
+                                        <div class="custom-item-title">Espacement des caractères</div>
+                                        <div class="custom-item-body">
+                                            <input type="range" [(ngModel)]="props.charSpacing" (change)="setCharSpacing()" step="10"
+                                                min="-200" max="800">{{props.charSpacing}}</div>
+                                    </div>
+                                    
+                        </div>
+                    </div>
+                </div>
+                <div class="col image-block draggable" style="display: none">
+                            <div class="card b-0">
+                                <div class="card-body p-5">
+                                        <div class="card">
+                                                <div class="card-header">Upload image</div>
+                                                <div class="card-body text-center">
+                                                    <img id="testImage" *ngIf="url" class="images-item-upload" [src]="url"
+                                                        (click)="addImageOnCanvas(url);">
+                                                    <input type="file" (change)="readUrl($event);" id="image">
+                                                    <br />
+                                                    <br />
+                                                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeWhite(url);">
+                                                                <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col figure-block draggable" style="display: none">
+                    <div class="card b-0">
+                        <div class="card-body p-5">
+                            <div class="card">
+                                    <div class="card-header">Ajouter une figure géométrique</div>
+                                    <div class="card-body text-center max-height">
+                                        <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                                            <button type="button" class="btn btn-primary"
+                                                (click)="addFigure('rectangle');">Rectangle</button>
+                                            <button type="button" class="btn btn-primary" (click)="addFigure('square');">Carré</button>
+                                            <button type="button" class="btn btn-primary" (click)="addFigure('triangle');">Triangle</button>
+                                            <button type="button" class="btn btn-primary" (click)="addFigure('circle');">Cercle</button>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                        <button class="btn btn-danger" (click)="closeFigure()">Fermer</button>
+                </div>
+                </div>
+                <!-- Button trigger modal -->
+
+<img src="#" style="display: none" class="img-add">
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="margin-top: 250px !important">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Informations de l'annonce</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form">
+             <input type="text" class="form-control" id="input-image" aria-describedby="" placeholder="" name='input-image' style='visibility: hidden'>
+              <div class="form-group">
+         
+    <label for="exampleInputEmail1">Adresse email</label>
+    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" name='email'>
+    <small id="emailHelp" class="form-text text-muted">Saisissez une adresse email pour identifier l'annonce.</small>
+  </div>
+             <div class="form-group">
+         
+    <label for="exampleInputEmail1">Titre</label>
+     <input type="text" class="form-control" id="titre" aria-describedby="" placeholder="Titre de l'annone" name='titre'>
+    <small id="emailHelp" class="form-text text-muted">Saisissez un titre pour l'annonce.</small>
+  </div>
+ 
+  <div class="form-group">
+    <label for="exampleInputPassword1">Saisissez une description pour l'annonce</label>
+    <input type="text" class="form-control" id="description" placeholder="Description" name="description">
+  </div>
+ 
+  <button type="submit" class="btn btn-primary sub" >Poursuivre</button>
+</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+     
+      </div>
+    </div>
+  </div>
+</div> 
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="margin-top: 250px !important">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Finaliser</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+
+              <div class="form-group">
+                 <!--  <input type="hidden" name="email" id="infos-email"> -->
+                 <img src="#" id="final-img-adwords" alt="final-image" style="margin-left: -150px" style="width: 10%"
+                                        name='image' />
+              </div>
+              <div class="form-group">
+    <label for="exampleInputEmail1">Titre</label>
+    <input type="text" class="form-control" id="infos-titre" readonly>
+    <small id="emailHelp" class="form-text text-muted">Titre de l'annonce.</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Description</label>
+    <input type="text" class="form-control" id="infos-desc"readonly>
+  </div>       
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary save">Payer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#myModal">Open Modal</button>
+     <div class="modal fade" id="visualiser2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content" style="margin-top: 230px !important">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                         <h4 class="modal-title" id="myModalLabel">
+                              Bannière
+                         </h4>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                         <div class="row">
+                              <div class="col">
+
+                                   <img src="#" id="final-img-adwords" alt="final-image" style="margin-left: -150px"
+                                        name='image' />
+                                   <!--<input type="text" name='input-image' id="input-image" style="visibility: hidden" />
+                                        <input type="text" name='input-desc' id="desc" style="visibility: hidden" />
+                                        <input type="text" name='input-prix' id="price" style="visibility: hidden" />
+                                        <input type="text" name='input-tel' id="telephone" style="visibility: hidden" />-->
+                                   <div class="infos">
+                                        <div class="row">
+                                             <p id="label">Description: </p>
+                                             <p id="infos-desc"></p>
+                                        </div>
+                                        <div class="row">
+                                             <p id="label">Prix: </p>
+                                             <p id="infos-prix"></p>
+                                        </div>
+                                        <!--<div class="row">
+                                             <p id="label">Téléphone: </p>
+                                             <p id="infos-tel"></p>
+                                        </div>-->
+                                   </div>
+                                   <p id="text-cout">5000 FCFA pour etre visible sur:</p>
+                                   <img id="seneweb" src="../assets/img/senego.jpeg">
+                                   <img id="senego" src="../assets/img/senego.jpeg">
+                                   <button class="btn btn-success save" type="button" id="down1">
+                                        <i class="material-icons" id="icon-publier">&#xe884;</i>
+                                        <p style="height: 7px;
+                                        margin-left: 30px;">Publier</p>
+                                   </button>
+
+                              </div>
+                         </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                         <button type="button" class="btn btn-default" id="btn_dismiss" data-dismiss="modal" style="margin-right: 40px;">
+                              Fermer
+                         </button>
+                    </div>
+               </div>
+          </div>
+          <!-- End Main-container-->
+     </div>
+
+                    <!--<div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="card no-b mb-3 bg-danger text-white">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div><i class="icon-package s-18"></i></div>
+                                                    <div><span class="text-success">40+35</span></div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div class="s-48 my-3 font-weight-lighter"><i class="icon-chrome"></i>
+                                                    </div>
+                                                    Chrome
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="card no-b mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div><i class="icon-timer s-18"></i></div>
+                                                    <div><span class="badge badge-pill badge-primary">4:30</span></div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div class="s-48 my-3 font-weight-lighter">68</div>
+                                                    New Orders
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div> 
+
+                            </div>-->
+                    <!--<div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="card no-b mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div><i class="icon-user-circle-o s-18"></i></div>
+                                                    <div><span class="badge badge-pill badge-danger">4:30</span></div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div class="s-48 my-3 font-weight-lighter">170</div>
+                                                    New Users
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="card no-b mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div><i class="icon-user-times s-18"></i></div>
+                                                    <div><span class="text-danger">50</span></div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div class="s-48 my-3 font-weight-lighter">95</div>
+                                                    Returning Users
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>-->
+
+
+
+                    <!-- </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                
+
+              <!--   <div class="card no-b my-3">
+                                                <div class="card-body">
+                                                    <div class="my-2 height-300">
+                                                        <canvas data-chart="bar" data-dataset="[
+                                            [21, 90, 55, 0, 59, 77, 12,21, 90, 55, 0, 59, 77, 12,21, 90, 55, 0, 59, 77, 12],
+                                            [12, 40, 16, 17, 89, 0, 12,12, 0, 55, 60, 79, 99, 12,12, 0, 55, 60, 79, 99, 12],
+                                            [12, 40, 16, 17, 89, 0,12, 40, 16, 17, 89, 0, 12,12, 40, 16, 17, 89, 0, 12],
+                                            ]" data-labels="['Blue','Yellow','Green','Purple','Orange','Red','Indigo','Blue','Yellow','Green','Purple','Orange','Red','Indigo','Blue','Yellow','Green','Purple','Orange','Red','Indigo']"
+                                                            data-dataset-options="[
+                                        {
+                                            label: 'HTML',
+                                            backgroundColor: '#7986cb',
+                                            borderWidth: 0,
+
+                                        },
+                                        {
+                                            label: 'Wordpress',
+                                            backgroundColor: '#88e2ff',
+                                            borderWidth: 0,
+
+                                        },
+                                        {
+                                            label: 'Laravel',
+                                            backgroundColor: '#e2e8f0',
+                                            borderWidth: 0,
+
+                                        }
+                                        ]" data-options="{
+                                        legend: { display: true,},
+                                        scales: {
+                                            xAxes: [{
+                                                stacked: true,
+                                                barThickness:5,
+                                                gridLines: {
+                                                    zeroLineColor: 'rgba(255,255,255,0.1)',
+                                                    color: 'rgba(255,255,255,0.1)',
+                                                    display: false,},
+                                                }],
+                                            yAxes: [{
+                                                    stacked: true,
+                                                        gridLines: {
+                                                            zeroLineColor: 'rgba(255,255,255,0.1)',
+                                                            color: 'rgba(255,255,255,0.1)',
+                                                        }
+                                        }]
+
+                                        }
+                                    }">
+                                                        </canvas>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row my-3 no-gutters">
+                                                        <div class="col-md-3">
+                                                            <h1>Tasks</h1>
+                                                            Currently assigned tasks to team.
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div
+                                                                        class="d-flex justify-content-between align-items-center">
+                                                                        <div class="mb-3">
+                                                                            <h6>New Layout</h6>
+                                                                            <small>75% Completed</small>
+                                                                        </div>
+                                                                        <figure class="avatar">
+                                                                            <img src="assets/img/dummy/u12.png" alt="">
+                                                                        </figure>
+                                                                    </div>
+                                                                    <div class="progress progress-xs mb-3">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: 75%;" aria-valuenow="75"
+                                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div
+                                                                        class="d-flex justify-content-between align-items-center">
+                                                                        <div class="mb-3">
+                                                                            <h6>New Layout</h6>
+                                                                            <small>75% Completed</small>
+                                                                        </div>
+                                                                        <figure class="avatar">
+                                                                            <img src="assets/img/dummy/u2.png" alt="">
+                                                                        </figure>
+                                                                    </div>
+                                                                    <div class="progress progress-xs mb-3">
+                                                                        <div class="progress-bar bg-indigo"
+                                                                            role="progressbar" style="width: 75%;"
+                                                                            aria-valuenow="75" aria-valuemin="0"
+                                                                            aria-valuemax="100"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div
+                                                                        class="d-flex justify-content-between align-items-center">
+                                                                        <div class="mb-3">
+                                                                            <h6>New Layout</h6>
+                                                                            <small>75% Completed</small>
+                                                                        </div>
+                                                                        <div class="avatar-group">
+                                                                            <figure class="avatar">
+                                                                                <img src="assets/img/dummy/u4.png" alt="">
+                                                                            </figure>
+                                                                            <figure class="avatar">
+                                                                                <img src="assets/img/dummy/u11.png" alt="">
+                                                                            </figure>
+                                                                            <figure class="avatar">
+                                                                                <img src="assets/img/dummy/u1.png" alt="">
+                                                                            </figure>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress progress-xs mb-3">
+                                                                        <div class="progress-bar yellow" role="progressbar"
+                                                                            style="width: 75%;" aria-valuenow="75"
+                                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div
+                                                                        class="d-flex justify-content-between align-items-center">
+                                                                        <div class="mb-3">
+                                                                            <h6>New Layout</h6>
+                                                                            <small>75% Completed</small>
+                                                                        </div>
+                                                                        <figure class="avatar">
+                                                                            <img src="assets/img/dummy/u5.png" alt="">
+                                                                        </figure>
+                                                                    </div>
+                                                                    <div class="progress progress-xs mb-3">
+                                                                        <div class="progress-bar bg-success"
+                                                                            role="progressbar" style="width: 75%;"
+                                                                            aria-valuenow="75" aria-valuemin="0"
+                                                                            aria-valuemax="100"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>  -->
+
+                <!-- <div class=" row my-3">
+                <div class="col-md-6">
+                    <div class=" card b-0">
+                        <div class="card-body p-5">
+                            <canvas id="gradientChart" width="600" height="340"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class=" card no-b">
+                        <div class="card-body">
+                            <table class="table table-hover earning-box">
+                                <tbody>
+                                <tr class="no-b">
+                                    <td class="w-10">
+                                        <a href="panel-page-profile.html" class="avatar avatar-lg">
+                                            <img src="assets/img/dummy/u6.png" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <h6>Sara Kamzoon</h6>
+                                        <small class="text-muted">Marketing Manager</small>
+                                    </td>
+                                    <td>25</td>
+                                    <td>$250</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-10">
+                                        <a href="panel-page-profile.html" class="avatar avatar-lg">
+                                            <img src="assets/img/dummy/u9.png" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <h6>Sara Kamzoon</h6>
+                                        <small class="text-muted">Marketing Manager</small>
+                                    </td>
+                                    <td>25</td>
+                                    <td>$250</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-10">
+                                        <a href="panel-page-profile.html" class="avatar avatar-lg">
+                                            <img src="assets/img/dummy/u11.png" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <h6>Sara Kamzoon</h6>
+                                        <small class="text-muted">Marketing Manager</small>
+                                    </td>
+                                    <td>25</td>
+                                    <td>$250</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-10">
+                                        <a href="panel-page-profile.html" class="avatar avatar-lg">
+                                            <img src="assets/img/dummy/u12.png" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <h6>Sara Kamzoon</h6>
+                                        <small class="text-muted">Marketing Manager</small>
+                                    </td>
+                                    <td>25</td>
+                                    <td>$250</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-10">
+                                        <a href="panel-page-profile.html" class="avatar avatar-lg">
+                                            <img src="assets/img/dummy/u5.png" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <h6>Sara Kamzoon</h6>
+                                        <small class="text-muted">Marketing Manager</small>
+                                    </td>
+                                    <td>25</td>
+                                    <td>$250</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+            </div>
+        </div>
+        <!-- Right Sidebar -->
+       
+    
+        <div class="control-sidebar-bg shadow white fixed"></div>
+    </div>
+
+
