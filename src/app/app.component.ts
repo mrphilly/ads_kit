@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-/* import { AuthService } from './project/core/auth.service'; */
+
 import { AuthService } from './app_core/core/auth.service';
 import * as $ from 'jquery'
 
@@ -12,7 +12,7 @@ import * as $ from 'jquery'
 export class AppComponent implements OnInit {
 
   constructor( sanitizer: DomSanitizer, private auth: AuthService) {
-
+    
   }
   async ngOnInit() {
      

@@ -58,6 +58,11 @@ export class SettingsComponent {
   endDate: any;
   servingStatus: any;
   adgroups: Observable<any[]>;
+  labelDateStart = "Date de début";
+  labelDateEnd = "Date de fin"
+  serving = "Actuellemnt en diffusion"
+  notServing = "Non diffusée, changer la date de début pour commencer la diffusion"
+  
   constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore) { 
     this.getUser().then(res => {
       console.log(res)
@@ -83,6 +88,7 @@ export class SettingsComponent {
         }
       }
     }) */;
+   
     console.log('init')
     this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
       res.forEach(data => {

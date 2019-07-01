@@ -59,7 +59,7 @@ export class AdGroupService {
     console.log(`owner: ${user_id}, name: ${name}, campaign_id: ${id_campaign}`)
      return new Promise(resolve => {
       setTimeout(() => {
-        this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', `${parseInt(id_campaign)}`).where('name', '==', `${name}`).where('owner', '==', `${user_id}`)).snapshotChanges().subscribe(data => {
+        this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${id_campaign}`)).where('name', '==', `${name}`).where('owner', '==', `${user_id}`)).snapshotChanges().subscribe(data => {
           console.log(`data ${data}`)
           this.item = data
           resolve(data.length)
@@ -103,7 +103,7 @@ export class AdGroupService {
         },
         err => {
           Swal.fire({
-          title: 'Ajouter une nouvelle campagne',
+          title: 'Ajouter un nouveau groupe',
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,

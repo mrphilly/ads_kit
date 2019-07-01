@@ -80,10 +80,12 @@
                            <div class="card ">
 
                                <ul class="list-group list-group-flush">
-                                   <li class="list-group-item"><i class="icon icon-mobile text-primary"></i><strong class="s-12">Nom</strong> <span class="float-right s-12">{{name}}</span></li>
-                                   <li class="list-group-item"><i class="icon icon-mail text-success"></i><strong class="s-12">Status</strong> <span class="float-right s-12">{{status}}</span></li>
-                                    <li class="list-group-item" *ngIf="servingStatus=='SERVING'"><i class="icon icon-mail text-success"></i><strong class="s-12">En diffusion</strong></li>
-                                     <li class="list-group-item" *ngIf="servingStatus=='PENDING'"><i class="icon icon-mail text-success"></i><strong class="s-12">Non diffusée</strong></li>
+                                   <li class="list-group-item"><i class="icon icon-mobile text-primary" style="float: left"></i><strong class="s-12" style="float: left">Nom</strong> <span class="float-right s-12">{{name}}</span></li>
+                                   <li class="list-group-item"><i class="icon icon-mail text-success" style="float: left"></i><strong class="s-12" style="float: left">Status</strong> <span class="float-right s-12">{{status}}</span></li>
+                                    <li class="list-group-item" *ngIf="servingStatus=='SERVING'"><i class="icon-alarm_on text-success" style="float: left"></i><strong class="s-12 text-success" style="float: left">{{serving}}</strong></li>
+                                     <li class="list-group-item" *ngIf="servingStatus=='PENDING'"><i class="icon-alarm_off text-danger" style="float: left"></i><strong class="s-12 text-danger" style="float: right">{{notServing}}</strong></li>
+                                     <li class="list-group-item"><i class="icon icon-hourglass-start text-info" style="float: left"></i><strong class="s-12 text-info" style="float: right">{{labelDateStart}}</strong> <ejs-datepicker id='datepicker' (change)=" onDateStartChange($event)" [min]='minDate' [max]='maxDate'></ejs-datepicker></li>
+                                      <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong class="s-12 text-info" style="float: right">{{labelDateEnd}}</strong> <ejs-datepicker id='datepicker'  (change)=" onEndDateChange($event)" [min]='minDate' [max]='maxDate'></ejs-datepicker></li>
                                  <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
                                </ul>
                            </div>
@@ -274,12 +276,12 @@
                                        
                                    </div>
                                </div>
-                               <div class="col-lg-4">
+                      <!--          <div class="col-lg-4">
                                   <div class="card-body b-b">
                           
                             <div class="input-group">
                                
-                               <ejs-datepicker id='datepicker' placeholder='Date de début de campagne' (change)=" onDateStartChange($event)" [min]='minDate' [max]='maxDate'></ejs-datepicker>
+                              
                             </div>
                         </div>
                                </div>  
@@ -291,7 +293,7 @@
                                <ejs-datepicker id='datepicker' placeholder="Date de fin de la campagne"  [min]='minDate' [max]='maxDate' (change)=" onEndDateChange($event)"></ejs-datepicker>
                             </div>
                         </div>
-                               </div>  
+                               </div>   -->
                            </div>
                            <hr>
                          
