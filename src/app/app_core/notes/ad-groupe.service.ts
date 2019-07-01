@@ -32,20 +32,35 @@ export class AdGroupService {
  
 
   constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient) {
-    this.auth.user.forEach(child => {
-      this.uid = child.uid
-      this.adGroupCollection = this.afs.collection('adgroup', (ref) => ref.where('owner', '==', child.uid).where('campaign_id', '==', `${this.campaign_id}`));
-      
-      
+    this.adGroupCollection = this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${this.campaign_id}`)));
+    this.auth.user.forEach(data => {
+      this.uid = data.uid
     })
   }
   
+ getListAdGroup(campaign_id: string) {
+   console.log(parseInt(campaign_id))
+   
+   
+ return this.afs.collection('adgroup', (ref) => ref.where('campaign_id','==',parseInt(`${campaign_id}`))).snapshotChanges().pipe(
+      map((actions) => {
+        return actions.map((a) => {
+          const data = a.payload.doc.data();
+          return { id: a.payload.doc.id, ...data };
+        });
+      })
+    );
 
+    
+  
+}
 
-  addGroupVerification(user_id: string, name: string) {
+  addGroupVerification(user_id: string, name: string, id_campaign: string) {
+    console.log(`owner: ${user_id}, name: ${name}, campaign_id: ${id_campaign}`)
      return new Promise(resolve => {
       setTimeout(() => {
-        this.afs.collection('adgroup', (ref) => ref.where('owner', '==', `${user_id}`).where('name', '==', `${name}`)).snapshotChanges().subscribe(data => {
+        this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', `${parseInt(id_campaign)}`).where('name', '==', `${name}`).where('owner', '==', `${user_id}`)).snapshotChanges().subscribe(data => {
+          console.log(`data ${data}`)
           this.item = data
           resolve(data.length)
       })
@@ -54,9 +69,10 @@ export class AdGroupService {
   }
   
   async addAdGroup(campaign_id: any, user_id: string, name: string) {
+    console.log(`User id: ${user_id}`)
   
   
-    return await this.addGroupVerification(user_id, name).then(value => {
+    return await this.addGroupVerification(user_id, name, campaign_id).then(value => {
       console.log(`promise result: ${value}`)
       
       if (`${value}` == '0') {
@@ -119,10 +135,10 @@ export class AdGroupService {
   }
 
 
-  prepareSaveAdGroup(id: string, name: string, status: string, ad_group_id: string): AdGroup {
+  prepareSaveAdGroup(campaign_id: string, name: string, status: string, ad_group_id: string): AdGroup {
     const userDoc = this.afs.doc(`users/${this.uid}`);
     const newAdGroup = {
-       campaign_id: id,
+       campaign_id: campaign_id,
        ad_group_id: ad_group_id,
       name: name,
       status: status,
@@ -164,7 +180,7 @@ export class AdGroupService {
 
   async createAdGroup(id_campagne: string, name: string, status: string, ad_group_id: string) {
     this.adgroup = this.prepareSaveAdGroup(id_campagne, name, status, ad_group_id);
-    const docRef = await this.adGroupCollection.add(this.adgroup);
+    const docRef = await this.afs.collection('adgroup').add(this.adgroup);
   }
 
   updateAdgroup(id: string, data: any) {

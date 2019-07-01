@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { ColorPickerModule } from 'ngx-color-picker';
+import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
@@ -19,12 +19,16 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { SettingsComponent } from './campaign-settings/settings/settings.component';
 import { AdGroupService } from './ad-groupe.service'
 
+
+import { ColorPickerModule } from 'ngx-color-picker'
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ColorPickerModule,
+    ColorPickerModule ,
     HttpClientModule,
+    DatePickerModule ,
      NgMultiSelectDropDownModule.forRoot()
     
   ],

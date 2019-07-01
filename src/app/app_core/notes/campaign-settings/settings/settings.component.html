@@ -163,6 +163,9 @@
                     <div class="card-header white">
                         <i class="icon-clipboard-edit blue-text"></i>
                         <strong> Mes groupes d'annonces </strong>
+                         <button type="button" class="btn btn-success" style="float: right">
+                            Nombre de groupes <span class="badge badge-light">{{number_ad_groups}}</span>
+                        </button>
                     </div>
                     <div class="card-body p-0 bg-light slimScroll" data-height="300">
                         <div class="table-responsive">
@@ -204,7 +207,7 @@
                                     <!-- Actions -->
                                     <td>
                                         <a href="#">
-                                            <i class="icon-edit"></i>
+                                            <i class="icon-perm_data_setting"></i>
                                         </a> &nbsp;
                                         <a href="#">
                                             <i class="icon-share-square-o text-success"></i>
@@ -248,7 +251,7 @@
 
                            </div>
                            <div class="row">
-                               <div class="col-lg-4">
+                              <!--  <div class="col-lg-4">
                                    <div class="card r-3 bg-dark text-white">
                                        <div class="p-4">
                                            <div class="float-right">
@@ -258,29 +261,37 @@
                                            <h5 class="sc-counter mt-3">{{number_ad_groups}} groupes d'annonces</h5>
                                        </div>
                                    </div>
-                               </div>
+                               </div> -->
                                <div class="col-lg-4" *ngIf="startDate != ''">
                                    <div class="card r-3 bg-success text-white">
                                        <div class="p-4">
                                            <div class="float-right"><span class="icon-stop-watch3 s-48"></span>
                                            </div>
-                                           <div class="counter-title">Débute {{startDate}}</div>
-                                           <h5 class="sc-counter mt-3">Se termine {{endDate}}</h5>
+                                           <div class="counter-title">Débute le {{ startDate }}</div>
+                                           <h5 class="sc-counter mt-3">Se termine le {{ endDate }}</h5>
                                            <a class="btn btn-warning" style="float: right"><i class="icon-edit"></i></a>
                                        </div>
                                        
                                    </div>
                                </div>
-                             <!--   <div class="col-lg-4">
-                                   <div class="bg-danger card text-white">
-                                       <div class="p-4">
-                                           <div class="float-right"><span class="icon-orders s-48"></span>
-                                           </div>
-                                           <div class="counter-title">Date de fin de la campagne</div>
-                                           <h5 class="sc-counter mt-3">{{endDate}}</h5>
-                                       </div>
-                                   </div>
-                               </div>  -->
+                               <div class="col-lg-4">
+                                  <div class="card-body b-b">
+                          
+                            <div class="input-group">
+                               
+                               <ejs-datepicker id='datepicker' placeholder='Date de début de campagne' (change)=" onDateStartChange($event)" [min]='minDate' [max]='maxDate'></ejs-datepicker>
+                            </div>
+                        </div>
+                               </div>  
+                               <div class="col-lg-4">
+                                  <div class="card-body b-b">
+                           
+                            <div class="input-group">
+                               
+                               <ejs-datepicker id='datepicker' placeholder="Date de fin de la campagne"  [min]='minDate' [max]='maxDate' (change)=" onEndDateChange($event)"></ejs-datepicker>
+                            </div>
+                        </div>
+                               </div>  
                            </div>
                            <hr>
                          

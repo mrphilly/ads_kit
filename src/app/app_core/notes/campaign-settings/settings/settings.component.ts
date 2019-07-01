@@ -1,11 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+
+import { loadCldr, L10n } from "@syncfusion/ej2-base";
 
 import { database } from 'firebase';
 
 import { NotesService } from '../../notes.service';
 import { AuthService } from '../../../core/auth.service';
+
+
 
 import * as $ from 'jquery'
 import { Observable } from 'rxjs'
@@ -14,14 +18,30 @@ import Swal from 'sweetalert2'
 import { AdGroup } from '../../ad_group.models'
 import { map } from 'rxjs/operators'
 
+declare var require: any;
+export interface JSONDATE {
+    selectedDate: string;
+}
+loadCldr(
+  require("cldr-data/main/fr/numbers.json"),
+  require("cldr-data/main/fr/ca-gregorian.json"),
+  require("cldr-data/supplemental/numberingSystems.json"),
+  require("cldr-data/main/de/timeZoneNames.json"),
+  require('cldr-data/supplemental/weekdata.json') // To load the culture based first day of week
+);
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent implements OnInit {
-
- private adGroupCollection: AngularFirestoreCollection<AdGroup>;
+export class SettingsComponent {
+  public minDate: Date = new Date ();
+    public maxDate: Date = new Date ("01/01/2025");
+    public dateValue: Date = new Date ();
+  private adGroupCollection: AngularFirestoreCollection<AdGroup>;
+  public JSONData: JSONDATE = JSON.parse(`{ "selectedDate":  "2018-12-18T08:56:00+00:00"}`);
+    public model_result: string = JSON.stringify(this.JSONData);
   @Input() id_campagne: string;
   @Input() id: string;
   @Input() name: string;
@@ -29,7 +49,7 @@ export class SettingsComponent implements OnInit {
   @Input() ad_group_id: string;
   @Input() uid: string;
   email: string;
-
+  
   user: Observable<any>;
   number_ad_groups: any;
   isCreating = false
@@ -39,16 +59,11 @@ export class SettingsComponent implements OnInit {
   servingStatus: any;
   adgroups: Observable<any[]>;
   constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore) { 
-   
-  
     this.getUser().then(res => {
       console.log(res)
       console.log(this.id_campagne)
-    this.adGroupCollection = this.afs.collection('adgroup', (ref) => ref.where('owner', '==', `${res}`).where('campaign_id', '==', this.id_campagne));
-  })
-    
-     
       
+  })     
     }
     getUser() {
      return new Promise(resolve => {
@@ -59,31 +74,44 @@ export class SettingsComponent implements OnInit {
       }, 2000);
     });
   }
-    ngOnInit() {
-      console.log('init')
-
-
-    this.adgroups = this.getData();
+  ngOnInit() {
+/*        L10n.load({
+      'fr': {
+        'datepicker': {
+          placeholder: 'Date de début',
+          today:"Aujourd'hui"
+        }
+      }
+    }) */;
+    console.log('init')
+    this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
+      res.forEach(data => {
+      /*   this.startDate = data['startDate']
+        this.endDate = data['endDate'] */
+        this.servingStatus = data['servingStatus']
+      })
+    })
     
+    this.adgroups = this.adGroupService.getListAdGroup(this.id_campagne)
     this.adgroups.forEach(child => {
-      if (child.length > 0) { 
+      console.log(child)
+      if (child.length > 0) {
         this.number_ad_groups = child.length
       } else {
         this.number_ad_groups = "0"
       }
-    }) 
-      
-      this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res=>{
-        res.forEach(data => {
-          this.startDate = data['startDate']
-          this.endDate = data['endDate']
-          this.servingStatus = data['servingStatus']
-        })
-      })
-  }
-  ngAfterViewInit() {
+
+    })
+}
+
+   /*  this.adgroups = this.getData();
     
-  }
+     
+    })  */
+      
+      
+  
+
  getData(): Observable<any[]> {
     // ['added', 'modified', 'removed']
     
@@ -132,7 +160,16 @@ export class SettingsComponent implements OnInit {
     })
         }
       ); */
-}
+  }
+  
+     onDateStartChange(args) {
+        /* this.JSONData.selectedDate = args.value;
+        this.model_result = this.JSONData.selectedDate */
+       this.startDate = `${args.value.getDay()}/${args.value.getMonth()}/${args.value.getFullYear()} `
+     }
+  onEndDateChange(args) {
+           this.endDate = `${args.value.getDay()}/${args.value.getMonth()}/${args.value.getFullYear()} `
+  }
       
   toggleAddNewAdGroup(){
     this.isAdGroup = true
@@ -415,6 +452,8 @@ export class SettingsComponent implements OnInit {
   })
   }
 
+
+  
 
   changeAdGroupStatus(id: string, adgroup_id: string, last_status: string) {
     Swal.fire({
