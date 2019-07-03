@@ -38,6 +38,7 @@ from googleads import adwords
 
 def TargetLocation(client, campaign_id, location):
   # Initialize appropriate service.
+  INFOS = []
   campaign_criterion_service = client.GetService(
       'CampaignCriterionService', version='v201809')
 
@@ -45,12 +46,12 @@ def TargetLocation(client, campaign_id, location):
   # with the LocationCriterionService.
   i = 0
   criteria = []
-  while i < location.length:
-      target = {
+  
+  target = {
           'xsi_type': 'Location',
-          'id': location[i]['location_id']
-      }
-      criteria.append(target)
+          'id': location
+  }
+  criteria.append(target)
   
   operations = []
   for criterion in criteria:
@@ -67,9 +68,14 @@ def TargetLocation(client, campaign_id, location):
 
   # Display the resulting campaign criteria.
   for campaign_criterion in result['value']:
+    INFOS.append({
+        "criterion_id": campaign_criterion['criterion']['id'],
+        "criterion_type":  campaign_criterion['criterion']['type']
+    })
     print ('Campaign criterion with campaign id "%s", criterion id "%s", '
            'and type "%s" was added.'
            % (campaign_criterion['campaignId'],
               campaign_criterion['criterion']['id'],
               campaign_criterion['criterion']['type']))
+  return INFOS
 

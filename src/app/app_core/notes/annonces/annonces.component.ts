@@ -82,6 +82,7 @@ export class AnnoncesComponent implements OnInit {
   dropdownSettingsAges = {};
   dropdownSettingsSexes = {};
   dropdownSettingsZones = {};
+  
 
 
   ngOnInit() {

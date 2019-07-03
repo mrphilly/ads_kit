@@ -51,7 +51,7 @@ export class CampaignSettingsComponent implements OnInit {
 
   @Input() _showCamp: any;
 
-  constructor(private notesService: NotesService, private auth: AuthService, private router: Router, private location: Location) {
+  constructor(private notesService: NotesService, private auth: AuthService, private location: Location) {
     this.title = "Campaign Management"
     this.auth.user.forEach((value) => {
       this.uid = value.uid
@@ -60,7 +60,7 @@ export class CampaignSettingsComponent implements OnInit {
 
   }
   toggleEditor() {
-    this.router.navigate(['ads', this.name, this.id_campagne, this.ad_group_id, this.id])
+   
   }
   toggleCampaignSettings() {
     this.isEditor = false

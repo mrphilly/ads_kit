@@ -153,13 +153,13 @@ export class NotesListComponent implements AfterViewInit {
     this._addCampaign_=false
   }
 
-    clickHandler(id: string, name: string, status: string, startDate: string, endDate: string, servingStatus: string) {
+    clickHandler(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string) {
     
       console.log(this.uid)
       console.log(name)
       console.log(status)
       
-      this.notesService.createCampaign(id, name, status, startDate, endDate, servingStatus
+      this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus
       );
     this.name = '';
     this.id_campagne = '';
@@ -188,15 +188,12 @@ export class NotesListComponent implements AfterViewInit {
       'campaign_name': name
     })
       .subscribe(
-        res => {
-          moment.locale('fr')
         
-           var startDate = moment(res['startDate'], "YYYYMMDD").fromNow()
-          var endDate = moment(res['endDate'], "YYYYMMDD").fromNow()
+        res => {
           this.id_campagne = res['id']
           this.status = res['status_campaign']
           this.ad_group_id = res['ad_group_id']
-          this.clickHandler(this.id_campagne, name, this.status,startDate, endDate, res['servingStatus'])
+          this.clickHandler(this.id_campagne, name, this.status, res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'])
           
         },
         err => {

@@ -23,6 +23,8 @@ export class NotesService implements OnInit {
   note: Note;
   today: Date = new Date();
   item: any;
+  text_error_date = "Cette campagne a déjà commencé"
+  error_end_date = "Date invalide ou campagne déjà terminée"
   private notesCollection: AngularFirestoreCollection<Note>;
 
 
@@ -46,6 +48,8 @@ export class NotesService implements OnInit {
       }, 2000);
     });
   }
+
+  
   
   async addCampaign(email: string, user_id: string, name: string) {
  
@@ -64,7 +68,7 @@ export class NotesService implements OnInit {
          
           var startDate = moment(res['startDate'], "YYYYMMDD").fromNow()
           var endDate = moment(res['endDate'], "YYYYMMDD").fromNow()
-         this.createCampaign(res['id'], name, res['status_campaign'], startDate, endDate, res['servingStatus']).then(res=>{
+         this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus']).then(res=>{
             Swal.fire({
               title: 'Ajouter une nouvelle campagne',
               text: 'Campagne ajoutée avec succès',
@@ -111,6 +115,54 @@ export class NotesService implements OnInit {
     })
    
   }
+    async targetLocation(id: string, campaign_id: string, name: string, location: any) {
+ 
+    return await this.getCampaignZones(campaign_id, name).then(value => {
+      console.log(`promise result: ${value}`)
+
+      
+        
+        this.http.post('http://127.0.0.1:5000/targetLocation', {
+       'campaign_id': campaign_id,
+       'location_id': location[0].item_id
+    })
+      .subscribe(
+        res => {
+          console.log(`res from location backend: ${res}`)
+          this.updateNote(id, {zones: location })
+        },
+        err => {
+          Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+
+     /*  } else{
+        Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur service1',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        
+      } */
+    })
+   
+  }
 
 
   getSingleCampaign(campaign_id: string, name: string) {
@@ -127,12 +179,155 @@ export class NotesService implements OnInit {
 
     
   
-}
+  }
+
+  getCampaignZones(campaign_id: string, name: string) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
+            console.log(el)
+          resolve(el[0]['zones'])
+        })
+      }, 2000);
+    });
+  }
+  
+  getCampaignDates(campaign_id: string, name: string){
+      return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
+            console.log(el)
+          resolve(el[0])
+        })
+      }, 2000);
+    });
+  }
+
+  
+  updateStartDate(id: string, campaign_id: string, startDate: string, startDateFrench: string) {
+      return      this.http.post('http://127.0.0.1:5000/upDateCampaignStartDate', {
+       'campaign_id': campaign_id,
+       'startDate': startDate
+    })
+      .subscribe(
+        res => {
+          console.log(res)
+         
+         
+        this.updateNote(id, {startDate: res[0]['startDate'], startDateFrench: startDateFrench, servingStatus: res[0]['servingStatus']}).then(res=>{
+           /*  Swal.fire({
+              title: 'Modification date de début',
+              text: 'Date de début modifiée',
+              type: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {}
+            }) */
+         })
+          
+        },
+        err => {
+          Swal.fire({
+          title: 'Modification date de début',
+          text: this.text_error_date,
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+  }
+  
+    updateEndDate(id: string, campaign_id: string, endDate: string, endDateFrench: string) {
+       return     this.http.post('http://127.0.0.1:5000/upDateCampaignEndDate', {
+       'campaign_id': campaign_id,
+       'endDate': endDate
+    })
+      .subscribe(
+        res => {
+          console.log(res)
+         
+         
+        this.updateNote(id, {endDate: res[0]['endDate'], endDateFrench: endDateFrench, servingStatus: res[0]['servingStatus']}).then(res=>{
+           /*  Swal.fire({
+              title: 'Modification date de fin',
+              text: 'Date de fin modifiée',
+              type: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {}
+            }) */
+         })
+          
+        },
+        err => {
+          Swal.fire({
+          title: 'Modification date de fin',
+          text: this.error_end_date,
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+  }
+
+
+  getCampaignRealTimeData(id, campaign_id: string) {
+          return      this.http.post('http://127.0.0.1:5000/getCampaignData', {
+       'campaign_id': campaign_id,
+    
+    })
+      .subscribe(
+        res => {
+          
+        /* console.log(res[0]['name']) */
+          console.log(res[0]['servingStatus'])
+          this.getSingleCampaign(campaign_id, res[0]['name']).subscribe(data => {
+            if (data[0]['servingStatus'] != res[0]['servingStatus']) {
+              if (res[0]['servingStatus'] == null) {
+                this.updateNote(id, {servingStatus:  'None'})
+                
+              } else {
+                 this.updateNote(id, {servingStatus: res[0]['servingStatus']})
+              }
+            }
+              
+              
+            
+          })
+        
+          
+         
+        
+          
+        },
+        err => {
+        
+        }
+      );
+  }
 
   
 
 
-  prepareSaveCampaign(id: string, name: string, status: string, startDate: string, endDate: string, servingStatus: string): Note {
+  prepareSaveCampaign(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string ,servingStatus: string): Note {
     const userDoc = this.afs.doc(`users/${this.uid}`);
       const newCampaign = {
       id_campagne: id,
@@ -140,6 +335,8 @@ export class NotesService implements OnInit {
         status: status,
       startDate: startDate,
         endDate: endDate,
+        startDateFrench: startDateFrench,
+        endDateFrench: endDateFrench,
       servingStatus: servingStatus,
       zones: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -175,8 +372,8 @@ export class NotesService implements OnInit {
       return this.getNote(id).update(data);
   }
 
-  async createCampaign(id_campagne: string, name: string, status: string, startDate: string, endDate: string, servingSatus: string) {
-    this.note = this.prepareSaveCampaign(id_campagne, name, status, startDate, endDate, servingSatus);
+  async createCampaign(id_campagne: any, name: string, status: string, startDate: string,endDate: string, startDateFrench: string, endDateFrench: string, servingSatus: string) {
+    this.note = this.prepareSaveCampaign(id_campagne, name, status, startDate, endDate, startDateFrench, endDateFrench, servingSatus);
     const docRef = await this.notesCollection.add(this.note);
   }
 

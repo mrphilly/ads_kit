@@ -70,9 +70,10 @@ def add_campaign(client, name):
                
           },
           
-          'startDate': datetime.datetime.now().strftime('%Y%m%d'),
+          'startDate':  (datetime.datetime.now() +
+                      datetime.timedelta(10)).strftime('%Y%m%d'),
           'endDate': (datetime.datetime.now() +
-                      datetime.timedelta(3)).strftime('%Y%m%d'),
+                      datetime.timedelta(20)).strftime('%Y%m%d'),
           # Note that only the budgetId is required
           'budget': {
               'budgetId': budget_service.mutate(budget_operations)['value'][0]['budgetId']
@@ -104,6 +105,8 @@ def add_campaign(client, name):
             "status": campaign['status'],
             "startDate": campaign['startDate'],
             "endDate": campaign['endDate'],
+            "startDateFrench": campaign['startDate'][-2:] + "/" + campaign['startDate'][-4:-2] + "/" + campaign['startDate'][:4],
+            "endDateFrench": campaign['endDate'][-2:] + "/" + campaign['endDate'][-4:-2] + "/" + campaign['endDate'][:4],
             "biddingStrategyConfiguration": campaign['biddingStrategyConfiguration'],
             "servingStatus": campaign['servingStatus']
             })

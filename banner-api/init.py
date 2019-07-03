@@ -27,8 +27,12 @@ from ads_scripts.basic_operations.update_campaign_status import UpdateCampaignSt
 from ads_scripts.basic_operations.update_campaign_name import UpdateCampaignName
 from ads_scripts.basic_operations.update_campaign_name_and_status import UpdateCampaignNameAndStatus
 from ads_scripts.targeting.targeting_ages import TargetAge
+from ads_scripts.targeting.target_location import TargetLocation
 from ads_scripts.basic_operations.update_ad_group_status import UpdateAdGroupStatus
 from ads_scripts.basic_operations.remove_ad_group import DeleteAdGroup
+from ads_scripts.basic_operations.update_campaign_start_date import UpdateCampaignStartDate
+from ads_scripts.basic_operations.update_campaign_end_date import UpdateCampaignEndDate
+from ads_scripts.basic_operations.get_campaigns_data import get_campaigns_data 
 
 
 app = Flask(__name__)
@@ -149,6 +153,15 @@ def upload_file():
 
 
 
+
+@app.route("/getCampaignData", methods=["POST"])
+def getData():
+    campaign_id = request.json['campaign_id']
+    adwords_client = adwords.AdWordsClient.LoadFromStorage("./googleads.yaml")
+    update = get_campaigns_data(adwords_client, campaign_id)
+    return jsonify(update)
+
+
 @app.route("/deleteCampaign", methods=["POST"])
 def delete_campaign():
     response = []
@@ -160,6 +173,31 @@ def delete_campaign():
         "handler": "campagne supprimée avec succès"
     })
     return jsonify(response)
+
+
+
+@app.route('/upDateCampaignStartDate', methods=['POST'])
+def updateCampaignStartDate():
+    campaign_id = request.json['campaign_id']
+    startDate = (request.json['startDate'])
+    print(startDate)
+    print(campaign_id)
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    update = UpdateCampaignStartDate(adwords_client, campaign_id, startDate)
+    return jsonify(update)
+
+
+@app.route('/upDateCampaignEndDate', methods=['POST'])
+def updateCampaignEndDate():
+    campaign_id = request.json['campaign_id']
+    endDate = (request.json['endDate'])
+   
+    print(endDate)
+    print(campaign_id)
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    update = UpdateCampaignEndDate(adwords_client, campaign_id, endDate)
+    return jsonify(update)
+
 
 
 @app.route("/updateCampaign", methods=["POST"])
@@ -220,8 +258,9 @@ def campagne():
                 "status_campaign": campagne[0]["status"],
                 "startDate": campagne[0]["startDate"],
                 "endDate": campagne[0]["endDate"],
-                "servingStatus": campagne[0]["servingStatus"]
-                
+                "startDateFrench": campagne[0]["startDateFrench"],
+                "endDateFrench": campagne[0]["endDateFrench"],
+                "servingStatus": campagne[0]["servingStatus"]          
                 }
     except:
         response = {
@@ -306,6 +345,17 @@ def targetAge():
    
    
     return jsonify(target)
+
+
+
+@app.route("/targetLocation", methods=["POST"])
+def targetLocation():
+    campaign_id = request.json['campaign_id']
+    location = request.json['location_id']
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    location = TargetLocation(adwords_client, campaign_id, location)
+    return jsonify(location)
+
 
 
 @app.route("/addUser", methods=["POST"])

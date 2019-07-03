@@ -16,10 +16,11 @@ const routes: Routes = [
 /*   { path: 'editor', component: EditorComponent}, */
   { path: '', component: NotesListComponent,  canActivate: [AuthGuard] },
  /*  { path: 'uploads',  component: UploadPageComponent,  canActivate: [AuthGuard] }, */
-  {path: 'ads/:name/:campaign_id/:ad_group_id/:id', component: AnnoncesComponent},
+  {path: 'ads/:name/:id/:ad_group_id/:campaign_id', component: AnnoncesComponent},
   { path: 'ssr', component: SsrPageComponent },
   { path: 'campaign/:id', component: CampaignSettingsComponent, canActivate: [AuthGuard]}
 ];
+ 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

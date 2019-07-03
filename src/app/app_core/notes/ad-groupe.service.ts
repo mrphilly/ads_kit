@@ -53,7 +53,9 @@ export class AdGroupService {
 
     
   
-}
+  }
+  
+
 
   addGroupVerification(user_id: string, name: string, id_campaign: string) {
     console.log(`owner: ${user_id}, name: ${name}, campaign_id: ${id_campaign}`)

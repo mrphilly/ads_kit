@@ -1,0 +1,795 @@
+        <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas' *ngIf="!_init_campagne">
+          <div class="sidebar">
+            <div class="d-flex hv-100 align-items-stretch">
+              <div class="text-white indigo">
+                <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist"
+                  aria-orientation="vertical">
+                  <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                    aria-controls="v-pills-home" aria-selected="true"><i class="icon-inbox2"></i></a>
+                  <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                    aria-controls="v-pills-profile" aria-selected="false"><i class="icon-add"></i></a>
+                  <a class="nav-link blink skin_handle" href="#"><i class="icon-lightbulb_outline"></i></a>
+                  <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
+                  <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a>
+                  <a href="">
+                    <figure class="avatar">
+                      <img src="assets/img/dummy/u3.png" alt="">
+                      <span class="avatar-badge online"></span>
+                    </figure>
+                  </a>
+                </div>
+              </div>
+              <div class="tab-content flex-grow-1" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                  aria-labelledby="v-pills-home-tab">
+                  <div class="relative brand-wrapper sticky b-b">
+                    <div class="d-flex justify-content-between align-items-center p-3">
+                      <div class="text-xs-center">
+                        <span class="font-weight-lighter s-18">Menu</span>
+                      </div>
+                      <div class="badge badge-danger r-0">New Panel</div>
+                    </div>
+                  </div>
+                  <ul class="sidebar-menu">
+                    <li class="treeview">
+                      <a href="index.html">
+                        <i class="icon icon-sailing-boat-water s-24"></i> <span>Dashboard</span>
+                      </a>
+                    </li>
+                    <!--  <li class="treeview"><a href="#">
+                            <i class="icon icon icon-package s-24"></i>
+                            <span>Products</span>
+                            <span class="badge r-3 badge-primary pull-right">4</span>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li><a href="panel-page-products.html"><i class="icon icon-circle-o"></i>All
+                                    Products</a>
+                                </li>
+                                <li><a href="panel-page-products-create.html"><i class="icon icon-add"></i>Add
+                                    New </a>
+                                </li>
+                            </ul>
+                        </li> -->
+                    <li class="treeview"><a href="#"><i class="icon icon-bandcamp s-24"></i>Campagne<i
+                          class=" icon-angle-left  pull-right"></i></a>
+                      <ul class="treeview-menu">
+                        <li><a (click)="toggleListCampaign()" style="cursor: pointer"><i
+                              class="icon icon-circle-o"></i>Toutes les campagnes</a>
+                        </li>
+                        <li><a (click)="action_2()" style="cursor: pointer"><i class="icon icon-add"></i>Ajouter une
+                            nouvelle campagne</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="treeview"><a href="#">
+                        <i class="icon icon-package s-24"></i>
+                        <i class=" icon-angle-left  pull-right"></i>
+                        <span>Gallerie images</span>
+                      </a>
+                      <ul class="treeview-menu" style="overflow: auto; height: 100%">
+                        <div class="container-fluid" style="margin-left: 10px">
+                          <div class="row">
+                            <div class="row">
+
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Blurred Backgrounds Vol.2/01.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Blurred Backgrounds Vol.2/02.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Blurred Backgrounds Vol.2/03.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Blurred Backgrounds Vol.2/04.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Blurred Backgrounds Vol.2/05.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Blurred Backgrounds Vol.2/05.jpg" style="width: 90px; height:90px;">
+
+                            </div>
+                            <div class="row">
+
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/7 HD Polygon Backgrounds/23.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/7 HD Polygon Backgrounds/31.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/7 HD Polygon Backgrounds/36.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/7 HD Polygon Backgrounds/37.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/7 HD Polygon Backgrounds/44.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/7 HD Polygon Backgrounds/48.jpg" style="width: 90px; height:90px;">
+
+                            </div>
+                            <div class="row">
+
+                              <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/01.png"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/02.png"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/03.png"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/04.png"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/05.png"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/06.png"
+                                style="width: 90px; height:90px;">
+                            </div>
+                            <div class="row">
+
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Bokeh Backgrounds Vol.1/01.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Bokeh Backgrounds Vol.1/02.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Bokeh Backgrounds Vol.1/03.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Bokeh Backgrounds Vol.1/04.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                            </div>
+                            <div class="row">
+
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Infinite White Studio Backdrops/02.jpg"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Infinite White Studio Backdrops/03.jpg"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Infinite White Studio Backdrops/04.jpg"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Infinite White Studio Backdrops/05.jpg"
+                                style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                              <img class="images-item" (click)="getImgPolaroid($event)"
+                                src="assets/img/5 Infinite White Studio Backdrops/01.jpg"
+                                style="width: 90px; height:90px;">
+                            </div>
+                          </div>
+                        </div>
+                      </ul>
+                    </li>
+                    <!-- <li class="treeview"><a href="#">
+                            <i class="icon icon-package s-24"></i>
+                            <i class=" icon-angle-left  pull-right"></i>
+                            <span>Inbox</span>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li><a href="inbox.html"><i class="icon icon-circle-o"></i>Inbox</a>
+                                </li>
+                                <li><a href="inbox2.html"><i class="icon icon-circle-o"></i>Inbox 2</a>
+                                </li>
+                                <li><a href="inbox-create.html"><i class="icon icon-add"></i>Compose</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview ">
+                            <a href="#">
+                                <i class="icon icon-package  s-24"></i> <span>Apps</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="chat.html"><i class="icon icon-circle-o"></i>Chat</a>
+                                </li>
+                                <li><a href="tasks.html"><i class="icon icon-circle-o"></i>Tasks / Todo</a>
+                                </li>
+                                <li><a href="calendar.html"><i class="icon icon-date_range"></i>Calender</a>
+                                </li>
+                                <li><a href="contacts.html"><i class="icon icon-circle-o"></i>Contacts</a>
+                                </li>
+                                <li><a href="projects.html"><i class="icon icon-circle-o"></i>Projects</a>
+                                </li>
+                                <li><a href="projects-list.html"><i class="icon icon-circle-o"></i>Projects List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="icon icon-documents3 s-24"></i> <span>Pages</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="icon icon-documents3"></i>Blank Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="panel-page-blank.html"><i class="icon icon-document"></i>Simple
+                                            Blank</a>
+                                        </li>
+                                        <li><a href="panel-page-blank-tabs.html"><i class="icon icon-document"></i>Tabs
+                                            Blank <i
+                                                    class=" icon-angle-left  pull-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="icon icon-fingerprint text-green"></i>Auth Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="login.html"><i class="icon icon-document"></i>Login Page 1</a>
+                                        </li>
+                                        <li><a href="login-2.html"><i class="icon icon-document"></i>Login Page 2</a>
+                                        </li>
+                                        <li><a href="login-3.html"><i class="icon icon-document"></i>Login Page 3</a>
+                                        </li>
+                                        <li><a href="login-4.html"><i class="icon icon-document"></i>Login Page 4</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="icon icon-bug text-red"></i>Error Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="panel-page-404.html"><i class="icon icon-document"></i>404 Page</a>
+                                        </li>
+                                        <li><a href="panel-page-500.html"><i class="icon icon-document"></i>500 Page<i
+                                                class=" icon-angle-left  pull-right"></i></a>
+                                        </li>
+                                        <li><a href="panel-page-error.html"><i class="icon icon-document"></i>420 Page<i
+                                                class=" icon-angle-left  pull-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="icon icon-documents3"></i>Other Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="panel-page-invoice.html"><i class="icon icon-document"></i>Invoice
+                                            Page</a>
+                                        </li>
+                                        <li><a href="panel-page-no-posts.html"><i class="icon icon-document"></i>No Post
+                                            Page</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="icon icon-goals-1  s-24"></i> <span>Elements</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="panel-element-widgets.html">
+                                    <i class="icon icon-widgets amber-text s-14"></i> <span>Widgets</span>
+                                </a>
+                                </li>
+                                <li><a href="panel-element-counters.html">
+                                    <i class="icon icon-filter_9_plus amber-text s-14"></i> <span>Counters</span>
+                                </a>
+                                <li><a href="panel-element-buttons.html">
+                                    <i class="icon icon-touch_app amber-text s-14"></i> <span>Buttons</span>
+                                </a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-typography.html">
+                                        <i class="icon icon-text-width amber-text s-14"></i> <span>Typography</span>
+                                    </a>
+                                </li>
+                                <li><a href="panel-element-tabels.html">
+                                    <i class="icon icon-table amber-text s-14"></i> <span>Tables</span>
+                                </a>
+                                </li>
+                                <li><a href="panel-element-alerts.html">
+                                    <i class="icon icon-exclamation-circle amber-text s-14"></i> <span>Alerts</span>
+                                </a>
+                                </li>
+                                <li><a href="panel-element-slider.html"><i
+                                        class="icon icon-view_carousel amber-text s-14"></i>
+                                    <span>Slider</span></a></li>
+                                <li><a href="panel-element-tabs.html"><i class="icon icon-folders2 amber-text s-14"></i>
+                                    <span>Tabs</span></a></li>
+                                <li><a href="panel-element-progress-bars.html"><i
+                                        class="icon icon-folders2 amber-text s-14"></i>
+                                    <span>Progress Bars</span></a></li>
+                                <li><a href="panel-element-badges.html"><i class="icon icon-flag7 amber-text s-14"></i>
+                                    <span>Badges</span></a></li>
+                                <li><a href="panel-element-preloaders.html"><i
+                                        class="icon icon-data_usage amber-text s-14"></i>
+                                    <span>Preloaders</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview ">
+                            <a href="#">
+                                <i class="icon icon-wpforms  s-24 "></i> <span>Forms & Plugins</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="panel-element-forms.html"><i
+                                        class="icon icon-wpforms light-green-text"></i>Bootstrap
+                                    Inputs</a>
+                                </li>
+                                <li><a href="form-jquery-validations.html"><i
+                                        class="icon icon-note-important light-green-text"></i>
+                                    Form Validation (Jquery)</a>
+                                </li>
+                                <li><a href="form-bootstrap-validations.html"><i
+                                        class="icon icon-note-important light-green-text"></i>
+                                    Form Validation (Bootstrap)</a>
+                                </li>
+                                <li><a href="panel-element-editor.html"><i class="icon icon-pen2 light-green-text"></i>Editor</a>
+                                </li>
+                                <li><a href="panel-element-toast.html"><i
+                                        class="icon icon-notifications_active light-green-text"></i>Toasts</a>
+                                </li>
+                                <li><a href="panel-element-stepper.html"><i
+                                        class="icon icon-burst_mode light-green-text"></i>Stepper</a>
+                                </li>
+                                <li><a href="panel-element-date-time-picker.html"><i
+                                        class="icon icon-date_range light-green-text"></i>Date Time Picker</a>
+                                </li>
+                                <li><a href="panel-element-color-picker.html"><i
+                                        class="icon icon-adjust light-green-text"></i>Color
+                                    Picker</a>
+                                </li>
+                                <li><a href="panel-element-range-slider.html"><i
+                                        class="icon icon-space_bar light-green-text"></i>Range
+                                    Slider</a>
+                                </li>
+                                <li><a href="panel-element-select2.html"><i
+                                        class="icon  icon-one-finger-click light-green-text"></i>Select 2</a>
+                                </li>
+                                <li><a href="panel-element-tags.html"><i class="icon  icon-tags3 light-green-text"></i>Tags</a>
+                                </li>
+                                <li><a href="panel-element-data-tables.html"><i
+                                        class="icon icon-table light-green-text"></i>Data
+                                    Tables</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview"><a href="#">
+                            <i class="icon icon-bar-chart2  s-24"></i>
+                            <span>Charts</span>
+                            <i class=" icon-angle-left  pull-right"></i>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="panel-element-charts-js.html"><i
+                                            class="icon icon-area-chart pink-text s-14"></i><span>Charts.Js</span></a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-morris.html"><i
+                                            class="icon icon-bubble_chart pink-text s-14"></i>Morris
+                                        Charts</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-echarts.html">
+                                        <i class="icon icon-bar-chart-o pink-text s-14"></i>Echarts</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-easy-pie-charts.html">
+                                        <i class="icon icon-area-chart pink-text s-14"></i>Easy Pie Charts</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-jqvmap.html">
+                                        <i class="icon icon-map pink-text s-14"></i>Jqvmap</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-sparklines.html">
+                                        <i class="icon icon-line-chart2 pink-text s-14"></i>Sparklines</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-float.html">
+                                        <i class="icon icon-pie-chart pink-text s-14"></i>Float Charts</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview"><a href="#">
+                            <i class="icon icon-dialpad  s-24"></i>
+                            <span>Extra</span>
+                            <i class=" icon-angle-left  pull-right"></i>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="panel-element-letters.html">
+                                        <i class="icon icon-brightness_auto light-blue-text s-14"></i>
+                                        <span>Avatar Placeholders</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-icons.html">
+                                        <i class="icon icon-camera2 light-blue-text s-14"></i> <span>Icons</span>
+                                    </a>
+                                </li>
+                                <li><a href="panel-element-colors.html">
+                                    <i class="icon icon-palette light-blue-text s-14"></i> <span>Colors</span>
+                                </a>
+                                </li>
+                            </ul>
+                        </li> -->
+                  </ul>
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                  <div class="relative brand-wrapper sticky b-b p-3">
+                    <h4>Gallerie</h4>
+                  </div>
+                  <div class="sticky slimScroll">
+
+                    <div class="p-2">
+                      <ul class="list-unstyled">
+
+                      </ul>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <a href="#" data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed" *ngIf="!_init_campagne">
+          <i></i>
+        </a>
+        <div class="has-sidebar-left has-sidebar-tabs white">
+          <!--navbar-->
+          <div class="sticky">
+            <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow">
+              <div class="relative">
+                <div class="d-flex">
+                  <div class="d-none d-md-block">
+                    <h1 class="nav-title">{{title}}</h1>
+
+                  </div>
+                </div>
+              </div>
+              <!--Top Menu Start -->
+              <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                  <!-- Messages-->
+
+                  <!-- Notifications -->
+                  <li class="dropdown custom-dropdown notifications-menu">
+                    <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
+
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+
+                    </ul>
+                  </li>
+                  <li>
+
+                  </li>
+                  <!-- Right Sidebar Toggle Button -->
+                  <li>
+
+                  </li>
+                  <!-- User Account-->
+                  <li class="dropdown custom-dropdown user user-menu ">
+                    <a href="#" class="nav-link" data-toggle="dropdown">
+                      <img src="assets/img/dummy/u8.png" class="user-image" alt="User Image">
+                      <i class="icon-more_vert "></i>
+                    </a>
+                    <div class="dropdown-menu p-4 dropdown-menu-right">
+                      <div class="row box justify-content-between my-4">
+                        <div class="col">
+                          <a (click)="auth.signOut()">
+                            <i class="icon-apps purple lighten-2 avatar  r-5"></i>
+                            <div class="pt-1">DÃ©connexion</div>
+                          </a>
+                        </div>
+                        <div class="col"><a href="#">
+                            <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
+                            <div class="pt-1">Profile</div>
+                          </a></div>
+
+                      </div>
+
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container relative animatedParent animateOnce p-0 bg-white text-center height-full">
+          <div class="row text-white no-gutters no-m shadow">
+
+            <div class="col-lg-3 green">
+              <div class="green counter-box p-40">
+
+                <div class="float-right">
+                  <span class="icon icon-street-view s-48"></span>
+                </div>
+                <div class="sc-counter">
+                  <ng-multiselect-dropdown [placeholder]="'Ages'" [data]="dropdownListAges"
+                    [settings]="dropdownSettingsAges" (onSelect)="onAgeSelect($event)"
+                    (onSelectAll)="onAgeSelectAll($event)" (onDeSelect)="onAgeDeSelect($event)" (onDeSelectAll)="onDeSelectAllAge()">
+                  </ng-multiselect-dropdown>
+                </div>
+                <h6 class="counter-title">Tranches d'âges</h6>
+              </div>
+            </div>
+            <div class="col-lg-3 blue1">
+              <div class="blue1 counter-box p-40">
+                <div class="float-right">
+                  <span class="icon icon-intersex s-48"></span>
+                </div>
+                <div class="sc-counter">
+                  <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sexes'"
+                    [data]="dropdownListSexes" [settings]="dropdownSettingsSexes" (onSelect)="onSexeSelect($event)"
+                    (onSelectAll)="onSexeSelectAll($event)" (onDeSelect)="onSexeDeSelect($event)" (onDeSelectAll)="onDeSelectAllSexe()">
+                  </ng-multiselect-dropdown>
+
+                </div>
+                <h6 class="counter-title">Sexes</h6>
+              </div>
+            </div>
+            <div class="col-lg-3 sunfollower">
+              <div class="sunfollower counter-box p-40">
+                <div class="float-right">
+                  <span class="icon icon-my_location s-48"></span>
+                </div>
+                <div class="sc-counter">
+                  <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
+                    [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
+                    (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)" (onDeSelectAll)="onDeSelectAllZone()">
+                  </ng-multiselect-dropdown>
+                </div>
+                <h6 class="counter-title">Zone</h6>
+              </div>
+            </div>
+            <div class="strawberry col-lg-3">
+              <div class="strawberry counter-box p-40">
+                <div class="float-right">
+                  <span class="icon icon-devices_other s-48"></span>
+                </div>
+                <div class="sc-counter">
+                  <select class="custom-select select2 devices" required>
+                    <option value=""></option>
+                    <option value="30000">Ordinateur</option>
+                    <option value="30001">Mobile</option>
+                    <option value="30002">Tablette</option>
+
+                  </select>
+                </div>
+                <h6 class="counter-title">Appareils cibles</h6>
+              </div>
+            </div>
+            <!--  <div class="col-lg-3">
+                <div class="blue1 counter-box p-40">
+                    <div class="float-right">
+                        <span class="icon icon-intersex s-48"></span>
+                    </div>
+                    <div class="sc-counter">
+                        <input type="text" name="url_finale" id="url_finale" class="form-control" placeholder="Exemple: https://www.exemple.com" required>
+                                                <div class="valid-feedback">
+                                                    Url valide !
+                                                </div>
+                    </div>
+                    <h6 class="counter-title">Landing page url</h6>
+                </div>
+            </div> -->
+          </div>
+          <form>
+
+
+            <div class="container-fluid my-3">
+              <div class="d-flex row">
+                <div class="col-md-12">
+                  <!-- Basic Validation -->
+
+                  <!-- #END# Basic Validation -->
+                  <!-- Advanced Validation -->
+                  <div class='ad-block'>
+                    <ul>
+                      <li *ngFor="let item of items_campaign">
+                        {{ item.id }}
+                      </li>
+                    </ul>
+                    <!--  -->
+
+                    <div class="card no-b p-3">
+                      <div class="card-header white text-center b-0"> <a class="btn-fab btn-fab-md shadow btn-primary"
+                          (click)="triggerImage()" title="Ajouter une image"><i class="icon-image"></i></a>
+                        <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="triggerText()"
+                          title="Ajouter un texte"><i class="icon-title"></i></a>
+                        <!--  <a class="btn-fab btn-fab-md shadow btn-primary library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                        <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="addFigure('circle');"><i
+                            class="icon-circle-o"></i></a>
+
+                        <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="addFigure('triangle');"><i
+                            class="icon-toggle-up"></i></a>
+                        <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="addFigure('rectangle');"><i
+                            class="icon-border_horizontal"></i></a>
+                        <!--  <button class="bg-primary r-20 border-0" [disabled]="!selected || selected.type== 'group'" (click)="clone();"><i class="icon-clone" style="color: white"></i></button> -->
+                        <a class="btn-fab btn-fab-sm shadow btn-success" (click)="clone();"><i
+                            class="icon-clone"></i></a>
+                        <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="removeSelected();"><i
+                            class="icon-delete_forever"></i></a>
+
+                      </div>
+
+
+                      <div class="card-body text-center">
+                        <div class="row text-center">
+
+                          <div class="col-md-6 text-center">
+
+                            <canvas id="canvas"
+                              style="width: 300px; border-color: rgb(233, 216, 216); height: 400px; float: center"></canvas>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="card-body p-0">
+                              <ul class="list-group no-b">
+                                <!--   <li class="list-group-item d-flex justify-content-between align-items-center">
+                                  <div>
+                                      <i class="icon icon-opacity purple-text"></i>Opacité
+                                  </div>
+                                   <div *ngIf="selected && selected.type != 'group'">
+                                        
+                                              <input type="range" class="range-slider form-control" [(ngModel)]="props.opacity" (change)="setOpacity()">
+                                         
+                                      </div>
+                              </li> -->
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                  <div>
+                                    <i class="icon icon-palette text-blue"></i>Couleur
+                                  </div>
+                                  <div *ngIf="selected && textEditor || selected && figureEditor">
+
+                                    <input type="text" class="form-control" [cpPosition]="'bottom'"
+                                      [(colorPicker)]="props.fill" [style.background]="props.fill" [value]="props.fill"
+                                      (colorPickerChange)="setFill()" style="width: 55%; float: right">
+
+                                  </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                  <div>
+                                    <i class="icon icon-format_size pink-text"></i> Police
+                                  </div>
+                                  <div *ngIf="selected && textEditor">
+                                    <select class="custom-select select2" [(ngModel)]="props.fontFamily"
+                                      (change)="setFontFamily()" style="margin-left: 10px;" required>
+                                      <option value="arial">Arial</option>
+                                      <option value="helvetica" selected>Helvetica</option>
+                                      <option value="verdana">Verdana</option>
+                                      <option value="courier">Courier</option>
+                                      <option value="Roboto">Roboto</option>
+                                      <option value="Open Sans">Open Sans</option>
+                                      <option value="Zilla Slab">Zilla Slab</option>
+                                      <option value="Lato">Lato</option>
+                                      <option value="Bellefair">Bellefair</option>
+                                      <option value="Fresca">Fresca</option>
+                                      <option value="Raleway">Raleway</option>
+                                      <option value="Open Sans Condensed">Open Sans Condensed</option>
+                                      <option value="Indie Flower">Indie Flower</option>
+                                      <option value="Josefin Sans">Josefin Sans</option>
+                                      <option value="Inconsolata">Inconsolata</option>
+                                      <option value="Pacifico">Pacifico</option>
+                                      <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                                    </select>
+                                  </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                  <div>
+                                    <i class="icon icon-line_style text-green"></i> Style
+                                  </div>
+                                  <div>
+
+                                    <ul class="social social list-inline" *ngIf="selected && textEditor">
+
+                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"
+                                          [ngClass]="{'active': props.fontStyle }" (click)="setFontStyle()"><i
+                                            class="icon-format_italic"></i></a></li>
+                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"
+                                          [ngClass]="{'active': hasTextDecoration('underline') }"
+                                          (click)="setTextDecoration('underline')"><i class="icon-underline"></i></a>
+                                      </li>
+                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"
+                                          [ngClass]="{'active': props.fontWeight }" (click)="setBold()"><i
+                                            class="icon-bold"></i></a></li>
+
+                                    </ul>
+                                  </div>
+                                </li>
+
+                              </ul>
+                            </div>
+                            <div class="col-md-3">
+
+
+
+                            </div>
+                            <div class="col image-block draggable" style="display: none">
+                              <div class="card b-0">
+                                <div class="card-body p-5">
+                                  <div class="card">
+                                    <div class="card-header">Upload image</div>
+                                    <div class="card-body text-center">
+                                      <img id="testImage" *ngIf="url" class="images-item-upload" [src]="url"
+                                        (click)="addImageOnCanvas(url);">
+                                      <input type="file" (change)="readUrl($event);" id="image">
+                                      <br />
+                                      <br />
+                                      <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                        <div class="btn-group" role="group">
+                                          <button type="button" class="btn btn-outline-danger btn-sm"
+                                            (click)="removeWhite(url);">
+                                            <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer border-0 white">
+                        <a class="btn btn-lg btn-block btn-primary" style="float: right" (click)="makeAds()">
+                          <i class="icon-paper-plane"></i> Terminer l'annonce
+                        </a>
+                      </div>
+
+                    </div>
+
+
+                  </div>
+                  <!-- #END# Tooltip -->
+                  <!-- Browser defaults -->
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </form>
+        </div>
+
+        <!--             <div class="container-fluid" style="margin-left: 20px">
+                                    <div class="row">
+                                        <div class="row">
+                                           
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/01.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/02.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/03.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/04.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Blurred Backgrounds Vol.2/05.jpg" style="width: 90px; height:90px;">
+                                            
+                                    </div>
+                                    <div class="row">
+                                           
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/23.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/31.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/36.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/37.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/44.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/7 HD Polygon Backgrounds/48.jpg" style="width: 90px; height:90px;">
+                                            
+                                    </div>
+                                    <div class="row">
+                                           
+                                             <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/01.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/02.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/03.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/04.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/05.png" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/PNG/06.png" style="width: 90px; height:90px;">
+                                    </div>
+                                    <div class="row">
+                                           
+                                             <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/01.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/02.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/03.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/04.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                                    </div>
+                                     <div class="row">
+                                           
+                                             <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/02.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/03.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/04.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Bokeh Backgrounds Vol.1/05.jpg" style="width: 90px; height:90px;">
+                                            <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/5 Infinite White Studio Backdrops/01.jpg" style="width: 90px; height:90px;">
+                                    </div>
+                                    </div>
+                                    </div> -->
