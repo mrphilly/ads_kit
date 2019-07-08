@@ -28,6 +28,7 @@ section of our README.
 from googleads import adwords
 
 
+
 GENDER_MALE = '10'
 GENDER_FEMALE = '11'
 UNDETERMINED_GENDER = '20'
@@ -38,30 +39,56 @@ AD_GROUP_ID = '72362966135'
 #Function for only target male ==> disable female et undetermined
 def TargetSexe(client, ad_group_id, sexes):
   result = []
-  i = 0
-  SEXES = ["10", "11", "20"]
-  while i < len(sexes):
-      if sexes[i] in SEXES:
-          SEXES.remove(sexes[i])
-  # Initialize appropriate service.
-  ad_group_criterion_service = client.GetService(
-      'AdGroupCriterionService', version='v201809')
 
-  # Create the ad group criteria.
-  ad_group_criteria = [
-      # Exclusion criterion.
-      {
-          'xsi_type': 'NegativeAdGroupCriterion',
-          'adGroupId': ad_group_id,
-          'criterion': {
-              'xsi_type': 'Gender',
-              # Create age range criteria. The IDs can be found in the
-              # documentation:
-              # https://developers.google.com/adwords/api/docs/appendix/ages.
-              'id': sexe
-          }
-      }
-  for sexe in SEXES]
+      
+  i = 0
+  INFOS = []
+  SEXES = ["10", "11", "20"]
+  """ for sexe in sexes:
+      if sexes.item_id in SEXES:
+          SEXES.remove(sex) """
+  print(sexes)
+  ad_group_criteria = []
+  ad_group_criterion_service = client.GetService(
+        'AdGroupCriterionService', version='v201809')
+  if len(sexes) < 3:
+    for sexe in sexes:
+        if str(sexe) in SEXES:
+          SEXES.remove(str(sexe)) 
+    print('sexe')
+    print(SEXES)
+    # Initialize appropriate service.
+    # Create the ad group criteria.
+    ad_group_criteria = [
+        # Exclusion criterion.
+        {
+            'xsi_type': 'NegativeAdGroupCriterion',
+            'adGroupId': ad_group_id,
+            'criterion': {
+                'xsi_type': 'Gender',
+                # Create age range criteria. The IDs can be found in the
+                # documentation:
+                # https://developers.google.com/adwords/api/docs/appendix/ages.
+                'id': sexe
+            }
+        }
+    for sexe in SEXES]
+  else:
+     ad_group_criteria = [
+        # Exclusion criterion.
+        {
+            'xsi_type': 'BiddableAdGroupCriterion',
+            'adGroupId': ad_group_id,
+            'criterion': {
+                'xsi_type': 'Gender',
+                # Create age range criteria. The IDs can be found in the
+                # documentation:
+                # https://developers.google.com/adwords/api/docs/appendix/ages.
+                'id': sexe
+            }
+        }
+    for sexe in SEXES]
+
 
   # Create operations.
   operations = []
@@ -88,6 +115,6 @@ def TargetSexe(client, ad_group_id, sexes):
   else:
     print('No criteria were returned.')
     
-  return response
+  return result
 
 

@@ -19,8 +19,11 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { SettingsComponent } from './campaign-settings/settings/settings.component';
 import { AdGroupService } from './ad-groupe.service'
 
+import { Ads } from './ads.service'
 
-import { ColorPickerModule } from 'ngx-color-picker'
+
+import { ColorPickerModule } from 'ngx-color-picker';
+import { AnnonceServiceComponentComponent } from './annonces/annonce-service-component/annonce-service-component.component'
 
 @NgModule({
   imports: [
@@ -32,7 +35,7 @@ import { ColorPickerModule } from 'ngx-color-picker'
      NgMultiSelectDropDownModule.forRoot()
     
   ],
-  declarations: [NotesListComponent, NoteDetailComponent, CampaignSettingsComponent, AnnoncesComponent, SettingsComponent, CreateCampaignComponent, SpinnerComponent, SpinnerOverlayComponent],
-  providers: [NotesService, AdGroupService]
+  declarations: [NotesListComponent, NoteDetailComponent, CampaignSettingsComponent, AnnoncesComponent, SettingsComponent, CreateCampaignComponent, SpinnerComponent, SpinnerOverlayComponent, AnnonceServiceComponentComponent],
+  providers: [NotesService, AdGroupService, Ads]
 })
 export class NotesModule { }

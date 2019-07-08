@@ -42,35 +42,48 @@ def TargetAge(client, ad_group_id, ages):
   result = []
   i = 0
   print(ages)
-  AGES = [503001, 503002, 503003, 503004, 503005, 503006, 503999]
-  while i < len(ages):
-      print(len(ages))
-      if ages[i] in AGES:
-          AGES.remove(ages[i])
-      i+=1
-
-  
-  # Initialize appropriate service.
+  AGES = ['503001', '503002', '503003', '503004', '503005', '503006', '503999']
+  ad_group_criteria = []
   ad_group_criterion_service = client.GetService(
-      'AdGroupCriterionService', version='v201809')
+        'AdGroupCriterionService', version='v201809')
+  if len(ages) != len(AGES):
+    for age in ages:
+        if str(age) in AGES:
+          AGES.remove(str(age)) 
+    print('age')
+    print(ages)
+    # Initialize appropriate service.
+    # Create the ad group criteria.
+    ad_group_criteria = [
+        # Exclusion criterion.
+        {
+            'xsi_type': 'NegativeAdGroupCriterion',
+            'adGroupId': ad_group_id,
+            'criterion': {
+                'xsi_type': 'AgeRange',
+                # Create age range criteria. The IDs can be found in the
+                # documentation:
+                # https://developers.google.com/adwords/api/docs/appendix/ages.
+                'id': int(age)
+            }
+        }
+    for age in AGES]
+  else:
+     ad_group_criteria = [
+        # Exclusion criterion.
+        {
+            'xsi_type': 'BiddableAdGroupCriterion',
+            'adGroupId': ad_group_id,
+            'criterion': {
+                'xsi_type': 'AgeRange',
+                # Create age range criteria. The IDs can be found in the
+                # documentation:
+                # https://developers.google.com/adwords/api/docs/appendix/ages.
+                'id': age
+            }
+        }
+    for age in AGES]
 
-  # Create the ad group criteria.
-  ad_group_criteria = [
-      # Targeting criterion.
-    
-      # Exclusion criterion.
-      {
-          'xsi_type': 'NegativeAdGroupCriterion',
-          'adGroupId': ad_group_id,
-          'criterion': {
-              'xsi_type': 'AgeRange',
-              # Create age range criteria. The IDs can be found in the
-              # documentation:
-              # https://developers.google.com/adwords/api/docs/appendix/ages.
-              'id':age
-          }
-      }
-  for age in AGES]
 
   # Create operations.
   operations = []
@@ -92,10 +105,11 @@ def TargetAge(client, ad_group_id, ages):
               criterion['type']))
       result.append({
           "criterion_id": criterion['id'],
-          "criterion_type": criterion['type']
+          "citerion_type": criterion['type']
       })
   else:
     print('No criteria were returned.')
+    
   return result
 """ TargetAges(adwords.AdWordsClient.LoadFromStorage('../../googleads.yaml'), AD_GROUP_ID) """
 

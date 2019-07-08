@@ -928,3 +928,13 @@
     border-color: #09548a;
     color: #09548a;
 }
+  .multiselect-dropdown[_ngcontent-c2] .dropdown-btn[_ngcontent-c2] .selected-item {
+    border: 1px solid #99b9d5 !important;
+    margin-right: 4px;
+    background: #add5f8 !important;
+    padding: 0 5px;
+    color: #fff;
+    border-radius: 2px;
+    float: left;
+}
+  

@@ -92,8 +92,12 @@ def add_ad_groups(client, campaign_id, name):
           "id": ad_group['id'],
           "name": ad_group['name'],
           "ad_service": ad_group_service,
-          "status": ad_group['status']
+          "status": ad_group['status'],
         })
+    print(ad_group['adGroupType'])
+    print(ad_group['settings'])
+    print(ad_group['contentBidCriterionTypeGroup'])
+    print( ad_group['biddingStrategyConfiguration'])
     print ('Ad group with name "%s" and id "%s" was added.'
            % (ad_group['name'], ad_group['id']))
   return INFOS

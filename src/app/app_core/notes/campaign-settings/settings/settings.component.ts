@@ -160,6 +160,7 @@ export class SettingsComponent {
   isCiblage = false
   startDate: any;
   endDate: any;
+  ad_group_name: any;
   servingStatus: any;
   adgroups: Observable < any[] > ;
   labelDateStart = "Date de début";
@@ -174,9 +175,11 @@ export class SettingsComponent {
   text_no_zone = "Aucune zone ciblée"
   sn = 'Tout le Sénégal'
   dk = 'Dakar'
+  generale='Général'
   zone: any;
   zones = [];
-   dropdownListZones = [];
+  selectedZones = []
+  dropdownListZones = [];
   selectedItems = [];
   dropdownSettingsZones = {};
   
@@ -260,27 +263,24 @@ export class SettingsComponent {
     
    })  */
 
- onZoneSelect(item: any) {
-    this.zones.push(item)
-    console.log(this.zones)
+  onZoneSelect(item: any) {
+    this.selectedZones = []
+    this.selectedZones.push(item)
+    console.log(this.selectedZones)
   }
-  onZoneSelectAll(items: any) {
+/*   onZoneSelectAll(items: any) {
     console.log(items);
-  }
+  } */
   onZoneDeSelect(item: any) {
     console.log(item)
-    for (var i = 0; i < this.zones.length; i++) {
-      if (this.zones[i]['item_id'] == item.item_id) {
-        this.zones.splice(i, 1)
-      }
-    }
-    console.log(this.zones)
+    this.selectedZones = []
+    console.log(this.selectedZones)
 
   }
-  onDeSelectAllZone() {
+/*   onDeSelectAllZone() {
     this.zones = []
     console.log(this.zones)
-  }
+  } */
 
 
   getData(): Observable < any[] > {
@@ -379,8 +379,20 @@ export class SettingsComponent {
     this.isCiblage = false
   }
   targetZones() {
+    this.isCreating = true
   
-    this.notesService.targetLocation(this.id, this.id_campagne, this.name, this.zones)
+    this.notesService.targetLocation(this.id, this.id_campagne, this.name, this.selectedZones).then(res => {
+      this.isCiblage = false
+      this.isCreating = false
+    })
+  }
+
+  updateTargetZones() {
+    this.isCreating = true
+    this.notesService.updateTargetLocation(this.id, this.id_campagne, this.name, this.selectedZones).then(res => {
+      this.isCiblage = false
+      this.isCreating = false
+    })
   }
 
   toggleAddNewAdGroup() {

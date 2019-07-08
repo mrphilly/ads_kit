@@ -435,18 +435,19 @@
         <hr>
        <button href="#" class="btn btn-primary shadow btn-lg r-20" (click)="addCampaign()" [disabled]="name?.length < 2 || name?.length > 15"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
    </div>
-   <div *ngIf="isCreating">
-      <app-spinner-overlay [message]="message"></app-spinner-overlay>
-
-   </div>
+   
   
 </div>
    
-    <div class="container relative animatedParent animateOnce p-0 bg-white text-center height-full" *ngIf="!showList">
+    <ng-container *ngIf="!showList">
         <!-- <h5 style="margin-top: 20px; font-weight: bold">Toutes les camapgnes</h5> -->
         <note-detail [show]="toggleSignleCampaign()"></note-detail>
-    </div>
+    </ng-container>
 </div>
+<div *ngIf="isCreating">
+      <app-spinner-overlay [message]="message"></app-spinner-overlay>
+
+   </div>
 <!-- Right Sidebar -->
 
 <!-- /.right-sidebar -->

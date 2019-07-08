@@ -115,9 +115,9 @@ export class NotesService implements OnInit {
     })
    
   }
-    async targetLocation(id: string, campaign_id: string, name: string, location: any) {
+    targetLocation(id: string, campaign_id: string, name: string, location: any) {
  
-    return await this.getCampaignZones(campaign_id, name).then(value => {
+    return this.getCampaignZones(campaign_id, name).then(value => {
       console.log(`promise result: ${value}`)
 
       
@@ -125,6 +125,59 @@ export class NotesService implements OnInit {
         this.http.post('http://127.0.0.1:5000/targetLocation', {
        'campaign_id': campaign_id,
        'location_id': location[0].item_id
+    })
+      .subscribe(
+        res => {
+          console.log(`res from location backend: ${res}`)
+          this.updateNote(id, {zones: location })
+        },
+        err => {
+          Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+
+     /*  } else{
+        Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur service1',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        
+      } */
+    })
+   
+  }
+  updateTargetLocation(id: string, campaign_id: string, name: string, location: any) {
+ 
+    return this.getCampaignZones(campaign_id, name).then(value => {
+      
+
+      console.log(`promise result: ${value['item_id']}`)
+      console.log(`location id from me ${location[0].item_id}`)
+      console.log(`location id from firestore ${value[0].item_id}`)
+      
+        
+        this.http.post('http://127.0.0.1:5000/updateLocation', {
+          'campaign_id': campaign_id,
+          'previous_location': value[0].item_id,
+          'location_id': location[0].item_id
+       
     })
       .subscribe(
         res => {
@@ -186,7 +239,7 @@ export class NotesService implements OnInit {
         setTimeout(() => {
        
           this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
-            console.log(el)
+            console.log(el[0]['zones'])
           resolve(el[0]['zones'])
         })
       }, 2000);

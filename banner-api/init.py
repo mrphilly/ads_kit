@@ -27,12 +27,17 @@ from ads_scripts.basic_operations.update_campaign_status import UpdateCampaignSt
 from ads_scripts.basic_operations.update_campaign_name import UpdateCampaignName
 from ads_scripts.basic_operations.update_campaign_name_and_status import UpdateCampaignNameAndStatus
 from ads_scripts.targeting.targeting_ages import TargetAge
+from ads_scripts.targeting.targeting_sexe import TargetSexe
 from ads_scripts.targeting.target_location import TargetLocation
+from ads_scripts.targeting.update_location import UpdateLocation
 from ads_scripts.basic_operations.update_ad_group_status import UpdateAdGroupStatus
 from ads_scripts.basic_operations.remove_ad_group import DeleteAdGroup
 from ads_scripts.basic_operations.update_campaign_start_date import UpdateCampaignStartDate
 from ads_scripts.basic_operations.update_campaign_end_date import UpdateCampaignEndDate
-from ads_scripts.basic_operations.get_campaigns_data import get_campaigns_data 
+from ads_scripts.basic_operations.get_campaigns_data import get_campaigns_data
+from ads_scripts.targeting.remove_ad_group_gender import RemoveTargetGender
+from ads_scripts.targeting.remove_ad_group_age import RemoveTargetAge
+from ads_scripts.targeting.target_devices import TargetDevices
 
 
 app = Flask(__name__)
@@ -283,7 +288,7 @@ def addAdGroup():
             "status": "ok",
             "id": groupe_annonce[0]["id"],
             "name": groupe_annonce[0]["name"],
-            "status_adgroup": groupe_annonce[0]["status"]
+            "status_adgroup": groupe_annonce[0]["status"],
         }
     except:
         response = {
@@ -329,21 +334,70 @@ def deleteAdGroup():
 
 @app.route("/targetAge", methods=["POST"])
 def targetAge():
-    response = {
-        "status": "ok"
-    }
-    print(request.json['campaign_id'])
-    campaign_id = request.json['campaign_id']
+    print(request.json['ages'])
+    print(request.json['last_ages'])
     ad_group_id_ = ''.join(request.json['ad_group_id']),
     ad_group_id = ''.join(ad_group_id_)
     request_ages = request.json['ages']
+    request_last_ages = request.json['last_ages']
     ages = []
+    last_ages = []
+    
     for age in request_ages:
-        ages.append(age['item_id'])
+            ages.append(age['item_id'])
     adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
-    target = TargetAge(adwords_client, ad_group_id, ages)
+    if len(request_last_ages)>0:
+        print('last_ages not null')
+        for _last_age_ in request_last_ages:
+            age = str(_last_age_['item_id'])
+            last_ages.append(age)
+        remove = RemoveTargetAge(adwords_client, ad_group_id, last_ages)
+        target = TargetAge(adwords_client, ad_group_id, ages)
+       
+
+    else:
+        print('last_genre null')
+        print(ages)
+        target = TargetAge(adwords_client, ad_group_id, ages)
+    ages = []
+    last_ages = []
+    
+    return jsonify(target)
    
    
+    return jsonify(target)
+
+@app.route("/targetGender", methods=["POST"])
+def targetGender():
+   
+    print(request.json['sexes'])
+    print(request.json['last_genre'])
+    ad_group_id_ = ''.join(request.json['ad_group_id']),
+    ad_group_id = ''.join(ad_group_id_)
+    request_sexes = request.json['sexes']
+    request_last_genre = request.json['last_genre']
+    sexes = []
+    last_genre = []
+    
+    for sexe in request_sexes:
+            sexes.append(sexe['item_id'])
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    if len(request_last_genre)>0:
+        print('last_genre not null')
+        for _last_genre_ in request_last_genre:
+            genre = str(_last_genre_['item_id'])
+            last_genre.append(genre)
+        remove = RemoveTargetGender(adwords_client, ad_group_id, last_genre)
+        target = TargetSexe(adwords_client, ad_group_id, sexes)
+       
+
+    else:
+        print('last_genre null')
+        print(sexes)
+        target = TargetSexe(adwords_client, ad_group_id, sexes)
+    sexes = []
+    last_genre = []
+    
     return jsonify(target)
 
 
@@ -354,6 +408,38 @@ def targetLocation():
     location = request.json['location_id']
     adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     location = TargetLocation(adwords_client, campaign_id, location)
+    return jsonify(location)
+
+
+@app.route("/targetDevices", methods=["POST"])
+def targetDevices():
+    ad_group_id = request.json['ad_group_id']
+    devices_request = request.json['devices']
+    last_devices_request = request.json['last_devices']
+    devices = []
+    last_devices = []
+    for device in devices_request:
+        devices.append(device['item_id'])
+    if len(last_devices) == 0:
+        last_devices = last_devices
+    else:
+        for last_devices_item in last_devices_request:
+            last_devices.append(last_devices_item['item_id'])
+
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    device_request = TargetDevices(adwords_client, ad_group_id, devices, last_devices )
+    return jsonify(device_request)
+
+
+
+@app.route("/updateLocation", methods=["POST"])
+def updateLocation():
+    campaign_id = request.json['campaign_id']
+    previous_location = request.json['previous_location']
+    location = request.json['location_id']
+    print(location)
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    location = UpdateLocation(adwords_client, campaign_id, previous_location, location)
     return jsonify(location)
 
 

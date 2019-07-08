@@ -1,4 +1,5 @@
-<div class="row" *ngIf="!_showCampaignSettings_">
+ <div class="container relative animatedParent animateOnce p-0 bg-white text-center">
+<div class="row d-flex bd-highlight no-gutters" *ngIf="!_showCampaignSettings_">
 
 
   <div class="col-md-4 " *ngFor="let note of notes | async">
@@ -16,6 +17,7 @@
   </div>
 
 </div>
+ </div>
 <div *ngIf="_showCampaignSettings_">
   <app-campaign-settings [id_campagne]="id_campagne" [id]="id" [name]="name" [_showCamp]="_showCampaignSettings_"
     [status]="status" [ad_group_id]="ad_group_id"></app-campaign-settings>

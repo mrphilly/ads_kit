@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators'
 import * as moment from 'moment'
 /* import { NoteDetailComponent } from './note-detail/note-detail.component' */
 
+declare var require: any;
+var _ = require('lodash');
 
 @Injectable()
 export class AdGroupService {
@@ -69,6 +71,183 @@ export class AdGroupService {
       }, 2000);
     });
   }
+  getAdGroupGenre(campaign_id: string, ad_group_id: any) {
+     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+            console.log(el)
+          resolve(el[0]['sexes'])
+        })
+      }, 2000);
+    });
+  }
+
+  getAdGroupAge(campaign_id: string, ad_group_id: any) {
+     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+            console.log(el)
+          resolve(el[0]['ages'])
+        })
+      }, 2000);
+    });
+  }
+
+   getAdGroupDevices(campaign_id: string, ad_group_id: any) {
+     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+            console.log(el)
+          resolve(el[0]['devices'])
+        })
+      }, 2000);
+    });
+  }
+ async targetGenre(id: string, campaign_id: string, ad_group_id: any,  genre: any) {
+   var genre_legnth = genre.length;
+   return await this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
+  
+     console.log(`value:`)
+     console.log(value)
+     console.log(`gender:`)
+     console.log(genre)
+     console.log(`concat`)    
+    
+        this.http.post('http://127.0.0.1:5000/targetGender', {
+       'ad_group_id': ad_group_id,
+          'sexes': genre,
+       'last_genre': value
+    })
+      .subscribe(
+        res => {
+          console.log(`res from location backend: ${res}`)
+          this.updateAdgroup(id, {sexes: genre })
+        },
+        err => {
+          Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+    })
+   
+  }
+
+async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices: any) {
+   
+   return await this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
+  
+     console.log(`value:`)
+     console.log(value)
+     console.log(`devices:`)
+     console.log(devices)
+     console.log(`concat`)    
+    
+        this.http.post('http://127.0.0.1:5000/targetDevices', {
+       'ad_group_id': ad_group_id,
+          'devices': devices,
+       'last_devices': value
+    })
+      .subscribe(
+        res => {
+          console.log(`res from location backend: ${res}`)
+          this.updateAdgroup(id, {devices: devices })
+        },
+        err => {
+          Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+
+     /*  } else{
+        Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur service1',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        
+      } */
+    })
+   
+  }
+
+
+  async targetAge(id: string, campaign_id: string, ad_group_id: any,  age: any) {
+   var genre_legnth = age.length;
+   return await this.getAdGroupAge(campaign_id, ad_group_id).then(value => {
+  
+     console.log(`value:`)
+     console.log(value)
+     console.log(`age:`)
+     console.log(age)
+  
+  /*    var tab = _.differenceWith(value, genre, _.isEqual)
+     console.log(tab)
+     if (tab = []) {
+       console.log(`genre déjà ciblé`)
+     } else {
+        
+     }*/
+      
+        
+        this.http.post('http://127.0.0.1:5000/targetAge', {
+       'ad_group_id': ad_group_id,
+          'ages': age,
+       'last_ages': value
+    })
+      .subscribe(
+        res => {
+          console.log(`res from location backend: ${res}`)
+          this.updateAdgroup(id, {ages: age })
+        },
+        err => {
+          Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+
+    })
+   
+  }
+
   
   async addAdGroup(campaign_id: any, user_id: string, name: string) {
     console.log(`User id: ${user_id}`)
@@ -85,7 +264,7 @@ export class AdGroupService {
     })
       .subscribe(
         res => {
-          console.log(res)
+          console.log(`add group ${res}`)
          
         
          this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res=>{
@@ -140,12 +319,13 @@ export class AdGroupService {
   prepareSaveAdGroup(campaign_id: string, name: string, status: string, ad_group_id: string): AdGroup {
     const userDoc = this.afs.doc(`users/${this.uid}`);
     const newAdGroup = {
-       campaign_id: campaign_id,
-       ad_group_id: ad_group_id,
+      campaign_id: campaign_id,
+      ad_group_id: ad_group_id,
       name: name,
       status: status,
-          ages: [],
-          sexes: [],
+      ages: [],
+      sexes: [],
+      devices: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: userDoc.ref,
       owner: this.uid,  

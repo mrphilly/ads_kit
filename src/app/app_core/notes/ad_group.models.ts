@@ -5,6 +5,7 @@ export class AdGroup {
   status?: any;
   ages?: any;
   sexes?: any;
+  devices?: any;
   createdAt?: any;
   createdBy?: any;
   owner?: any;
