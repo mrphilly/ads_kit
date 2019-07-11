@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators'
 import * as moment from 'moment'
 /* import { NoteDetailComponent } from './note-detail/note-detail.component' */
 
+import {AngularFireDatabase} from '@angular/fire/database'
+
 declare var require: any;
 var _ = require('lodash');
 
@@ -28,15 +30,44 @@ export class Ads {
   today: Date = new Date();
   item: any;
   campaign_id:string;
-
+private basePath = '/uploads';
   private annonceCollection:
     AngularFirestoreCollection<Annonces>;
   
  
 
-  constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient) {
+  constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient, private db: AngularFireDatabase) {
    
   }
+
+
+ pushFileToStorage(annonces: Annonces, progress: { percentage: number }) {
+    const storageRef = firebase.storage().ref();
+    const uploadTask = storageRef.child(`${this.basePath}/${annonces.ad_name}`).put(annonces.url_ad);
+ 
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      (snapshot) => {
+        // in progress
+        const snap = snapshot as firebase.storage.UploadTaskSnapshot;
+        progress.percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+      },
+      (error) => {
+        // fail
+        console.log(error);
+      },
+      () => {
+        // success
+        annonces.url_ad = uploadTask.snapshot.downloadURL;
+       
+        this.saveFileData(annonces);
+      }
+    );
+  }
+ 
+  private saveFileData(annonces: Annonces) {
+    this.db.list(`${this.basePath}/`).push(annonces);
+  }
+
   
  getListAnnonces(ad_group_id: string) {
    console.log(parseInt(ad_group_id))
@@ -56,11 +87,11 @@ export class Ads {
   }
   
 
-  annonceVerification(shortHeadline: string, longHeadline: string,  ad_group_id: string) {
+  annonceVerification(ad_name: string,  ad_group_id: string) {
     
      return new Promise(resolve => {
       setTimeout(() => {
-        this.afs.collection('ads', (ref) => ref.where('ad_group_id', '==', parseInt(`${ad_group_id}`)).where('shortHeadline', '==', `${name}`).where('owner', '==', `${shortHeadline}`).where('longHeadline', '==', `${longHeadline}`)).snapshotChanges().subscribe(data => {
+        this.afs.collection('ads', (ref) => ref.where('ad_group_id', '==', parseInt(`${ad_group_id}`)).where('ad_name', '==', `${ad_name}`)).snapshotChanges().subscribe(data => {
           console.log(`data ${data}`)
           this.item = data
           resolve(data.length)
@@ -72,31 +103,28 @@ export class Ads {
 
   
   
-  async addAd(ad_group_id: any, shortHeadline: any, longHeadline: any, description: any,  url_destination: any, finalUrls: any, marketingImage: any) {
+  async addAd(ad_group_id: any, ad_name: any, image_ref: any) {
    
   
   
-    return await this.annonceVerification(shortHeadline, longHeadline, ad_group_id).then(value => {
+    return await this.annonceVerification(ad_name, ad_group_id).then(value => {
       console.log(`promise result: ${value}`)
       
       if (`${value}` == '0') {
         
         this.http.post('http://127.0.0.1:5000/addAd', {
        'ad_group_id': ad_group_id,
-          'shorHeadline': shortHeadline,
-          'longHeadline': longHeadline,
-          'description': description,
-          'marketing_image': marketingImage,
-          'url_destination': url_destination,
-          'finalUrls': finalUrls
+          'ad_image_ref': image_ref,
+          'ad_name': ad_name,
           
     })
       .subscribe(
         res => {
+          console.log(res)
           
          
         
-         this.createAd(res['id'], ad_group_id, shortHeadline, longHeadline, description, url_destination, finalUrls, marketingImage, status, res['automated']).then(res=>{
+      /*    this.createAd(res['id'], ad_group_id, ad_name, image_ref, res['status'], res['automated']).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
               text: 'Annonce ajoutée avec succès',
@@ -108,10 +136,10 @@ export class Ads {
             }).then((result) => {
               if (result.value) {}
             })
-         })
+         }) */
           
         },
-        err => {
+       /*  err => {
           Swal.fire({
           title: 'Ajouter une annonce',
           text: 'Erreur Service',
@@ -123,7 +151,7 @@ export class Ads {
         }).then((result) => {
             if (result.value){}
           })
-        }
+        } */
       );
 
       } else{
@@ -145,27 +173,18 @@ export class Ads {
   }
 
 
-  prepareSaveAd(ad_id: any, ad_group_id: any, shortHeadline: any, longHeadline: any, description: any, url_destination: any, finalUrls: any, marketingImage: any, status: any, automated: any): Annonces {
+  prepareSaveAd(ad_id: any,ad_group_id: any, ad_name: any, image_ref: any, status: any, automated: any): Annonces {
     const userDoc = this.afs.doc(`users/${this.uid}`);
     const newAd = {
       ad_id: ad_id,
       ad_group_id: ad_group_id,
-      shortHeadline: shortHeadline,
-      longHeadline: longHeadline,
-      description: description,
       status: status,
-      url_destination: url_destination,
-      finalUrls: finalUrls,
-      marketingImage: marketingImage,
-      logoImage: '',
-      squareMarketingImage: '',
-      businessName: '',
-      url_ad: '',
-      finalMobileUrls: '',
+      ad_name: ad_name,
       automated: automated,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: userDoc.ref,
       owner: this.uid,  
+      url_ad: image_ref
     };
     return {...newAd};
   }
@@ -195,8 +214,8 @@ export class Ads {
 
 
 
-  async createAd(ad_id: any, ad_group_id: any, shortHeadline: any, longHeadline: any, description: any, url_destination: any, finalUrls: any, marketingImage: any, status: any, automated: any) {
-    this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, shortHeadline, longHeadline, description, url_destination, finalUrls, marketingImage, status, automated);
+  async createAd(ad_id: any, ad_group_id: any, ad_name: any, image_ref: any, status: any, automated: any) {
+    this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, image_ref, status, automated);
     const docRef = await this.afs.collection('ads').add(this.annonce_model);
   }
 

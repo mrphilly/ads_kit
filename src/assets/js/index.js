@@ -267,6 +267,11 @@ var takeScreenShotAdwords = function () {
 
 }
 
+
+function screenShot(){
+
+}
+
 var calculateAspectRatio = function (image, canvas) {
     var imageAspectRatio = image.width / image.height;
     var canvasAspectRatio = canvas.width / canvas.height;

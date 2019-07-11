@@ -5,7 +5,10 @@ import {
 import {
   ActivatedRoute
 } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient
+} from '@angular/common/http';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import * as $ from 'jquery';
 
@@ -15,6 +18,10 @@ import {
 
 import 'fabric';
 
+import { NgxPicaService, NgxPicaErrorInterface } from 'ngx-pica';
+
+import * as firebase from 'firebase';
+
 import {
   NotesService
 } from '../notes.service';
@@ -22,14 +29,17 @@ import {
   AuthService
 } from '../../core/auth.service';
 
-import Swal from 'sweetalert2'
-
-
+import { Ads } from '../ads.service'
+import {Annonces} from '../annonces.models'
 
 
 declare const fabric: any;
 
-import {AdGroupService} from '../ad-groupe.service'
+import {
+  AdGroupService
+} from '../ad-groupe.service'
+
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -45,6 +55,8 @@ export class AnnoncesComponent implements OnInit {
   adgroups: any;
   status: any;
   id: any;
+  uid: any;
+  ad_name: any;
   ages = []
   sexes = [];
   zones = [];
@@ -53,7 +65,24 @@ export class AnnoncesComponent implements OnInit {
   label_enabled = 'Actif'
   label_paused = "Non Actif"
   text_create = "Annonce"
-  constructor(private notesService: NotesService, private auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService) {
+  private basePath = '/uploads';
+  progress: { percentage: number } = { percentage: 0 };
+  test: any;
+  public json: any;
+  public globalEditor: boolean = false;
+  public textEditor: boolean = false;
+  public imageEditor: boolean = false;
+  public figureEditor: boolean = false;
+  public textString: string;
+  public selected: any;
+  public url: string = '';
+  public size: any = {
+    width: 300,
+    height: 250
+  };
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  constructor(private notesService: NotesService, private auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads) {
 
   }
   dropdownListAges = [];
@@ -64,16 +93,18 @@ export class AnnoncesComponent implements OnInit {
   dropdownSettingsAges = {};
   dropdownSettingsSexes = {};
   dropdownSettingsZones = {};
-   dropdownSettingsDevices = {};
+  dropdownSettingsDevices = {};
+  text_visualise = "Visualiser votre annonce"
   text_no_genre = "Aucun genre ciblé"
   text_no_age = "Aucune tranche d'âge ciblée"
-   text_no_devices = "Aucun appareils ciblé"
+  text_no_devices = "Aucun appareils ciblé"
   text_cibled = "Genre(s) ciblé(s)"
   text_cibled_age = "Tranches d'âges ciblées"
   text_cibled_devices = "Appareils Ciblé(s)"
   modify_gender_text = "Modifier le ciblage des genres"
   modify_age_text = "Modifier le ciblage des âges"
-   modify_devices_text = "Modifier le ciblage des appareils"
+  modify_devices_text = "Modifier le ciblage des appareils"
+  text_option = "Paramètres du canvas"
   genres: any;
   populations: any;
   appareils: any;
@@ -81,10 +112,10 @@ export class AnnoncesComponent implements OnInit {
   isCiblageAge = false
   isCiblageDevices = false
   isCreating = false
-  
 
-   private canvas: any;
-  private props: any = {
+
+  public canvas: any;
+  public props: any = {
     canvasFill: '#ffffff',
     canvasImage: '',
     id: null,
@@ -100,22 +131,199 @@ export class AnnoncesComponent implements OnInit {
     TextDecoration: ''
   };
 
-  private textString: string;
-  private url: string = '';
-  private size: any = {
-    width: 500,
-    height: 800
-  };
+    el = '<div class="card-body text-center">'+
+'                        <div class="row">'+
+''+
+'                          '+
+'              '+
+'                              <div class="col-md-8">'+
+'                            <div class="card-body">'+
+'                              <ul class="list-group no-b text-center">'+
+'                               <li class="list-group-item d-flex align-items-center" *ngIf="selected && selected.type != \'group\'">'+
+'                                  <div>'+
+'                                      <i class="icon icon-opacity purple-text"></i>'+
+'                                  </div>'+
+'                                   <div >'+
+'                                        '+
+'                                              <input type="range" class="range-slider form-control" [(ngModel)]="props.opacity" (change)="setOpacity()">'+
+'                                         '+
+'                                      </div>'+
+'                              </li>'+
+'                              '+
+'                                <li class="list-group-item d-flex align-items-center"  *ngIf="selected && textEditor || selected && figureEditor">'+
+'                                  <div>'+
+'                                    <i class="icon icon-palette text-blue"></i>'+
+'                                  </div>'+
+'                                  <div>'+
+''+
+'                                    <input type="text" class="form-control" [cpPosition]="\'bottom\'"'+
+'                                      [(colorPicker)]="props.fill" [style.background]="props.fill" [value]="props.fill"'+
+'                                      (colorPickerChange)="setFill()" style="width: 55%; float: right">'+
+''+
+'                                  </div>'+
+'                                </li>'+
+'                                <li class="list-group-item d-flex align-items-center" *ngIf="selected && textEditor">'+
+'                                  <div>'+
+'                                    <i class="icon icon-format_size pink-text"></i>'+
+'                                  </div>'+
+'                                  <div >'+
+'                                    <select class="custom-select select2" [(ngModel)]="props.fontFamily"'+
+'                                      (change)="setFontFamily()" style="margin-left: 10px;" required>'+
+'                                      <option value="arial">Arial</option>'+
+'                                      <option value="helvetica" selected>Helvetica</option>'+
+'                                      <option value="verdana">Verdana</option>'+
+'                                      <option value="courier">Courier</option>'+
+'                                      <option value="Roboto">Roboto</option>'+
+'                                      <option value="Open Sans">Open Sans</option>'+
+'                                      <option value="Zilla Slab">Zilla Slab</option>'+
+'                                      <option value="Lato">Lato</option>'+
+'                                      <option value="Bellefair">Bellefair</option>'+
+'                                      <option value="Fresca">Fresca</option>'+
+'                                      <option value="Raleway">Raleway</option>'+
+'                                      <option value="Open Sans Condensed">Open Sans Condensed</option>'+
+'                                      <option value="Indie Flower">Indie Flower</option>'+
+'                                      <option value="Josefin Sans">Josefin Sans</option>'+
+'                                      <option value="Inconsolata">Inconsolata</option>'+
+'                                      <option value="Pacifico">Pacifico</option>'+
+'                                      <option value="Gloria Hallelujah">Gloria Hallelujah</option>'+
+'                                    </select>'+
+'                                  </div>'+
+'                                </li>'+
+'                                <li class="list-group-item d-flex align-items-center" *ngIf="selected && textEditor">'+
+'                                  <div>'+
+'                                    <i class="icon icon-line_style text-green"></i>'+
+'                                  </div>'+
+'                                  <div>'+
+''+
+'                                    <ul class="social social list-inline" >'+
+''+
+'                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"'+
+'                                          [ngClass]="{\'active\': props.fontStyle }" (click)="setFontStyle()"><i'+
+'                                            class="icon-format_italic"></i></a></li>'+
+'                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"'+
+'                                          [ngClass]="{\'active\': hasTextDecoration(\'underline\') }"'+
+'                                          (click)="setTextDecoration(\'underline\')"><i class="icon-underline"></i></a>'+
+'                                      </li>'+
+'                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"'+
+'                                          [ngClass]="{\'active\': props.fontWeight }" (click)="setBold()"><i'+
+'                                            class="icon-bold"></i></a></li>'+
+''+
+'                                    </ul>'+
+'                                  </div>'+
+'                                </li>'+
+''+
+'                              </ul>'+
+'                            </div>'+
+'                            <div class="col-md-3">'+
+''+
+''+
+''+
+'                            </div>'+
+'                            <div class="col image-block draggable" style="display: none">'+
+'                              <div class="card b-0">'+
+'                                <div class="card-body p-5">'+
+'                                  <div class="card">'+
+'                                    <div class="card-header">Upload image</div>'+
+'                                    <div class="card-body text-center">'+
+'                                      <img id="testImage" *ngIf="url" class="images-item-upload" [src]="url"'+
+'                                        (click)="addImageOnCanvas(url);">'+
+'                                      <input type="file" (change)="readUrl($event);" id="image">'+
+'                                      <br />'+
+'                                      <br />'+
+'                                      <div class="btn-group btn-group-justified" role="group" aria-label="...">'+
+'                                        <div class="btn-group" role="group">'+
+'                                          <button type="button" class="btn btn-outline-danger btn-sm"'+
+'                                            (click)="removeWhite(url);">'+
+'                                            <i class="fa fa-times" aria-hidden="true"></i> Remove</button>'+
+'                                        </div>'+
+'                                      </div>'+
+'                                    </div>'+
+'                                  </div>'+
+'                                </div>'+
+'                              </div>'+
+'                            </div>'+
+'                          </div>'+
+'            '+
+'                        </div>'+
+'                      </div>';
+	
 
-  private json: any;
-  private globalEditor: boolean = false;
-  private textEditor: boolean = false;
-  private imageEditor: boolean = false;
-  private figureEditor: boolean = false;
-  private selected: any;
+  popperContent = "<a class='btn-fab btn-fab-sm shadow btn-primary'><i class='icon-circle-o'></i></a>"
+  popperTitle = "Paramètres"
 
-  
+
+
+
+
+
   ngOnInit() {
+
+    this.auth.user.subscribe(data => {
+      this.uid = data.uid
+    })
+    var canvas = document.querySelector('#canvas')
+    this.canvas = new fabric.Canvas(canvas, {
+      hoverCursor: 'pointer',
+      selection: true,
+      selectionBorderColor: 'blue'
+    });
+
+    this.canvas.on({
+      'object:moving': (e) => {},
+      'object:modified': (e) => {},
+      'object:selected': (e) => {
+
+        let selectedObject = e.target;
+        this.selected = selectedObject
+        selectedObject.hasRotatingPoint = true;
+        selectedObject.transparentCorners = false;
+        // selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
+
+        this.resetPanels();
+
+        if (selectedObject.type !== 'group' && selectedObject) {
+
+          this.getId();
+          this.getOpacity();
+
+          switch (selectedObject.type) {
+            case 'rect':
+            case 'circle':
+            case 'triangle':
+              this.figureEditor = true;
+              this.getFill();
+              break;
+            case 'i-text':
+              this.textEditor = true;
+              this.getLineHeight();
+              this.getCharSpacing();
+              this.getBold();
+              this.getFontStyle();
+              this.getFill();
+              this.getTextDecoration();
+              this.getTextAlign();
+              this.getFontFamily();
+              break;
+            case 'image':
+              console.log('image');
+              break;
+          }
+        }
+      },
+      'selection:cleared': (e) => {
+        this.selected = null;
+        this.resetPanels();
+      }
+    });
+
+    this.canvas.setWidth(this.size.width);
+    this.canvas.setHeight(this.size.height);
+
+    // get references to the html canvas element & its context
+    // this.canvas.on('mouse:down', (e) => {
+    // let canvasElement: any = document.getElementById('canvas');
+    // console.log(canvasElement)
+    // });
 
     this.route.params.subscribe(params => {
       this.ad_group_name = params['name']
@@ -135,7 +343,7 @@ export class AnnoncesComponent implements OnInit {
       /* console.log(this.genres) */
       console.log(this.populations)
     })
-    
+
     this.dropdownListAges = [{
         item_id: 503999,
         item_text: 'indéterminé'
@@ -232,7 +440,7 @@ export class AnnoncesComponent implements OnInit {
       searchPlaceholderText: 'Rechercher',
 
     };
-     this.dropdownSettingsDevices = {
+    this.dropdownSettingsDevices = {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
@@ -244,72 +452,16 @@ export class AnnoncesComponent implements OnInit {
 
     };
     //setup front side canvas
-    this.canvas = new fabric.Canvas('canvas', {
-      hoverCursor: 'pointer',
-      selection: true,
-      selectionBorderColor: 'blue'
-    });
+ 
 
-    this.canvas.on({
-      'object:moving': (e) => { },
-      'object:modified': (e) => { },
-      'object:selected': (e) => {
-
-        let selectedObject = e.target;
-        this.selected = selectedObject
-        selectedObject.hasRotatingPoint = true;
-        selectedObject.transparentCorners = false;
-        // selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
-
-        this.resetPanels();
-
-        if (selectedObject.type !== 'group' && selectedObject) {
-
-          this.getId();
-          this.getOpacity();
-
-          switch (selectedObject.type) {
-            case 'rect':
-            case 'circle':
-            case 'triangle':
-              this.figureEditor = true;
-              this.getFill();
-              break;
-            case 'i-text':
-              this.textEditor = true;
-              this.getLineHeight();
-              this.getCharSpacing();
-              this.getBold();
-              this.getFontStyle();
-              this.getFill();
-              this.getTextDecoration();
-              this.getTextAlign();
-              this.getFontFamily();
-              break;
-            case 'image':
-              console.log('image');
-              break;
-          }
-        }
-      },
-      'selection:cleared': (e) => {
-        this.selected = null;
-        this.resetPanels();
-      }
-    });
-
-    this.canvas.setWidth(this.size.width);
-    this.canvas.setHeight(this.size.height);
-
-    // get references to the html canvas element & its context
-    // this.canvas.on('mouse:down', (e) => {
-    // let canvasElement: any = document.getElementById('canvas');
-    // console.log(canvasElement)
-    // });
-    
-    
 
   }
+
+  popperClick() {
+$('#popper').trigger('click')
+   
+  }
+
   openAddCiblageGenre() {
     this.isCiblageGenre = true;
 
@@ -322,56 +474,56 @@ export class AnnoncesComponent implements OnInit {
     console.log(this.sexes)
     this.isCreating = true
     if (this.sexes.length == 0) {
-       this.isCreating = false
-       Swal.fire({
-          title: 'Ciblage',
-          text: 'Aucun genre séléctionné',
-          type: 'error',
-          showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-          if (result.value) { }
-          
-          })
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Aucun genre séléctionné',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+
+      })
     } else {
-       this.adGroupService.targetGenre(this.id, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
-         this.sexes = []
-        }).then(res => {
-          this.isCiblageGenre = false
+      this.adGroupService.targetGenre(this.id, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
+        this.sexes = []
+      }).then(res => {
+        this.isCiblageGenre = false
         this.isCreating = false
       })
-      
-    } 
+
+    }
   }
 
-   targetDevices() {
-     console.log(this.devices)
-     this.isCreating = true
-     if (this.devices.length == 0) {
-       this.isCreating = false
-       Swal.fire({
-          title: 'Ciblage',
-          text: 'Aucun appareil séléctionné',
-          type: 'error',
-          showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-            if (result.value){}
-          })
-    } else {
-       this.adGroupService.targetDevices(this.id, this.campagne_id, this.ad_group_id, this.devices).then(res => {
-         this.devices = []
-        }).then(res => {
-          this.isCreating = false
-          this.isCiblageDevices = false
-        
+  targetDevices() {
+    console.log(this.devices)
+    this.isCreating = true
+    if (this.devices.length == 0) {
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Aucun appareil séléctionné',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
       })
-      
-    } 
+    } else {
+      this.adGroupService.targetDevices(this.id, this.campagne_id, this.ad_group_id, this.devices).then(res => {
+        this.devices = []
+      }).then(res => {
+        this.isCreating = false
+        this.isCiblageDevices = false
+
+      })
+
+    }
   }
 
   closeAddCiblageGenre() {
@@ -382,42 +534,42 @@ export class AnnoncesComponent implements OnInit {
   }
 
 
- openAddCiblageAge() {
+  openAddCiblageAge() {
     this.isCiblageAge = true;
 
   }
   targetAge() {
     console.log(this.ages)
     this.isCreating = true
-     if (this.ages.length == 0) {
-       this.isCreating = false
-       Swal.fire({
-          title: 'Ciblage',
-          text: 'Aucun genre séléctionné',
-          type: 'error',
-          showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-            if (result.value){}
-          })
+    if (this.ages.length == 0) {
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Aucun genre séléctionné',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+      })
     } else {
-       this.adGroupService.targetAge(this.id, this.campagne_id, this.ad_group_id, this.ages).then(res => {
-         this.ages = []
-        }).then(res => {
-          this.isCiblageAge = false
-          this.isCreating = false
-         
-       })
-      
-    } 
+      this.adGroupService.targetAge(this.id, this.campagne_id, this.ad_group_id, this.ages).then(res => {
+        this.ages = []
+      }).then(res => {
+        this.isCiblageAge = false
+        this.isCreating = false
+
+      })
+
+    }
   }
 
   closeAddCiblageAges() {
     this.isCiblageAge = false
   }
-  
+
   onAgeSelect(item: any) {
     this.ages.push(item)
     console.log(this.ages)
@@ -467,7 +619,7 @@ export class AnnoncesComponent implements OnInit {
     this.devices = []
     console.log(this.devices)
   }
-  
+
   onSexeSelect(item: any) {
     this.sexes.push(item)
     console.log(this.sexes)
@@ -523,7 +675,7 @@ export class AnnoncesComponent implements OnInit {
   //Block "Add text"
 
   addText() {
-    let textString = this.textString;
+    let textString = 'Double cliquez ici'
     let text = new fabric.IText(textString, {
       left: 10,
       top: 10,
@@ -590,6 +742,8 @@ export class AnnoncesComponent implements OnInit {
       var reader = new FileReader();
       reader.onload = (event) => {
         this.url = event.target['result'];
+
+        this.addImageOnCanvas(event.target['result'])
       }
       reader.readAsDataURL(event.target.files[0]);
     }
@@ -606,24 +760,39 @@ export class AnnoncesComponent implements OnInit {
     switch (figure) {
       case 'rectangle':
         add = new fabric.Rect({
-          width: 200, height: 100, left: 10, top: 10, angle: 0,
+          width: 200,
+          height: 100,
+          left: 10,
+          top: 10,
+          angle: 0,
           fill: '#3f51b5'
         });
         break;
       case 'square':
         add = new fabric.Rect({
-          width: 100, height: 100, left: 10, top: 10, angle: 0,
+          width: 100,
+          height: 100,
+          left: 10,
+          top: 10,
+          angle: 0,
           fill: '#4caf50'
         });
         break;
       case 'triangle':
         add = new fabric.Triangle({
-          width: 100, height: 100, left: 10, top: 10, fill: '#2196f3'
+          width: 100,
+          height: 100,
+          left: 10,
+          top: 10,
+          fill: '#2196f3'
         });
         break;
       case 'circle':
         add = new fabric.Circle({
-          radius: 50, left: 10, top: 10, fill: '#ff5722'
+          radius: 50,
+          left: 10,
+          top: 10,
+          fill: '#ff5722'
         });
         break;
     }
@@ -641,6 +810,7 @@ export class AnnoncesComponent implements OnInit {
   selectItemAfterAdded(obj) {
     this.canvas.deactivateAllWithDispatch().renderAll();
     this.canvas.setActiveObject(obj);
+    
   }
 
   setCanvasFill() {
@@ -663,7 +833,10 @@ export class AnnoncesComponent implements OnInit {
   setCanvasImage() {
     let self = this;
     if (this.props.canvasImage) {
-      this.canvas.setBackgroundColor({ source: this.props.canvasImage, repeat: 'repeat' }, function () {
+      this.canvas.setBackgroundColor({
+        source: this.props.canvasImage,
+        repeat: 'repeat'
+      }, function () {
         // self.props.canvasFill = '';
         self.canvas.renderAll();
       });
@@ -680,9 +853,10 @@ export class AnnoncesComponent implements OnInit {
     object = object || this.canvas.getActiveObject();
     if (!object) return '';
 
-    return (object.getSelectionStyles && object.isEditing)
-      ? (object.getSelectionStyles()[styleName] || '')
-      : (object[styleName] || '');
+    return (object.getSelectionStyles && object.isEditing) ?
+      (object.getSelectionStyles()[styleName] || '') :
+      (object[styleName] || '');
+      
   }
 
 
@@ -695,8 +869,7 @@ export class AnnoncesComponent implements OnInit {
       style[styleName] = value;
       object.setSelectionStyles(style);
       object.setCoords();
-    }
-    else {
+    } else {
       object.set(styleName, value);
     }
 
@@ -743,7 +916,10 @@ export class AnnoncesComponent implements OnInit {
           break;
       }
       if (clone) {
-        clone.set({ left: 10, top: 10 });
+        clone.set({
+          left: 10,
+          top: 10
+        });
         this.canvas.add(clone);
         this.selectItemAfterAdded(clone);
       }
@@ -870,8 +1046,7 @@ export class AnnoncesComponent implements OnInit {
     if (activeObject) {
       this.canvas.remove(activeObject);
       // this.textString = '';
-    }
-    else if (activeGroup) {
+    } else if (activeGroup) {
       let objectsInGroup = activeGroup.getObjects();
       this.canvas.discardActiveGroup();
       let self = this;
@@ -888,8 +1063,7 @@ export class AnnoncesComponent implements OnInit {
     if (activeObject) {
       activeObject.bringToFront();
       // activeObject.opacity = 1;
-    }
-    else if (activeGroup) {
+    } else if (activeGroup) {
       let objectsInGroup = activeGroup.getObjects();
       this.canvas.discardActiveGroup();
       objectsInGroup.forEach((object) => {
@@ -905,8 +1079,7 @@ export class AnnoncesComponent implements OnInit {
     if (activeObject) {
       activeObject.sendToBack();
       // activeObject.opacity = 1;
-    }
-    else if (activeGroup) {
+    } else if (activeGroup) {
       let objectsInGroup = activeGroup.getObjects();
       this.canvas.discardActiveGroup();
       objectsInGroup.forEach((object) => {
@@ -924,8 +1097,7 @@ export class AnnoncesComponent implements OnInit {
   rasterize() {
     if (!fabric.Canvas.supports('toDataURL')) {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
-    }
-    else {
+    } else {
       console.log(this.canvas.toDataURL('png'))
       //window.open(this.canvas.toDataURL('png'));
       var image = new Image();
@@ -934,6 +1106,48 @@ export class AnnoncesComponent implements OnInit {
       w.document.write(image.outerHTML);
     }
   }
+
+
+  saveImage() {
+    
+   /*  var storage = firebase.storage(); */
+    var storage = firebase.app().storage("gs://comparez.appspot.com/");
+    var storageRef = storage.ref();
+    this.ad_name=$('#ad_name').val()
+    var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
+    var imagesRef = storageRef.child(imageRefStorage);
+    var metadata = {
+  contentType: 'image/png',
+};
+    
+    if (!fabric.Canvas.supports('toDataURL')) {
+      alert('This browser doesn\'t provide means to serialize canvas to an image');
+    } else {
+      /* console.log(this.canvas.toDataURL('png')) */
+      //window.open(this.canvas.toDataURL('png'));
+      this.ad_name = $("#ad_name").val()
+      $('#ad_image').attr("src", this.canvas.toDataURL('png'))
+      console.log(this.canvas.toDataURL('png'))
+      this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
+      console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
+     imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function(snapshot) {
+         
+       console.log('Uploaded a base64 string!');
+       
+     }); 
+      this.adsService.addAd(this.ad_group_id, this.ad_name, imageRefStorage).then(res => {
+        console.log('success')
+      })
+       
+     
+     
+    
+    }
+  }
+
+  
+ 
+  
 
   rasterizeSVG() {
     console.log(this.canvas.toSVG())
@@ -1010,8 +1224,50 @@ export class AnnoncesComponent implements OnInit {
     $(".text-block").css("display", "none")
   }
 
+ calculateAspectRatio(image, canvas) {
+    var imageAspectRatio = image.width / image.height;
+    var canvasAspectRatio = canvas.width / canvas.height;
+   var renderableHeight, renderableWidth, xStart, yStart;
+   
+   /* var AspectRatio = new Object(); */
+   var AspectRatio = []
+    // If image's aspect ratio is less than canvas's we fit on height
+    // and place the image centrally along width
+    if (imageAspectRatio < canvasAspectRatio) {
+        renderableHeight = canvas.height;
+        renderableWidth = image.width * (renderableHeight / image.height);
+        xStart = (canvas.width - renderableWidth) / 2;
+        yStart = 0;
+    }
+
+    // If image's aspect ratio is greater than canvas's we fit on width
+    // and place the image centrally along height
+    else if (imageAspectRatio > canvasAspectRatio) {
+        renderableWidth = canvas.width;
+        renderableHeight = image.height * (renderableWidth / image.width);
+        xStart = 0;
+        yStart = (canvas.width - renderableHeight) / 2;
+    }
+
+    //keep aspect ratio
+    else {
+        renderableHeight = canvas.height;
+        renderableWidth = canvas.width;
+        xStart = 0;
+        yStart = 0;
+    }
+   AspectRatio.push({
+     "renderableHeight": renderableHeight,
+     "renderableWidth": renderableWidth,
+     "startX": xStart,
+     "startY": yStart
+   })
+   
+    return AspectRatio;
+}
+  
 
   //Block "Size"
 
- 
+
 }

@@ -10,7 +10,7 @@ export const environment = {
     authDomain: "comparez.firebaseapp.com",
     databaseURL: "https://comparez.firebaseio.com",
     projectId: "comparez",
-    storageBucket: "",
+    storageBucket: "gs://comparez.appspot.com/",
     messagingSenderId: "975260713071",
   },
   googleMapsKey: 'AIzaSyCTDRoGnPwEHP_Iw1Vc68GLrmNQ7iwBkhA'

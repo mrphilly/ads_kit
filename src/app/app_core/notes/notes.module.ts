@@ -5,6 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 
+import { NgxPicaModule } from 'ngx-pica';
+
+import { ColorPickerModule } from 'ngx-color-picker';
+
+import {NgxImageCompressService} from 'ngx-image-compress';
+
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { NotesService } from './notes.service';
@@ -21,9 +27,10 @@ import { AdGroupService } from './ad-groupe.service'
 
 import { Ads } from './ads.service'
 
+import { AnnonceServiceComponentComponent } from '../notes/annonces/annonce-service-component/annonce-service-component.component'
 
-import { ColorPickerModule } from 'ngx-color-picker';
-import { AnnonceServiceComponentComponent } from './annonces/annonce-service-component/annonce-service-component.component'
+
+
 
 @NgModule({
   imports: [
@@ -32,10 +39,13 @@ import { AnnonceServiceComponentComponent } from './annonces/annonce-service-com
     ColorPickerModule ,
     HttpClientModule,
     DatePickerModule ,
-     NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxPicaModule,
+
+    
     
   ],
   declarations: [NotesListComponent, NoteDetailComponent, CampaignSettingsComponent, AnnoncesComponent, SettingsComponent, CreateCampaignComponent, SpinnerComponent, SpinnerOverlayComponent, AnnonceServiceComponentComponent],
-  providers: [NotesService, AdGroupService, Ads]
+  providers: [NotesService, AdGroupService, Ads, NgxImageCompressService]
 })
 export class NotesModule { }

@@ -38,6 +38,16 @@ from ads_scripts.basic_operations.get_campaigns_data import get_campaigns_data
 from ads_scripts.targeting.remove_ad_group_gender import RemoveTargetGender
 from ads_scripts.targeting.remove_ad_group_age import RemoveTargetAge
 from ads_scripts.targeting.target_devices import TargetDevices
+from ads_scripts.advanced_operations.add_display import add_display_ad
+import pyrebase
+config = {
+      "apiKey": "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
+    "authDomain": "comparez.firebaseapp.com",
+    "databaseURL": "https://comparez.firebaseio.com",
+    "storageBucket": "comparez.appspot.com",
+    "messagingSenderId": "975260713071",
+  }
+firebase = pyrebase.initialize_app(config)
 
 
 app = Flask(__name__)
@@ -59,7 +69,28 @@ TAB = []
 USER = ""
 CAMPAGNE_NAME = ""
 
+@app.route("/addAd", methods=["POST"])
+def addAd():
+    ad_group_id = request.json['ad_group_id']
+    ad_name = request.json['ad_name']
+    ad_image_ref = request.json['ad_image_ref']
+    auth = firebase.auth()
+    user = auth.sign_in_with_email_and_password('test@user.com', '123456')
+    image = firebase.storage().child(ad_image_ref).get_url(token=user['idToken'])
     
+    print(type(image))
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    ad = add_display_ad(adwords_client, ad_group_id, ad_name, image)
+
+    response = {
+        "url": image,
+        "ad": ad
+    }
+    return jsonify(response)
+    
+
+   
+
 
 def method_waraper(self, record):
     def filter(self, record):
@@ -82,6 +113,7 @@ def method_waraper(self, record):
 
 @app.route("/")
 def main():
+    
     return "ok"
 
 
@@ -571,3 +603,5 @@ def uploaded_file(filename):
 if __name__ == "__main__":
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
     app.run(debug=True)
+    
+    

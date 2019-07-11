@@ -23,24 +23,23 @@ import { NotesModule } from './app_core/notes/notes.module';
 import { UiModule } from './app_core/ui/ui.module';
 
 
-import { AngularFirestoreModule} from '@angular/fire/firestore';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
+import { AngularFireDatabaseModule } from '@angular/fire/database'
+
+import * as firebase from 'firebase';
 
 
 
 
+
+firebase.initializeApp(environment.firebase)
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-
-
-  
-
-  /*   EditorComponent, */
-   /*  CampaignComponent, */
-   /*   AuthComponent, */
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -58,7 +57,9 @@ import { AngularFirestoreModule} from '@angular/fire/firestore';
     FormsModule,
     HttpModule,
     RouterModule,
-    ColorPickerModule
+    ColorPickerModule,
+    AngularFireDatabaseModule,
+    
     
   
   ],
