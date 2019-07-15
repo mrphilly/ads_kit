@@ -9,7 +9,7 @@ type FormErrors = { [u in UserFields]: string };
 @Component({
   selector: 'user-form',
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss'],
+  styleUrls: ['./user-form.component.css'],
 })
 export class UserFormComponent implements OnInit {
 
@@ -79,7 +79,7 @@ export class UserFormComponent implements OnInit {
     this.userForm.valueChanges.subscribe((data) => this.onValueChanged(data));
     this.onValueChanged(); // reset validation messages
   }
-  
+
 
   // Updates validation state on form changes.
   onValueChanged(data?: any) {

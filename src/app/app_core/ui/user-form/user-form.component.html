@@ -1,94 +1,41 @@
-<!-- <form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
-
-    <h3>New User Signup</h3>
-    <p class="button is-small" (click)="toggleForm()">Already Registered?</p>
-    <hr>
-
-    <label for="email">Email</label>
-    <input type="email" class="input" formControlName="email" name="email" required autocomplete="new-password">
-
-    <div *ngIf="formErrors.email" class="notification is-danger">
-        {{ formErrors.email }}
+<form [formGroup]="userForm" *ngIf="!newUser" (ngSubmit)="login()">
+    <div class="text-center">
+        <h5>Connexion</h5>
     </div>
-
-    <label for="password">Password</label>
-    <input type="password" class="input" formControlName="password" name="password" required>
-
-    <div *ngIf="formErrors.password" class="notification is-danger">
-        {{ formErrors.password }}
+    <div class="form-group has-icon">
+        <i class="icon-envelope-o"></i>
+        <input type="text" class="form-control form-control-lg" placeholder="Email Address">
     </div>
-
-    <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div>
-    <button type="submit" class="button" [disabled]="!userForm.valid">Submit</button>
-
+    <div class="form-group has-icon"><i class="icon-user-secret"></i>
+        <input type="text" class="form-control form-control-lg" placeholder="Password">
+    </div>
+    <a class="forget-pass" (click)="toggleForm()">Nouvel Utilisateur?</a>
+    <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log In">
+    <a class="forget-pass"  *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Have you forgot your username or password ?</a>
+    <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
+    <a href="#" class="btn btn-lg btn-block btn-social facebook">
+        <i class="icon-facebook"></i>
+        Login with Facebook
+    </a>
+    <a href="#" class="btn btn-lg btn-block btn-social twitter">
+        <i class="icon-twitter"></i>
+        Login with Twitter
+    </a>
 </form>
 
 
-<form [formGroup]="userForm" *ngIf="!newUser" (ngSubmit)="login()">
-
-    <h3>Existing User Login</h3>
-    <p class="btn button is-small" (click)="toggleForm()">New User?</p>
-    <hr>
-
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email2" class="input" formControlName="email" required autocomplete="new-password">
-
-    <div *ngIf="formErrors.email" class="help is-danger">
-        {{ formErrors.email }}
-    </div>
-
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password2" class="input" formControlName="password" required autocomplete="new-password">
-
-    <div *ngIf="formErrors.password" class="help is-danger">
-        {{ formErrors.password }}
-    </div>
-
-    <button type="submit" class="button" [disabled]="!userForm.valid">Submit</button>
-
-    <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span>
-
-    <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
-    <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
-
-</form> -->
-<form [formGroup]="userForm" *ngIf="!newUser" (ngSubmit)="login()">
-    <div class="text-center">
-                            <h5>Connexion</h5>
-                        </div>
-                        <div class="form-group has-icon"><i class="icon-envelope-o"></i>
-                            <input type="text" class="form-control form-control-lg"
-                                   placeholder="Email Address">
-                        </div>
-                        <div class="form-group has-icon"><i class="icon-user-secret"></i>
-                            <input type="text" class="form-control form-control-lg"
-                                   placeholder="Password">
-                        </div>
-                        <a class="forget-pass" (click)="toggleForm()">Nouvel Utilisateur?</a> 
-                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log In">
-                        <a class="forget-pass"  *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Have you forgot your username or password ?</a>   
-                        <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
-                        <a href="#" class="btn btn-lg btn-block btn-social facebook">
-                        <i class="icon-facebook"></i> Login with Facebook
-                    </a>
-                        <a href="#" class="btn btn-lg btn-block btn-social twitter">
-                            <i class="icon-twitter"></i> Login with Twitter
-                        </a>
-                    </form>
-
-
 <form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
-                        <div class="text-center">
-                            <h5>Inscription</h5>
-                        </div>
-                        <div class="form-group has-icon"><i class="icon-envelope-o"></i>
-                            <input type="email" class="form-control form-control-lg"
-                                   placeholder="Email Address" formControlName="email" name="email" required autocomplete="new-password">
-                        </div>
-                        <div class="form-group has-icon"><i class="icon-user-secret"></i>
-                            <input type="text" class="form-control form-control-lg"
-                                   placeholder="Password"  formControlName="password" name="password" required>
-                        </div>
-                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Inscription">
-                        <a class="forget-pass" (click)="toggleForm()">Vous ete déjà enregistré?</a> 
-                    </form>
+      <div class="text-center">
+          <h5>Inscription</h5>
+      </div>
+      <div class="form-group has-icon">
+          <i class="icon-envelope-o"></i>
+          <input type="email" class="form-control form-control-lg" placeholder="Email Address" formControlName="email" name="email" required autocomplete="new-password">
+      </div>
+      <div class="form-group has-icon">
+          <i class="icon-user-secret"></i>
+          <input type="text" class="form-control form-control-lg" placeholder="Password"  formControlName="password" name="password" required>
+      </div>
+      <input type="submit" class="btn btn-primary btn-lg btn-block" value="Inscription">
+      <a class="forget-pass" (click)="toggleForm()">Vous ete déjà enregistré?</a>
+</form>
