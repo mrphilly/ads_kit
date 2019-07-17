@@ -1,13 +1,27 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 
+import { DndModule } from 'ng2-dnd';
+
 import { NgxPicaModule } from 'ngx-pica';
 
+import { NouisliderModule } from 'ng2-nouislider';
+
+import { FONT_PICKER_CONFIG } from 'ngx-font-picker';
+import { FontPickerConfigInterface } from 'ngx-font-picker';
+import { FontPickerModule } from 'ngx-font-picker';
+
+import { NgxFormatFieldModule } from 'ngx-format-field';
+
 import { ColorPickerModule } from 'ngx-color-picker';
+
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 import {NgxImageCompressService} from 'ngx-image-compress';
 
@@ -20,8 +34,6 @@ import { CampaignSettingsComponent } from './campaign-settings/campaign-settings
 import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
 import { NoteDetailComponent } from './note-detail/note-detail.component';
 import { NotesListComponent } from './notes-list/notes-list.component';
-import { SpinnerOverlayComponent } from './spinner-overlay/spinner-overlay.component';
-import { SpinnerComponent } from './spinner/spinner.component';
 import { SettingsComponent } from './campaign-settings/settings/settings.component';
 import { AdGroupService } from './ad-groupe.service'
 
@@ -29,6 +41,13 @@ import { Ads } from './ads.service'
 
 import { AnnonceServiceComponentComponent } from '../notes/annonces/annonce-service-component/annonce-service-component.component'
 
+
+import { SpinnerOverlayComponent } from './spinner-overlay-notes/spinner-overlay.component'
+
+const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
+  // Google API Key
+  apiKey: 'AIzaSyAN1VolxTqz1jn1Fzr5LdVneCjJ-FC6JT4'
+};
 
 
 
@@ -41,11 +60,18 @@ import { AnnonceServiceComponentComponent } from '../notes/annonces/annonce-serv
     DatePickerModule ,
     NgMultiSelectDropDownModule.forRoot(),
     NgxPicaModule,
+     NouisliderModule,
+    DndModule.forRoot(),
+    NgbModule,
+    FontPickerModule,
+    LazyLoadImageModule,
+    NgxFormatFieldModule
 
     
     
   ],
-  declarations: [NotesListComponent, NoteDetailComponent, CampaignSettingsComponent, AnnoncesComponent, SettingsComponent, CreateCampaignComponent, SpinnerComponent, SpinnerOverlayComponent, AnnonceServiceComponentComponent],
-  providers: [NotesService, AdGroupService, Ads, NgxImageCompressService]
+  declarations: [NotesListComponent, NoteDetailComponent, CampaignSettingsComponent, AnnoncesComponent, SettingsComponent, CreateCampaignComponent,AnnonceServiceComponentComponent, SpinnerOverlayComponent],
+  providers: [NotesService, AdGroupService, Ads, NgxImageCompressService, { provide: FONT_PICKER_CONFIG,
+      useValue: DEFAULT_FONT_PICKER_CONFIG}]
 })
 export class NotesModule { }

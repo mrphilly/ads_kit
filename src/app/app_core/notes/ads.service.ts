@@ -37,11 +37,13 @@ private basePath = '/uploads';
  
 
   constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient, private db: AngularFireDatabase) {
-   
+    this.auth.user.subscribe(data => {
+     this.uid = data.uid
+   })
   }
 
 
- pushFileToStorage(annonces: Annonces, progress: { percentage: number }) {
+ /* pushFileToStorage(annonces: Annonces, progress: { percentage: number }) {
     const storageRef = firebase.storage().ref();
     const uploadTask = storageRef.child(`${this.basePath}/${annonces.ad_name}`).put(annonces.url_ad);
  
@@ -62,7 +64,7 @@ private basePath = '/uploads';
         this.saveFileData(annonces);
       }
     );
-  }
+  } */
  
   private saveFileData(annonces: Annonces) {
     this.db.list(`${this.basePath}/`).push(annonces);
@@ -100,10 +102,26 @@ private basePath = '/uploads';
     });
   }
 
+  getListAd(ad_group_id: string) {
+   console.log(parseInt(ad_group_id))
+   var id = parseInt(ad_group_id)
+   
+ return this.afs.collection('ads', (ref) => ref.where('ad_group_id','==',`${id}`)).snapshotChanges().pipe(
+      map((actions) => {
+        return actions.map((a) => {
+          const data = a.payload.doc.data();
+          return { id: a.payload.doc.id, ...data };
+        });
+      })
+    );
+
+    
+  
+  }
 
   
   
-  async addAd(ad_group_id: any, ad_name: any, image_ref: any) {
+  async addAd(ad_group_id: any, ad_name: any, uid: any, image_ref: any, image_content: any, allUrls: any) {
    
   
   
@@ -116,15 +134,29 @@ private basePath = '/uploads';
        'ad_group_id': ad_group_id,
           'ad_image_ref': image_ref,
           'ad_name': ad_name,
+          'allUrls': allUrls
           
     })
       .subscribe(
         res => {
-          console.log(res)
+          var response = res['ad'][0]
+          console.log(response)
           
          
-        
-      /*    this.createAd(res['id'], ad_group_id, ad_name, image_ref, res['status'], res['automated']).then(res=>{
+          console.log(response['displayUrl'])
+          console.log(response['ad_id'])
+          console.log(ad_group_id)
+          console.log(response['name'])
+          console.log(response['status'])
+          console.log(response['url_image'])
+          console.log(response['displayUrl'])
+          console.log(response['finalUrls'])
+          console.log(response['finalMobileUrls'])
+          console.log(response['finalAppUrls'])
+          console.log(response['referenceId'])
+          console.log(response['automated'])
+
+         this.createAd(response['ad_id'], ad_group_id, response['name'], response['status'], response['url_image'],image_content, response['displayUrl'], response['finalUrls'], response['finalMobileUrls'], response['finalAppUrls'], response['referenceId'], '' , uid).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
               text: 'Annonce ajoutée avec succès',
@@ -136,10 +168,10 @@ private basePath = '/uploads';
             }).then((result) => {
               if (result.value) {}
             })
-         }) */
+         }) 
           
         },
-       /*  err => {
+        err => {
           Swal.fire({
           title: 'Ajouter une annonce',
           text: 'Erreur Service',
@@ -151,7 +183,7 @@ private basePath = '/uploads';
         }).then((result) => {
             if (result.value){}
           })
-        } */
+        }
       );
 
       } else{
@@ -173,18 +205,77 @@ private basePath = '/uploads';
   }
 
 
-  prepareSaveAd(ad_id: any,ad_group_id: any, ad_name: any, image_ref: any, status: any, automated: any): Annonces {
-    const userDoc = this.afs.doc(`users/${this.uid}`);
+
+   async saveAdOnFirebase(ad_group_id: any, ad_name: any, uid: any, url_image: any, image_content: any, allUrls: any) {
+     var displayUrl = []
+     var finalUrls = []
+     var finalMobileUrls = []
+     var finalAppUrls = []
+
+     console.log(allUrls)
+     for (let i = 0; i < allUrls.length; i++){
+       if (allUrls[i]['lib'] == 'finalUrls') {
+         displayUrl.push(allUrls[i]['content'])
+       }
+     }
+  
+  
+    return await this.annonceVerification(ad_name, ad_group_id).then(value => {
+      console.log(`promise result: ${value}`)
+      
+      if (`${value}` == '0') {
+        
+            this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid).then(res=>{
+            Swal.fire({
+              title: 'Ajouter une annonce',
+              text: 'Annonce ajoutée avec succès',
+              type: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {}
+            })
+         }) 
+
+      } else{
+        Swal.fire({
+          title: 'Ajouter une nouvelle annonce',
+          text: "Il éxiste déjà une annonce portant une des données renseignées !",
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        
+      }
+    }) 
+   
+  }
+
+
+  prepareSaveAd(ad_id: any,ad_group_id: any, ad_name: any, status: any,  url_image: any, image_content: any, displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any): Annonces {
+    const userDoc = this.afs.doc(`users/${uid}`);
     const newAd = {
       ad_id: ad_id,
+      ad_name: ad_name,
       ad_group_id: ad_group_id,
       status: status,
-      ad_name: ad_name,
+      url_image: url_image,
+      image_content: image_content,
+      displayUrl: displayUrl,
+      finalUrls: finalUrls,
+      finalMobileUrls: finalMobileUrls,
+      finalAppUrls: finalAppUrls,
+      referenceId: referenceId,
       automated: automated,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: userDoc.ref,
-      owner: this.uid,  
-      url_ad: image_ref
+      owner: uid,  
     };
     return {...newAd};
   }
@@ -214,8 +305,8 @@ private basePath = '/uploads';
 
 
 
-  async createAd(ad_id: any, ad_group_id: any, ad_name: any, image_ref: any, status: any, automated: any) {
-    this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, image_ref, status, automated);
+  async createAd(ad_id: any, ad_group_id: any, ad_name: any, status: any, url_image: any, image_content: any,displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any) {
+    this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, status, url_image, image_content, displayUrl, finalUrls, finalMobileUrls, finalAppUrls, referenceId,  automated, uid);
     const docRef = await this.afs.collection('ads').add(this.annonce_model);
   }
 
@@ -223,7 +314,7 @@ private basePath = '/uploads';
     return this.getAd(id).update(data);
   }
 
-  deleteAdGroup(id: string) {
+  deleteAd(id: string) {
     return this.getAd(id).delete();
   }
   

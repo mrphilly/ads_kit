@@ -1,50 +1,35 @@
-<!-- <h1>Firebase User Auth Demo</h1>
 
-<p>
-  Learn more about 
-  <a href="https://angularfirebase.com/tag/authentication">Firebase auth strategies</a>.
-</p>
-<hr>
-
-<div *ngIf="!(auth.user | async); else alreadyLoggedIn">
-
-  <h3>Social Login</h3>
-
-    <button (click)="signInWithGoogle()" class="button btn-social btn-google">
-      <i class="fa fa-google fa-lg"></i> Connect Google
-    </button>
-
-    <button (click)="signInWithGithub()" class="button btn-social btn-github" disabled>
-      <i class="fa fa-github fa-lg"></i> Connect GitHub
-    </button>
-
-    <button (click)="signInWithFacebook()" class="button  btn-social btn-facebook" disabled>
-      <i class="fa fa-facebook fa-lg"></i> Connect Facebook
-    </button>
-
-    <button (click)="signInWithTwitter()" class="button  btn-social btn-twitter" disabled>
-      <i class="fa fa-twitter fa-lg"></i> Connect Twitter
-    </button>
-
-    <hr>
-
-    <h3>Anonymous Login</h3>
-
-      <button (click)="signInAnonymously()" class="button button-info">
-        <i class="fa fa-user-secret fa-lg"></i> Connect Anonymously
-      </button>
-
-    <hr>
-
-    <user-form></user-form>
-
-</div>
-
--->
   <ng-template #alreadyLoggedIn>
-    <p class="text-success">
-      You are logged in <i class="fa fa-thumbs-up"></i>
-    </p>
+
+            <div class="container" class="teal lighten-3 p-t-b-100 height-full responsive-phone">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img src="assets/img/icon/icon-plane.png" alt="">
+                </div>
+                <div class="col-lg-6 p-t-100">
+                    <div class="text-white">
+                        <h1>Adafri</h1>
+                        <p class="s-18 p-t-b-20 font-weight-lighter">Vous êtes connecté en tant que {{ email}}  <i class="fa fa-thumbs-up"></i></p>
+                    </div>
+                    <div class="text-center">
+                      
+                      <tr>
+                       
+                                 <td>
+                                     <button type="button" class="btn btn-outline-danger white btn-lg r-20" (click)="logout()">Déconnexion</button>
+                                 </td>
+                                 <td></td>
+                                  <td>
+                                     <button type="button" class="btn teal darken4 text-white btn-lg r-20" ><a href="/">Page d'accueil</a></button>
+                                 </td>
+                       </tr>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+
+    <a style="display: hidden"  routerLink="/" id="navigateHome"></a>
   </ng-template>
 
 <main *ngIf="!(auth.user | async); else alreadyLoggedIn">
@@ -52,30 +37,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mx-md-auto paper-card">
-                    <div class="text-center">
-                        <img src="assets/img/dummy/u4.png" alt="">
-                        <h3 class="mt-2">Welcome Back</h3>
-                        <p class="p-t-b-20">Hey Soldier welcome back signin now there is lot of new stuff waiting
-                            for you</p>
-                    </div>
-                   <!--  <form>
-                        <div class="form-group has-icon"><i class="icon-envelope-o"></i>
-                            <input type="text" class="form-control form-control-lg"
-                                   placeholder="Email Address">
-                        </div>
-                        <div class="form-group has-icon"><i class="icon-user-secret"></i>
-                            <input type="text" class="form-control form-control-lg"
-                                   placeholder="Password">
-                        </div>
-                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log In">
-                        <p class="forget-pass">Have you forgot your username or password ?</p> <a href="#"
-                                                                                                  class="btn btn-lg btn-block btn-social facebook">
-                        <i class="icon-facebook"></i> Login with Facebook
-                    </a>
-                        <a href="#" class="btn btn-lg btn-block btn-social twitter">
-                            <i class="icon-twitter"></i> Login with Twitter
-                        </a>
-                    </form> -->
                      <user-form></user-form>
                 </div>
             </div>

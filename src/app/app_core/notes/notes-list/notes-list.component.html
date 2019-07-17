@@ -22,16 +22,16 @@
 <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas' *ngIf="!_init_campagne">
     <div class="sidebar">
         <div class="d-flex hv-100 align-items-stretch">
-            <div class="text-white indigo">
+            <div class="text-white teal darken-1">
                 <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist"
                      aria-orientation="vertical">
-                    <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                   <!--  <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                        aria-controls="v-pills-home" aria-selected="true"><i class="icon-inbox2"></i></a>
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
                        aria-controls="v-pills-profile" aria-selected="false"><i class="icon-add"></i></a>
                     <a class="nav-link blink skin_handle"  href="#"><i class="icon-lightbulb_outline"></i></a>
                     <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
-                    <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a>
+                    <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a> -->
                     <a href="">
                         <figure class="avatar">
                             <img src="assets/img/dummy/u3.png" alt="">
@@ -356,16 +356,18 @@
 
 
 <a href="#" data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed" *ngIf="!_init_campagne">
-    <i></i>
+    <i class="icon-toggle-nav white"></i>
 </a>
-<div class="has-sidebar-left has-sidebar-tabs white">
+<div class="has-sidebar-left has-sidebar-tabs">
     <!--navbar-->
     <div class="sticky">
-        <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow">
+        <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
+             -->
+             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar teal lighten-4 shadow" >
             <div class="relative">
                 <div class="d-flex">
                     <div class="d-none d-md-block">
-                        <h1 class="nav-title">{{title}}</h1>
+                        <h1 class="nav-title text-white">Adafri</h1>
                        
                     </div>
                 </div>
@@ -393,9 +395,13 @@
         </li>
         <!-- User Account-->
         <li class="dropdown custom-dropdown user user-menu ">
-            <a href="#" class="nav-link" data-toggle="dropdown">
-                <img src="assets/img/dummy/u8.png" class="user-image" alt="User Image">
-                <i class="icon-more_vert "></i>
+            <a href="#" class="nav-link text-white" data-toggle="dropdown">
+                {{email}}
+               
+                                                        <span class="avatar-letter avatar-letter-{{email.charAt(0) | lowercase}} avatar-md circle"></span>
+                                                        <i class="icon-more_vert"></i>
+                                                  
+                                                        
             </a>
             <div class="dropdown-menu p-4 dropdown-menu-right">
                 <div class="row box justify-content-between my-4">
@@ -433,7 +439,7 @@
        <hr>
         <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="max-width: 200 px !important">
         <hr>
-       <button href="#" class="btn btn-primary shadow btn-lg r-20" (click)="addCampaign()" [disabled]="name?.length < 2 || name?.length > 15"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
+       <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20" (click)="addCampaign()" [disabled]="name?.length < 2 || name?.length > 15"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
    </div>
    
   

@@ -105,14 +105,18 @@ export class AuthService {
       .catch(error => this.handleError(error));
   }
 
-  emailLogin(email: string, password: string) {
-    return this.afAuth.auth
+  emailLogin(email: string, password: string):Promise<User[]> {
+    var response = []
+    this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
         this.notify.update('Welcome back!', 'success');
-        return this.updateUserData(credential.user);
+        this.updateUserData(credential.user);
+        response.push(credential.user)
+        
       })
-      .catch(error => this.handleError(error));
+      .catch(error => { this.handleError(error); });
+    return Promise.resolve(response)
   }
 
   // Sends email allowing user to reset password
@@ -127,7 +131,7 @@ export class AuthService {
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     });
   }
 

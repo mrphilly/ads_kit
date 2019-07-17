@@ -3,13 +3,18 @@ export class Annonces {
   ad_group_id?: any;
   ad_name?: any;
   status?: any;
-
-  automated: boolean;
- 
-  url_ad: any;
+  url_image?: any;
+  image_content?: any;
+  displayUrl?: any;
+  finalUrls?: any;
+  finalMobileUrls?: any;
+  finalAppUrls?: any;
+  automated?: any;
+  referenceId?: any;
+  image_ref?: any;
   createdAt?: any;
   createdBy?: any;
-  owner: any;
+  owner?: any;
  
  
 }

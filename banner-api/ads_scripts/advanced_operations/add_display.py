@@ -31,16 +31,23 @@ import gzip
 from googleads import adwords
 import base64
 from PIL import Image
+from io import BytesIO
 import sys
 import os
 import io
-from tinify import tinify
+import tinify
 import binascii
+import datetime
+import pngquant
+import requests
+import json
+from json import JSONEncoder
+
 tinify.key = "mkXrWqhxCxjDHj8O0t8S5698DdY833Qo"
 
 
 
-def UploadImageAsset(client, url):
+def UploadImageAsset(client, url, image_ref_on_file):
   """Uploads the image from the specified url.
   Args:
     client: An AdWordsClient instance.
@@ -56,14 +63,23 @@ def UploadImageAsset(client, url):
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'
     }
   session__ = HTMLSession()
-  print("URL: "+ url)
-  image_request = session__.get(url, headers=headers, verify=True)
-  #print(image_request.html)
+  """ image_request = session__.get(url, headers=headers, verify=True)
+  #print("URL: "+ url)
+  print(image_request.content)
+  print(image_request.html) """
+  print(url)
+  tab = url.split('&')
+  print(type(url))
+  image_request = session__.get(tab[0], headers=headers, verify=True)
+  #print(tab[0])
+  #image_asset = BytesIO(urlopen(tab[0]).read())
+  image_asset = image_request.content
+  print(image_asset)
 
   # Create the image asset.
   image_asset = {
       'xsi_type': 'ImageAsset',
-      'imageData': image_request.content,
+      'imageData': image_asset,
       # This field is optional, and if provided should be unique.
       # 'assetName': 'Image asset ' + str(uuid.uuid4()),
   }
@@ -76,17 +92,42 @@ def UploadImageAsset(client, url):
 
   # Create the asset and return the ID.
   result = asset_service.mutate([operation])
-  print('result')
-  print(sys.getsizeof(result['value'][0]['fullSizeInfo']['imageUrl']))
-  source = tinify.tinify.from_url(result['value'][0]['fullSizeInfo']['imageUrl'])
-  data = source.to_file("uploads/optimized.jpg")
+  print(result)
+  source = tinify.tinify.tinify.from_url(result['value'][0]['fullSizeInfo']['imageUrl'])
+  """ print(sys.getsizeof(result['value'][0]['fullSizeInfo']['imageUrl']))
+  response = tinify.tinify.tinify.get_client().request('POST', '/shrink', {"source": {"url":result['value'][0]['fullSizeInfo']['imageUrl'] }})
+  resultat = response.content.decode("utf-8") 
+  json_obj = json.loads(resultat)
+  print(json_obj["output"])
+  size = 300, 250
+  im = Image.open(BytesIO(requests.get(json_obj["output"]['url']).content))
+  im.thumbnail(size, Image.ADAPTIVE)
+  data = im.save('uploads/'+image_ref_on_file) """
+  print(source)
+  resized_image = source.resize(method="fit", width=300, height=250)
+  data = resized_image.to_file(image_ref_on_file)
   print(sys.getsizeof(data))
+  print(data)
+  
+   
+   
+  """ state = requests.get(url)
+  im = Image.open(BytesIO(state.content))
+
+
+  print(im.save('uploads/image.png'))
+  url_ = url_for('uploaded_file', filename = 'image.png', _external = True)
+  
+  
+  pngquant.config('../../uploads/')
+  data = pngquant.quant_image(im) """
+  
   return result['value'][0]['assetId'], data
 
 
 
 
-def add_display_ad(client, ad_group_id, ad_name, url):
+def add_display_ad(client, ad_group_id, ad_name, image, urls, finalUrls, finalAppsUrls):
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'
     }
@@ -97,51 +138,137 @@ def add_display_ad(client, ad_group_id, ad_name, url):
     #print(ad_group_id)
     #print(ad_name)
     ad_group_ad_service = client.GetService('AdGroupAdService', version='v201809')
-    #assetId, imageURL = UploadImageAsset(client, url)
+    print(ad_name)
+    print(ad_group_id)
+    image_name = ad_name + ".png"
+    image_ref_on_file ='uploads/' +image_name
+    UploadImageAsset(client, image, image_ref_on_file)
   
     
     response = []
-    url_ = url_for('uploaded_file', filename='optimized.jpg', _external=True)
-    data = urlopen(str(url_)).read()
+    url_ = url_for('uploaded_file', filename=image_name, _external=True)
+    data = urlopen(url_).read()
+    print(data)
     
-
+    if finalAppsUrls == []:
+      print(finalUrls)
   #try:
     # Create a responsive display ad.
-    operations = [{
-        'operator': 'ADD',
-        'operand': {
-            'xsi_type': 'AdGroupAd',
-            'adGroupId': ad_group_id,
-            'ad': {
-          'xsi_type': 'ImageAd',
+      operations = [{
+          'operator': 'ADD',
+          'operand': {
+              'xsi_type': 'AdGroupAd',
+              'adGroupId': ad_group_id,
+              'ad': {
+            'xsi_type': 'ImageAd',
+            
+          'name': ad_name,
+        # This ad format does not allow the creation of an image asset by setting
+        # the asset.imageData field. An image asset must first be created using
+        # the AssetService, and asset.assetId must be populated when creating
+        # the ad.
+          'image': {
+                'data':  data 
+          },
+          'finalUrls': final_url,
+          'displayUrl': final_url,
+        
           
-         'name': ad_name,
-      # This ad format does not allow the creation of an image asset by setting
-      # the asset.imageData field. An image asset must first be created using
-      # the AssetService, and asset.assetId must be populated when creating
-      # the ad.
-         'image': {
-              'data':  data 
-         },
-         'finalUrls': ['https://sn.comparez.co'],
-         'displayUrl': "https://sn.comparez.co",
+          
+
+              },
+              # Optional fields.
+              'status': 'PAUSED'
+          }
+          
+      }
+      
+      for final_url in finalUrls
+    
+      ]
+
+      # Make the mutate request.
+      print('ads.......................................')
+      ads = ad_group_ad_service.mutate(operations)
+      print(ads)
+
+      # Display results.
+      for ad in ads['value']:
+        print(['ad'])
+        asset_image = ad['ad']['image']['urls'][1]
+        print(asset_image)
+        
+          
+        response.append({
+          "ad_id": ad['ad']['id'],
+          "name": ad['ad']['name'],
+          "status": ad['status'],
+          "displayUrl": ad['ad']['displayUrl'],
+          "finalUrls": ad['ad']['finalUrls'],
+          "finalMobileUrls": ad['ad']['finalMobileUrls'],
+          "finalAppUrls": ad['ad']['finalAppUrls'],
+          "automated": ad['ad']['automated'],
+          "referenceId": ad['ad']['image']['referenceId'],
+          "url_image": asset_image['value']
+
+        })
+    else:
+      operations = [{
+          'operator': 'ADD',
+          'operand': {
+              'xsi_type': 'AdGroupAd',
+              'adGroupId': ad_group_id,
+              'ad': {
+            'xsi_type': 'ImageAd',
+            
+          'name': ad_name,
+        # This ad format does not allow the creation of an image asset by setting
+        # the asset.imageData field. An image asset must first be created using
+        # the AssetService, and asset.assetId must be populated when creating
+        # the ad.
+          'image': {
+                'data':  data 
+          },
+          'finalUrls': final_url,
+          'displayUrl': final_url,
          
-         
+          'finalAppUrls': app_url
+          
+          
 
-            },
-            # Optional fields.
-            'status': 'PAUSED'
-        }
-    }]
+              },
+              # Optional fields.
+              'status': 'PAUSED'
+          }
+          
+      }
+      for final_url in finalUrls
+    
+      for app_url in finalAppsUrls]
 
-    # Make the mutate request.
-    print('ads.......................................')
-    ads = ad_group_ad_service.mutate(operations)
-    print(ads)
+      # Make the mutate request.
+      print('ads.......................................')
+      ads = ad_group_ad_service.mutate(operations)
+      print(ads)
 
-    # Display results.
-    for ad in ads['value']:
-      print(ad)
+      # Display results.
+      for ad in ads['value']:
+        print(ad['ad'])
+        asset_image = ad['ad']['image']['urls'][1]
+        response.append({
+          "ad_id": ad['ad']['id'],
+          "name": ad['ad']['name'],
+          "status": ad['status'],
+          "displayUrl": ad['ad']['displayUrl'],
+          "finalUrls": ad['ad']['finalUrls'],
+          "finalMobileUrls": ad['ad']['finalMobileUrls'],
+          "finalAppUrls": ad['ad']['finalAppUrls'],
+          "automated": ad['ad']['automated'],
+          "referenceId": ad['ad']['image']['referenceId'],
+          "url_image":asset_image['value  ']
+
+        })
+
         
 
   #except Exception as e:

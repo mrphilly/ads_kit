@@ -58,14 +58,20 @@
                         </div>
                         <div class="form-group has-icon"><i class="icon-envelope-o"></i>
                             <input type="text" class="form-control form-control-lg"
-                                   placeholder="Email Address">
+                                   placeholder="Adresse email" formControlName="email" required autocomplete="new-password" (keyup)="listenError()">
+                                    <div *ngIf="Invalid" class="text-danger">
+        {{ errors_credentials }}
+    </div>
                         </div>
                         <div class="form-group has-icon"><i class="icon-user-secret"></i>
-                            <input type="text" class="form-control form-control-lg"
-                                   placeholder="Password">
+                            <input type="password" class="form-control form-control-lg"
+                                   placeholder="Mot de passe" formControlName="password" required autocomplete="new-password" (keyup)="listenError()">
+                                     <div *ngIf="Invalid" class="text-danger">
+        {{ errors_credentials }}
+    </div>
                         </div>
                         <a class="forget-pass" (click)="toggleForm()">Nouvel Utilisateur?</a> 
-                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log In">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!userForm.valid">Connexion</button>
                         <a class="forget-pass"  *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Have you forgot your username or password ?</a>   
                         <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
                         <a href="#" class="btn btn-lg btn-block btn-social facebook">
@@ -78,17 +84,30 @@
 
 
 <form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
-                        <div class="text-center">
+                          <div class="text-center">
                             <h5>Inscription</h5>
                         </div>
                         <div class="form-group has-icon"><i class="icon-envelope-o"></i>
-                            <input type="email" class="form-control form-control-lg"
-                                   placeholder="Email Address" formControlName="email" name="email" required autocomplete="new-password">
+                            <input type="text" class="form-control form-control-lg"
+                                   placeholder="Adresse email" formControlName="email" required autocomplete="new-password">
+                                    <div *ngIf="formErrors.email" class="text-danger">
+        {{ formErrors.email }}
+    </div>
                         </div>
                         <div class="form-group has-icon"><i class="icon-user-secret"></i>
                             <input type="text" class="form-control form-control-lg"
-                                   placeholder="Password"  formControlName="password" name="password" required>
+                                   placeholder="Mot de passe" formControlName="password" required autocomplete="new-password">
+                                     <div *ngIf="formErrors.password" class="text-danger">
+        {{ formErrors.password }}
+    </div>
                         </div>
-                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Inscription">
+                      <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="!userForm.valid">Inscription</button>
+                       
                         <a class="forget-pass" (click)="toggleForm()">Vous ete déjà enregistré?</a> 
                     </form>
+
+
+                     <div *ngIf="isCreating">
+      <app-spinner-overlay [message]="message"></app-spinner-overlay>
+
+   </div>

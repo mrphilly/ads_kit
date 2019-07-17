@@ -39,6 +39,8 @@ from ads_scripts.targeting.remove_ad_group_gender import RemoveTargetGender
 from ads_scripts.targeting.remove_ad_group_age import RemoveTargetAge
 from ads_scripts.targeting.target_devices import TargetDevices
 from ads_scripts.advanced_operations.add_display import add_display_ad
+from ads_scripts.basic_operations.change_ad_status import ChangeAdStatus
+from ads_scripts.basic_operations.remove_ad import RemoveAd
 import pyrebase
 config = {
       "apiKey": "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
@@ -69,21 +71,71 @@ TAB = []
 USER = ""
 CAMPAGNE_NAME = ""
 
+
+
+@app.route("/changeAdStatus", methods=['POST'])
+def changeStatusAd():
+    ad_id = request.json['ad_id']
+    ad_group_id = request.json['ad_group_id']
+    last_status = request.json['last_status']
+    print(last_status)
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    update = ChangeAdStatus(adwords_client, ad_group_id, ad_id, last_status)
+    return jsonify(update)
+
+
+
+@app.route('/removeAd', methods=['POST'])
+def removeAd():
+    ad_id = request.json['ad_id']
+    ad_group_id = request.json['ad_group_id']
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    update = RemoveAd(adwords_client, ad_group_id, ad_id)
+    return jsonify(update)
+
+
+
 @app.route("/addAd", methods=["POST"])
 def addAd():
     ad_group_id = request.json['ad_group_id']
     ad_name = request.json['ad_name']
     ad_image_ref = request.json['ad_image_ref']
+    allUrls = request.json['allUrls']
+    print(allUrls)
+
+    urls = []
+    finalUrls = []
+    finalAppsUrls = []
+   
+    for item in allUrls:
+        
+        if item['lib'] == 'Sites Nationaux' or item['lib'] == 'Sites Internationaux' or item['lib'] == "Site d'annonces":
+            for el in item['content']:
+                
+                urls.append(el['item_id'])
+        elif item['lib'] == "finalUrls":
+            for el in item['content']: 
+                finalUrls.append(el)
+        elif item['lib'] == 'Application Mobiles':
+            for el in item['content']:
+                finalAppsUrls.append(el['item_id'])
+        else:
+            raise Exception('Not item found')
+    
+    print(urls)
+    print(finalUrls)
+    print(finalAppsUrls)
+            
+
     auth = firebase.auth()
     user = auth.sign_in_with_email_and_password('test@user.com', '123456')
     image = firebase.storage().child(ad_image_ref).get_url(token=user['idToken'])
     
     print(type(image))
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
-    ad = add_display_ad(adwords_client, ad_group_id, ad_name, image)
+    ad = add_display_ad(adwords_client, ad_group_id, ad_name, image, urls, finalUrls, finalAppsUrls)
 
     response = {
-        "url": image,
         "ad": ad
     }
     return jsonify(response)

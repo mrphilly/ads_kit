@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -10,12 +10,25 @@ import { AuthService } from '../../core/auth.service';
   styleUrls: ['./user-login.component.scss'],
 })
 export class UserLoginComponent {
-
+    email: any
   constructor(public auth: AuthService,
-              private router: Router) { }
+    private router: Router) { 
+   
+              }
 
   /// Social Login
+  ngOnInit() {
+    
+    this.auth.user.forEach(value => {
+      if (value) {
+        this.email = value.email
+           
+         }
+      
+    })
 
+  }
+  
   async signInWithGithub() {
     await this.auth.githubLogin();
     return await this.afterSignIn();
@@ -49,5 +62,11 @@ export class UserLoginComponent {
     // Do after login stuff here, such router redirects, toast messages, etc.
     return this.router.navigate(['/']);
   }
+
+  logout() {
+    this.auth.signOut()
+  }
+
+  
 
 }

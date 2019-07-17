@@ -28,12 +28,13 @@ section of our README.
 from googleads import adwords
 
 
-CAMPAIGN_ID = 'INSERT_CAMPAIGN_ID_HERE'
+CAMPAIGN_ID = '20190801'
 PAGE_SIZE = 100
 
 
 def main(client, campaign_id):
   # Initialize appropriate service.
+  
   data_service = client.GetService('DataService', version='v201809')
 
   # Get all the campaigns for this account.
@@ -58,6 +59,9 @@ def main(client, campaign_id):
   while more_pages is True:
     num_landscape_points = 0
     page = data_service.getCampaignCriterionBidLandscape(selector)
+    
+    print('init')
+    print(page)
 
     # Display results.
     if 'entries' in page:
@@ -81,7 +85,7 @@ def main(client, campaign_id):
                      landscape_point['totalLocalImpressions'],
                      landscape_point['requiredBudget']['microAmount'])
     else:
-      print 'No bid modifier landscapes found.'
+      print ('No bid modifier landscapes found.')
 
     # Need to increment by the total # of landscape points within the page,
     # NOT the number of entries (bid landscapes) in the page.
@@ -92,6 +96,9 @@ def main(client, campaign_id):
 
 if __name__ == '__main__':
   # Initialize client object.
-  adwords_client = adwords.AdWordsClient.LoadFromStorage()
+  adwords_client = adwords.AdWordsClient.LoadFromStorage('../../googleads.yaml')
 
+  
   main(adwords_client, CAMPAIGN_ID)
+
+

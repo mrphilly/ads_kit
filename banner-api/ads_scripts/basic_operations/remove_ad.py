@@ -32,8 +32,9 @@ AD_GROUP_ID = 'INSERT_AD_GROUP_ID_HERE'
 AD_ID = 'INSERT_AD_ID_HERE'
 
 
-def main(client, ad_group_id, ad_id):
+def RemoveAd(client, ad_group_id, ad_id):
   # Initialize appropriate service.
+  response = []
   ad_group_ad_service = client.GetService('AdGroupAdService', version='v201809')
 
   # Construct operations and delete ad.
@@ -51,12 +52,12 @@ def main(client, ad_group_id, ad_id):
 
   # Display results.
   for ad in result['value']:
+    response.append({
+      "status": 'ok'
+    })
     print ('Ad with id "%s" and type "%s" was deleted.'
            % (ad['ad']['id'], ad['ad']['Ad.Type']))
+  return response
 
 
-if __name__ == '__main__':
-  # Initialize client object.
-  adwords_client = adwords.AdWordsClient.LoadFromStorage()
 
-  main(adwords_client, AD_GROUP_ID, AD_ID)

@@ -36,15 +36,15 @@
                 </div>
             </div>
     </div> -->
-<header class="grey darken-4 pt-3 relative shadow">
+<header class="white pt-3 relative shadow" >
   <div class="container-fluid text-center">
     <div class="row p-t-b-10 ">
       <div class="col">
         <div class="pb-3">
 
           <div>
-            <h6 class="p-t-10" style="color: white">A propos de la campagne</h6>
-            <h6 style="color: #ffff00"><strong>{{name}}</strong></h6>
+            <h6 class="p-t-10" style="color: #009688">A propos de la campagne</h6>
+            <h6 style="color: #009688"><strong>{{name}}</strong></h6>
           </div>
         </div>
       </div>
@@ -54,8 +54,8 @@
       <ul class="nav nav-material responsive-tab" id="v-pills-tab" role="tablist">
         <li>
           <a class="nav-link active" style="" id="v-pills-tab1-tab" data-toggle="pill" href="#v-pills-tab1" role="tab"
-            aria-controls="v-pills-tab1" style="color: white">
-            <i class="icon icon-home2" style="color: white"></i>{{generale}}
+            aria-controls="v-pills-tab1" style="color: #009688">
+            <i class="icon icon-home2" style="color: #009688"></i>{{generale}}
           </a>
         </li>
         <!--  <li>
@@ -66,8 +66,8 @@
                       </li> -->
         <li>
           <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-            aria-controls="v-pills-settings" aria-selected="false" style="color: white"><i class="icon icon-cog"
-              style="color: white"></i>Modifier la campagne</a>
+            aria-controls="v-pills-settings" aria-selected="false" style="color: #009688"><i class="icon icon-cog"
+              style="color: #009688"></i>Modifier la campagne</a>
         </li>
       </ul>
     </div>
@@ -80,7 +80,7 @@
       <div class="tab-pane fade show active" id="v-pills-tab1" role="tabpanel" aria-labelledby="v-pills-home-tab">
         <div class="row">
           <div class="col-md-3">
-            <div class="card ">
+            <div class="card no-b">
 
               <ul class="list-group list-group-flush">
                 <!--     <li class="list-group-item grey lighten-2"><i class="icon-chevron-circle-right text-white" style="float: left"></i><strong class="s-12 text-white" style="float: left">Nom</strong> <span class="float-right s-12 text-white" style="font-weight: bold">{{name}}</span></li> -->
@@ -124,8 +124,8 @@
               </ul>
             </div>
             
-                <div class="card mt-3 mb-3 text-center" *ngIf="zone==''">
-                  <div class="card-header bg-white">
+                <div class="card mt-3 mb-3 text-center no-b" *ngIf="zone==''">
+                  <div class="card-header bg-white no-b">
                     <strong class="card-title">Ciblage de zones</strong>
     
                   </div>
@@ -144,7 +144,7 @@
     
                   </ul>
     
-                  <div class="card-footer text-center white">
+                  <div class="card-footer text-center white no-b">
                     <a class="btn-fab btn-fab-sm shadow btn-info" (click)="openAddLocation()" *ngIf="!isCiblage"><i
                         class="icon-add_location"></i></a>
                     <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetZones()" *ngIf="isCiblage"><i
@@ -199,58 +199,58 @@
             <div class="row my-3">
               <!-- bar charts group -->
               <div class="col-md-12">
-                <div class="card" *ngIf="isAdGroup">
-                  <div class="card-header indigo text-center text-white">
+                <div class="card no-b shadow" *ngIf="isAdGroup">
+                  <div class="card-header teal lighten-1 text-center text-white no-b">
                     <h6>Nouveau groupe d'annonce</h6>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body no-b">
                     <input placeholder="Nom du groupe d'annonce" class="form-control" name="adgroup_name" id="adgroup"
                       style="max-width: 200 px !important">
-                    <hr>
-                    <button href="#" class="btn btn-primary shadow btn-sm r-20" (click)="addAdGroup()"><i
-                        class="icon-plus-circle mr-2 "></i>Nouveau groupe d'annonce</button>
-                    <button href="#" class="btn btn-danger shadow btn-sm r-20" (click)="closeAddAdGroup()"><i
-                        class="icon-close mr-2 "></i>Annuler</button>
+                    <div class="card-footer white text-center no-b">
+
+                      <a href="#" class="btn btn-md teal lighten-1 shadow btn-sm r-20 text-white" (click)="addAdGroup()"><i
+                          class="icon-plus-circle mr-2 "></i>Ajouter</a>
+                      <button href="#" class="btn btn-danger shadow btn-sm r-20" (click)="closeAddAdGroup()"><i
+                          class="icon-close mr-2 "></i>Annuler</button>
+                    </div>
                   </div>
                 </div>
 
-                <div class="card my-3 my-3">
-                  <div class="card-header white text-center">
-                    <i class="icon-clipboard-edit blue-text"></i>
-                    <strong> Mes groupes d'annonces </strong>
-                    <button type="button" class="btn grey darken-4 text-white" style="float: right">
-                      Nombre de groupes <span class="badge badge-dark">{{number_ad_groups}}</span>
-                    </button>
+                <div class="card my-3 my-3 no-b shadow no-b">
+                  <div class="card-header teal lighten-1 text-center no-b" *ngIf="number_ad_groups!='0'">
+                    <i class="icon-clipboard-edit text-white"></i>
+                    <h6 style="color: white">Groupes d'annonces </h6>
+                    
                   </div>
-                  <div class="card-body p-0 bg-light slimScroll" data-height="300">
-                    <div class="table-responsive">
-                      <table class="table table-hover">
+                  <div class="card-body p-0 white slimScroll no-b" data-height="300">
+                    <div class="table-responsive no-b">
+                      <table class="table table-hover no-b">
                         <!-- Table heading -->
-                        <tbody>
-                          <tr class="no-b">
+                        <tbody class="no-b">
+                          <tr class="no-b teal lighten-1 text-white text-center"  *ngIf="number_ad_groups!='0'">
                             <!--     <th>
                                         <input type="checkbox">
                                     </th> -->
-                            <th>Groupe d'annonces</th>
+                            <th>Nom</th>
                             <th>Status</th>
                             <th>Action</th>
                           </tr>
 
-                          <tr *ngFor="let adgroup of adgroups | async">
+                          <tr *ngFor="let adgroup of adgroups | async" class="no-b">
                             <!-- Check box -->
                             <!-- <td>
                                         <input type="checkbox">
                                     </td> -->
                             <!-- Page name -->
-                            <td class="text-center">
+                            <td class="text-center no-b">
                               <a (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" style="cursor: pointer">{{adgroup?.name}}</a>
                             </td>
                             <!-- Page size -->
                             <!-- Status -->
-                            <td *ngIf="adgroup?.status==='PAUSED'">
+                            <td *ngIf="adgroup?.status==='PAUSED'" class="text-center no-b">
                               <span class="badge badge-danger r-5">Non actif</span>
                             </td>
-                            <td *ngIf="adgroup?.status==='ENABLED'">
+                            <td *ngIf="adgroup?.status==='ENABLED'" class="text-center no-b">
                               <span class="badge badge-success r-5">Actif</span>
                             </td>
                             <!-- Sort -->
@@ -260,7 +260,7 @@
                                         </a>
                                     </td> -->
                             <!-- Actions -->
-                            <td>
+                            <td class='no-b text-center'>
                             
                              
                               <a class="text-danger" style="cursor: pointer" title="désactiver"
@@ -283,9 +283,10 @@
                       </table>
                     </div>
                   </div>
-                  <div class="card-footer white text-center">
-                    <a class="btn btn-info btn-xs r-20 text-white" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle"></i>Ajouter un nouveau
-                      groupe</a>
+                  <div class="card-footer white text-center no-b">
+                    <a class="btn-fab btn-fab-md teal lighten-3 shadow btn-md text-white" (click)="toggleAddNewAdGroup()" style="margin-top: -15px; position: absolute;margin-left: -25px;"><i class="icon-add_circle"></i></a>
+
+                    
                     <!--  <a href="#" class="btn btn-outline-danger btn-xs">Delete All</a> -->
                   </div>
                 </div>
@@ -350,7 +351,7 @@
                         </div>
                                </div>   -->
             </div>
-            <hr>
+          
 
             <!--              <div class="row">
                                <div class="col-md-12">

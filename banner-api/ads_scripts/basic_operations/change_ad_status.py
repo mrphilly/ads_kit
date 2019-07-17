@@ -32,8 +32,11 @@ AD_GROUP_ID = 'INSERT_AD_GROUP_ID_HERE'
 AD_ID = 'INSERT_AD_ID_HERE'
 
 
-def main(client, ad_group_id, ad_id):
+def ChangeAdStatus(client, ad_group_id, ad_id, last_status):
   # Initialize appropriate service.
+  response = []
+  STATUS = ["PAUSED", "ENABLED"]
+  STATUS.remove(last_status)
   ad_group_ad_service = client.GetService('AdGroupAdService', version='v201809')
 
   # Construct operations and update an ad.
@@ -44,18 +47,19 @@ def main(client, ad_group_id, ad_id):
           'ad': {
               'id': ad_id,
           },
-          'status': 'PAUSED'
+          'status': status
       }
-  }]
+  }for status in STATUS]
   ads = ad_group_ad_service.mutate(operations)
 
   # Display results.
   for ad in ads['value']:
-    print 'Ad with id "%s" was updated.'% ad['ad']['id']
+    print(ad['ad'])
+    response.append({
+        "status": STATUS[0]
+    })
+    print ('Ad with id "%s" was updated.'% ad['ad']['id'])
 
 
-if __name__ == '__main__':
-  # Initialize client object.
-  adwords_client = adwords.AdWordsClient.LoadFromStorage()
+  return response
 
-  main(adwords_client, AD_GROUP_ID, AD_ID)

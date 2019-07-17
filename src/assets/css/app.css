@@ -937,4 +937,38 @@
     border-radius: 2px;
     float: left;
 }
-  
+ .paper-nav-toggle i::after, .paper-nav-toggle i::before {
+    content: '';
+    width: 25px;
+    height: 2px;
+    background: white;
+    position: absolute;
+    left: 0;
+    transition: all .2s ease-out;
+}
+
+
+list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #b2dfdb !important;
+    border-color: #b2dfdb !important;
+}
+
+.nav-material>li .nav-link.active {
+    border: 0;
+    background: 0 0;
+    border-bottom: 3px solid #009688;
+}
+
+.nav-material>li>a::after {
+    content: "";
+    background: #009688;
+    height: 3px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    transition: all 250ms ease 0s;
+    transform: scale(0);
+}

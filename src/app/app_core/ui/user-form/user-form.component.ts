@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
-import { Router } from '@angular/router';
+
+import * as $ from 'jquery'
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
 
@@ -12,7 +14,9 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent implements OnInit {
-
+  isCreating = false
+  Invalid = false
+  errors_credentials: any;
   userForm: FormGroup;
   newUser = true; // to toggle login or signup form
   passReset = false; // set to true when password reset is triggered
@@ -22,14 +26,16 @@ export class UserFormComponent implements OnInit {
   };
   validationMessages = {
     'email': {
-      'required': 'Email is required.',
-      'email': 'Email must be a valid email',
+      'required': 'Adresse email requise.',
+      'email': 'Saisissez une adresse email valide',
     },
+    
+
     'password': {
-      'required': 'Password is required.',
-      'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 4 characters long.',
-      'maxlength': 'Password cannot be more than 40 characters long.',
+      'required': 'Mot de passe requis.',
+      'pattern': 'Le mot de passe doit comporter au moin au moins 1 caractère majuscule, une lettre minuscule, un chiffre et un caractère spécial comme @,#...',
+      'minlength': 'Le mot de passe doit comporter au moins 4 caractères.',
+      'maxlength': 'La longueur du mot de passe ne peut pas dépasser 40 caractères',
     },
   };
 
@@ -44,13 +50,37 @@ export class UserFormComponent implements OnInit {
   }
 
   signup() {
+    this.isCreating = true;
+    
     this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password']);
     this.afterSignIn()
+    this.isCreating = false
   }
 
   login() {
-    this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']);
-    this.afterSignIn()
+    this.isCreating = true
+    this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']).then(res => {
+      console.log(res)
+      console.log(typeof(res))
+      if (res.length == 0) {
+        this.isCreating = false
+        this.Invalid = true
+        this.errors_credentials = 'Indentifiants incorrects'
+          
+      } else {
+        this.afterSignIn()
+           this.isCreating = false
+    
+      }
+   
+      
+    });
+  }
+  listenError() {
+   
+    if (this.Invalid = true) {
+      this.Invalid = false
+    }
   }
 
   resetPassword() {
@@ -60,6 +90,7 @@ export class UserFormComponent implements OnInit {
 
   private afterSignIn() {
     // Do after login stuff here, such router redirects, toast messages, etc.
+    
     return this.router.navigate(['/']);
   }
 
@@ -70,7 +101,7 @@ export class UserFormComponent implements OnInit {
         Validators.email,
       ]],
       'password': ['', [
-        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.pattern('(?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*'),
         Validators.minLength(6),
         Validators.maxLength(25),
       ]],

@@ -1,14 +1,17 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  AfterViewInit
 } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute
 } from '@angular/router';
 import {
   HttpClient
 } from '@angular/common/http';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import * as $ from 'jquery';
 
@@ -22,6 +25,10 @@ import { NgxPicaService, NgxPicaErrorInterface } from 'ngx-pica';
 
 import * as firebase from 'firebase';
 
+import {Font} from 'ngx-font-picker';
+
+import {ColorPickerService} from 'ngx-color-picker';
+
 import {
   NotesService
 } from '../notes.service';
@@ -29,42 +36,97 @@ import {
   AuthService
 } from '../../core/auth.service';
 
-import { Ads } from '../ads.service'
-import {Annonces} from '../annonces.models'
-
-
-declare const fabric: any;
-
-import {
-  AdGroupService
-} from '../ad-groupe.service'
-
 import Swal from 'sweetalert2'
 
+import { Ads } from '../ads.service'
+import {AdGroupService} from '../ad-groupe.service'
+
+import '../../../../assets/js/payexpress/payExpress'
+
+type AdsFields = 'name' | 'finalUrls';
+type FormErrors = { [u in AdsFields]: string };
+
+declare const fabric: any
+declare const pQuery: any
+declare const PayExpresse: any
 
 @Component({
   selector: 'app-annonces',
   templateUrl: './annonces.component.html',
   styleUrls: ['./annonces.component.css']
 })
-export class AnnoncesComponent implements OnInit {
+export class AnnoncesComponent implements OnInit, AfterViewInit {
+   public CURRENCY: string;
+  public NUMERIC: string;
+  public ALPHABET: string;
+  public PATTERN: string;
+  public COMMA: string;
+  url_errors = [];
+  adForm: FormGroup;
+  FINAL_ARRAY_TO_SEND: any;
+ 
+  passReset = false; // set to true when password reset is triggered
+  formErrors: FormErrors = {
+    'name': '',
+    'finalUrls': '',
+  };
+  validationMessages = {
+    'name': {
+      'required': "Nom de l'annonce obligatoire",
+      'name': 'Saisissez un nom valide',
+    },
+    
+
+    'finalUrls': {
+      'required': 'Url de redirection requise.',
+      'pattern': "L'url doit être sous la frome http://monsite.com",
+      'minlength': 'Url trop courte',
+      'maxlength': 'Url trop longue',
+    },
+  };
   campagne_name: any;
   campagne_id: any;
   ad_group_id: any;
   criteria: any;
+  currentCanvasContent: any;
   adgroups: any;
+  ads: any;
   status: any;
   id: any;
   uid: any;
+  id_ad_firebase: any;
   ad_name: any;
   ages = []
   sexes = [];
   zones = [];
   devices = []
+  nationals_websites = []
+  internationals_websites = []
+  ads_websites = []
+  currentAdStatus: any
+  apps = []
   ad_group_name: any;
   label_enabled = 'Actif'
   label_paused = "Non Actif"
   text_create = "Annonce"
+  isEditor = false
+  _init_ad = false
+  list_ad = true
+  isAdBlock = false;
+  currentAdName = "";
+  currentFinalUrls = ""
+  currentImageUrl = ""
+  number_ads: any
+  isNull = true
+  
+  icon_toggle = 'icon-chevron-left'
+  icon_toggle_options = 'icon-chevron-down'
+  public isCollapsed = false;
+  public isOptions = true
+  public isPlacement = true
+  public isGender = true
+  public isAge = true
+  public isDevice = true
   private basePath = '/uploads';
   progress: { percentage: number } = { percentage: 0 };
   test: any;
@@ -82,18 +144,26 @@ export class AnnoncesComponent implements OnInit {
   };
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
-  constructor(private notesService: NotesService, private auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads) {
+  constructor(private notesService: NotesService, private auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder) {
 
   }
   dropdownListAges = [];
   dropdownListSexes = [];
   dropdownListZones = [];
   dropdownListDevices = [];
+  dropdownListNationalsWebsites = [];
+   dropdownListInternationalsWebsites = [];
+  dropdownListAdsWebsites = [];
+   dropdownListApps = [];
   selectedItems = [];
   dropdownSettingsAges = {};
   dropdownSettingsSexes = {};
   dropdownSettingsZones = {};
   dropdownSettingsDevices = {};
+  dropdownSettingsNationalsWebsites = {};
+  dropdownSettingsInternationalsWebsites = {};
+  dropdownSettingsAdsWebsites = {};
+   dropdownSettingsApps = {};
   text_visualise = "Visualiser votre annonce"
   text_no_genre = "Aucun genre ciblé"
   text_no_age = "Aucune tranche d'âge ciblée"
@@ -105,6 +175,7 @@ export class AnnoncesComponent implements OnInit {
   modify_age_text = "Modifier le ciblage des âges"
   modify_devices_text = "Modifier le ciblage des appareils"
   text_option = "Paramètres du canvas"
+  iconEditor: any;
   genres: any;
   populations: any;
   appareils: any;
@@ -112,212 +183,326 @@ export class AnnoncesComponent implements OnInit {
   isCiblageAge = false
   isCiblageDevices = false
   isCreating = false
+  email: any;
+  nationals_errors = ''
+  _init_ad_list = false
+  currentEditor = false
+  NATIONALS_WEBSITES = [
+  [1,"infos","dakarbuzz.net","http://dakarbuzz.net"  ],
+  [2,"infos","galsen221.com","http://galsen221.com"  ],
+  [3,"infos","leral.net","http://leral.net"  ],
+  [4,"infos","limametti.com","http://limametti.com"  ],
+  [5,"infos","sanslimitesn.com","http://sanslimitesn.com"  ],
+  [6,"infos","senego.com","http://senego.com"  ],
+  [7,"infos","seneweb.com","http://seneweb.com"  ],
+  [8,"infos","www.buzzsenegal.com","http://www.buzzsenegal.com"  ],
+  [9,"infos","www.dakar7.com","http://www.dakar7.com"  ],
+  [10,"infos","www.dakarflash.com","http://www.dakarflash.com"  ],
+  [11,"infos","www.lequotidien.sn","http://www.lequotidien.sn"  ],
+  [12,"infos","www.pressafrik.com","http://www.pressafrik.com"  ],
+  [13,"infos","www.senenews.com","http://www.senenews.com"  ],
+  [14,"infos","xalimasn.com","http://xalimasn.com"  ],
+  [15,"infos","metrodakar.net","http://metrodakar.net"  ],
+  [16,"infos","sunubuzzsn.com","http://sunubuzzsn.com"  ],
+  [17,"infos","senegal7.com","http://senegal7.com"  ],
+  [18,"infos","senescoop.net","http://senescoop.net"  ],
+  [19,"infos","sunugal24.net","http://sunugal24.net"  ],
+  [20,"infos","dakar92.com","http://dakar92.com"  ],
+  [21,"infos","rumeurs221.com","http://rumeurs221.com"  ],
+  [22,"infos","bonjourdakar.com","http://bonjourdakar.com"  ],
+  [23,"infos","vipeoples.net","http://vipeoples.net"  ],
+  [24,"infos","seneplus.com","http://seneplus.com"  ],
+  [25,"infos","wiwsport.com","http://wiwsport.com"  ],
+  [26,"infos","viberadio.sn","http://viberadio.sn"  ],
+  [27,"infos","yerimpost.com","http://yerimpost.com"  ],
+  [28,"infos","ndarinfo.com","http://ndarinfo.com"  ],
+  [29,"infos","dakarposte.com","http://dakarposte.com"  ],
+  [30,"infos","exclusif.net","http://exclusif.net"  ],
+  [31,"infos","senegaldirect.net","http://senegaldirect.net"  ]
+  ]
+  
+  INTERNATIONALS_WEBSITES = [
+  [1,"sport ","footmercato.net","http://www.footmercato.net"  ],
+  [2,"infos","lexpress.fr","http://www.lexpress.fr"  ],
+  [3,"sport ","mercatolive.fr","http://www.mercatolive.fr"  ],
+  [4,"sport ","maxifoot.fr","http://maxifoot.fr"  ],
+  [5,"sport ","livefoot.fr","http://livefoot.fr"  ],
+  [6,"forum","01net.com","http://01net.com"  ],
+  [7,"sport ","le10sport.com","http://le10sport.com"  ],
+  [8,"sport ","maxifoot-live.com","http://maxifoot-live.com"  ],
+  [9,"forum","01net.com","http://01net.com"  ],
+  [10,"infos","bfmtv.com","http://bfmtv.com"  ],
+  [11,"sport ","besoccer.com","http://besoccer.com"  ],
+  [12,"sport ","foot01.com","http://foot01.com"  ],
+  [13,"sport ","basketsession.com","http://basketsession.com"  ],
+  [14,"sport ","basket-infos.com","http://basket-infos.com"  ],
+  [15,"infos","skyrock.com","http://skyrock.com"  ],
+  [16,"infos","leparisien.fr","http://leparisien.fr"  ],
+  ]
+  
+  SITES_ANNONCES = [
+     [1,"annonces","deals.jumia.sn","http://deals.jumia.sn"  ],
+  [2,"annonces","expat-dakar.com","http://expat-dakar.com"  ],
+  [3,"annonces","coinafrique.com","http://coinafrique.com"  ]
+  ]
 
+  APP_MOBILES = [
+  [1,"App","Senego","https://play.google.com/store/apps/details?id=com.nextwebart.senego"  ],
+  [2,"App","Super-Bright LED Flashlight ","https://play.google.com/store/apps/details?id=com.surpax.ledflashlight.panel"  ],
+  [3,"App","CallApp: Caller ID","https://play.google.com/store/apps/details?id=com.callapp.contacts"  ],
+  [4,"App","PhotoGrid: Video & Pic Collage Maker, ","https://play.google.com/store/apps/details?id=com.roidapp.photogrid"  ],
+  [5,"App","Bubble Shooter ","https://play.google.com/store/apps/details?id=bubbleshooter.orig"  ],
+  [6,"App"," MAX Cleaner - Antivirus, Phone Cleaner","https://play.google.com/store/apps/details?id=com.oneapp.max.cleaner.booster"  ],
+  [7,"App","Block Puzzle ","https://play.google.com/store/apps/details?id=com.puzzlegamesclassic.tetris.blockpuzzle"  ],
+  [8,"App","Bubble Breaker ","https://play.google.com/store/apps/details?id=com.faceplus.bubble.breaker"  ],
+  [9,"App","Flashlight ","https://play.google.com/store/apps/details?id=com.splendapps.torch"  ],
+  [10,"App","Photo Lock App ","https://play.google.com/store/apps/details?id=vault.gallery.lock"  ]
+]
 
+  model: any = {};
+ 
   public canvas: any;
-  public props: any = {
-    canvasFill: '#ffffff',
-    canvasImage: '',
-    id: null,
-    opacity: null,
-    fill: null,
-    fontSize: null,
-    lineHeight: null,
-    charSpacing: null,
-    fontWeight: null,
-    fontStyle: null,
-    textAlign: null,
-    fontFamily: null,
-    TextDecoration: ''
-  };
+ 
 
-    el = '<div class="card-body text-center">'+
-'                        <div class="row">'+
-''+
-'                          '+
-'              '+
-'                              <div class="col-md-8">'+
-'                            <div class="card-body">'+
-'                              <ul class="list-group no-b text-center">'+
-'                               <li class="list-group-item d-flex align-items-center" *ngIf="selected && selected.type != \'group\'">'+
-'                                  <div>'+
-'                                      <i class="icon icon-opacity purple-text"></i>'+
-'                                  </div>'+
-'                                   <div >'+
-'                                        '+
-'                                              <input type="range" class="range-slider form-control" [(ngModel)]="props.opacity" (change)="setOpacity()">'+
-'                                         '+
-'                                      </div>'+
-'                              </li>'+
-'                              '+
-'                                <li class="list-group-item d-flex align-items-center"  *ngIf="selected && textEditor || selected && figureEditor">'+
-'                                  <div>'+
-'                                    <i class="icon icon-palette text-blue"></i>'+
-'                                  </div>'+
-'                                  <div>'+
-''+
-'                                    <input type="text" class="form-control" [cpPosition]="\'bottom\'"'+
-'                                      [(colorPicker)]="props.fill" [style.background]="props.fill" [value]="props.fill"'+
-'                                      (colorPickerChange)="setFill()" style="width: 55%; float: right">'+
-''+
-'                                  </div>'+
-'                                </li>'+
-'                                <li class="list-group-item d-flex align-items-center" *ngIf="selected && textEditor">'+
-'                                  <div>'+
-'                                    <i class="icon icon-format_size pink-text"></i>'+
-'                                  </div>'+
-'                                  <div >'+
-'                                    <select class="custom-select select2" [(ngModel)]="props.fontFamily"'+
-'                                      (change)="setFontFamily()" style="margin-left: 10px;" required>'+
-'                                      <option value="arial">Arial</option>'+
-'                                      <option value="helvetica" selected>Helvetica</option>'+
-'                                      <option value="verdana">Verdana</option>'+
-'                                      <option value="courier">Courier</option>'+
-'                                      <option value="Roboto">Roboto</option>'+
-'                                      <option value="Open Sans">Open Sans</option>'+
-'                                      <option value="Zilla Slab">Zilla Slab</option>'+
-'                                      <option value="Lato">Lato</option>'+
-'                                      <option value="Bellefair">Bellefair</option>'+
-'                                      <option value="Fresca">Fresca</option>'+
-'                                      <option value="Raleway">Raleway</option>'+
-'                                      <option value="Open Sans Condensed">Open Sans Condensed</option>'+
-'                                      <option value="Indie Flower">Indie Flower</option>'+
-'                                      <option value="Josefin Sans">Josefin Sans</option>'+
-'                                      <option value="Inconsolata">Inconsolata</option>'+
-'                                      <option value="Pacifico">Pacifico</option>'+
-'                                      <option value="Gloria Hallelujah">Gloria Hallelujah</option>'+
-'                                    </select>'+
-'                                  </div>'+
-'                                </li>'+
-'                                <li class="list-group-item d-flex align-items-center" *ngIf="selected && textEditor">'+
-'                                  <div>'+
-'                                    <i class="icon icon-line_style text-green"></i>'+
-'                                  </div>'+
-'                                  <div>'+
-''+
-'                                    <ul class="social social list-inline" >'+
-''+
-'                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"'+
-'                                          [ngClass]="{\'active\': props.fontStyle }" (click)="setFontStyle()"><i'+
-'                                            class="icon-format_italic"></i></a></li>'+
-'                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"'+
-'                                          [ngClass]="{\'active\': hasTextDecoration(\'underline\') }"'+
-'                                          (click)="setTextDecoration(\'underline\')"><i class="icon-underline"></i></a>'+
-'                                      </li>'+
-'                                      <li class="list-inline-item"> <a class="btn-fab btn-fab-sm shadow btn-info"'+
-'                                          [ngClass]="{\'active\': props.fontWeight }" (click)="setBold()"><i'+
-'                                            class="icon-bold"></i></a></li>'+
-''+
-'                                    </ul>'+
-'                                  </div>'+
-'                                </li>'+
-''+
-'                              </ul>'+
-'                            </div>'+
-'                            <div class="col-md-3">'+
-''+
-''+
-''+
-'                            </div>'+
-'                            <div class="col image-block draggable" style="display: none">'+
-'                              <div class="card b-0">'+
-'                                <div class="card-body p-5">'+
-'                                  <div class="card">'+
-'                                    <div class="card-header">Upload image</div>'+
-'                                    <div class="card-body text-center">'+
-'                                      <img id="testImage" *ngIf="url" class="images-item-upload" [src]="url"'+
-'                                        (click)="addImageOnCanvas(url);">'+
-'                                      <input type="file" (change)="readUrl($event);" id="image">'+
-'                                      <br />'+
-'                                      <br />'+
-'                                      <div class="btn-group btn-group-justified" role="group" aria-label="...">'+
-'                                        <div class="btn-group" role="group">'+
-'                                          <button type="button" class="btn btn-outline-danger btn-sm"'+
-'                                            (click)="removeWhite(url);">'+
-'                                            <i class="fa fa-times" aria-hidden="true"></i> Remove</button>'+
-'                                        </div>'+
-'                                      </div>'+
-'                                    </div>'+
-'                                  </div>'+
-'                                </div>'+
-'                              </div>'+
-'                            </div>'+
-'                          </div>'+
-'            '+
-'                        </div>'+
-'                      </div>';
-	
+    public Direction: any = {
+        LEFT: 0,
+        UP: 1,
+        RIGHT: 2,
+        DOWN: 3
+    };
+    public DirectionSteps: any = {
+        REGULAR: 1,
+        SHIFT: 5
+    };
+    public dragObject: any;
 
-  popperContent = "<a class='btn-fab btn-fab-sm shadow btn-primary'><i class='icon-circle-o'></i></a>"
-  popperTitle = "Paramètres"
+    public presetFonts = ['Arial', 'Serif', 'Helvetica', 'Sans-Serif', 'Open Sans', 'Roboto Slab'];
+    public lastInputSelected: any;
+
+    public customColors: any = [];
+
+    public selectedLibrary = 'brands';
+    public palettes: any = {
+        selected: null,
+        defaults: [
+            {key: '#001f3f', value: 'Navy', type: 'default'},
+            {key: '#0074D9', value: 'Blue', type: 'default'},
+            {key: '#7FDBFF', value: 'Aqua', type: 'default'},
+            {key: '#39CCCC', value: 'Teal', type: 'default'},
+            {key: '#3D9970', value: 'Olive', type: 'default'},
+            {key: '#2ECC40', value: 'Green', type: 'default'},
+            {key: '#01FF70', value: 'Lime', type: 'default'},
+            {key: '#FFDC00', value: 'Yellow', type: 'default'},
+            {key: '#FF851B', value: 'Orange', type: 'default'},
+            {key: '#FF4136', value: 'Red', type: 'default'},
+            {key: '#85144b', value: 'Maroon', type: 'default'},
+            {key: '#F012BE', value: 'Fuchsia', type: 'default'},
+            {key: '#B10DC9', value: 'Purple', type: 'default'},
+            {key: '#111111', value: 'Black', type: 'default'},
+            {key: '#AAAAAA', value: 'Gray', type: 'default'},
+            {key: '#DDDDDD', value: 'Silver', type: 'default'}
+        ],
+        custom: []
+    };
+
+    public library: any = {
+        brands: [
+            {name: 'Audi', src: 'assets/libraries/brands/audi-sd.png'},
+            {name: 'BMW', src: 'assets/libraries/brands/bmw-sd.png'},
+            {name: 'Citroen', src: 'assets/libraries/brands/citroen-sd.png'},
+            {name: 'Fiat', src: 'assets/libraries/brands/fiat-sd.png'},
+            {name: 'Ford', src: 'assets/libraries/brands/ford-sd.png'},
+            {name: 'General Motors', src: 'assets/libraries/brands/generalmotors-sd.png'},
+            {name: 'Honda', src: 'assets/libraries/brands/honda-sd.png'},
+            {name: 'Hyundai', src: 'assets/libraries/brands/hyundai-sd.png'},
+            {name: 'Infiniti', src: 'assets/libraries/brands/infiniti-sd.png'},
+            {name: 'Kia', src: 'assets/libraries/brands/kia-sd.png'},
+            {name: 'Lexus', src: 'assets/libraries/brands/lexus-sd.png'},
+            {name: 'Mazda', src: 'assets/libraries/brands/mazda-sd.png'},
+            {name: 'Mercedes-Benz', src: 'assets/libraries/brands/mercedesbenz-sd.png'},
+            {name: 'Mini', src: 'assets/libraries/brands/mini-sd.png'},
+            {name: 'Nissan', src: 'assets/libraries/brands/nissan-sd.png'},
+            {name: 'Peugeot', src: 'assets/libraries/brands/peugeot-sd.png'},
+            {name: 'Porsche', src: 'assets/libraries/brands/porsche-sd.png'},
+            {name: 'Renault', src: 'assets/libraries/brands/renault-sd.png'},
+            {name: 'Seat', src: 'assets/libraries/brands/seat-sd.png'},
+            {name: 'Skoda', src: 'assets/libraries/brands/skoda-sd.png'},
+            {name: 'Tesla', src: 'assets/libraries/brands/tesla-sd.png'},
+            {name: 'Toyota', src: 'assets/libraries/brands/toyota-sd.png'},
+            {name: 'Volkswagen', src: 'assets/libraries/brands/volkswagen-sd.png'},
+            {name: 'Volvo', src: 'assets/libraries/brands/volvo-sd.png'}
+        ]
+    };
+
+    public font: Font = new Font({
+        family: 'Roboto',
+        size: '14px',
+        style: 'regular',
+        styles: ['regular']
+    });
+
+    public props: any = {
+        canvasFill: '#ffffff',
+        canvasImage: '',
+        id: null,
+        opacity: null,
+        fill: null,
+        stroke: null,
+        strokeWidth: null,
+        fontSize: null,
+        lineHeight: null,
+        charSpacing: null,
+        fontWeight: null,
+        fontStyle: null,
+        textAlign: null,
+        fontFamily: 'Open Sans',
+        TextDecoration: '',
+        scale: 1,
+        angle: 0
+    };
+    public elementTypes: any = {
+        'image': {key: 'image', text: 'Image', icon: 'icon-image'},
+        'i-text': {key: 'i-text', text: 'Texte', icon: 'icon-text_format'},
+        'rect': {key: 'rect', text: 'Rectangle', icon: 'icon-aspect_ratio'},
+        'triangle': {key: 'triangle', text: 'triangle', icon: 'icon-change_history'},
+        'circle': {key: 'circle', text: 'Cercle', icon: 'icon-radio_button_unchecked'},
+        'polygon': {key: 'polygon', text: 'Polygone', icon: 'icon-crop_square'}
+    };
+ 
+    public urlName = '';
+   
+ 
+    public selectedSize: any = null;
+    public sizes: any = [
+        {width: 640, height: 480},
+        {width: 1024, height: 768},
+        {width: 1920, height: 1080}
+    ];
+
+    public sliderConfig: any = {
+        pips: {
+            mode: 'range',
+            density: 5
+        }
+    };
 
 
+    public shapeEditor = false;
 
 
+    public layers: any = [];
+    canva_state = false
+
+  
+  handleCanvas() {
+  
+ 
+    this.canvas = ""
+    this.canvas = new fabric.Canvas('canvas', {
+            hoverCursor: 'pointer',
+            selection: true,
+            selectionBorderColor: 'blue',
+            preserveObjectStacking: true
+        });
+
+        this.loadPalette();
+
+        // register keyboard events
+        fabric.util.addListener(document.body, 'keydown', (opt) => {
+            // do not invoke keyboard events on input fields
+            if (opt.target.tagName === 'INPUT') {
+                return;
+            }
+            // if(opt.repeat) return; // prevent repeating (keyhold)
+
+            const key = opt.which || opt.keyCode;
+
+            this.handleKeyPress(key, opt);
+        });
+
+        // register fabric.js events
+        this.canvas.on({
+            'object:moving': (e) => {
+            },
+            'object:modified': (e) => {
+            },
+            'object:selected': (e) => {
+
+                const selectedObject = e.target;
+                this.selected = selectedObject;
+                selectedObject.hasRotatingPoint = true;
+                selectedObject.transparentCorners = false;
+                selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
+
+                this.resetPanels();
+
+                if (selectedObject.type !== 'group' && selectedObject) {
+
+                    this.getId();
+                    this.getOpacity();
+                    this.getTitle();
+
+                    switch (selectedObject.type) {
+                        case 'polygon':
+                        case 'rect':
+                        case 'circle':
+                        case 'triangle':
+                            this.shapeEditor = true;
+                            this.getFill();
+                            this.getStroke();
+                            this.getStrokeWidth();
+                            break;
+                        case 'i-text':
+                            this.textEditor = true;
+                            this.getLineHeight();
+                            this.getCharSpacing();
+                            this.getBold();
+                            this.getFontStyle();
+                            this.getFontSize();
+                            this.getFill();
+                            this.getStroke();
+                            this.getStrokeWidth();
+                            this.getTextDecoration();
+                            this.getTextAlign();
+                            this.getFontFamily();
+                            break;
+                        case 'image':
+                            break;
+                    }
+                }
+            },
+            'selection:cleared': (e) => {
+                this.selected = null;
+                this.resetPanels();
+            }
+        });
+
+        this.canvas.setWidth(this.size.width);
+    this.canvas.setHeight(this.size.height);
+    this.canva_state = true
+    console.log('handled')
+    
+  }
 
 
+   
+
+
+  ngAfterViewInit() {
+   
+    if (this.isEditor == true) {
+      
+    }
+}
   ngOnInit() {
-
+   
     this.auth.user.subscribe(data => {
       this.uid = data.uid
+      this.email = data.email
     })
-    var canvas = document.querySelector('#canvas')
-    this.canvas = new fabric.Canvas(canvas, {
-      hoverCursor: 'pointer',
-      selection: true,
-      selectionBorderColor: 'blue'
-    });
 
-    this.canvas.on({
-      'object:moving': (e) => {},
-      'object:modified': (e) => {},
-      'object:selected': (e) => {
+      
 
-        let selectedObject = e.target;
-        this.selected = selectedObject
-        selectedObject.hasRotatingPoint = true;
-        selectedObject.transparentCorners = false;
-        // selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
-
-        this.resetPanels();
-
-        if (selectedObject.type !== 'group' && selectedObject) {
-
-          this.getId();
-          this.getOpacity();
-
-          switch (selectedObject.type) {
-            case 'rect':
-            case 'circle':
-            case 'triangle':
-              this.figureEditor = true;
-              this.getFill();
-              break;
-            case 'i-text':
-              this.textEditor = true;
-              this.getLineHeight();
-              this.getCharSpacing();
-              this.getBold();
-              this.getFontStyle();
-              this.getFill();
-              this.getTextDecoration();
-              this.getTextAlign();
-              this.getFontFamily();
-              break;
-            case 'image':
-              console.log('image');
-              break;
-          }
-        }
-      },
-      'selection:cleared': (e) => {
-        this.selected = null;
-        this.resetPanels();
-      }
-    });
-
-    this.canvas.setWidth(this.size.width);
-    this.canvas.setHeight(this.size.height);
 
     // get references to the html canvas element & its context
     // this.canvas.on('mouse:down', (e) => {
@@ -406,7 +591,43 @@ export class AnnoncesComponent implements OnInit {
     this.dropdownListZones = [{
       item_id: 9070424,
       item_text: 'Dakar'
-    }, ];
+    },];
+    for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++){
+      console.log(this.NATIONALS_WEBSITES[i][2])
+      this.dropdownListNationalsWebsites.push({
+         item_id: this.NATIONALS_WEBSITES[i][3],
+         item_text: this.NATIONALS_WEBSITES[i][2]
+       }
+      );
+    }
+
+    for (let i = 0; i < this.INTERNATIONALS_WEBSITES.length; i++) {
+      
+      this.dropdownListInternationalsWebsites.push({
+        item_id: this.INTERNATIONALS_WEBSITES[i][3],
+        item_text: this.INTERNATIONALS_WEBSITES[i][2]
+      
+      }
+      );
+    }
+
+    for (let i = 0; i < this.SITES_ANNONCES.length; i++){
+      
+      this.dropdownListAdsWebsites.push({
+       item_id: this.SITES_ANNONCES[i][3],
+       item_text: this.SITES_ANNONCES[i][2]
+     }
+      );
+    }
+
+    for (let i = 0; i < this.APP_MOBILES.length; i++){
+      
+      this.dropdownListApps.push({
+        item_id: this.APP_MOBILES[i][3],
+        item_text: this.APP_MOBILES[i][2]
+      }
+      );
+    }
     this.dropdownSettingsAges = {
       singleSelection: false,
       idField: 'item_id',
@@ -451,14 +672,253 @@ export class AnnoncesComponent implements OnInit {
       searchPlaceholderText: 'Rechercher',
 
     };
+     this.dropdownSettingsNationalsWebsites = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
+     };
+       this.dropdownSettingsInternationalsWebsites = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
+       };
+       this.dropdownSettingsAdsWebsites = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: false,
+      searchPlaceholderText: 'Rechercher',
+
+       };
+       this.dropdownSettingsApps = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
+    };
     //setup front side canvas
- 
+    this.ads = this.adsService.getListAd(this.ad_group_id)
+    this.ads.forEach(child => {
+      console.log(child)
+      if (child.length > 0) {
+        this.number_ads = child.length
+        this.isNull = true
+      } else {
+        this.list_ad = false
+        this._init_ad = true
+        this.number_ads = "0"
+        this.isNull = false
+      }
 
+    })
+ this.buildForm();
 
+  }
+
+   buildForm() {
+    this.adForm = this.fb.group({
+      'name': ['', [
+        Validators.required,
+        Validators.name,
+      ]],
+      'finalUrls': ['', [
+        Validators.pattern('https?://.+'),
+        Validators.minLength(6),
+        Validators.maxLength(45),
+      ]],
+    
+    });
+
+    this.adForm.valueChanges.subscribe((data) => this.onValueChanged(data));
+    this.onValueChanged(); // reset validation messages
+  }
+  
+
+  // Updates validation state on form changes.
+  onValueChanged(data?: any) {
+    if (!this.adForm) { return; }
+    const form = this.adForm;
+    for (const field in this.formErrors) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'name' || field === 'finalUrls')) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.validationMessages[field];
+          if (control.errors) {
+            for (const key in control.errors) {
+              if (Object.prototype.hasOwnProperty.call(control.errors, key) ) {
+                this.formErrors[field] += `${(messages as {[key: string]: string})[key]} `;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  handleToggleAdGroupSettings() {
+    if(this.isCollapsed == false){
+      this.isCollapsed = true
+      this.icon_toggle = "icon-chevron-right"
+    }else{
+      this.isCollapsed = false
+      this.icon_toggle = 'icon-chevron-left'
+    }
+  }
+
+  handleToggleOptions() {
+    if(this.isOptions == false){
+      this.isOptions = true
+      this.icon_toggle_options = "icon-chevron-up"
+    }else{
+      this.isOptions = false
+      this.icon_toggle_options = 'icon-chevron-down'
+    }
+  }
+
+  handleTogglePlacement() {
+      this.isGender = true
+      this.isAge = true
+      this.isDevice = true
+    if(this.isPlacement == false){
+      this.isPlacement = true
+
+    }else{
+      this.isPlacement = false
+
+    }
+  }
+  handleToggleGender() {
+    
+      this.isAge = true
+      this.isPlacement = true
+      this.isDevice = true
+    if(this.isGender == false){
+      this.isGender = true
+
+    }else{
+      this.isGender = false
+
+    }
+  }
+
+  handleToggleAge() {
+       this.isGender = true
+
+      this.isPlacement = true
+      this.isDevice = true
+    if(this.isAge == false){
+      this.isAge = true
+
+    }else{
+      this.isAge = false
+
+    }
+  }
+  handleToggleDevice() {
+       this.isGender = true
+      this.isAge = true
+      this.isPlacement = true
+    
+    if(this.isDevice == false){
+      this.isDevice = true
+
+    }else{
+      this.isDevice = false
+
+    }
   }
 
   popperClick() {
 $('#popper').trigger('click')
+   
+  }
+  async toggleListAd() {
+    
+    this.isEditor = false
+    this.ads = this.adsService.getListAd(this.ad_group_id)
+    this.list_ad = true
+    this.currentEditor = false
+    this.isAdBlock = false
+   
+   /*  if (this.list_ad == true) {
+      this.list_ad = false
+      
+    } else {
+      this.list_ad = true
+    } */
+  }
+
+  toggleEditor() {
+    var self = this
+    this.currentEditor = false
+    this.isAdBlock = false
+    this.list_ad = false
+    /* if (this.list_ad == false) {
+      this.ads = this.adsService.getListAd(this.ad_group_id)
+      this.list_ad = true
+    }else{
+      this.list_ad = false
+    } */
+
+    
+    if (this.isEditor == false) {
+      this.isEditor = true
+      if (this.canva_state == false) {
+        self.isCreating  =true
+  
+     /*    this.isEditor = true
+         setTimeout(function(){ 
+         
+         self.resetPanels()
+         
+        }, 2000); */
+        setTimeout(function(){ 
+         
+          self.handleCanvas()
+          self.isCreating = false
+         
+        }, 2000);
+      } else {
+        self.isCreating = true
+         setTimeout(function(){ 
+         
+         self.canvas.clear()
+         
+         }, 2000);
+        setTimeout(function(){ 
+         
+         self.handleCanvas()
+         self.isCreating=false
+        }, 2000);
+       
+}
+      
+    } else {
+      this.isEditor = false
+    }
+   
    
   }
 
@@ -595,6 +1055,108 @@ $('#popper').trigger('click')
   }
 
 
+  onNationalsWebsitesSelect(item: any) {
+     this.nationals_errors = ''
+    this.nationals_websites.push(item)
+    console.log(this.nationals_websites)
+  }
+  onNationalsWebsitesSelectAll(items: any) {
+     this.nationals_errors = ''
+    this.nationals_websites = []
+    this.nationals_websites = items
+    console.log(this.nationals_websites);
+  }
+  onNationalsWebsitesDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.nationals_websites.length; i++) {
+      if (this.nationals_websites[i]['item_id'] == item.item_id) {
+        this.nationals_websites.splice(i, 1)
+      }
+    }
+    console.log(this.nationals_websites)
+
+  }
+  onNationalsWebsitesDeSelectAll() {
+    this.nationals_websites = []
+    console.log(this.nationals_websites)
+  }
+
+
+   onInternationalsWebsitesSelect(item: any) {
+    this.internationals_websites.push(item)
+    console.log(this.internationals_websites)
+  }
+  onInternationalsWebsitesSelectAll(items: any) {
+    
+    this.internationals_websites = []
+    this.internationals_websites = items
+    console.log(this.internationals_websites)
+  }
+  onInternationalsWebsitesDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.internationals_websites.length; i++) {
+      if (this.internationals_websites[i]['item_id'] == item.item_id) {
+        this.internationals_websites.splice(i, 1)
+      }
+    }
+
+
+  }
+  onInternationalsWebsitesDeSelectAll() {
+    this.internationals_websites = []
+   
+  }
+
+   onAdsWebsitesSelect(item: any) {
+    this.ads_websites.push(item)
+    console.log(this.ads_websites)
+  }
+  onAdsWebsitesSelectAll(items: any) {
+    this.ads_websites = []
+    this.ads_websites = items
+    console.log(this.ads_websites);
+    
+  }
+  onAdsWebsitesDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.ads_websites.length; i++) {
+      if (this.ads_websites[i]['item_id'] == item.item_id) {
+        this.ads_websites.splice(i, 1)
+      }
+    }
+    console.log(this.ads_websites)
+
+  }
+  onAdsWebsitesDeSelectAll() {
+    this.ads_websites = []
+    console.log(this.ads_websites)
+  }
+
+   onAppsSelect(item: any) {
+    this.apps.push(item)
+    console.log(this.apps)
+  }
+  onAppsSelectAll(items: any) {
+    this.apps = []
+    this.apps = items
+    console.log(this.apps);
+  }
+  onAppsDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.apps.length; i++) {
+      if (this.apps[i]['item_id'] == item.item_id) {
+        this.apps.splice(i, 1)
+      }
+    }
+    console.log(this.apps)
+
+  }
+  onAppsDeSelectAll() {
+    this.apps = []
+    console.log(this.apps)
+  }
+
+
 
   onDevicesSelect(item: any) {
     this.devices.push(item)
@@ -667,11 +1229,6 @@ $('#popper').trigger('click')
   }
 
 
-  changeSize(event: any) {
-    this.canvas.setWidth(this.size.width);
-    this.canvas.setHeight(this.size.height);
-  }
-
   //Block "Add text"
 
   addText() {
@@ -691,51 +1248,11 @@ $('#popper').trigger('click')
     this.canvas.add(text);
     this.selectItemAfterAdded(text);
     this.textString = '';
+     this.updateLayers();
   }
 
   //Block "Add images"
 
-  getImgPolaroid(event: any) {
-    let el = event.target;
-    fabric.Image.fromURL(el.src, (image) => {
-      image.set({
-        left: 10,
-        top: 10,
-        angle: 0,
-        padding: 10,
-        cornersize: 10,
-        hasRotatingPoint: true,
-        peloas: 12
-      });
-      image.setWidth(150);
-      image.setHeight(150);
-      this.extend(image, this.randomId());
-      this.canvas.add(image);
-      this.selectItemAfterAdded(image);
-    });
-  }
-
-  //Block "Upload Image"
-
-  addImageOnCanvas(url) {
-    if (url) {
-      fabric.Image.fromURL(url, (image) => {
-        image.set({
-          left: 10,
-          top: 10,
-          angle: 0,
-          padding: 10,
-          cornersize: 10,
-          hasRotatingPoint: true
-        });
-        image.setWidth(200);
-        image.setHeight(200);
-        this.extend(image, this.randomId());
-        this.canvas.add(image);
-        this.selectItemAfterAdded(image);
-      });
-    }
-  }
 
   readUrl(event) {
     if (event.target.files && event.target.files[0]) {
@@ -749,369 +1266,50 @@ $('#popper').trigger('click')
     }
   }
 
-  removeWhite(url) {
-    this.url = '';
-  };
-
-  //Block "Add figure"
-
-  addFigure(figure) {
-    let add: any;
-    switch (figure) {
-      case 'rectangle':
-        add = new fabric.Rect({
-          width: 200,
-          height: 100,
-          left: 10,
-          top: 10,
-          angle: 0,
-          fill: '#3f51b5'
-        });
-        break;
-      case 'square':
-        add = new fabric.Rect({
-          width: 100,
-          height: 100,
-          left: 10,
-          top: 10,
-          angle: 0,
-          fill: '#4caf50'
-        });
-        break;
-      case 'triangle':
-        add = new fabric.Triangle({
-          width: 100,
-          height: 100,
-          left: 10,
-          top: 10,
-          fill: '#2196f3'
-        });
-        break;
-      case 'circle':
-        add = new fabric.Circle({
-          radius: 50,
-          left: 10,
-          top: 10,
-          fill: '#ff5722'
-        });
-        break;
-    }
-    this.extend(add, this.randomId());
-    this.canvas.add(add);
-    this.selectItemAfterAdded(add);
+ handleErrorUrl(){
+   this.url_errors = []
+ }
+  handleNationals() {
+    this.nationals_errors = ''
   }
+  
+  handleImageModal() {
+    console.log(this.canvas.toDataURL('png'))
+    this.getWebsites().then(res => { 
+      if (res != 'error') {
+        $('#button_modal_init').trigger('click')
+        $('#ad_image').attr("src", this.canvas.toDataURL('png'))
+        this.ad_name = $("#ad_name").val()
+        
+      } else{
 
-  /*Canvas*/
-
-  cleanSelect() {
-    this.canvas.deactivateAllWithDispatch().renderAll();
-  }
-
-  selectItemAfterAdded(obj) {
-    this.canvas.deactivateAllWithDispatch().renderAll();
-    this.canvas.setActiveObject(obj);
-    
-  }
-
-  setCanvasFill() {
-    if (!this.props.canvasImage) {
-      this.canvas.backgroundColor = this.props.canvasFill;
-      this.canvas.renderAll();
-    }
-  }
-
-  extend(obj, id) {
-    obj.toObject = (function (toObject) {
-      return function () {
-        return fabric.util.object.extend(toObject.call(this), {
-          id: id
-        });
-      };
-    })(obj.toObject);
-  }
-
-  setCanvasImage() {
-    let self = this;
-    if (this.props.canvasImage) {
-      this.canvas.setBackgroundColor({
-        source: this.props.canvasImage,
-        repeat: 'repeat'
-      }, function () {
-        // self.props.canvasFill = '';
-        self.canvas.renderAll();
-      });
-    }
-  }
-
-  randomId() {
-    return Math.floor(Math.random() * 999999) + 1;
-  }
-
-  /*------------------------Global actions for element------------------------*/
-
-  getActiveStyle(styleName, object) {
-    object = object || this.canvas.getActiveObject();
-    if (!object) return '';
-
-    return (object.getSelectionStyles && object.isEditing) ?
-      (object.getSelectionStyles()[styleName] || '') :
-      (object[styleName] || '');
-      
-  }
-
-
-  setActiveStyle(styleName, value, object) {
-    object = object || this.canvas.getActiveObject();
-    if (!object) return;
-
-    if (object.setSelectionStyles && object.isEditing) {
-      var style = {};
-      style[styleName] = value;
-      object.setSelectionStyles(style);
-      object.setCoords();
-    } else {
-      object.set(styleName, value);
-    }
-
-    object.setCoords();
-    this.canvas.renderAll();
-  }
-
-
-  getActiveProp(name) {
-    var object = this.canvas.getActiveObject();
-    if (!object) return '';
-
-    return object[name] || '';
-  }
-
-  setActiveProp(name, value) {
-    var object = this.canvas.getActiveObject();
-    if (!object) return;
-    object.set(name, value).setCoords();
-    this.canvas.renderAll();
-  }
-
-  clone() {
-    let activeObject = this.canvas.getActiveObject(),
-      activeGroup = this.canvas.getActiveGroup();
-
-    if (activeObject) {
-      let clone;
-      switch (activeObject.type) {
-        case 'rect':
-          clone = new fabric.Rect(activeObject.toObject());
-          break;
-        case 'circle':
-          clone = new fabric.Circle(activeObject.toObject());
-          break;
-        case 'triangle':
-          clone = new fabric.Triangle(activeObject.toObject());
-          break;
-        case 'i-text':
-          clone = new fabric.IText('', activeObject.toObject());
-          break;
-        case 'image':
-          clone = fabric.util.object.clone(activeObject);
-          break;
       }
-      if (clone) {
-        clone.set({
-          left: 10,
-          top: 10
-        });
-        this.canvas.add(clone);
-        this.selectItemAfterAdded(clone);
+    })
+  }
+
+   handleModifiedImage() {
+    console.log(this.canvas.toDataURL('png'))
+    this.getWebsites().then(res => { 
+      if (res != 'error') {
+        $('#button_modal_modified').trigger('click')
+        $('#ad_image_modified').attr("src", this.canvas.toDataURL('png'))
+        $("#modified_name").text($("#ad_name").val())
+        
+      } else{
+
       }
-    }
+    })
   }
-
-  getId() {
-    this.props.id = this.canvas.getActiveObject().toObject().id;
-  }
-
-  setId() {
-    let val = this.props.id;
-    let complete = this.canvas.getActiveObject().toObject();
-    console.log(complete);
-    this.canvas.getActiveObject().toObject = () => {
-      complete.id = val;
-      return complete;
-    };
-  }
-
-  getOpacity() {
-    this.props.opacity = this.getActiveStyle('opacity', null) * 100;
-  }
-
-  setOpacity() {
-    this.setActiveStyle('opacity', parseInt(this.props.opacity) / 100, null);
-  }
-
-  getFill() {
-    this.props.fill = this.getActiveStyle('fill', null);
-  }
-
-  setFill() {
-    this.setActiveStyle('fill', this.props.fill, null);
-  }
-
-  getLineHeight() {
-    this.props.lineHeight = this.getActiveStyle('lineHeight', null);
-  }
-
-  setLineHeight() {
-    this.setActiveStyle('lineHeight', parseFloat(this.props.lineHeight), null);
-  }
-
-  getCharSpacing() {
-    this.props.charSpacing = this.getActiveStyle('charSpacing', null);
-  }
-
-  setCharSpacing() {
-    this.setActiveStyle('charSpacing', this.props.charSpacing, null);
-  }
-
-  getFontSize() {
-    this.props.fontSize = this.getActiveStyle('fontSize', null);
-  }
-
-  setFontSize() {
-    this.setActiveStyle('fontSize', parseInt(this.props.fontSize), null);
-  }
-
-  getBold() {
-    this.props.fontWeight = this.getActiveStyle('fontWeight', null);
-  }
-
-  setBold() {
-    this.props.fontWeight = !this.props.fontWeight;
-    this.setActiveStyle('fontWeight', this.props.fontWeight ? 'bold' : '', null);
-  }
-
-  getFontStyle() {
-    this.props.fontStyle = this.getActiveStyle('fontStyle', null);
-  }
-
-  setFontStyle() {
-    this.props.fontStyle = !this.props.fontStyle;
-    this.setActiveStyle('fontStyle', this.props.fontStyle ? 'italic' : '', null);
-  }
+  
 
 
-  getTextDecoration() {
-    this.props.TextDecoration = this.getActiveStyle('textDecoration', null);
-  }
-
-  setTextDecoration(value) {
-    let iclass = this.props.TextDecoration;
-    if (iclass.includes(value)) {
-      iclass = iclass.replace(RegExp(value, "g"), "");
-    } else {
-      iclass += ` ${value}`
-    }
-    this.props.TextDecoration = iclass;
-    this.setActiveStyle('textDecoration', this.props.TextDecoration, null);
-  }
-
-  hasTextDecoration(value) {
-    return this.props.TextDecoration.includes(value);
-  }
 
 
-  getTextAlign() {
-    this.props.textAlign = this.getActiveProp('textAlign');
-  }
-
-  setTextAlign(value) {
-    this.props.textAlign = value;
-    this.setActiveProp('textAlign', this.props.textAlign);
-  }
-
-  getFontFamily() {
-    this.props.fontFamily = this.getActiveProp('fontFamily');
-  }
-
-  setFontFamily() {
-    this.setActiveProp('fontFamily', this.props.fontFamily);
-  }
-
-  /*System*/
-
-
-  removeSelected() {
-    let activeObject = this.canvas.getActiveObject(),
-      activeGroup = this.canvas.getActiveGroup();
-
-    if (activeObject) {
-      this.canvas.remove(activeObject);
-      // this.textString = '';
-    } else if (activeGroup) {
-      let objectsInGroup = activeGroup.getObjects();
-      this.canvas.discardActiveGroup();
-      let self = this;
-      objectsInGroup.forEach(function (object) {
-        self.canvas.remove(object);
-      });
-    }
-  }
-
-  bringToFront() {
-    let activeObject = this.canvas.getActiveObject(),
-      activeGroup = this.canvas.getActiveGroup();
-
-    if (activeObject) {
-      activeObject.bringToFront();
-      // activeObject.opacity = 1;
-    } else if (activeGroup) {
-      let objectsInGroup = activeGroup.getObjects();
-      this.canvas.discardActiveGroup();
-      objectsInGroup.forEach((object) => {
-        object.bringToFront();
-      });
-    }
-  }
-
-  sendToBack() {
-    let activeObject = this.canvas.getActiveObject(),
-      activeGroup = this.canvas.getActiveGroup();
-
-    if (activeObject) {
-      activeObject.sendToBack();
-      // activeObject.opacity = 1;
-    } else if (activeGroup) {
-      let objectsInGroup = activeGroup.getObjects();
-      this.canvas.discardActiveGroup();
-      objectsInGroup.forEach((object) => {
-        object.sendToBack();
-      });
-    }
-  }
-
-  confirmClear() {
-    if (confirm('Are you sure?')) {
-      this.canvas.clear();
-    }
-  }
-
-  rasterize() {
-    if (!fabric.Canvas.supports('toDataURL')) {
-      alert('This browser doesn\'t provide means to serialize canvas to an image');
-    } else {
-      console.log(this.canvas.toDataURL('png'))
-      //window.open(this.canvas.toDataURL('png'));
-      var image = new Image();
-      image.src = this.canvas.toDataURL('png')
-      var w = window.open("");
-      w.document.write(image.outerHTML);
-    }
-  }
-
-
-  saveImage() {
-    
-   /*  var storage = firebase.storage(); */
-    var storage = firebase.app().storage("gs://comparez.appspot.com/");
+  saveAdOnFirebase() {
+    this.getWebsites().then(res => {
+      console.log(res)
+      if (res != 'error') {
+         var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
     this.ad_name=$('#ad_name').val()
     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
@@ -1123,9 +1321,172 @@ $('#popper').trigger('click')
     if (!fabric.Canvas.supports('toDataURL')) {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
-      /* console.log(this.canvas.toDataURL('png')) */
-      //window.open(this.canvas.toDataURL('png'));
+      var image_url = ""
+      var self = this
       this.ad_name = $("#ad_name").val()
+      var image_name = this.ad_name +  new Date().getTime().toString()
+      //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
+      //console.log(this.canvas.toDataURL('png'))
+      this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
+      //console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
+      imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+       console.log('ok')
+      
+       storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+   xhr.responseType = 'blob';
+   xhr.onload = function(event) {
+     var blob = xhr.response;
+   };
+   xhr.open('GET', url);
+         xhr.send();
+       
+        const image_content = JSON.stringify(self.canvas);
+        self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND).then(res => {
+          console.log('success')
+          console.log(res)
+        })
+     })
+       
+     }); 
+      
+       
+     
+     
+    
+    } 
+        
+      }
+    })
+  }
+
+
+  updateAdOnFirebase() {
+     var displayUrl = []
+     var finalUrls = []
+     var finalMobileUrls = []
+     var finalAppUrls = []
+
+   
+     for (let i = 0; i <this.FINAL_ARRAY_TO_SEND.length; i++){
+       if (this.FINAL_ARRAY_TO_SEND[i]['lib'] == 'finalUrls') {
+         displayUrl.push(this.FINAL_ARRAY_TO_SEND[i]['content'])
+       }
+     }
+    var name= $('#ad_name').val()
+    this.getWebsites().then(res => {
+      console.log(res)
+      if (res != 'error') {
+         var storage = firebase.app().storage("gs://comparez.appspot.com/");
+    var storageRef = storage.ref();
+    this.ad_name=$('#ad_name').val()
+    var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
+    var imagesRef = storageRef.child(imageRefStorage);
+    var metadata = {
+  contentType: 'image/png',
+};
+    
+    if (!fabric.Canvas.supports('toDataURL')) {
+      alert('This browser doesn\'t provide means to serialize canvas to an image');
+    } else {
+      var image_url = ""
+      var self = this
+      this.ad_name = $("#ad_name").val()
+      var image_name = this.ad_name +  new Date().getTime().toString()
+      //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
+      //console.log(this.canvas.toDataURL('png'))
+      this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
+      //console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
+      imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+       console.log('ok')
+      
+       storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+   xhr.responseType = 'blob';
+   xhr.onload = function(event) {
+     var blob = xhr.response;
+   };
+   xhr.open('GET', url);
+         xhr.send();
+       
+        const image_content = JSON.stringify(self.canvas);
+        self.adsService.updateAd(self.id_ad_firebase, {
+     
+      ad_name: name,
+      url_image: url,
+      image_content: image_content,
+      displayUrl: displayUrl[0],
+      finalUrls: displayUrl[0],
+      finalMobileUrls: finalMobileUrls,
+      finalAppUrls: finalAppUrls,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).then(res => {
+          console.log('success')
+      console.log(res)
+       Swal.fire({
+              title: 'Modification annonce',
+              text: 'Annonce modifiée avec succès',
+              type: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {}
+            })
+      
+        }).catch(err=>{
+           Swal.fire({
+              title: 'Modification annonce',
+              text: 'Erreur Service !',
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {}
+            })
+        
+        })
+     })
+       
+     }); 
+      
+       
+     
+     
+    
+    } 
+        
+      }
+    })
+  }
+
+  
+
+  saveImage() {
+    this.saveCanvasToJSON()
+    const image_content = JSON.stringify(this.canvas);
+   
+   /*  this.getWebsites().then(res => {
+      console.log(res)
+      if (res != 'error') {
+         var storage = firebase.app().storage("gs://comparez.appspot.com/");
+    var storageRef = storage.ref();
+    this.ad_name=$('#ad_name').val()
+    var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
+    var imagesRef = storageRef.child(imageRefStorage);
+    var metadata = {
+  contentType: 'image/png',
+};
+    
+    if (!fabric.Canvas.supports('toDataURL')) {
+      alert('This browser doesn\'t provide means to serialize canvas to an image');
+    } else {
+    
+      this.ad_name = $("#ad_name").val()
+      var image_name = this.ad_name +  new Date().getTime().toString()
       $('#ad_image').attr("src", this.canvas.toDataURL('png'))
       console.log(this.canvas.toDataURL('png'))
       this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
@@ -1135,70 +1496,1212 @@ $('#popper').trigger('click')
        console.log('Uploaded a base64 string!');
        
      }); 
-      this.adsService.addAd(this.ad_group_id, this.ad_name, imageRefStorage).then(res => {
+      
+      this.adsService.addAd(this.ad_group_id, this.ad_name, this.uid, imageRefStorage, image_content, this.FINAL_ARRAY_TO_SEND).then(res => {
         console.log('success')
+        console.log(res)
       })
        
      
      
     
-    }
+    } 
+        
+      }
+    })
+    */
+    
+    
+/* 
+   */
   }
+  setHttp(link) {
+    if (link.search(/^http[s]?\:\/\//) == -1) {
+        link = 'https://' + link;
+    }
+    return link;
+}
+  checkIfIsEmptyFinalUrls(): Promise<any> {
+    
+    return new Promise(resolve => {
+       var urls_destination = []
+      var urls = $('#finalUrls').val()
+      if (urls !== '') {
+            if (urls.includes(',')) {
+      var tab = urls.toString().split(',')
+      tab.pop()
+    
+      for (let i = 0; i < tab.length; i++) {
+        
+        console.log(`urls ${tab}`)
+        console.log(`actuelle url ${tab[i]}`)
+     
+        if (this.validURL(tab[i]) == true) {
+          console.log(tab[i] + ' est valide')
+          var url = this.setHttp(tab[i])
+          urls_destination.push(url)
+          this.FINAL_ARRAY_TO_SEND.push({
+          "lib": "finalUrls",
+          "content": urls_destination
+          })
+           resolve('ok')
+        } else {
+          this.url_errors.push({
+            "url": tab[i],
+            "text": "est une url invalide"
+          })
+          console.log(tab[i] + " est invalide")
+          resolve('error')
+        }
+    }
+    } else {
+              var check = this.validURL(urls)
+             
+      
+      if (check === true) {
+        console.log(urls + " valide")
+          var url = this.setHttp(urls)
+          urls_destination.push(url)
+         this.FINAL_ARRAY_TO_SEND.push({
+          "lib": "finalUrls",
+          "content": urls_destination
+         })
+         resolve('ok')
+      } else {
+        this.url_errors.push({
+          "url": urls,
+          "text": "est une url invalide"
+        })
+        console.log(urls + ' invalide, vérifier les urls renseignées')
+        resolve('error')
+      }
+    }
+      }else{
+         this.url_errors.push({
+          "url": "",
+          "text": "Url de destination ne peut être vide"
+        })
+      }
+      
 
+
+
+   })
+    
+  }
   
  
   
-
-  rasterizeSVG() {
-    console.log(this.canvas.toSVG())
-    // window.open(
-    //   'data:image/svg+xml;utf8,' +
-    //   encodeURIComponent(this.canvas.toSVG()));
-    // console.log(this.canvas.toSVG())
-    // var image = new Image();
-    // image.src = this.canvas.toSVG()
-    var w = window.open("");
-    w.document.write(this.canvas.toSVG());
-  };
-
-
-  saveCanvasToJSON() {
-    let json = JSON.stringify(this.canvas);
-    localStorage.setItem('Kanvas', json);
-    console.log('json');
-    console.log(json);
-
+  checkIfIsEmptyNationals(array): Promise<any> {
+    return new Promise(resolve => {
+      if (array.length != 0) {
+        this.FINAL_ARRAY_TO_SEND.push({
+          "lib": "Sites Nationaux",
+          "content": array
+          })
+          resolve(this.FINAL_ARRAY_TO_SEND)
+      } else {
+        resolve('error')
+      }
+      
+    })
+  }
+    checkIfIsEmptyInternationals(array) {
+    if (array.length != 0) {
+      this.FINAL_ARRAY_TO_SEND.push({
+        "lib": "Sites Internationaux",
+        "content": array
+        })
+    }
+    return this.FINAL_ARRAY_TO_SEND
+    }
+  
+    checkIfIsEmptyAdsWebsites(array) {
+    if (array.length != 0) {
+      this.FINAL_ARRAY_TO_SEND.push({
+        "lib": "Site d'annonces",
+        "content": array
+        })
+    }
+    return this.FINAL_ARRAY_TO_SEND
+    }
+  
+    checkIfIsEmptyMobileApps(array) {
+    if (array.length != 0) {
+      this.FINAL_ARRAY_TO_SEND.push({
+        "lib": "Application Mobiles",
+        "content": array
+        })
+    }
+    return this.FINAL_ARRAY_TO_SEND
   }
 
-  loadCanvasFromJSON() {
-    let CANVAS = localStorage.getItem('Kanvas');
-    console.log('CANVAS');
-    console.log(CANVAS);
-
-    // and load everything from the same json
-    this.canvas.loadFromJSON(CANVAS, () => {
-      console.log('CANVAS untar');
-      console.log(CANVAS);
-
-      // making sure to render canvas at the end
-      this.canvas.renderAll();
-
-      // and checking if object's "name" is preserved
-      console.log('this.canvas.item(0).name');
-      console.log(this.canvas);
-    });
-
-  };
-
-  rasterizeJSON() {
-    this.json = JSON.stringify(this.canvas, null, 2);
+  
+  getWebsites(): Promise<any> {
+    return new Promise(resolve => {
+      
+      this.FINAL_ARRAY_TO_SEND = []
+     
+      var mobile_apps = this.apps
+   this.checkIfIsEmptyFinalUrls().then(res => {
+            if (res != 'error') {
+       
+              this.checkIfIsEmptyMobileApps(mobile_apps)
+              resolve(res)
+            }else{
+              
+              resolve('error')
+              
+            }
+            })
+    })
+  
+    
+   
   }
 
-  resetPanels() {
-    this.textEditor = false;
-    this.imageEditor = false;
-    this.figureEditor = false;
+
+  /*   getWebsites(): Promise<any> {
+    return new Promise(resolve => {
+      
+      this.FINAL_ARRAY_TO_SEND = []
+      var nationals = this.nationals_websites
+      var internationals = this.internationals_websites
+      var ad_sites = this.ads_websites
+      var mobile_apps = this.apps
+      this.checkIfIsEmptyNationals(nationals).then(res => {
+        if (res != 'error') {
+          this.checkIfIsEmptyFinalUrls().then(res => {
+            if (res != 'error') {
+              this.checkIfIsEmptyInternationals(internationals)
+              this.checkIfIsEmptyAdsWebsites(ad_sites)
+              this.checkIfIsEmptyMobileApps(mobile_apps)
+              resolve(res)
+            }else{
+              
+              resolve('error')
+              
+            }
+            })
+           
+         
+        } else {
+          this.nationals_errors = "Site national obligatoire !"
+          resolve('error')
+        }
+      })
+    })
+  
+    
+   
+  } */
+  public onSubmitCustomer() {
+    alert('Your information has been submitted successfully. :-)\n\n' + JSON.stringify(this.model))
   }
+  
+
+  handleKeyPress(key, event): void {
+        switch (key) {
+            case 37:
+                this.moveSelectedObject(this.Direction.LEFT, event.shiftKey ? this.DirectionSteps.SHIFT : this.DirectionSteps.REGULAR);
+                event.preventDefault();
+                break;
+            case 38:
+                this.moveSelectedObject(this.Direction.UP, event.shiftKey ? this.DirectionSteps.SHIFT : this.DirectionSteps.REGULAR);
+                event.preventDefault();
+                break;
+            case 39:
+                this.moveSelectedObject(this.Direction.RIGHT, event.shiftKey ? this.DirectionSteps.SHIFT : this.DirectionSteps.REGULAR);
+                event.preventDefault();
+                break;
+            case 40:
+                this.moveSelectedObject(this.Direction.DOWN, event.shiftKey ? this.DirectionSteps.SHIFT : this.DirectionSteps.REGULAR);
+                event.preventDefault();
+                break;
+            case 46:
+                this.removeSelected();
+                event.preventDefault();
+                break;
+            case 65:
+                if (event.ctrlKey) {
+                    this.selectAllObjects();
+                }
+                event.preventDefault();
+                break;
+        }
+    }
+
+    /**
+     * Select all objects/layers in canvas
+     *
+     */
+    selectAllObjects(): void {
+        const objs = this.canvas.getObjects().map(function (o) {
+            return o.set('active', true);
+        });
+
+        const group = new fabric.Group(objs, {
+            originX: 'center',
+            originY: 'center'
+        });
+
+        this.canvas._activeObject = null;
+        this.canvas.setActiveGroup(group.setCoords()).renderAll();
+    }
+
+    /**
+     * Move the current selected object
+     *
+     * @param direction
+     * @param value
+     */
+    moveSelectedObject(direction, value): void {
+        const activeGroup = this.canvas.getActiveGroup();
+        const activeObject = this.canvas.getActiveObject();
+
+        if (activeObject) {
+            switch (direction) {
+                case this.Direction.LEFT:
+                    activeObject.setLeft(activeObject.getLeft() - value);
+                    break;
+                case this.Direction.UP:
+                    activeObject.setTop(activeObject.getTop() - value);
+                    break;
+                case this.Direction.RIGHT:
+                    activeObject.setLeft(activeObject.getLeft() + value);
+                    break;
+                case this.Direction.DOWN:
+                    activeObject.setTop(activeObject.getTop() + value);
+                    break;
+            }
+
+            activeObject.setCoords();
+            this.canvas.renderAll();
+        } else if (activeGroup) {
+            switch (direction) {
+                case this.Direction.LEFT:
+                    activeGroup.setLeft(activeGroup.getLeft() - value);
+                    break;
+                case this.Direction.UP:
+                    activeGroup.setTop(activeGroup.getTop() - value);
+                    break;
+                case this.Direction.RIGHT:
+                    activeGroup.setLeft(activeGroup.getLeft() + value);
+                    break;
+                case this.Direction.DOWN:
+                    activeGroup.setTop(activeGroup.getTop() + value);
+                    break;
+            }
+
+            activeGroup.setCoords();
+            this.canvas.renderAll();
+        }
+    }
+
+    /**
+     * Recalculate layer list for layer panel
+     *
+     */
+    updateLayers(): void {
+        this.layers = this.canvas.getObjects();
+    }
+
+    /**
+     * Set layer as active one
+     *
+     * @param layer
+     */
+    selectLayer(layer: any): void {
+        this.canvas.setActiveObject(layer);
+    }
+
+    /**
+     * Show/Hide layer
+     *
+     * @param layer
+     */
+    toggleLayer(layer: any): void {
+        layer.visible = !layer.visible;
+    }
+
+    /**
+     * Locks/Unlocks layer
+     *
+     */
+    lockLayer(): void {
+        const layer = this.canvas.getActiveObject();
+        layer.evented = !layer.evented;
+        layer.selectable = !layer.selectable;
+    }
+
+    /**
+     * Updates layer index
+     *
+     */
+    updateLayerSort(): void {
+        this.layers.forEach((layer, ind) => {
+            this.canvas.moveTo(layer, ind);
+        });
+    }
+
+    /*------------------------Block elements------------------------*/
+
+    /**
+     * Size - set canvas dimensions
+     *
+     * @param event
+     */
+    changeSize(event: any): void {
+        this.canvas.setWidth(this.size.width);
+        this.canvas.setHeight(this.size.height);
+    }
+  
+  oppendCurrentEditor():Promise <any>{
+    return new Promise(resolve => {
+      if (this.currentEditor == true) {
+       
+        this.currentEditor = false
+        this.iconEditor = "icon-chevron-down"
+      
+      } else {
+        
+     
+         this.currentEditor = true
+        this.iconEditor = "icon-chevron-up"
+        resolve("ok")
+      }
+    })
+  }
+  
+  async toggleCurrentEditor() {
+    var self = this
+    self.isEditor = false
+      if (this.currentEditor == true) {
+       
+        this.currentEditor = false
+        this.iconEditor = "icon-chevron-down"
+      
+      } else {
+        
+    
+         this.currentEditor = true
+     this.iconEditor = "icon-chevron-up"
+    
+    
+   
+        if (this.canva_state == false) {
+       self.isCreating= true
+       setTimeout(function(){ 
+       
+       self.handleCanvas()
+       
+       }, 2000);
+        setTimeout(function(){ 
+        self.loadCanvasFromJSON()
+        self.isCreating = false
+        }, 2000);
+        } else {
+          self.isCreating = true
+          setTimeout(function () { 
+          
+       self.canvas.clear()
+        }, 2000);
+       setTimeout(function(){ 
+         
+         self.handleCanvas()
+         
+       }, 2000);
+       setTimeout(function(){ 
+        
+         self.loadCanvasFromJSON()
+         self.isCreating  =false
+        }, 2000);
+    }
+     /*  this.isCreating = false */
+       
+     /*  this.addText()
+        this.removeSelected() */
+      }
+   
+    
+ 
+   
+    }
+    
+ /*    if (this.currentEditor == true) {
+      this.currentEditor = false
+      this.iconEditor = "icon-chevron-down"
+      
+    }else{
+      this.currentEditor = true
+      this.iconEditor = "icon-chevron-up"
+
+      
+    
+    } */
+  
+
+    /**
+     * Size - apply preset to canvas
+     *
+     * @param event
+     */
+    changeToPreset(event: any): void {
+        this.size.width = this.selectedSize.width;
+        this.size.height = this.selectedSize.height;
+        this.changeSize(event);
+    }
+
+    /**
+     * Text - add text element
+     *
+     */
+   /*  addText(): void {
+        const textString = this.textString;
+        const text = new fabric.IText(textString, {
+            left: 10,
+            top: 10,
+            fontFamily: 'Arial',
+            angle: 0,
+            fill: '#000000',
+            scaleX: 1,
+            scaleY: 1,
+            fontWeight: '',
+            hasRotatingPoint: true,
+            title: textString
+        });
+        this.extend(text, this.randomId());
+        this.canvas.add(text);
+        this.selectItemAfterAdded(text);
+        this.textString = '';
+
+        this.updateLayers();
+    } */
+
+    /**
+     * Image - Add a dom image to canvas
+     *
+     * @param event
+     */
+    getImgPolaroid(event: any): void {
+        const el = event.target;
+        fabric.Image.fromURL(el.src, (image) => {
+            image.set({
+                left: 10,
+                top: 10,
+                angle: 0,
+                padding: 10,
+                cornersize: 10,
+                hasRotatingPoint: true,
+                title: el.title,
+                lockUniScaling: true
+            });
+            image.scaleToWidth(150);
+            image.scaleToHeight(150);
+            this.extend(image, this.randomId());
+            this.canvas.add(image);
+            this.selectItemAfterAdded(image);
+        });
+
+        this.updateLayers();
+    }
+
+    /**
+     * Image - Add an external image to canvas
+     *
+     * @param url
+     */
+    addImageOnCanvas(url): void {
+        if (url) {
+            fabric.Image.fromURL(url, (image) => {
+                image.set({
+                    left: 10,
+                    top: 10,
+                    angle: 0,
+                    padding: 10,
+                    cornersize: 10,
+                    hasRotatingPoint: true,
+                    title: this.urlName
+                });
+                image.scaleToWidth(Math.round(this.size.width / 2));
+                this.extend(image, this.randomId());
+                this.canvas.add(image);
+                this.selectItemAfterAdded(image);
+            });
+
+            this.updateLayers();
+        }
+    }
+
+   
+    /**
+     * Image - Clears custom user image selection/file handler
+     *
+     * @param url
+     */
+    removeWhite(url): void {
+        this.url = '';
+    };
+
+
+    /**
+     * Shape - Add custom shape
+     *
+     * @param shape - can be rectangle, square, triangle, circle, star
+     */
+    addFigure(shape): void {
+        let add: any;
+        switch (shape) {
+            case 'rectangle':
+                add = new fabric.Rect({
+                    width: 200, height: 100, left: 10, top: 10, angle: 0,
+                    fill: '#3f51b5',
+                    title: 'Rectangle'
+                });
+                break;
+            case 'square':
+                add = new fabric.Rect({
+                    width: 100, height: 100, left: 10, top: 10, angle: 0,
+                    fill: '#4caf50',
+                    title: 'Carrée'
+                });
+                break;
+            case 'triangle':
+                add = new fabric.Triangle({
+                    width: 100, height: 100, left: 10, top: 10, fill: '#2196f3', title: 'triangle'
+                });
+                break;
+            case 'circle':
+                add = new fabric.Circle({
+                    radius: 50, left: 10, top: 10, fill: '#ff5722', title: 'Cercle'
+                });
+                break;
+            case 'star':
+                add = new fabric.Polygon([
+                    {x: 350, y: 75},
+                    {x: 380, y: 160},
+                    {x: 470, y: 160},
+                    {x: 400, y: 215},
+                    {x: 423, y: 301},
+                    {x: 350, y: 250},
+                    {x: 277, y: 301},
+                    {x: 303, y: 215},
+                    {x: 231, y: 161},
+                    {x: 321, y: 161}
+                    ], {
+                    top: 10,
+                    left: 10,
+                    fill: '#ff5722',
+                    stroke: '#ff5722',
+                    strokeWidth: 2,
+                    title: 'Polygone'
+                });
+                break;
+        }
+
+        this.extend(add, this.randomId());
+        this.canvas.add(add);
+        this.selectItemAfterAdded(add);
+        this.updateLayers();
+    }
+
+
+    // CANVAS ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Canvas - clear current selection
+     */
+    cleanSelect(): void {
+        this.canvas.deactivateAllWithDispatch().renderAll();
+        this.updateLayers();
+    }
+
+    /**
+     * Canvas - select item
+     *
+     * @param obj
+     */
+    selectItemAfterAdded(obj): void {
+        this.canvas.deactivateAllWithDispatch().renderAll();
+        this.canvas.setActiveObject(obj);
+    }
+
+    /**
+     * Canvas - update background color
+     *
+     */
+    setCanvasFill(): void {
+        if (!this.props.canvasImage) {
+            this.canvas.backgroundColor = this.props.canvasFill;
+            this.canvas.renderAll();
+        }
+    }
+
+    /**
+     * Helper
+     *
+     * @param obj
+     * @param id
+     */
+    extend(obj, id): void {
+        obj.toObject = (function (toObject) {
+            return function () {
+                return fabric.util.object.extend(toObject.call(this), {
+                    id: id
+                });
+            };
+        })(obj.toObject);
+    }
+
+    /**
+     * Canvas - update background image
+     *
+     */
+    setCanvasImage(): void {
+        const self = this;
+        if (this.props.canvasImage) {
+            this.canvas.setBackgroundColor({source: this.props.canvasImage, repeat: 'repeat'}, function () {
+                self.canvas.renderAll();
+            });
+        }
+
+        this.updateLayers();
+    }
+
+    /**
+     * Helper - Generates a random id, no dupe checks
+     *
+     * @returns {number}
+     */
+  randomId(): number {
+  
+  /*   if (this.canva_state == false) {
+          this.handleCanvas()
+    } */
+        return Math.floor(Math.random() * 999999) + 1;
+    }
+
+
+    // ELEMENTS //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Returns styleName from object
+     *
+     * @param styleName
+     * @param object
+     * @returns {any}
+     */
+    getActiveStyle(styleName, object): any {
+        object = object || this.canvas.getActiveObject();
+        if (!object) {
+            return '';
+        }
+
+        return (object.getSelectionStyles && object.isEditing)
+            ? (object.getSelectionStyles()[styleName] || '')
+            : (object[styleName] || '');
+    }
+
+    /**
+     * Sets styleName to given value
+     *
+     * @param styleName
+     * @param value
+     * @param object
+     */
+    setActiveStyle(styleName, value, object): void {
+        object = object || this.canvas.getActiveObject();
+        if (!object) {
+            return;
+        }
+
+        if (object.setSelectionStyles && object.isEditing) {
+            const style = {};
+            style[styleName] = value;
+            object.setSelectionStyles(style);
+            object.setCoords();
+        } else {
+            object.set(styleName, value);
+        }
+
+        object.setCoords();
+        this.canvas.renderAll();
+    }
+
+    /**
+     * Get property for active object
+     *
+     * @param name
+     * @returns {any}
+     */
+    getActiveProp(name): any {
+        const object = this.canvas.getActiveObject();
+        if (!object) {
+            return '';
+        }
+        return object[name] || '';
+    }
+
+    /**
+     * Set property for active object
+     *
+     * @param name
+     * @param value
+     */
+    setActiveProp(name, value): void {
+        const object = this.canvas.getActiveObject();
+        if (!object) {
+            return;
+        }
+        object.set(name, value).setCoords();
+        this.canvas.renderAll();
+    }
+
+    /**
+     * Clones the currently active object and sets the close as active
+     *
+     */
+    clone(): void {
+        const activeObject = this.canvas.getActiveObject(),
+            activeGroup = this.canvas.getActiveGroup();
+
+        if (activeObject) {
+            let clone;
+            switch (activeObject.type) {
+                case 'rect':
+                    clone = new fabric.Rect(activeObject.toObject());
+                    break;
+                case 'circle':
+                    clone = new fabric.Circle(activeObject.toObject());
+                    break;
+                case 'triangle':
+                    clone = new fabric.Triangle(activeObject.toObject());
+                    break;
+                case 'polygon':
+                    clone = new fabric.Polygon(activeObject.toObject());
+                    break;
+                case 'i-text':
+                    clone = new fabric.IText('', activeObject.toObject());
+                    break;
+                case 'image':
+                    clone = fabric.util.object.clone(activeObject);
+                    break;
+            }
+            if (clone) {
+                  clone.set({left: 10, top: 10, title: 'Element cloné ' + activeObject.title});
+                this.canvas.add(clone);
+                this.selectItemAfterAdded(clone);
+            }
+
+            this.updateLayers();
+        }
+    }
+
+
+    getId(): void {
+        this.props.id = this.canvas.getActiveObject().toObject().id;
+    }
+
+    setId(): void {
+        const val = this.props.id;
+        const complete = this.canvas.getActiveObject().toObject();
+        // console.log(complete);
+        this.canvas.getActiveObject().toObject = () => {
+            complete.id = val;
+            return complete;
+        };
+    }
+
+    getTitle(): void {
+        this.props.title = this.getActiveProp('title');
+    }
+
+    setTitle(): void {
+        this.setActiveProp('title', this.props.title);
+    }
+
+    getOpacity(): void {
+        this.props.opacity = this.getActiveStyle('opacity', null) * 100;
+    }
+
+    setOpacity(): void {
+        this.setActiveStyle('opacity', parseInt(this.props.opacity, 10) / 100, null);
+    }
+
+    getFill(): void {
+        this.props.fill = this.getActiveStyle('fill', null);
+    }
+
+    setFill(): void {
+        this.setActiveStyle('fill', this.props.fill, null);
+    }
+
+    getStroke(): void {
+        this.props.stroke = this.getActiveStyle('stroke', null);
+    }
+
+    setStroke(): void {
+        this.setActiveStyle('stroke', this.props.stroke, null);
+    }
+
+    getStrokeWidth(): void {
+        this.props.strokeWidth = this.getActiveStyle('strokeWidth', null);
+    }
+
+    setStrokeWidth(): void {
+        this.setActiveStyle('strokeWidth', this.props.strokeWidth, null);
+    }
+
+    getLineHeight(): void {
+        this.props.lineHeight = this.getActiveStyle('lineHeight', null);
+    }
+
+    setLineHeight(): void {
+        this.setActiveStyle('lineHeight', parseFloat(this.props.lineHeight), null);
+    }
+
+    getCharSpacing(): void {
+        this.props.charSpacing = this.getActiveStyle('charSpacing', null);
+    }
+
+    setCharSpacing(): void {
+        this.setActiveStyle('charSpacing', this.props.charSpacing, null);
+    }
+
+    getFontSize(): void {
+        this.props.fontSize = this.getActiveStyle('fontSize', null);
+    }
+
+    setFontSize(): void {
+        this.setActiveStyle('fontSize', parseInt(this.props.fontSize, 10), null);
+    }
+
+    getBold(): void {
+        this.props.fontWeight = this.getActiveStyle('fontWeight', null);
+    }
+
+    setBold(): void {
+        this.props.fontWeight = !this.props.fontWeight;
+        this.setActiveStyle('fontWeight', this.props.fontWeight ? 'bold' : '', null);
+    }
+
+    getFontStyle(): void {
+        this.props.fontStyle = this.getActiveStyle('fontStyle', null);
+    }
+
+    setFontStyle(): void {
+        this.props.fontStyle = !this.props.fontStyle;
+        this.setActiveStyle('fontStyle', this.props.fontStyle ? 'italic' : '', null);
+    }
+
+    setWebfont(): void {
+        this.props.fontSize = this.font.size;
+        this.setActiveStyle('fontSize', parseInt(this.props.fontSize, 10), null);
+        this.props.fontFamily = this.font.family;
+        this.setActiveProp('fontFamily', this.props.fontFamily);
+    }
+
+    getTextDecoration(): void {
+        this.props.TextDecoration = this.getActiveStyle('textDecoration', null);
+    }
+
+    setTextDecoration(value): void {
+        let iclass = this.props.TextDecoration;
+        if (iclass.includes(value)) {
+            iclass = iclass.replace(RegExp(value, 'g'), '');
+        } else {
+            iclass += ` ${value}`;
+        }
+        this.props.TextDecoration = iclass;
+        this.setActiveStyle('textDecoration', this.props.TextDecoration, null);
+    }
+
+    hasTextDecoration(value): void {
+        return this.props.TextDecoration.includes(value);
+    }
+
+    getTextAlign(): void {
+        this.props.textAlign = this.getActiveProp('textAlign');
+    }
+
+    setTextAlign(value): void {
+        this.props.textAlign = value;
+        this.setActiveProp('textAlign', this.props.textAlign);
+    }
+
+    getFontFamily(): void {
+        this.props.fontFamily = this.getActiveProp('fontFamily');
+    }
+
+    setFontFamily(): void {
+        this.setActiveProp('fontFamily', this.props.fontFamily);
+    }
+
+    setFillColor(swatch: any): void {
+        this.palettes.selected = swatch;
+        this.props.fill = swatch.key;
+        this.setFill();
+    }
+
+    // SYSTEM ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Remove currently selected element from canvas
+     *
+     */
+    removeSelected(): void {
+        const activeObject = this.canvas.getActiveObject(),
+            activeGroup = this.canvas.getActiveGroup();
+
+        if (activeObject) {
+            this.canvas.remove(activeObject);
+        } else if (activeGroup) {
+            const objectsInGroup = activeGroup.getObjects();
+            this.canvas.discardActiveGroup();
+            const self = this;
+            objectsInGroup.forEach(function (object) {
+                self.canvas.remove(object);
+            });
+        }
+
+        this.updateLayers();
+    }
+
+    /**
+     * Send active object to front
+     *
+     */
+    bringToFront(): void {
+        const activeObject = this.canvas.getActiveObject(),
+            activeGroup = this.canvas.getActiveGroup();
+
+        if (activeObject) {
+            activeObject.bringToFront();
+        } else if (activeGroup) {
+            const objectsInGroup = activeGroup.getObjects();
+            this.canvas.discardActiveGroup();
+            objectsInGroup.forEach((object) => {
+                object.bringToFront();
+            });
+        }
+    }
+
+    /**
+     * Send active object to back
+     *
+     */
+    sendToBack(): void {
+        const activeObject = this.canvas.getActiveObject(),
+            activeGroup = this.canvas.getActiveGroup();
+
+        if (activeObject) {
+            activeObject.sendToBack();
+            // activeObject.opacity = 1;
+        } else if (activeGroup) {
+            const objectsInGroup = activeGroup.getObjects();
+            this.canvas.discardActiveGroup();
+            objectsInGroup.forEach((object) => {
+                object.sendToBack();
+            });
+        }
+    }
+
+    /**
+     * Handle canvas reset/clear
+     *
+     */
+    confirmClear(): void {
+        if (confirm('Voulez vous vraiment tout éffacer ?')) {
+            this.canvas.clear();
+        }
+    }
+
+
+    handleDragStart(event): boolean {
+        this.dragObject = event.target;
+        return false;
+    }
+
+    handleDragOverCanvas(event): boolean {
+        event.stopPropagation();
+        return false; // prevenDefault;
+    }
+
+    /**
+     *
+     * @param event
+     */
+    handleDropOnCanvas(event): boolean {
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+
+        const el = this.dragObject;
+        fabric.Image.fromURL(el.src, (image) => {
+            image.set({
+                originX: 'center',
+                originY: 'center',
+                left: event.layerX,
+                top: event.layerY,
+                angle: 0,
+                padding: 10,
+                cornersize: 10,
+                hasRotatingPoint: true,
+                title: el.title,
+                lockUniScaling: true
+            });
+            image.scaleToWidth(150);
+            image.scaleToHeight(150);
+            this.extend(image, this.randomId());
+            this.canvas.add(image);
+            this.selectItemAfterAdded(image);
+        });
+
+        this.updateLayers();
+        this.dragObject = null;
+        return false;
+    }
+
+    /**
+     * Rasterize PNG
+     *
+     */
+    rasterize(): void {
+        if (!fabric.Canvas.supports('toDataURL')) {
+            alert('Votre navigateur ne supporte pas cette opération.');
+        } else {
+            // chrome workaround: https://stackoverflow.com/a/45700813
+            const _w = window.open();
+            _w.document.write('<iframe src="' + this.canvas.toDataURL('png') +
+                '" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;"' +
+                'allowfullscreen></iframe>');
+        }
+    }
+
+    /**
+     * Rasterize SVG
+     *
+     */
+    rasterizeSVG(): void {
+        // chrome workaround: https://stackoverflow.com/a/45700813
+        const _w = window.open();
+        _w.document.write('<iframe src="data:image/svg+xml;utf8,' + encodeURIComponent(this.canvas.toSVG()) +
+            '" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;"' +
+            ' allowfullscreen></iframe>');
+    };
+
+
+    /**
+     * Stringify canvas objects and save in localStorage
+     *
+     */
+    saveCanvasToJSON(): void {
+        const json = JSON.stringify(this.canvas);
+        localStorage.setItem('ffFabricQuicksave', json);
+    }
+
+    /**
+     * Load canvas from JSON data
+     *
+     */
+ loadCanvasFromJSON(): void {
+      
+        const CANVAS = localStorage.getItem('ffFabricQuicksave');
+    console.log(typeof(CANVAS))
+    console.log(typeof(this.currentCanvasContent))
+        // and load everything from the same json
+       
+        this.canvas.loadFromJSON(this.currentCanvasContent, () => {
+
+            // making sure to render canvas at the end
+            this.canvas.renderAll();
+
+            // TODO: Retrieve additional data and bind accordingly
+            console.log(this.canvas);
+        });
+
+    };
+
+    /**
+     * Stringify canvas objects
+     *
+     */
+    rasterizeJSON(): void {
+        this.json = JSON.stringify(this.canvas, null, 2);
+    }
+
+    removeSelectedColorSwatch(): void {
+        if (this.palettes.selected.type === undefined) {
+            const _id = this.palettes.selected.id;
+            this.palettes.custom = this.palettes.custom.filter(function (swatch) {
+                return swatch.id !== _id;
+            });
+            this.savePalette();
+        }
+    }
+
+    addToCustomPalette(type: string): void {
+        switch (type) {
+            case 'fill':
+                this.palettes.custom.push({
+                    key: this.props.fill,
+                    value: this.props.fill,
+                    id: this.palettes.custom.length
+                });
+                break;
+            case 'stroke':
+                this.palettes.custom.push({
+                    key: this.props.stroke,
+                    value: this.props.stroke,
+                    id: this.palettes.custom.length
+                });
+                break;
+        }
+        this.savePalette();
+    }
+
+    savePalette(): void {
+        const json = JSON.stringify(this.palettes.custom);
+        localStorage.setItem('ffFabricCP', json);
+    }
+
+    loadPalette(): void {
+        const palettes = localStorage.getItem('ffFabricCP');
+        this.palettes.custom = palettes === null ? [] : JSON.parse(palettes);
+    }
+
+    updateColorPresets(presets) {
+        // Update
+    }
+
+    /**
+     * Reset panel visibility
+     *
+     */
+    resetPanels() {
+        this.textEditor = false;
+        this.imageEditor = false;
+        this.shapeEditor = false;
+    }
+
+    /** HELPERS ***********************/
+    componentToHex(c): string {
+        const hex = c.toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    }
+
+    rgbToHex(r, g, b): string {
+        return '#' + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+    }
+
+    hexToRgb(hex): any {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
 
   triggerText() {
     this.addText()
@@ -1265,9 +2768,242 @@ $('#popper').trigger('click')
    
     return AspectRatio;
 }
-  
 
+  get pattern() {
+    return this.adForm.get('pattern');
+  }
+ 
+  onChangePattern() {
+    this.pattern.patchValue(this.pattern.value);
+  }
+ 
+
+  validURL(str) {
+  var pattern = new RegExp('^(https:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+  }
+  
+   isUrl(s) {
+   var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+   return regexp.test(s);
+}
   //Block "Size"
 
+  changeAdStatus(id: string, adgroup_id: string, ad_id: string, last_status: string) {
+    Swal.fire({
+      title: "Status annonce",
+      text: "Voulez vous modifier le status de votre annonce ?",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, modifier!'
+    }).then((result) => {
+      if (result.value) {
+        /*  */
+        this.isCreating = true
+        this.http.post('http://127.0.0.1:5000/changeAdStatus', {
+          'ad_group_id': adgroup_id,
+          'ad_id': ad_id,
+            'last_status': last_status
+          })
 
+          .subscribe(
+            res => {
+              console.log(res)
+
+              this.adsService.updateAd(id, {
+                status: res[0]['status']
+              }).then(res => {
+                Swal.fire(
+                  'Modifier!',
+                  "Status de l'annonce modifié.",
+                  'success'
+                ).then(res => {
+                  this.isCreating = false
+                })
+              })
+
+            },
+            err => {
+              this.isCreating = false
+              Swal.fire({
+                title: "Service annonce!",
+                text: 'Erreur.',
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {}
+              })
+            }
+          );
+
+
+      }
+    })
+  }
+
+
+  removeAd(id: string, adgroup_id: string, ad_id: string) {
+    Swal.fire({
+      title: "Service annonce",
+      text: "Voulez vous supprimer cette annonce ?",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer!'
+    }).then((result) => {
+      if (result.value) {
+        /*  */
+        this.isCreating = true
+        this.http.post('http://127.0.0.1:5000/removeAd', {
+          'ad_group_id': adgroup_id,
+          'ad_id': ad_id
+
+          })
+
+          .subscribe(
+            res => {
+              console.log(res)
+
+              this.adsService.deleteAd(id).then(res => {
+                Swal.fire(
+                  'Supprimer!',
+                  "Annonce supprimée avec succès!",
+                  'success'
+                ).then(res => {
+                  this.isCreating = false
+                })
+              })
+
+            },
+            err => {
+              this.isCreating = false
+              Swal.fire({
+                title: "Service Annonce!",
+                text: 'Erreur.',
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {}
+              })
+            }
+          );
+
+      }
+    })
+  }
+
+  goAdSettings(id: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrs: any, image_content: any) {
+
+    this.isAdBlock = true
+    this.isEditor = false
+    this.list_ad = false
+    this.currentAdName = ad_name
+    this.currentImageUrl = image_url
+    this.currentCanvasContent = image_content
+    this.id_ad_firebase = id
+    this.currentAdStatus = status
+    /* this.handleCurrentCanvas() */
+    
+    this.iconEditor = "icon-chevron-down"
+    for (let i = 0; i < finalUrs.toString().length; i++) {
+      if (finalUrs.length > 1) {
+         
+        this.currentFinalUrls += finalUrs[i].toString() + ","
+      
+      }
+      else {
+        this.currentFinalUrls += finalUrs[i].replace('https://', "")
+
+      }
+
+     
+    }
+  }
+
+  publish() {
+    setTimeout(function () {
+    
+      var btn = document.getElementById("publish");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+            item_id: 1,
+        })).withOption({
+            requestTokenUrl: 'http://127.0.0.1:5000/pay',
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+            },
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+                if (is_completed === true) {
+    
+        window.location.href = success_url;               
+                } else {
+                    window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                console.log('non success response ', jsonResponse);
+                alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+            alertDialogConfirmButtonTextColor: '#fff'
+        });
+    }, 500) 
+
+   
+  }
 }

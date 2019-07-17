@@ -1,16 +1,16 @@
 <div id="app">
-  <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas'>
+  <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas' *ngIf="!_init_campagne">
     <div class="sidebar">
       <div class="d-flex hv-100 align-items-stretch">
-        <div class="indigo text-white">
+        <div class="text-white teal darken-1">
           <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-              aria-controls="v-pills-home" aria-selected="true"><i class="icon-inbox2"></i></a>
-            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-              aria-controls="v-pills-profile" aria-selected="false"><i class="icon-add"></i></a>
-            <a class="nav-link blink skin_handle"><i class="icon-lightbulb_outline"></i></a>
-            <a class="nav-link" id="v-pills-messages-tab"><i class="icon-message"></i></a>
-            <a class="nav-link" id="v-pills-settings-tab"><i class="icon-settings"></i></a>
+            <!--  <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                       aria-controls="v-pills-home" aria-selected="true"><i class="icon-inbox2"></i></a>
+                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                       aria-controls="v-pills-profile" aria-selected="false"><i class="icon-add"></i></a>
+                    <a class="nav-link blink skin_handle"  href="#"><i class="icon-lightbulb_outline"></i></a>
+                    <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
+                    <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a> -->
             <a href="">
               <figure class="avatar">
                 <img src="assets/img/dummy/u3.png" alt="">
@@ -20,9 +20,9 @@
           </div>
         </div>
         <div class="tab-content flex-grow-1" id="v-pills-tabContent">
-          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-smallledby="v-pills-home-tab">
             <div class="relative brand-wrapper sticky b-b">
-              <div class="d-flex align-items-center p-3">
+              <div class="d-flex justify-content-between align-items-center p-3">
                 <div class="text-xs-center">
                   <span class="font-weight-lighter s-18">Menu</span>
                 </div>
@@ -35,493 +35,298 @@
                   <i class="icon icon-sailing-boat-water s-24"></i> <span>Dashboard</span>
                 </a>
               </li>
-              <li class="treeview"><a>
-                  <i class="icon icon icon-package s-24"></i>
-                  <span>Products</span>
-                  <span class="badge r-3 badge-primary pull-right">4</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="panel-page-products.html"><i class="icon icon-circle-o"></i>All
-                      Products</a>
-                  </li>
-                  <li><a href="panel-page-products-create.html"><i class="icon icon-add"></i>Add
-                      New </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview"><a><i class="icon icon-account_box s-24"></i>Users<i
+              <!--  <li class="treeview"><a href="#">
+                            <i class="icon icon icon-package s-24"></i>
+                            <span>Products</span>
+                            <span class="badge r-3 badge-primary pull-right">4</span>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li><a href="panel-page-products.html"><i class="icon icon-circle-o"></i>All
+                                    Products</a>
+                                </li>
+                                <li><a href="panel-page-products-create.html"><i class="icon icon-add"></i>Add
+                                    New </a>
+                                </li>
+                            </ul>
+                        </li> -->
+              <li class="treeview"><a href="#"><i class="icon icon-bandcamp s-24"></i>Campagne<i
                     class=" icon-angle-left  pull-right"></i></a>
                 <ul class="treeview-menu">
-                  <li><a href="panel-page-users.html"><i class="icon icon-circle-o"></i>All Users</a>
+                  <li><a (click)="toggleListCampaign()" style="cursor: pointer"><i class="icon icon-circle-o"></i>Toutes
+                      les campagnes</a>
                   </li>
-                  <li><a href="panel-page-users-create.html"><i class="icon icon-add"></i>Add User</a>
-                  </li>
-                  <li><a href="panel-page-profile.html"><i class="icon icon-user"></i>User Profile </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview"><a>
-                  <i class="icon icon-package s-24"></i>
-                  <i class=" icon-angle-left  pull-right"></i>
-                  <span>Inbox</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="inbox.html"><i class="icon icon-circle-o"></i>Inbox</a>
-                  </li>
-                  <li><a href="inbox2.html"><i class="icon icon-circle-o"></i>Inbox 2</a>
-                  </li>
-                  <li><a href="inbox-create.html"><i class="icon icon-add"></i>Compose</a>
+                  <li><a (click)="action_2()" style="cursor: pointer"><i class="icon icon-add"></i>Ajouter une nouvelle
+                      campagne</a>
                   </li>
                 </ul>
               </li>
-              <li class="treeview ">
-                <a>
-                  <i class="icon icon-package  s-24"></i> <span>Apps</span>
-                  <i class=" icon-angle-left  pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="chat.html"><i class="icon icon-circle-o"></i>Chat</a>
-                  </li>
-                  <li><a href="tasks.html"><i class="icon icon-circle-o"></i>Tasks / Todo</a>
-                  </li>
-                  <li><a href="calendar.html"><i class="icon icon-date_range"></i>Calender</a>
-                  </li>
-                  <li><a href="contacts.html"><i class="icon icon-circle-o"></i>Contacts</a>
-                  </li>
-                  <li><a href="projects.html"><i class="icon icon-circle-o"></i>Projects</a>
-                  </li>
-                  <li><a href="projects-list.html"><i class="icon icon-circle-o"></i>Projects List</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview">
-                <a>
-                  <i class="icon icon-documents3 s-24"></i> <span>Pages</span>
-                  <i class=" icon-angle-left  pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a><i class="icon icon-documents3"></i>Blank Pages<i class=" icon-angle-left  pull-right"></i></a>
-                    <ul class="treeview-menu">
-                      <li><a href="panel-page-blank.html"><i class="icon icon-document"></i>Simple
-                          Blank</a>
-                      </li>
-                      <li><a href="panel-page-blank-tabs.html"><i class="icon icon-document"></i>Tabs
-                          Blank <i class=" icon-angle-left  pull-right"></i></a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="icon icon-fingerprint text-green"></i>Auth Pages<i
-                        class=" icon-angle-left  pull-right"></i></a>
-                    <ul class="treeview-menu">
-                      <li><a href="login.html"><i class="icon icon-document"></i>Login Page 1</a>
-                      </li>
-                      <li><a href="login-2.html"><i class="icon icon-document"></i>Login Page 2</a>
-                      </li>
-                      <li><a href="login-3.html"><i class="icon icon-document"></i>Login Page 3</a>
-                      </li>
-                      <li><a href="login-4.html"><i class="icon icon-document"></i>Login Page 4</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="icon icon-bug text-red"></i>Error Pages<i
-                        class=" icon-angle-left  pull-right"></i></a>
-                    <ul class="treeview-menu">
-                      <li><a href="panel-page-404.html"><i class="icon icon-document"></i>404 Page</a>
-                      </li>
-                      <li><a href="panel-page-500.html"><i class="icon icon-document"></i>500 Page<i
-                            class=" icon-angle-left  pull-right"></i></a>
-                      </li>
-                      <li><a href="panel-page-error.html"><i class="icon icon-document"></i>420 Page<i
-                            class=" icon-angle-left  pull-right"></i></a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="icon icon-documents3"></i>Other Pages<i class=" icon-angle-left  pull-right"></i></a>
-                    <ul class="treeview-menu">
-                      <li><a href="panel-page-invoice.html"><i class="icon icon-document"></i>Invoice
-                          Page</a>
-                      </li>
-                      <li><a href="panel-page-no-posts.html"><i class="icon icon-document"></i>No Post
-                          Page</a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview">
-                <a>
-                  <i class="icon icon-goals-1  s-24"></i> <span>Elements</span>
-                  <i class=" icon-angle-left  pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="panel-element-widgets.html">
-                      <i class="icon icon-widgets amber-text s-14"></i> <span>Widgets</span>
-                    </a>
-                  </li>
-                  <li><a href="panel-element-counters.html">
-                      <i class="icon icon-filter_9_plus amber-text s-14"></i> <span>Counters</span>
-                    </a>
-                  <li><a href="panel-element-buttons.html">
-                      <i class="icon icon-touch_app amber-text s-14"></i> <span>Buttons</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="panel-element-typography.html">
-                      <i class="icon icon-text-width amber-text s-14"></i> <span>Typography</span>
-                    </a>
-                  </li>
-                  <li><a href="panel-element-tabels.html">
-                      <i class="icon icon-table amber-text s-14"></i> <span>Tables</span>
-                    </a>
-                  </li>
-                  <li><a href="panel-element-alerts.html">
-                      <i class="icon icon-exclamation-circle amber-text s-14"></i> <span>Alerts</span>
-                    </a>
-                  </li>
-                  <li><a href="panel-element-slider.html"><i class="icon icon-view_carousel amber-text s-14"></i>
-                      <span>Slider</span></a></li>
-                  <li><a href="panel-element-tabs.html"><i class="icon icon-folders2 amber-text s-14"></i>
-                      <span>Tabs</span></a></li>
-                  <li><a href="panel-element-progress-bars.html"><i class="icon icon-folders2 amber-text s-14"></i>
-                      <span>Progress Bars</span></a></li>
-                  <li><a href="panel-element-badges.html"><i class="icon icon-flag7 amber-text s-14"></i>
-                      <span>Badges</span></a></li>
-                  <li><a href="panel-element-preloaders.html"><i class="icon icon-data_usage amber-text s-14"></i>
-                      <span>Preloaders</span></a></li>
-                </ul>
-              </li>
-              <li class="treeview ">
-                <a>
-                  <i class="icon icon-wpforms  s-24 "></i> <span>Forms & Plugins</span>
-                  <i class=" icon-angle-left  pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="panel-element-forms.html"><i class="icon icon-wpforms light-green-text"></i>Bootstrap
-                      Inputs</a>
-                  </li>
-                  <li><a href="form-jquery-validations.html"><i class="icon icon-note-important light-green-text"></i>
-                      Form Validation (Jquery)</a>
-                  </li>
-                  <li><a href="form-bootstrap-validations.html"><i
-                        class="icon icon-note-important light-green-text"></i>
-                      Form Validation (Bootstrap)</a>
-                  </li>
-                  <li><a href="panel-element-editor.html"><i class="icon icon-pen2 light-green-text"></i>Editor</a>
-                  </li>
-                  <li><a href="panel-element-toast.html"><i
-                        class="icon icon-notifications_active light-green-text"></i>Toasts</a>
-                  </li>
-                  <li><a href="panel-element-stepper.html"><i
-                        class="icon icon-burst_mode light-green-text"></i>Stepper</a>
-                  </li>
-                  <li><a href="panel-element-date-time-picker.html"><i
-                        class="icon icon-date_range light-green-text"></i>Date Time Picker</a>
-                  </li>
-                  <li><a href="panel-element-color-picker.html"><i class="icon icon-adjust light-green-text"></i>Color
-                      Picker</a>
-                  </li>
-                  <li><a href="panel-element-range-slider.html"><i
-                        class="icon icon-space_bar light-green-text"></i>Range
-                      Slider</a>
-                  </li>
-                  <li><a href="panel-element-select2.html"><i
-                        class="icon  icon-one-finger-click light-green-text"></i>Select 2</a>
-                  </li>
-                  <li><a href="panel-element-tags.html"><i class="icon  icon-tags3 light-green-text"></i>Tags</a>
-                  </li>
-                  <li><a href="panel-element-data-tables.html"><i class="icon icon-table light-green-text"></i>Data
-                      Tables</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview"><a>
-                  <i class="icon icon-bar-chart2  s-24"></i>
-                  <span>Charts</span>
-                  <i class=" icon-angle-left  pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="panel-element-charts-js.html"><i
-                        class="icon icon-area-chart pink-text s-14"></i><span>Charts.Js</span></a>
-                  </li>
-                  <li>
-                    <a href="panel-element-morris.html"><i class="icon icon-bubble_chart pink-text s-14"></i>Morris
-                      Charts</a>
-                  </li>
-                  <li>
-                    <a href="panel-element-echarts.html">
-                      <i class="icon icon-bar-chart-o pink-text s-14"></i>Echarts</a>
-                  </li>
-                  <li>
-                    <a href="panel-element-easy-pie-charts.html">
-                      <i class="icon icon-area-chart pink-text s-14"></i>Easy Pie Charts</a>
-                  </li>
-                  <li>
-                    <a href="panel-element-jqvmap.html">
-                      <i class="icon icon-map pink-text s-14"></i>Jqvmap</a>
-                  </li>
-                  <li>
-                    <a href="panel-element-sparklines.html">
-                      <i class="icon icon-line-chart2 pink-text s-14"></i>Sparklines</a>
-                  </li>
-                  <li>
-                    <a href="panel-element-float.html">
-                      <i class="icon icon-pie-chart pink-text s-14"></i>Float Charts</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview"><a>
-                  <i class="icon icon-dialpad  s-24"></i>
-                  <span>Extra</span>
-                  <i class=" icon-angle-left  pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="panel-element-letters.html">
-                      <i class="icon icon-brightness_auto light-blue-text s-14"></i>
-                      <span>Avatar Placeholders</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="panel-element-icons.html">
-                      <i class="icon icon-camera2 light-blue-text s-14"></i> <span>Icons</span>
-                    </a>
-                  </li>
-                  <li><a href="panel-element-colors.html">
-                      <i class="icon icon-palette light-blue-text s-14"></i> <span>Colors</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+              <!--  <li class="treeview"><a href="#">
+                            <i class="icon icon-package s-24"></i>
+                            <i class=" icon-angle-left  pull-right"></i>
+                            <span>Gallerie images</span>
+                        </a>
+                            <ul class="treeview-menu" style="overflow: auto; height: 100%">
+                                
+                            </ul>
+                        </li> -->
+              <!-- <li class="treeview"><a href="#">
+                            <i class="icon icon-package s-24"></i>
+                            <i class=" icon-angle-left  pull-right"></i>
+                            <span>Inbox</span>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li><a href="inbox.html"><i class="icon icon-circle-o"></i>Inbox</a>
+                                </li>
+                                <li><a href="inbox2.html"><i class="icon icon-circle-o"></i>Inbox 2</a>
+                                </li>
+                                <li><a href="inbox-create.html"><i class="icon icon-add"></i>Compose</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview ">
+                            <a href="#">
+                                <i class="icon icon-package  s-24"></i> <span>Apps</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="chat.html"><i class="icon icon-circle-o"></i>Chat</a>
+                                </li>
+                                <li><a href="tasks.html"><i class="icon icon-circle-o"></i>Tasks / Todo</a>
+                                </li>
+                                <li><a href="calendar.html"><i class="icon icon-date_range"></i>Calender</a>
+                                </li>
+                                <li><a href="contacts.html"><i class="icon icon-circle-o"></i>Contacts</a>
+                                </li>
+                                <li><a href="projects.html"><i class="icon icon-circle-o"></i>Projects</a>
+                                </li>
+                                <li><a href="projects-list.html"><i class="icon icon-circle-o"></i>Projects List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="icon icon-documents3 s-24"></i> <span>Pages</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="icon icon-documents3"></i>Blank Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="panel-page-blank.html"><i class="icon icon-document"></i>Simple
+                                            Blank</a>
+                                        </li>
+                                        <li><a href="panel-page-blank-tabs.html"><i class="icon icon-document"></i>Tabs
+                                            Blank <i
+                                                    class=" icon-angle-left  pull-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="icon icon-fingerprint text-green"></i>Auth Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="login.html"><i class="icon icon-document"></i>Login Page 1</a>
+                                        </li>
+                                        <li><a href="login-2.html"><i class="icon icon-document"></i>Login Page 2</a>
+                                        </li>
+                                        <li><a href="login-3.html"><i class="icon icon-document"></i>Login Page 3</a>
+                                        </li>
+                                        <li><a href="login-4.html"><i class="icon icon-document"></i>Login Page 4</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="icon icon-bug text-red"></i>Error Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="panel-page-404.html"><i class="icon icon-document"></i>404 Page</a>
+                                        </li>
+                                        <li><a href="panel-page-500.html"><i class="icon icon-document"></i>500 Page<i
+                                                class=" icon-angle-left  pull-right"></i></a>
+                                        </li>
+                                        <li><a href="panel-page-error.html"><i class="icon icon-document"></i>420 Page<i
+                                                class=" icon-angle-left  pull-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="icon icon-documents3"></i>Other Pages<i
+                                        class=" icon-angle-left  pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="panel-page-invoice.html"><i class="icon icon-document"></i>Invoice
+                                            Page</a>
+                                        </li>
+                                        <li><a href="panel-page-no-posts.html"><i class="icon icon-document"></i>No Post
+                                            Page</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="icon icon-goals-1  s-24"></i> <span>Elements</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="panel-element-widgets.html">
+                                    <i class="icon icon-widgets amber-text s-14"></i> <span>Widgets</span>
+                                </a>
+                                </li>
+                                <li><a href="panel-element-counters.html">
+                                    <i class="icon icon-filter_9_plus amber-text s-14"></i> <span>Counters</span>
+                                </a>
+                                <li><a href="panel-element-buttons.html">
+                                    <i class="icon icon-touch_app amber-text s-14"></i> <span>Buttons</span>
+                                </a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-typography.html">
+                                        <i class="icon icon-text-width amber-text s-14"></i> <span>Typography</span>
+                                    </a>
+                                </li>
+                                <li><a href="panel-element-tabels.html">
+                                    <i class="icon icon-table amber-text s-14"></i> <span>Tables</span>
+                                </a>
+                                </li>
+                                <li><a href="panel-element-alerts.html">
+                                    <i class="icon icon-exclamation-circle amber-text s-14"></i> <span>Alerts</span>
+                                </a>
+                                </li>
+                                <li><a href="panel-element-slider.html"><i
+                                        class="icon icon-view_carousel amber-text s-14"></i>
+                                    <span>Slider</span></a></li>
+                                <li><a href="panel-element-tabs.html"><i class="icon icon-folders2 amber-text s-14"></i>
+                                    <span>Tabs</span></a></li>
+                                <li><a href="panel-element-progress-bars.html"><i
+                                        class="icon icon-folders2 amber-text s-14"></i>
+                                    <span>Progress Bars</span></a></li>
+                                <li><a href="panel-element-badges.html"><i class="icon icon-flag7 amber-text s-14"></i>
+                                    <span>Badges</span></a></li>
+                                <li><a href="panel-element-preloaders.html"><i
+                                        class="icon icon-data_usage amber-text s-14"></i>
+                                    <span>Preloaders</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview ">
+                            <a href="#">
+                                <i class="icon icon-wpforms  s-24 "></i> <span>Forms & Plugins</span>
+                                <i class=" icon-angle-left  pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="panel-element-forms.html"><i
+                                        class="icon icon-wpforms light-green-text"></i>Bootstrap
+                                    Inputs</a>
+                                </li>
+                                <li><a href="form-jquery-validations.html"><i
+                                        class="icon icon-note-important light-green-text"></i>
+                                    Form Validation (Jquery)</a>
+                                </li>
+                                <li><a href="form-bootstrap-validations.html"><i
+                                        class="icon icon-note-important light-green-text"></i>
+                                    Form Validation (Bootstrap)</a>
+                                </li>
+                                <li><a href="panel-element-editor.html"><i class="icon icon-pen2 light-green-text"></i>Editor</a>
+                                </li>
+                                <li><a href="panel-element-toast.html"><i
+                                        class="icon icon-notifications_active light-green-text"></i>Toasts</a>
+                                </li>
+                                <li><a href="panel-element-stepper.html"><i
+                                        class="icon icon-burst_mode light-green-text"></i>Stepper</a>
+                                </li>
+                                <li><a href="panel-element-date-time-picker.html"><i
+                                        class="icon icon-date_range light-green-text"></i>Date Time Picker</a>
+                                </li>
+                                <li><a href="panel-element-color-picker.html"><i
+                                        class="icon icon-adjust light-green-text"></i>Color
+                                    Picker</a>
+                                </li>
+                                <li><a href="panel-element-range-slider.html"><i
+                                        class="icon icon-space_bar light-green-text"></i>Range
+                                    Slider</a>
+                                </li>
+                                <li><a href="panel-element-select2.html"><i
+                                        class="icon  icon-one-finger-click light-green-text"></i>Select 2</a>
+                                </li>
+                                <li><a href="panel-element-tags.html"><i class="icon  icon-tags3 light-green-text"></i>Tags</a>
+                                </li>
+                                <li><a href="panel-element-data-tables.html"><i
+                                        class="icon icon-table light-green-text"></i>Data
+                                    Tables</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview"><a href="#">
+                            <i class="icon icon-bar-chart2  s-24"></i>
+                            <span>Charts</span>
+                            <i class=" icon-angle-left  pull-right"></i>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="panel-element-charts-js.html"><i
+                                            class="icon icon-area-chart pink-text s-14"></i><span>Charts.Js</span></a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-morris.html"><i
+                                            class="icon icon-bubble_chart pink-text s-14"></i>Morris
+                                        Charts</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-echarts.html">
+                                        <i class="icon icon-bar-chart-o pink-text s-14"></i>Echarts</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-easy-pie-charts.html">
+                                        <i class="icon icon-area-chart pink-text s-14"></i>Easy Pie Charts</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-jqvmap.html">
+                                        <i class="icon icon-map pink-text s-14"></i>Jqvmap</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-sparklines.html">
+                                        <i class="icon icon-line-chart2 pink-text s-14"></i>Sparklines</a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-float.html">
+                                        <i class="icon icon-pie-chart pink-text s-14"></i>Float Charts</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview"><a href="#">
+                            <i class="icon icon-dialpad  s-24"></i>
+                            <span>Extra</span>
+                            <i class=" icon-angle-left  pull-right"></i>
+                        </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="panel-element-letters.html">
+                                        <i class="icon icon-brightness_auto light-blue-text s-14"></i>
+                                        <span>Avatar Placeholders</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="panel-element-icons.html">
+                                        <i class="icon icon-camera2 light-blue-text s-14"></i> <span>Icons</span>
+                                    </a>
+                                </li>
+                                <li><a href="panel-element-colors.html">
+                                    <i class="icon icon-palette light-blue-text s-14"></i> <span>Colors</span>
+                                </a>
+                                </li>
+                            </ul>
+                        </li> -->
             </ul>
           </div>
-          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-smallledby="v-pills-profile-tab">
             <div class="relative brand-wrapper sticky b-b p-3">
-              <form>
-                <div class="form-group input-group-sm has-right-icon">
-                  <input class="form-control form-control-sm light r-30" placeholder="Search" type="text">
-                  <i class="icon-search"></i>
-                </div>
-              </form>
+              <h4>Gallerie</h4>
             </div>
             <div class="sticky slimScroll">
 
               <div class="p-2">
                 <ul class="list-unstyled">
-                  <!-- Alphabet with number of contacts -->
-                  <li class="pt-3 pb-3 sticky p-3 b-b white">
-                    <span class="badge r-3 badge-success">A</span>
-                  </li>
-                  <!-- Single contact -->
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
 
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u1.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u6.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u6.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul class="list-unstyled">
-                  <li class="pt-3 pb-3 sticky p-3 b-b white">
-                    <span class="badge r-3 badge-danger">B</span>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u2.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u3.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u4.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul class="list-unstyled">
-                  <!-- Alphabet with number of contacts -->
-                  <li class="pt-3 pb-3 sticky p-3 b-b white">
-                    <span class="badge r-3 badge-success gradient">C</span>
-                  </li>
-                  <!-- Single contact -->
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u1.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u6.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u6.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-4">
-                    <span class="badge r-3 badge-danger purple">D</span>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u2.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u3.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <div class="card no-b p-3">
-                      <div class="">
-
-                        <div class="image mr-3  float-left">
-                          <img class="w-40px" src="assets/img/dummy/u4.png" alt="User Image">
-                        </div>
-                        <div>
-                          <div>
-                            <strong>Alexander Pierce</strong>
-                          </div>
-                          <small> alexander@paper.com</small>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
                 </ul>
               </div>
+
             </div>
           </div>
         </div>
@@ -529,118 +334,249 @@
     </div>
   </aside>
 
-  <div class="has-sidebar-left">
-    <div class="pos-f-t">
-      <div class="collapse" id="navbarToggleExternalContent">
-        <div class="bg-dark pt-2 pb-2 pl-4 pr-2">
-          <div class="search-bar">
-            <input class="transparent s-24 text-white b-0 font-weight-lighter w-128 height-50" type="text"
-              placeholder="start typing...">
-          </div>
-          <a data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-expanded="false"
-            aria-label="Toggle navigation" class="paper-nav-toggle paper-nav-white active "><i></i></a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <a data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed">
-    <i></i>
+
+  <a href="#" data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed" *ngIf="!_init_campagne">
+    <i class="icon-toggle-nav white"></i>
   </a>
   <div class="has-sidebar-left has-sidebar-tabs">
     <!--navbar-->
     <div class="sticky">
-      <div class="navbar navbar-expand d-flex bd-navbar white shadow">
+      <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
+             -->
+      <div class="navbar navbar-expand d-flex justify-content-between bd-navbar teal lighten-4 shadow">
         <div class="relative">
           <div class="d-flex">
             <div class="d-none d-md-block">
-              <h1 class="nav-title">Inbox2</h1>
+              <h1 class="nav-title text-white">Adafri</h1>
+
             </div>
           </div>
         </div>
         <!--Top Menu Start -->
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <!-- Messages-->
 
+            <!-- Notifications -->
+            <li class="dropdown custom-dropdown notifications-menu">
+              <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
+
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+
+              </ul>
+            </li>
+            <li>
+
+            </li>
+            <!-- Right Sidebar Toggle Button -->
+            <li>
+
+            </li>
+            <!-- User Account-->
+            <li class="dropdown custom-dropdown user user-menu ">
+              <a href="#" class="nav-link text-white" data-toggle="dropdown">
+                {{email}}
+
+                <span class="avatar-letter avatar-letter-{{email.charAt(0) | lowercase}} avatar-md circle"></span>
+                <i class="icon-more_vert"></i>
+
+
+              </a>
+              <div class="dropdown-menu p-4 dropdown-menu-right">
+                <div class="row box justify-content-between my-4">
+                  <div class="col">
+                    <a (click)="auth.signOut()">
+                      <i class="icon-apps purple lighten-2 avatar  r-5"></i>
+                      <div class="pt-1">DÃ©connexion</div>
+                    </a>
+                  </div>
+                  <div class="col"><a href="#">
+                      <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
+                      <div class="pt-1">Profile</div>
+                    </a></div>
+
+                </div>
+
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <!--#navbar-->
-    <div class="container-fluid relative animatedParent animateOnce p-0">
-      <div class="row d-flex bd-highlight no-gutters">
-        <div>
-          <div class="p-5">
-            <a class="btn btn-primary btn-sm mb-5"><i class="icon-plus"></i>{{text_create}}</a>
-            <ul class="sidebar-menu">
+    <div *ngIf="_addCampaign_" style="position: relative">
+      <app-create-campaign></app-create-campaign>
 
-              <li class="treeview"><span class="badge badge-primary lighten-4">{{ad_group_name}}</span>
+
+    </div>
+    <!--  
+    <!--#navbar-->
+
+    <div class="container-fluid relative animatedParent animateOnce p-0">
+      <div class="row bd-highlight no-gutters">
+        <div class="col-md-3 no-b">
+
+          <div id="collapseExample" [ngbCollapse]="isCollapsed" class='no-b'>
+
+     
+            <div class="card r-3 teal lighten-3 no-b shadow" style="margin-top: 10px;">
+              <div class="p-4">
+                <div class="float-right">
+                  <span class="icon-award text-white s-48"></span>
+                </div>
+                <div class="counter-title text-white">{{ad_group_name}}</div>
+                <h5 class="sc-counter mt-3 text-white">Nombre d'annonces: {{number_ads}}</h5>
+                <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i class="icon icon-circle mr-2"
+                      style="color: green"></i>Groupe d'annonce actif</span></span>
+                <span class="badge badge-danger pink" *ngIf="status==='PAUSED'"><span class="blink"><i
+                      class="icon icon-circle mr-2"></i>Group d'annonce non actif</span></span>
+              </div>
+            </div>
+        
+
+            <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+
+              <li class="treeview"><a (click)="toggleListAd()" style="cursor: pointer"><i
+                    class="icon icon-inbox text-purple s-18"></i>Liste des annonces</a>
               </li>
-              <li class="treeview" *ngIf="status=='ENABLED'"> <span class="badge bg-white text-success"><span
-                    class="blink"><i class="icon icon-circle mr-2"
-                      style="color: green"></i>{{label_enabled}}</span></span>
+                <li class="treeview"><a (click)=" loadCanvasFromJSON()" style="cursor: pointer"><i
+                    class="icon icon-inbox text-purple s-18"></i>Charger le canvas</a>
               </li>
-              <li class="treeview" *ngIf="status=='PAUSED'"> <span class="badge badge-danger pink"><span
-                    class="blink"><i class="icon icon-circle mr-2"></i>{{label_paused}}</span></span>
+              <li class="treeview"><a style="cursor: pointer" (click)='toggleEditor()'><i
+                    class="icon icon-star-o lime-text s-18"></i>Editeur d'annonce</a>
               </li>
-              <li class="divider">
-                <hr>
-                <p class="text-primary" style="font-weight: bold">{{text_cibled}}</p>
+              <li class="treeview"><a (click)="handleToggleOptions()" [attr.aria-expanded]="!isOptions"
+                  aria-controls="collapseOptions"><i class="icon icon-send-o indigo-text s-18"></i>Paramètres du groupe
+                  d'annonce</a>
               </li>
+
+            </ul>
+            <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+
+              <li class="treeview"><a (click)="handleTogglePlacement()" style="cursor: pointer" [attr.aria-expanded]="!isPlacement"
+                  aria-controls="collapsePlacement"><i class="icon icon-send-o indigo-text s-18"></i>Placement des
+                  annonces</a>
+              </li>
+              <li class="treeview"><a (click)="handleToggleGender()" style="cursor: pointer"
+                  [attr.aria-expanded]="!isGender" aria-controls="collapseGender"><i
+                    class="icon icon-inbox text-purple s-18"></i>Ciblage des genres</a>
+              </li>
+              <li class="treeview"><a style="cursor: pointer" (click)='handleToggleAge()' [attr.aria-expanded]="!isAge"
+                  aria-controls="collapseAge"><i class="icon icon-star-o lime-text s-18"></i>Ciblage des âges</a>
+              </li>
+              <li class="treeview"><a (click)="handleToggleDevice()" [attr.aria-expanded]="!isDevice"
+                  aria-controls="collapseDevice"><i class="icon icon-send-o indigo-text s-18"></i>Ciblage de
+                  terminaux</a>
+              </li>
+
+            </ul>
+            <div id="collapsePlacement" [ngbCollapse]="isPlacement">
+
+               <ul class="sidebar-menu text-center text-white grey darken-1" style="margin-top: 10px">
+                      <li class="treeview"><a class="text-white"><i
+                        class="icon icon-male indigo-text s-18"></i> <small for="validationCustom01">Placement Sites Nationnaux</small></a>
+                       <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites Nationnaux'"
+                      [data]="dropdownListNationalsWebsites" [settings]="dropdownSettingsNationalsWebsites"
+                      (onSelect)="onNationalsWebsitesSelect($event)"
+                      (onSelectAll)="onNationalsWebsitesSelectAll($event)"
+                      (onDeSelect)="onNationalsWebsitesDeSelect($event)"
+                      (onDeSelectAll)="onNationalsWebsitesDeSelectAll()">
+                    </ng-multiselect-dropdown>
+                     <ng-container *ngIf="nationals_errors != ''">
+                      <div class="text-danger">
+                        {{nationals_errors}}
+                      </div>
+
+                    </ng-container>
+                      </li>
+                          <li class="treeview"><a class="text-white"><i
+                   
+                        class="icon icon-male indigo-text s-18"></i> <small for="validationCustom01">Placement Sites Internationnaux</small></a>
+                        <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites Internationnaux'"
+                      [data]="dropdownListInternationalsWebsites" [settings]="dropdownSettingsInternationalsWebsites"
+                      (onSelect)="onInternationalsWebsitesSelect($event)"
+                      (onSelectAll)="onInternationalsWebsitesSelectAll($event)"
+                      (onDeSelect)="onInternationalsWebsitesDeSelect($event)"
+                      (onDeSelectAll)="onInternationalesWebsitesDeSelectAll()">
+                    </ng-multiselect-dropdown>
+                      </li>
+                          <li class="treeview"><a class="text-white"><i
+                        class="icon icon-male indigo-text s-18"></i><small for="validationCustom01">Placement Sites d'annonces</small></a>
+                      <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites annonces'"
+                      [data]="dropdownListAdsWebsites" [settings]="dropdownSettingsAdsWebsites"
+                      (onSelect)="onAdsWebsitesSelect($event)" (onSelectAll)="onAdsWebsiteSelectAll($event)"
+                      (onDeSelect)="onAdsWebsitesDeSelect($event)" (onDeSelectAll)="onAdsWebsitesDeSelectAll()">
+                    </ng-multiselect-dropdown></li>
+                          <li class="treeview"><a class="text-white"><i
+                        class="icon icon-male indigo-text s-18"></i><small for="validationCustom01">Applications mobiles de destinations</small></a>
+                       <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                      [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                      (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                      (onDeSelectAll)="onAppsDeSelectAll()">
+                    </ng-multiselect-dropdown>
+                      </li>
+                      </ul>
+            
+            </div>
+            <div id="collapseGender" [ngbCollapse]="isGender">
               <ng-container *ngIf="genres!=''">
 
                 <ng-container *ngFor="let gender of genres">
 
-                  <li class="treeview" *ngIf="gender.item_id==10"><a class="text-primary"><i
+                  <ul class="sidebar-menu text-center">
+                      <li class="treeview" *ngIf="gender.item_id==10"><a class="text-white"><i
                         class="icon icon-male indigo-text s-18"></i>{{gender.item_text}}</a></li>
-                  <li class="treeview" *ngIf="gender.item_id==11"><a class="text-primary"><i
+                  <li class="treeview" *ngIf="gender.item_id==11"><a class="text-white"><i
                         class="icon icon-female indigo-text s-18"></i>{{gender.item_text}}</a>
                   </li>
-                  <li class="treeview" *ngIf="gender.item_id==20"><a class="text-primary"><i
+                  <li class="treeview" *ngIf="gender.item_id==20"><a class="text-white"><i
                         class="icon icon-intersex indigo-text s-18"></i>{{gender.item_text}}</a>
                   </li>
+                  </ul>
                 </ng-container>
               </ng-container>
               <ng-container *ngIf="genres==''">
                 <span class="badge badge-danger text-white"><span class="blink"><i class="icon icon-circle mr-2"
                       style="color: green"></i>{{text_no_genre}}</span></span>
               </ng-container>
-              <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="openAddCiblageGenre()"><i
+              <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="openAddCiblageGenre()"><i
                   class="icon-edit"></i></a>
-              <li class="divider">
-                <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageGenre">
-                  <div class="card-header bg-white no-b">
-                    <div class="card-title text-info text-center" style="font-weight: bold">{{modify_gender_text}}</div>
+              <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageGenre">
+                <div class="card-header bg-white no-b">
+                  <div class="card-title text-info text-center" style="font-weight: bold">{{modify_gender_text}}</div>
 
-                  </div>
-                  <ul class="no-b">
-                    <li class="list-group-item">
-                      <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Genres'"
-                        [data]="dropdownListSexes" [settings]="dropdownSettingsSexes" (onSelect)="onSexeSelect($event)"
-                        (onSelectAll)="onSexeSelectAll($event)" (onDeSelect)="onSexeDeSelect($event)"
-                        (onDeSelectAll)="onDeSelectAllSexe()">
-                      </ng-multiselect-dropdown>
-
-                    </li>
-
-                  </ul>
-
-                  <div class="card-footer text-center white no-b">
-
-                    <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetGender()" *ngIf="isCiblageGenre"><i
-                        class="icon-check"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddCiblageGenre()"
-                      *ngIf="isCiblageGenre"><i class="icon-close"></i></a>
-
-                  </div>
                 </div>
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Genres'"
+                      [data]="dropdownListSexes" [settings]="dropdownSettingsSexes" (onSelect)="onSexeSelect($event)"
+                      (onSelectAll)="onSexeSelectAll($event)" (onDeSelect)="onSexeDeSelect($event)"
+                      (onDeSelectAll)="onDeSelectAllSexe()">
+                    </ng-multiselect-dropdown>
 
-              </li>
-              <li class="divider">
-                <hr>
-                <p class="text-primary" style="font-weight: bold">{{text_cibled_age}}</p>
-              </li>
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetGender()" *ngIf="isCiblageGenre"><i
+                      class="icon-check"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddCiblageGenre()"
+                    *ngIf="isCiblageGenre"><i class="icon-close"></i></a>
+
+                </div>
+              </div>
+            </div>
+            <div id="collapseAge" [ngbCollapse]="isAge">
               <ng-container *ngIf="populations!=''">
 
                 <ng-container *ngFor="let age of populations">
 
-                  <li class="treeview"><a class="text-primary"><i
-                        class="icon icon-group text-primary s-18"></i>{{age.item_text}}</a>
+                  <ul class="sidebar-menu text-center">
+                    <li class="treeview"><a class="text-white"><i
+                        class="icon icon-group text-white s-18"></i>{{age.item_text}}</a>
+                  </ul>
 
                 </ng-container>
               </ng-container>
@@ -648,192 +584,197 @@
                 <span class="badge badge-danger text-white"><span class="blink"><i class="icon icon-circle mr-2"
                       style="color: green"></i>{{text_no_age}}</span></span>
               </ng-container>
-              <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="openAddCiblageAge()"><i
+              <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="openAddCiblageAge()"><i
                   class="icon-edit"></i></a>
-              <li class="divider">
-                <hr>
-              </li>
-              <li class="treeview">
-                <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageAge">
-                  <div class="card-header bg-white no-b">
-                    <div class="card-title text-info text-center" style="font-weight: bold">{{modify_age_text}}</div>
+              <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageAge">
+                <div class="card-header bg-white no-b">
+                  <div class="card-title text-info text-center" style="font-weight: bold">{{modify_age_text}}</div>
 
-                  </div>
-                  <ul class="no-b">
-                    <li class="list-group-item">
-                      <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Ã‚ges'"
-                        [data]="dropdownListAges" [settings]="dropdownSettingsAges" (onSelect)="onAgeSelect($event)"
-                        (onSelectAll)="onAgeSelectAll($event)" (onDeSelect)="onAgeDeSelect($event)"
-                        (onDeSelectAll)="onDeSelectAllAge()">
-                      </ng-multiselect-dropdown>
-
-                    </li>
-
-                  </ul>
-
-                  <div class="card-footer text-center white no-b">
-
-                    <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetAge()" *ngIf="isCiblageAge"><i
-                        class="icon-check"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddCiblageAges()"
-                      *ngIf="isCiblageAge"><i class="icon-close"></i></a>
-
-                  </div>
                 </div>
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Âges'"
+                      [data]="dropdownListAges" [settings]="dropdownSettingsAges" (onSelect)="onAgeSelect($event)"
+                      (onSelectAll)="onAgeSelectAll($event)" (onDeSelect)="onAgeDeSelect($event)"
+                      (onDeSelectAll)="onDeSelectAllAge()">
+                    </ng-multiselect-dropdown>
 
-              </li>
-              <li class="divider">
-                <hr>
-                <p class="text-primary" style="font-weight: bold">{{text_cibled_devices}}</p>
-              </li>
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetAge()" *ngIf="isCiblageAge"><i
+                      class="icon-check"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddCiblageAges()"
+                    *ngIf="isCiblageAge"><i class="icon-close"></i></a>
+
+                </div>
+              </div>
+            </div>
+            <div id="collapseDevice" [ngbCollapse]="isDevice">
               <ng-container *ngIf="appareils!=''">
 
                 <ng-container *ngFor="let device of appareils">
-
-                  <li class="treeview"><a class="text-primary" *ngIf="device.item_id=='30000'"><i
-                        class="icon icon-laptop text-primary s-18"></i>{{device.item_text}}</a></li>
-                  <li class="treeview"><a class="text-primary" *ngIf="device.item_id=='30001'"><i
-                        class="icon icon-mobile-phone text-primary s-18"></i>{{device.item_text}}</a></li>
-                  <li class="treeview"><a class="text-primary" *ngIf="device.item_id=='30002'"><i
-                        class="icon icon-tablet_android text-primary s-18"></i>{{device.item_text}}</a></li>
-                  <li class="treeview"><a class="text-primary" *ngIf="device.item_id=='30004'"><i
-                        class="icon icon-tv text-primary s-18"></i>{{device.item_text}}</a></li>
+                  <ul class="sidebar-menu text-center">
+                    
+                  <li class="treeview"><a class="text-white" *ngIf="device.item_id=='30000'"><i
+                        class="icon icon-laptop text-white s-18"></i>{{device.item_text}}</a></li>
+                  <li class="treeview"><a class="text-white" *ngIf="device.item_id=='30001'"><i
+                        class="icon icon-mobile-phone text-white s-18"></i>{{device.item_text}}</a></li>
+                  <li class="treeview"><a class="text-white" *ngIf="device.item_id=='30002'"><i
+                        class="icon icon-tablet_android text-white s-18"></i>{{device.item_text}}</a></li>
+                  <li class="treeview"><a class="text-white" *ngIf="device.item_id=='30004'"><i
+                        class="icon icon-tv text-white s-18"></i>{{device.item_text}}</a></li>
+                  </ul>
                 </ng-container>
               </ng-container>
               <ng-container *ngIf="appareils==''">
                 <span class="badge badge-danger text-white"><span class="blink"><i class="icon icon-circle mr-2"
                       style="color: green"></i>{{text_no_devices}}</span></span>
               </ng-container>
-              <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="openAddCiblageDevices()"><i
+              <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="openAddCiblageDevices()"><i
                   class="icon-edit"></i></a>
-              <li class="divider">
-                <hr>
-              </li>
-              <li class="treeview">
-                <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageDevices">
-                  <div class="card-header bg-white no-b">
-                    <div class="card-title text-info text-center" style="font-weight: bold">{{modify_devices_text}}
-                    </div>
-
+              <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageDevices">
+                <div class="card-header bg-white no-b">
+                  <div class="card-title text-info text-center" style="font-weight: bold">{{modify_devices_text}}
                   </div>
-                  <ul class="no-b">
-                    <li class="list-group-item">
-                      <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Appareils'"
-                        [data]="dropdownListDevices" [settings]="dropdownSettingsDevices"
-                        (onSelect)="onDevicesSelect($event)" (onSelectAll)="onDevicesSelectAll($event)"
-                        (onDeSelect)="onDevicesDeSelect($event)" (onDeSelectAll)="onDeSelectAllDevices()">
-                      </ng-multiselect-dropdown>
 
-                    </li>
-
-                  </ul>
-
-                  <div class="card-footer text-center white no-b">
-
-                    <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetDevices()"
-                      *ngIf="isCiblageDevices"><i class="icon-check"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddCiblageDevices()"
-                      *ngIf="isCiblageDevices"><i class="icon-close"></i></a>
-
-                  </div>
                 </div>
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Appareils'"
+                      [data]="dropdownListDevices" [settings]="dropdownSettingsDevices"
+                      (onSelect)="onDevicesSelect($event)" (onSelectAll)="onDevicesSelectAll($event)"
+                      (onDeSelect)="onDevicesDeSelect($event)" (onDeSelectAll)="onDeSelectAllDevices()">
+                    </ng-multiselect-dropdown>
 
-              </li>
-            </ul>
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetDevices()" *ngIf="isCiblageDevices"><i
+                      class="icon-check"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddCiblageDevices()"
+                    *ngIf="isCiblageDevices"><i class="icon-close"></i></a>
+
+                </div>
+              </div>
+            </div>
+
+
           </div>
+          <!--  <a class="btn-fab btn-fab-md teal lighten-3 shadow" (click)="handleToggleAdGroupSettings()" style="margin-right: -20px"
+       [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample"> 
+       <i [class]="icon_toggle"></i>
+   </a> -->
         </div>
-        <div class="flex-fill b-l height-full white">
-           <div>
-      <button (click)="compressFile()">Upload and compress Image</button>
-      <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt="">
-      <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt="">
-    </div>
-                              <div class="card mb-3 shadow no-b r-0">
-                        <div class="card-header white text-center text-primary">
-                            <h6>Construire son annonce</h6>
-                        </div>
-                        <div class="card-body">
-                            <form class="needs-validation" novalidate>
-                                <div class="form-row text-center">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="validationCustom01">Nom de l'annonce</label>
-                                        <input type="text" class="form-control" id="ad_name" placeholder="Nom" required>
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                   
-                                </div>
-
-                       
-                            </form>
 
 
-                        </div>
+        <div class="col-md-9 height-full white">
+
+          <ng-container *ngIf='isEditor'>
+   <div class="container-fluid text-center">
+
+            <div class="card mb-3 shadow no-b r-0">
+              <div class="card-header teal lighten-1 text-center text-white no-b">
+                <h6>Construire son annonce</h6>
+              </div>
+              <div class="card-body">
+
+                <div class="form-row text-center">
+                  <div class="col-md-4 mb-3 text">
+                    <small for="validationCustom01">Nom de l'annonce</small>
+                    <input type="text" class="form-control" id="ad_name" placeholder="Nom" formControlName="name"
+                      required>
+                    <div *ngIf="formErrors.name" class="help is-danger">
+                      {{ formErrors.name }}
                     </div>
+                  </div>
+                             <div class="col-md-4 mb-3 text">
+                    <small for="validationCustom01">Applications mobiles de destinations</small>
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                      [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                      (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                      (onDeSelectAll)="onAppsDeSelectAll()">
+                    </ng-multiselect-dropdown>
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4 mb-3">
+                    <small for="pattern">Urls de redirection séparées par des virgules</small>
+                    <input type="text" autocomplete="off" class="form-control" id="redirect"
+                      placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
+                    <ng-container *ngIf="url_errors != ''">
+                      <div class="text-danger" *ngFor="let error of url_errors">
+                        {{error.url}} {{error.text}}
+                      </div>
 
-          <!--  <app-annonce-service-component [ad_group_id]="ad_group_id"></app-annonce-service-component> -->
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{text_visualise}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-         <div class="card">
-                <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg" style="width: 250px; height: 300px" alt="card my-3 image cap" id="ad_image">
-               
-                <div class="card-footer">
-                    <small class="text-muted">{{ad_name}}</small>
-                </div>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+                    </ng-container>
+                    <!--  </div>
+    <div class="form-group col-md-3">
+      <small>Actual Value</small>
+      <div>{{pattern.value}}</div>
     </div>
-  </div>
-</div>
+ -->
 
 
 
-          <div class="card no-b">
 
-            <div class="card-header white text-center b-0"> <a class="btn-fab btn-fab-md shadow btn-primary"
-                (click)="triggerImage()" title="Ajouter une image"><i class="icon-image"></i></a>
-              <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="triggerText()" title="Ajouter un texte"><i
-                  class="icon-title"></i></a>
-              <!--  <a class="btn-fab btn-fab-md shadow btn-primary library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
-              <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="addFigure('circle');"><i
-                  class="icon-circle-o"></i></a>
 
-              <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="addFigure('triangle');"><i
-                  class="icon-toggle-up"></i></a>
-              <a class="btn-fab btn-fab-sm shadow btn-primary" (click)="addFigure('rectangle');"><i
-                  class="icon-border_horizontal"></i></a>
-              <!--  <button class="bg-primary r-20 border-0" [disabled]="!selected || selected.type== 'group'" (click)="clone();"><i class="icon-clone" style="color: white"></i></button> -->
-              <a class="btn-fab btn-fab-sm shadow btn-success" (click)="clone();"><i class="icon-clone"></i></a>
-              <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="removeSelected();"><i
-                  class="icon-delete_forever"></i></a>
 
+                  </div>
+                 
+                 
+  
+
+
+
+
+                </div>
+
+
+
+
+
+              </div>
             </div>
-            <div class="card-body white no-b">
-           <div class="col" style="text-align: center;">
+            <div class="card no-b shadow">
+
+              <div class="card-header white text-center b-0"> <a
+                  class="btn-fab btn-fab-md shadow teal lighten-1 text-white" (click)="triggerImage()"
+                  title="Ajouter une image"><i class="icon-image"></i></a>
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
+                  title="Ajouter un texte"><i class="icon-title"></i></a>
+                <!--  <a class="btn-fab btn-fab-md shadow teal lighten-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
+                    class="icon-circle-o"></i></a>
+
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('triangle');"><i
+                    class="icon-toggle-up"></i></a>
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('rectangle');"><i
+                    class="icon-border_horizontal"></i></a>
+
+
+              </div>
+              <div class="card-body white no-b">
+                <div class="col" style="text-align: center;">
                   <div style="display: inline-block">
 
-                      <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
-                        *ngIf="selected" style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
-                          class="icon-settings2"></i></button>
-                    <canvas id="canvas"
-                      style="border-color: rgb(233, 216, 216); width: 250px !important; height: 250px !important; display: inline-block"></canvas>
+                    <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
+                      *ngIf="selected"
+                      style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
+                        class="icon-settings2"></i></button>
+
+                    <div class="canvas-container" (drop)="handleDropOnCanvas($event)"
+                      (dragover)="handleDragOverCanvas($event)">
+                      <canvas id="canvas"
+                        style="border-color: rgb(233, 216, 216); width: 250px !important; height: 250px !important; display: inline-block"></canvas>
+                    </div>
                   </div>
                 </div>
 
@@ -843,18 +784,303 @@
 
 
 
-            </div>
+              </div>
 
 
 
 
-            <div class="card-footer border-0 white">
-              <button class="btn btn-lg btn-block btn-primary" style="float: right" data-toggle="modal" data-target="#exampleModal" (click)="saveImage()">
-                <i class="icon-paper-plane" ></i> Terminer l'annonce
-              </button>
+              <div class="card-footer border-0 white text-center">
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
+                  title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
+                  title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
+
+                <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
+                    class="icon-clone"></i></a>
+                <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
+                    class="icon-delete_forever"></i></a>
+
+                <button class="btn btn-lg btn-block teal lighten-1 text-white" style="float: right" (click)="handleImageModal()">
+                  <i class="icon-paper-plane"></i> Terminer l'annonce
+                </button>
+              </div>
+
             </div>
 
           </div>
+          </ng-container>
+
+
+       <!--    <ng-container *ngIf="_init_ad">
+            <div class="text-center p-5">
+              <i class="icon-note-important s-64 text-white"></i>
+              <h4 class="my-3">Aucune annonce trouvée</h4>
+              <p>Vous devez creer une nouvelle annonce pour commencer</p>
+              <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20" (click)='toggleEditor()'><i
+                  class="icon-plus-circle mr-2 "></i>Créer une annonce</button>
+            </div>
+
+          </ng-container> -->
+
+<ng-container *ngIf="isAdBlock">
+      <div class="container-fluid text-center">
+
+            <div class="card mb-3 shadow no-b r-0">
+              <div class="card-header teal lighten-1 text-center text-white no-b">
+                <h6>Paramètre annonce</h6>
+              </div>
+              <div class="card-body text-center">
+
+                <div class="form-row text-center">
+                  <div class="col-md-4 mb-3 text">
+                    <small for="validationCustom01">Nom de l'annonce</small>
+                    <input type="text" class="form-control" id="ad_name" placeholder="Nom" [value]="currentAdName" formControlName="name"
+                      required>
+                    <div *ngIf="formErrors.name" class="help is-danger">
+                      {{ formErrors.name }}
+                    </div>
+                  </div>
+                             <div class="col-md-4 mb-3 text">
+                    <small for="validationCustom01">Applications mobiles de destinations</small>
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                      [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                      (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                      (onDeSelectAll)="onAppsDeSelectAll()">
+                    </ng-multiselect-dropdown>
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4 mb-3">
+                    <small for="pattern">Urls de redirection séparées par des virgules</small>
+                    <input type="text" autocomplete="off" class="form-control" id="redirect"
+                      placeholder="Url de redirection" id="finalUrls" [value]="currentFinalUrls" required (keyup)="handleErrorUrl()">
+                    <ng-container *ngIf="url_errors != ''">
+                      <div class="text-danger" *ngFor="let error of url_errors">
+                        {{error.url}} {{error.text}}
+                      </div>
+
+                    </ng-container>
+                    <!--  </div>
+    <div class="form-group col-md-3">
+      <small>Actual Value</small>
+      <div>{{pattern.value}}</div>
+    </div>
+ -->
+
+
+
+
+
+
+                  </div>
+                 
+                 
+  
+
+
+
+
+                </div>
+                <div class="row text-center">
+                 <div class="col text-center"style="text-align: center">
+                     <div class="card no-b shadow"  style="display: inline-block; width: 300px;">
+                     <div class="card-header teal lighten-3 text-white no-b">
+                      <h6 class="text-white">Image</h6>
+                     </div>
+                     <div class="card-body white no-b">
+                        <div class="card-img no-b">
+                          <img class="img-responsive" [src]="currentImageUrl" style="width: 300 px; height: 250px">
+                        </div>
+                     </div>
+                     <div class="card-footer white no-b text-center">
+                         <button class="btn shadow teal lighten-1 text-white r-20"
+                  title="Ajouter un texte" (click)="toggleCurrentEditor()"><i [class]="iconEditor"></i>modifier</button>
+                  <button class="btn shadow teal lighten-1 text-white r-20"
+                  title="Ajouter un texte" (click)="publish()" id="publish"><i class="icon-send" *ngIf="currentAdStatus==''"></i>Publier</button>
+                     </div>
+                   </div>
+                 </div>
+                  
+                </div>
+
+
+
+
+
+              </div>
+            </div>
+            <div class="card no-b shadow" *ngIf="currentEditor">
+
+              <div class="card-header white text-center b-0"> <a
+                  class="btn-fab btn-fab-md shadow teal lighten-1 text-white" (click)="triggerImage()"
+                  title="Ajouter une image"><i class="icon-image"></i></a>
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
+                  title="Ajouter un texte"><i class="icon-title"></i></a>
+                <!--  <a class="btn-fab btn-fab-md shadow teal lighten-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
+                    class="icon-circle-o"></i></a>
+
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('triangle');"><i
+                    class="icon-toggle-up"></i></a>
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('rectangle');"><i
+                    class="icon-border_horizontal"></i></a>
+
+
+              </div>
+              <div class="card-body white no-b">
+                <div class="col" style="text-align: center;">
+                  <div style="display: inline-block">
+
+                    <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
+                      *ngIf="selected"
+                      style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
+                        class="icon-settings2"></i></button>
+
+                    <div class="canvas-container" (drop)="handleDropOnCanvas($event)"
+                      (dragover)="handleDragOverCanvas($event)">
+                      <canvas id="canvas"
+                        style="border-color: rgb(233, 216, 216); width: 250px !important; height: 250px !important; display: inline-block"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+              </div>
+
+
+
+
+              <div class="card-footer border-0 white text-center">
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
+                  title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
+                <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
+                  title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
+
+                <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
+                    class="icon-clone"></i></a>
+                <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
+                    class="icon-delete_forever"></i></a>
+
+                <button class="btn btn-lg btn-block teal lighten-1 text-white" style="float: right" (click)=" handleModifiedImage()">
+                  <i class="icon-paper-plane"></i> Visualiser
+                </button>
+               
+              </div>
+
+            </div>
+
+          </div>
+</ng-container>
+          <ng-container *ngIf="number_ads != 0 && list_ad; else noAds">
+
+
+            <div class="container-fluid text-center">
+              <br>
+              <h5 style="color: #4db6ac">Liste des annonces</h5>
+              <br>
+              <div class="card no-b shadow teal lighten-2">
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+
+                    <table class="table table-hover text-center">
+                      <tbody>
+                        <ng-container *ngIf="ads.toString().length > 0; else noAds">
+
+                          <tr class="no-b" *ngFor="let ad of ads | async">
+
+
+                            <td class="table-img">
+                              <img src="{{ad?.url_image}}" alt="">
+
+                            </td>
+                            <td>
+                              <small class="text-white">Annonce display</small>
+                              <h6 style="font-weight: bold" class="text-white">{{ ad?.ad_name }}</h6>
+                            </td>
+                            <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
+                            <td *ngIf="ad?.status=='ENABLED'" class="text-center">
+                               <small class="text-white">Etat de l'annonce</small>
+                              <h6 class="text-white">Activer</h6>
+                             
+                            </td>
+                            <td *ngIf="ad?.status=='PAUSED'" class="text-center">
+                               <small class="text-white">Etat de l'annonce</small>
+                               <h6 class="text-danger">Désactiver</h6>
+                             
+                            </td>
+                            <!-- <td>
+                                                 <div class="d-none d-lg-block">
+                                                 <span><i class="icon icon-data_usage"></i> Commence le {{ note?.startDateFrench }}</span><br>
+                                                 <span><i class="icon icon-timer"></i> Se termine le {{ note?.endDateFrench }}</span>
+                                                 </div>
+                                             </td> -->
+                            <td class="text-center">
+                              <div class="row text-center d-none">
+                                <small class="text-white"  *ngIf="ad?.status==='PAUSED'">Activer/Supprimer</small>
+                                <small class="text-white"  *ngIf="ad?.status==='ENABLED'">Désactiver/Supprimer</small>
+
+                              </div>
+                              <div class="row">
+                                 <a class="text-danger" style="cursor: pointer" title="désactiver"
+                                (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
+                                *ngIf="ad?.status==='ENABLED'">
+                                <i class="icon-stop text-danger"></i>
+                              </a>
+                              <a class="text-white" title="activer" style="cursor: pointer"
+                                (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
+                                *ngIf="ad?.status==='PAUSED'" title="">
+                                <i class="icon-play text-white"></i>
+                              </a>
+                              <div style="cursor: pointer; margin-left: 5px">
+                                <a class="text-danger" style="cursor: pointer; float: right"
+                                  (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)">
+                                  <i class="icon-close2 text-danger"></i>
+                                </a>
+
+                              </div>
+                              </div>
+                              
+                            </td>
+                            <td>
+                              <a class="btn-fab btn-fab-sm green accent-3 shadow text-white"
+                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.image_content)"><i
+                                  class="icon-settings2"></i></a>
+                            </td>
+                            <hr>
+                          </tr>
+                        </ng-container>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </ng-container>
+          <ng-template #noAds>
+            <div class="container-fluid">
+              <div class="text-center p-5">
+                <i class="icon-note-important s-64 text-white"></i>
+                <h4 class="my-3">Aucune annonce trouvée</h4>
+                <p>Vous devez creer une nouvelle annonce pour commencer</p>
+                <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20" (click)='toggleEditor()'><i
+                    class="icon-plus-circle mr-2 "></i>Créer une annonce</button>
+              </div>
+            </div>
+          </ng-template>
+
+
+
+
+
+
         </div>
 
       </div>
@@ -874,13 +1100,39 @@
         <a href="#" data-toggle="control-sidebar" class="paper-nav-toggle active"><i></i></a>
       </div>
 
+
+      <div class="card">
+        <div class="card-header white">
+          <strong>Elément sur le canvas</strong>
+        </div>
+        <div class="card-body p-0">
+
+          <ul class="social social list-inline" dnd-sortable-container [sortableData]="layers.reverse()">
+            <li class="list-inline-item r-20" *ngFor="let item of layers; let i = index" dnd-sortable
+              [dragEnabled]="item.selectable" [sortableIndex]="layers.length - i - 1" (click)="selectLayer(item)"
+              (onDropSuccess)="updateLayerSort()" [ngClass]="{'active': item.active}"><a
+                class="btn-fab btn-fab-sm shadow teal lighten-1 text-white"><i
+                  class="text-white {{elementTypes[item.type].icon}}" [ngClass]="{'text-muted': !item.active}"></i></a>
+            </li>
+
+
+
+
+
+
+          </ul>
+        </div>
+      </div>
+
       <div class="card-body text-center">
+
         <div class="row">
 
 
 
           <div class="col-md-8">
             <div class="card-body">
+
               <ul class="list-group no-b text-center">
                 <li class="list-group-item d-flex align-items-center" *ngIf="selected && selected.type != 'group'">
                   <div>
@@ -973,7 +1225,7 @@
                     <input type="file" (change)="readUrl($event);" id="image">
                     <br />
                     <br />
-                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group btn-group-justified" role="group" aria-small="...">
                       <div class="btn-group" role="group">
                         <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeWhite(url);">
                           <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
@@ -994,7 +1246,63 @@
 <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
 <div class="control-sidebar-bg shadow white fixed draggable" style="height: 300px; margin-top: 20% !important"></div>
+<div class="modal fade" id="modalViewInit" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalsmall">{{text_visualise}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg" style="width: 250px; height: 300px"
+            alt="card my-3 image cap" id="ad_image">
+
+          <div class="card-footer">
+            <small class="text-muted">{{ad_name}}</small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn teal lighten-1 text-white" (click)=" saveAdOnFirebase()">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
 </div>
+<div class="modal fade" id="modalViewModified" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalsmall">{{text_visualise}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg" style="width: 250px; height: 300px"
+            alt="card my-3 image cap" id="ad_image_modified">
+
+          <div class="card-footer">
+            <small class="text-muted" id="modified_name"></small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn teal lighten-1 text-white" (click)="updateAdOnFirebase()">Enregistrer les modification</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<button style="display: none" data-toggle="modal" data-target="#modalViewInit" id="button_modal_init"></button>
+<button style="display: none" data-toggle="modal" data-target="#modalViewModified" id="button_modal_modified"></button>
 <!--/#app -->
 
 
