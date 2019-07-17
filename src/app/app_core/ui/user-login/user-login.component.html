@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
   <ng-template #alreadyLoggedIn>
 
@@ -39,15 +40,28 @@
                 <div class="col-lg-4 mx-md-auto paper-card">
                      <user-form></user-form>
                 </div>
+=======
+<ng-template #alreadyLoggedIn>
+    <p class="text-success">
+      You are logged in <i class="fa fa-thumbs-up"></i>
+    </p>
+</ng-template>
+
+<main *ngIf="!(auth.user | async); else alreadyLoggedIn">
+    <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <img src="assets/img/dummy/img-01.png" alt="">
+            </div>
+
+            <div class="login100-form">
+              <user-form></user-form>
+>>>>>>> d1126aa93f7577fa543ad193b331f261a227e2ad
             </div>
         </div>
+      </div>
     </div>
-    <!-- #primary -->
 </main>
-<!-- Right Sidebar -->
-
-<!-- /.right-sidebar -->
-<!-- Add the sidebar's background. This div must be placed
-         immediately after the control sidebar -->
 <div class="control-sidebar-bg shadow white fixed"></div>
 
