@@ -49,6 +49,16 @@ export class UserFormComponent implements OnInit {
     this.newUser = !this.newUser;
   }
 
+  async signInWithGoogle() {
+    await this.auth.googleLogin();
+    return await this.afterSignIn();
+  }
+
+  async signInWithFacebook() {
+    await this.auth.facebookLogin();
+    await this.afterSignIn();
+  }
+
   signup() {
     this.isCreating = true;
     
