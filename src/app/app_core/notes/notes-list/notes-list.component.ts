@@ -43,7 +43,7 @@ export class NotesListComponent implements AfterViewInit {
   action_2 = () => {this.toggleAddCampaignBlock()}
 
 
-
+  email_letter: any;
   @Input()
   notes: Observable<any[]>;
   name: string;
@@ -56,7 +56,7 @@ export class NotesListComponent implements AfterViewInit {
   isCampaign = false;
   ad_group_id: string;
   adgroups: any;
-  //Si aucune campagne le bloc pour créer une nouvelle campagne
+  //Si aucune campagne le bloc pour crÃ©er une nouvelle campagne
   _addCampaign_ = false;
 
   _init_campagne = false;
@@ -64,7 +64,7 @@ export class NotesListComponent implements AfterViewInit {
   //Le bloc pour afficher la liste des campagnes
   showList = false
 
-  //Le bloc pour afficher la page pour une campagne donnée
+  //Le bloc pour afficher la page pour une campagne donnÃ©e
   _showCampaignSettings_ = false
   isCreating = false
 
@@ -75,14 +75,9 @@ export class NotesListComponent implements AfterViewInit {
        this.auth.user.forEach((value) => {
          this.uid = value.uid
          this.email = value.email
-    
-    })
-  }
-  ngAfterViewInit() {
-  this.notes = this.notesService.getData();
-
-
-    this.notes.forEach(child => {
+         this.email_letter = value.email.charAt(0)
+         this.notes = this.notesService.getListCampaign(value.uid)
+         this.notes.forEach(child => {
       console.log(child.length)
       if (child.length > 0) {
         console.log(child.length)
@@ -91,6 +86,14 @@ export class NotesListComponent implements AfterViewInit {
         this.initCampagne()
       }
     })
+    })
+  }
+  ngAfterViewInit() {
+  //var init_note = new NotesService(this.uid)
+  
+
+
+   
 
  
     
@@ -104,13 +107,13 @@ export class NotesListComponent implements AfterViewInit {
 
   initCampagne() {
     this._init_campagne = true
-    this.title = "Aucune campagne trouvée"
+    this.title = "Aucune campagne trouvÃ©e"
     this.showList = true
   }
 
   toggleListCampaign() {
     this.showList = false
-     this.child._showCampaignSettings_=false
+     //this.child._showCampaignSettings_=false
     this._addCampaign_ = false
   /*   this.title = "Liste des campagnes" */
   }
@@ -133,7 +136,7 @@ export class NotesListComponent implements AfterViewInit {
     this._showCampaignSettings_=true
     this.showList = false
     this._addCampaign_ = false
-    this.title = "Param�tre de campagne"
+    this.title = "Paramètre de campagne"
   }
 
 
@@ -153,13 +156,13 @@ export class NotesListComponent implements AfterViewInit {
     this._addCampaign_=false
   }
 
-    clickHandler(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string) {
+    clickHandler(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string, budgetId: any) {
     
       console.log(this.uid)
       console.log(name)
       console.log(status)
       
-      this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus
+      this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus, budgetId
       );
     this.name = '';
     this.id_campagne = '';
@@ -167,7 +170,7 @@ export class NotesListComponent implements AfterViewInit {
     this._init_campagne = false
     Swal.fire({
       title: 'Service Campagne!',
-      text: 'Votre campagne a �t� ajout� avec succ�s.',
+      text: 'Votre campagne a été ajouté avec succès.',
       type: 'success',
       showCancelButton: false,
       confirmButtonColor: '#3085d6',
@@ -188,12 +191,13 @@ export class NotesListComponent implements AfterViewInit {
       'campaign_name': name
     })
       .subscribe(
-        
         res => {
+          console.log(res)
+          console.log(res['budgetId'])
           this.id_campagne = res['id']
           this.status = res['status_campaign']
           this.ad_group_id = res['ad_group_id']
-          this.clickHandler(this.id_campagne, name, this.status, res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'])
+          this.clickHandler(this.id_campagne, name, this.status, res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId'])
           
         },
         err => {

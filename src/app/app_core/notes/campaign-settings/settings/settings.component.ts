@@ -46,9 +46,16 @@ import {
 } from 'rxjs/operators'
 
 
-import {Router} from '@angular/router'
+import { Router } from '@angular/router'
+
+
+import {Ads} from '../../ads.service'
+import '../../../../../assets/js/payexpress/payExpress'
 
 declare var require: any;
+declare const pQuery: any
+declare const PayExpresse: any
+
 export interface JSONDATE {
   selectedDate: string;
 }
@@ -150,9 +157,13 @@ export class SettingsComponent {
   @Input() status: string;
   @Input() ad_group_id: string;
   @Input() uid: string;
-
+  @Input() account_money: any;
+  @Input() budgetId: any;
+  ad_group_tab_content =  [];
   email: string;
-
+  ad_groups_list_id = []
+  ads_list_id = []
+  number_of_impressions = 0
   user: Observable < any > ;
   number_ad_groups: any;
   isCreating = false
@@ -185,7 +196,7 @@ export class SettingsComponent {
   
 
 
-  constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router) {
+  constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads) {
     this.getUser().then(res => {
       console.log(res)
       console.log(this.id_campagne)
@@ -795,10 +806,85 @@ export class SettingsComponent {
       }
     })
   }
+  getListIdAdGroup(): Promise<any>{
+    return new Promise(resolve => {
+      
+      this.adGroupService.getListAdGroup(this.id_campagne).forEach(child => {
+        console.log(child)
+        if (child.length == 0) {
+          console.log("aucun groupe d'annonce")
+          this.ad_groups_list_id = []
+          this.ad_group_tab_content = []
+        } else if (child.length == 1) {
+          console.log("un seul groupe")
+          this.ad_groups_list_id.push(child[0]['id'])
+          this.ad_group_tab_content.push(child[0]["ad_group_id"])
+        } else {
+          
+          console.log('plusieurs groupes')
+          for (let i = 0; i < child.length; i++){
+            console.log(`child i ${child[i]}`)
+            this.ad_groups_list_id.push(child[i]['id'])
+            this.ad_group_tab_content.push(child[i]["ad_group_id"])
+          }
+          
+        }
+              /*  this.ad_group_tab_content.push(child[i]["ad_group_id"])
+                this.ad_groups_list_id.push(child[i]['id']) */
+            
+            /* if (child.length > 0) {
+              console.log(child)
+              child.forEach(element => {
+                console.log(element['id'])
+               
+              })
+              
+            } */
+            resolve('ok')
+          }) 
+      
+    })
+  }
 
+  getListIdAd(): Promise<any>{
+    
+    return new Promise(resolve => {
+      this.getListIdAdGroup().then(res => {
+        for (let i = 0; i < this.ad_group_tab_content.length; i++){
+          this.adsService.getListAd(this.ad_group_tab_content[i]).forEach(child => {
+            if (child.length == 0) {
+          console.log("aucune annonce")
+          this.ads_list_id = []
+          //this.ad_group_tab_content = []
+        } else if (child.length == 1) {
+          console.log("une seule annonce")
+          this.ads_list_id.push(child[0]['id'])
+         
+        } else {
+          
+          console.log('plusieurs annonces')
+          for (let i = 0; i < child.length; i++){
+            this.ads_list_id.push(child[i]['id'])
+           
+          }
+          
+        }
+          
+            
+          }) 
+        }
+        resolve('ok')
+        
+      })
+      /*      */
+      
+    })
+  }
 
   deleteCampaign() {
-    Swal.fire({
+    
+    
+     Swal.fire({
       title: 'Vous voulez vraiment supprimer cette campagne?',
       text: "Cette action sera irréversible!",
       type: 'warning',
@@ -829,8 +915,12 @@ export class SettingsComponent {
 
           data: JSON.stringify(data),
         }).then((res) => {
-
-          this.notesService.deleteNote(this.id);
+this.getListIdAd().then(res => {
+      console.log(this.ad_groups_list_id)
+    
+      
+   this.notesService.deleteNote(this.id, this.ad_groups_list_id, this.ads_list_id); 
+         })
           Swal.fire({
             title: 'Supprimer!',
             text: 'Votre campagne a été supprimée avec succès.',
@@ -855,13 +945,9 @@ export class SettingsComponent {
           )
         })
 
-        /*   Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          ) */
+      
       }
-    })
+    })  
 
   }
 
@@ -869,4 +955,161 @@ export class SettingsComponent {
      this.router.navigate(['ads', ad_group_name, id, ad_group_id, this.id_campagne])
    
   }
+  handleErrorBudget() {
+    $('#error_budget').hide()
+  }
+  handleImpressionsCount() {
+
+      var budget_value = $("#budget").val()
+    if (budget_value < 10000) {
+      $('#error_budget').show()
+    } else {
+      var my_gain = (20 * budget_value) / 100
+      var budget_to_place = budget_value - my_gain
+      var budget_to_place_in_dollar = budget_to_place * 550
+      this.number_of_impressions = (budget_to_place * 33.3)/1000
+      
+      
+    }
+  }
+  
+  defineBudget() {
+    var budget_value = $("#budget").val()
+    if (budget_value < 10000) {
+      $('#error_budget').show()
+    } else {
+      var my_gain = (20 * budget_value) / 100
+      var budget_to_place = budget_value - my_gain
+      console.log(`my gain ${my_gain} CFA`)
+      console.log(`budget_to_place ${budget_to_place}`)
+      var budget_to_place_in_dollar = budget_to_place * 550
+      this.number_of_impressions = (budget_to_place * 1000) / 33
+      var data =  {
+              "amount_due": budget_to_place
+      }
+      $('#closeModalBudget').trigger('click')
+      var self = this
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: 'http://127.0.0.1:5000/payBudget/'+budget_value+'/'+self.budgetId+'/'+budget_to_place,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+                if (is_completed === true) {
+    
+        window.location.href = success_url;               
+                } else {
+                    window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                console.log('non success response ', jsonResponse);
+                alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+            "price": budget_to_place
+        });
+    }, 500) 
+
+      
+      
+      
+    }
+  }
+  pay() {
+   let paymentRequestUrl = "https://payexpresse.com/api/payment/request-payment";
+    let fetch = require('node-fetch');// http client
+    let params = {
+    item_name:"Iphone 7",
+    item_price:"560000",
+    currency:"XOF",
+    ref_command:"HBZZYZVUZZZV",
+    command_name:"Paiement Iphone 7 Gold via PayExpresse",
+    env:"test",
+    ipn_url:"https://domaine.com/ipn",
+    success_url:"https://domaine.com/success",
+    cancel_url:"https://domaine.com/cancel",
+    custom_field:JSON.stringify({
+       custom_fiel1:"value_1",
+       custom_fiel2:"value_2",
+    })
+    };
+
+    let headers = {
+    Accept: "application/json",
+    'Content-Type': "application/json",
+    API_KEY:"1afac858d4fa5ec74e3e3734c3829793eb6bd5f4602c84ac4a5069369812915e",
+    API_SECRET:"96bc36c11560f2151c4b43eee310cefabc2e9e9000f7e315c3ca3d279e3f98ac",
+    };
+
+    fetch(paymentRequestUrl, {
+    method:'POST',
+    body:JSON.stringify(params),
+    headers: headers
+    })
+    .then(function (response) {
+    return response.json()
+    })
+    .then(function (jsonResponse) {
+    console.log(jsonResponse)
+    /*
+    {
+        "success":1,
+        "redirect_url":"https://preview.payexpresse.com/payment/checkout/98b1c97af00c8b2a92f2",
+      token:"98b1c97af00c8b2a92f2"}
+
+    */
+    })
+}
+  
 }

@@ -29,7 +29,7 @@ export class CreateCampaignComponent implements OnInit {
   isExist: boolean = false
   
   constructor(private router: Router, private notesService: NotesService, private auth: AuthService,) { 
-     this.title = "Créer une campagne"
+     this.title = "CrÃ©er une campagne"
        this.auth.user.forEach((value) => {
          this.uid = value.uid
          this.email = value.email

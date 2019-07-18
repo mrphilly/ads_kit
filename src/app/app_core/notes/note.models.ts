@@ -10,6 +10,8 @@ export class Note {
     startDateFrench?: any;
     endDateFrench?: any;
     servingStatus?: any;
+    account_money?: any;
+    budgetId?: any;
     dueDate?: any;
     createdAt?: any;
     createdBy?: any;

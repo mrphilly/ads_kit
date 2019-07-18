@@ -3,8 +3,6 @@ import {
   OnInit,
   AfterViewInit
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute
@@ -12,6 +10,8 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import * as $ from 'jquery';
 
@@ -175,6 +175,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   modify_age_text = "Modifier le ciblage des âges"
   modify_devices_text = "Modifier le ciblage des appareils"
   text_option = "Paramètres du canvas"
+  letter_email: any;
   iconEditor: any;
   genres: any;
   populations: any;
@@ -499,6 +500,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.auth.user.subscribe(data => {
       this.uid = data.uid
       this.email = data.email
+      this.letter_email = data.email.charAt(0)
     })
 
       
@@ -731,11 +733,14 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       }
 
     })
- this.buildForm();
+  
+   this.buildForm()
+ 
 
   }
 
    buildForm() {
+   
     this.adForm = this.fb.group({
       'name': ['', [
         Validators.required,
@@ -748,14 +753,21 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       ]],
     
     });
-
     this.adForm.valueChanges.subscribe((data) => this.onValueChanged(data));
     this.onValueChanged(); // reset validation messages
+  }
+
+   editorTrue(): Promise<boolean>{
+     return  new Promise(async (resolve) => {
+       this.buildForm()
+       resolve(true)
+    })
   }
   
 
   // Updates validation state on form changes.
   onValueChanged(data?: any) {
+    
     if (!this.adForm) { return; }
     const form = this.adForm;
     for (const field in this.formErrors) {
@@ -881,19 +893,20 @@ $('#popper').trigger('click')
     }else{
       this.list_ad = false
     } */
-
     
     if (this.isEditor == false) {
+      
       this.isEditor = true
       if (this.canva_state == false) {
-        self.isCreating  =true
-  
-     /*    this.isEditor = true
-         setTimeout(function(){ 
-         
-         self.resetPanels()
-         
+        this.isCreating  =true
+        
+        /*    this.isEditor = true
+        setTimeout(function(){ 
+          
+          self.resetPanels()
+          
         }, 2000); */
+  
         setTimeout(function(){ 
          
           self.handleCanvas()
@@ -1408,6 +1421,7 @@ $('#popper').trigger('click')
    };
    xhr.open('GET', url);
          xhr.send();
+         self.currentImageUrl = url
        
         const image_content = JSON.stringify(self.canvas);
         self.adsService.updateAd(self.id_ad_firebase, {
@@ -1423,6 +1437,7 @@ $('#popper').trigger('click')
     }).then(res => {
           console.log('success')
       console.log(res)
+      $("#closeModalViewModified").trigger('click')
        Swal.fire({
               title: 'Modification annonce',
               text: 'Annonce modifiée avec succès',
@@ -2906,7 +2921,7 @@ $('#popper').trigger('click')
     })
   }
 
-  goAdSettings(id: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrs: any, image_content: any) {
+  goAdSettings(id: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, image_content: any) {
 
     this.isAdBlock = true
     this.isEditor = false
@@ -2916,22 +2931,41 @@ $('#popper').trigger('click')
     this.currentCanvasContent = image_content
     this.id_ad_firebase = id
     this.currentAdStatus = status
+    
     /* this.handleCurrentCanvas() */
     
     this.iconEditor = "icon-chevron-down"
-    for (let i = 0; i < finalUrs.toString().length; i++) {
-      if (finalUrs.length > 1) {
-         
-        this.currentFinalUrls += finalUrs[i].toString() + ","
+    console.log(finalUrls.length)
+    if (finalUrls.length == 0) {
+      this.currentFinalUrls = ""
+    } else if(finalUrls.length == 1) {
+      this.currentFinalUrls = finalUrls[0].toString() + ","
+    } else{
+       for (let i = 0; i < finalUrls.length - 1; i++) {
+     
+        console.log(finalUrls)
+        console.log(finalUrls[i])
+        this.currentFinalUrls += finalUrls[i].toString() + ","
       
       }
-      else {
-        this.currentFinalUrls += finalUrs[i].replace('https://', "")
+    }
+   /*  for (let i = 0; i < finalUrls.length - 1; i++) {
+      if (finalUrls.length > 1) {
+        console.log(finalUrls)
+        console.log(finalUrls[i])
+        this.currentFinalUrls += finalUrls[i].toString() + ","
+      
+      }
+      else if(finalUrls.length === 1) {
+        
+        this.currentFinalUrls = finalUrls[i]
 
+      } else {
+        this.currentFinalUrls = ""
       }
 
      
-    }
+    } */
   }
 
   publish() {

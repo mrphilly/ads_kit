@@ -3,6 +3,7 @@ import { Component, Input, OnInit, Injectable } from '@angular/core';
 import * as $ from 'jquery';
 
 import { NotesService } from '../notes.service';
+import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router'
 import { Observable } from 'rxjs'
 
@@ -30,15 +31,22 @@ export class NoteDetailComponent implements OnInit {
   status: any;
   ad_group_id: any;
   _showCampaignSettings_ = false
+  account_money: any;
+  uid: any;
+  budgetId: any;
 
-  constructor(private notesService: NotesService, private router: Router, private adgroup_service: AdGroupService) { 
-    this.notes = this.notesService.getData();
-    
+  constructor(private notesService: NotesService, private router: Router, private adgroup_service: AdGroupService,private auth: AuthService) { 
     
    
- 
+    
+    
   }
   ngOnInit() {
+     this.auth.user.forEach(child=>{
+       this.uid = child.uid
+       console.log(child.uid)
+       this.notes = this.notesService.getListCampaign(child.uid);
+    })
   
 }
   addHeartToNote(val: number) {
@@ -63,7 +71,7 @@ export class NoteDetailComponent implements OnInit {
       var time = parseInt(timestamp)
       return new Date(time).getDate() + "/" + new Date(time).getMonth() + "/" + new Date(time).getFullYear();
   }
-  deleteNote(id_campaign: string, id: string) {
+ /*  deleteNote(id_campaign: string, id: string) {
     var data = {
       "id": id_campaign
     }
@@ -88,9 +96,9 @@ export class NoteDetailComponent implements OnInit {
                  
                   this.notesService.deleteNote(id);
                 })
-  }
+  } */
 
-  goCampaignSettings(id: string,id_campagne: string, name: string, status: string, ad_group_id: string) {
+  goCampaignSettings(id: string,id_campagne: string, name: string, status: string, ad_group_id: string, account_money: any, budgetId: any) {
     console.log(id + " " + id_campagne + " " + name + " " + status);
     this.id_campagne = id_campagne;
     this.id = id;
@@ -98,6 +106,8 @@ export class NoteDetailComponent implements OnInit {
     this.status = status;
     this.ad_group_id = ad_group_id
     this.adgroup_service.campaign_id = id_campagne
+    this.account_money = account_money
+    this.budgetId = budgetId
     this._showCampaignSettings_ = true
   }
   async loadScript(src){

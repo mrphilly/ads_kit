@@ -378,7 +378,7 @@
               <a href="#" class="nav-link text-white" data-toggle="dropdown">
                 {{email}}
 
-                <span class="avatar-letter avatar-letter-{{email.charAt(0) | lowercase}} avatar-md circle"></span>
+                <span class="avatar-letter avatar-letter-{{letter_email | lowercase}} avatar-md circle"></span>
                 <i class="icon-more_vert"></i>
 
 
@@ -684,7 +684,7 @@
                 <h6>Construire son annonce</h6>
               </div>
               <div class="card-body">
-
+                <form [formGroup]="adForm">
                 <div class="form-row text-center">
                   <div class="col-md-4 mb-3 text">
                     <small for="validationCustom01">Nom de l'annonce</small>
@@ -737,7 +737,7 @@
 
                 </div>
 
-
+              </form>
 
 
 
@@ -896,8 +896,8 @@
                      <div class="card-footer white no-b text-center">
                          <button class="btn shadow teal lighten-1 text-white r-20"
                   title="Ajouter un texte" (click)="toggleCurrentEditor()"><i [class]="iconEditor"></i>modifier</button>
-                  <button class="btn shadow teal lighten-1 text-white r-20"
-                  title="Ajouter un texte" (click)="publish()" id="publish"><i class="icon-send" *ngIf="currentAdStatus==''"></i>Publier</button>
+                  <button class="btn shadow teal lighten-1 text-white r-20" data-toggle="modal" data-target="#modalPayment"
+                  title="Ajouter un texte" id="publish"><i class="icon-send" *ngIf="currentAdStatus==''"></i>Publier</button>
                      </div>
                    </div>
                  </div>
@@ -1294,7 +1294,34 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger text-white" id="closeModalViewModified" data-dismiss="modal">Close</button>
+        <button type="button" class="btn teal lighten-1 text-white" (click)="updateAdOnFirebase()">Enregistrer les modification</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalPayment" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalsmall">Publier l'annonce</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg" style="width: 250px; height: 300px"
+            alt="card my-3 image cap" id="ad_image_modified">
+
+          <div class="card-footer">
+            <small class="text-muted" id="modified_name"></small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger text-white" id="closeModalViewModified" data-dismiss="modal">Close</button>
         <button type="button" class="btn teal lighten-1 text-white" (click)="updateAdOnFirebase()">Enregistrer les modification</button>
       </div>
     </div>

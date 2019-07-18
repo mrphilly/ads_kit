@@ -31,6 +31,40 @@ import uuid
 from googleads import adwords
 
 
+def CreateSharedBudget(client, name):
+  """Creates an explicit budget to be used only to create the Campaign.
+
+  Args:
+    client: AdWordsClient the client to run the example with.
+
+  Returns:
+    dict An object representing a shared budget.
+  """
+  # Initialize appropriate service.
+  budget_service = client.GetService('BudgetService', version='v201809')
+
+  # Create a shared budget
+  budget = {
+      'name': name,
+      'amount': {
+          'microAmount': '10000'
+      },
+      'deliveryMethod': 'STANDARD',
+      'isExplicitlyShared': 'false'
+  }
+    
+  
+
+  # Create operation.
+  operation = {
+      'operator': 'ADD',
+      'operand': budget
+  }
+
+  response = budget_service.mutate([operation])
+  return response['value'][0]
+
+
 def add_campaign(client, name):
   INFOS = []
   # Initialize appropriate services.
@@ -38,22 +72,8 @@ def add_campaign(client, name):
   budget_service = client.GetService('BudgetService', version='v201809')
 
   # Create a budget, which can be shared by multiple campaigns.
-  budget = {
-      'name': "Interplanetary budget #%s" % uuid.uuid4(),
-      'amount': {
-          'microAmount': '50000000'
-      },
-      'deliveryMethod': 'STANDARD'
-  }
-    
-  budget_operations = [{
-      'operator': 'ADD',
-      'operand': budget
-  }]
-
-  # Add the budget.
-  """  budget_id = budget_service.mutate(budget_operations)['value'][0][
-      'budgetId'] """
+  budget = CreateSharedBudget(client, name)
+  budget_id = budget['budgetId']
 
   # Construct operations and add campaigns.
   operations = [{
@@ -66,9 +86,10 @@ def add_campaign(client, name):
           'status': 'PAUSED',
           'advertisingChannelType': 'DISPLAY',
            'biddingStrategyConfiguration': {
-              'biddingStrategyType': 'MANUAL_CPC',
+              'biddingStrategyType': 'MANUAL_CPM',
                
           },
+          
           
           'startDate':  (datetime.datetime.now() +
                       datetime.timedelta(10)).strftime('%Y%m%d'),
@@ -76,22 +97,10 @@ def add_campaign(client, name):
                       datetime.timedelta(20)).strftime('%Y%m%d'),
           # Note that only the budgetId is required
           'budget': {
-              'budgetId': budget_service.mutate(budget_operations)['value'][0]['budgetId']
+              'budgetId': budget_id
           },
           
-          # Optional fields
-          'frequencyCap': {
-              'impressions': '5',
-              'timeUnit': 'DAY',
-              'level': 'ADGROUP'
-          },
-          'settings': [
-              {
-                  'xsi_type': 'GeoTargetTypeSetting',
-                  'positiveGeoTargetType': 'DONT_CARE',
-                  'negativeGeoTargetType': 'DONT_CARE'
-              }
-          ]
+         
       }
   }]
   campaigns = campaign_service.mutate(operations)
@@ -108,7 +117,8 @@ def add_campaign(client, name):
             "startDateFrench": campaign['startDate'][-2:] + "/" + campaign['startDate'][-4:-2] + "/" + campaign['startDate'][:4],
             "endDateFrench": campaign['endDate'][-2:] + "/" + campaign['endDate'][-4:-2] + "/" + campaign['endDate'][:4],
             "biddingStrategyConfiguration": campaign['biddingStrategyConfiguration'],
-            "servingStatus": campaign['servingStatus']
+            "servingStatus": campaign['servingStatus'],
+            "budgetId": budget_id,
             })
         print ('Campaign with name "%s" and id "%s" was added.'
             % (campaign['name'], campaign['id']))
@@ -119,3 +129,17 @@ def add_campaign(client, name):
 
 
   return INFOS
+ # Optional fields
+"""  'frequencyCap': {
+              'impressions': '5',
+              'timeUnit': 'DAY',
+              'level': 'ADGROUP'
+          },
+          'settings': [
+              {
+                  'xsi_type': 'GeoTargetTypeSetting',
+                  'positiveGeoTargetType': 'DONT_CARE',
+                  'negativeGeoTargetType': 'DONT_CARE'
+              }
+          ] 
+"""

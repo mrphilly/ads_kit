@@ -41,6 +41,7 @@ from ads_scripts.targeting.target_devices import TargetDevices
 from ads_scripts.advanced_operations.add_display import add_display_ad
 from ads_scripts.basic_operations.change_ad_status import ChangeAdStatus
 from ads_scripts.basic_operations.remove_ad import RemoveAd
+from ads_scripts.basic_operations.update_budget import UpdateBudget
 import pyrebase
 config = {
       "apiKey": "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
@@ -142,6 +143,14 @@ def addAd():
     
 
    
+@app.route("/updateBudget", methods=['POST'])
+@app.route("/updateBudget/<budgetId>/<amount>", methods=['POST', 'GET'])
+def updateBudget(budgetId=None, amount=None):
+    print(amount)
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    budget = UpdateBudget(adwords_client, budgetId, amount)
+    return jsonify(budget)
+
 
 
 def method_waraper(self, record):
@@ -349,7 +358,8 @@ def campagne():
                 "endDate": campagne[0]["endDate"],
                 "startDateFrench": campagne[0]["startDateFrench"],
                 "endDateFrench": campagne[0]["endDateFrench"],
-                "servingStatus": campagne[0]["servingStatus"]          
+                "servingStatus": campagne[0]["servingStatus"],
+                "budgetId": campagne[0]["budgetId"]         
                 }
     except:
         response = {
@@ -646,6 +656,57 @@ def pay():
 
 
         return jsonify(req)
+
+@app.route('/payBudget',  methods=['POST'])
+
+@app.route('/payBudget/<money>/<budgetId>/<budget_to_place>', methods=['POST'])
+
+def payBudget(money=None, budgetId=None, budget_to_place=None):
+        """
+        Get payexpress token
+        """
+        print(money)
+        print(budgetId)
+        adwords_client = adwords.AdWordsClient.LoadFromStorage("./googleads.yaml")
+        url = 'https://payexpresse.com/api/payment/request-payment'
+        cancel_url = "http://www.google.com"
+        success_url = "http://127.0.0.1:5000/updateBudget/"+budgetId + "/" + budget_to_place
+        #cancel_url = "http://0.0.0.0:5009"
+        #success_url = "http://0.0.0.0:5009/?pay=ok"
+
+        #success_url = UpdateBudget(adwords_client, budgetId, money)
+        
+        amount_due = round(int(money))
+        print(money)
+        infos = {
+            'item_name':'Mon achat',
+            'item_price':amount_due,
+            'currency':'XOF',
+            'ref_command':time.time(),
+            'command_name':'Mon achat',
+            'env':'test',
+            'success_url': success_url,
+            'cancel_url':cancel_url
+        }
+
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
+            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+        }
+
+        req = requests.post(url, data=infos, headers=headers)
+
+        req = req.json()
+    
+        print(req['success'])
+        
+        req['redirect_url'] = 'https://payexpresse.com/payment/checkout/' +req['token']
+        
+
+
+        return jsonify(req)
+
 
 # download handler
 @app.route('/uploads/<filename>')

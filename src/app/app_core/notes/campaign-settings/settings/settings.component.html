@@ -222,12 +222,12 @@
                     <h6 style="color: white">Groupes d'annonces </h6>
                     
                   </div>
-                  <div class="card-body p-0 white slimScroll no-b" data-height="300">
+                  <div class="card-body p-0 white slimScroll no-b" data-height="300" *ngIf="number_ad_groups!=0; else noAdGroups">
                     <div class="table-responsive no-b">
                       <table class="table table-hover no-b">
                         <!-- Table heading -->
                         <tbody class="no-b">
-                          <tr class="no-b teal lighten-1 text-white text-center"  *ngIf="number_ad_groups!='0'">
+                          <tr class="no-b teal lighten-1 text-white text-center">
                             <!--     <th>
                                         <input type="checkbox">
                                     </th> -->
@@ -263,7 +263,7 @@
                             <td class='no-b text-center'>
                             
                              
-                              <a class="text-danger" style="cursor: pointer" title="d�sactiver"
+                              <a class="text-danger" style="cursor: pointer" title="dÃ©sactiver"
                                 (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"
                                 *ngIf="adgroup?.status==='ENABLED'">
                                 <i class="icon-stop text-danger"></i>
@@ -283,12 +283,130 @@
                       </table>
                     </div>
                   </div>
+                  <div class="card-body text-center">
+                    <ng-template #noAdGroups>
+                      <h6 class="text-danger" >Aucun groupe d'annonce cliquez sur le boutton pour crÃ©er un groupe d'annonce</h6>
+
+                    </ng-template>
+                  </div>
                   <div class="card-footer white text-center no-b">
                     <a class="btn-fab btn-fab-md teal lighten-3 shadow btn-md text-white" (click)="toggleAddNewAdGroup()" style="margin-top: -15px; position: absolute;margin-left: -25px;"><i class="icon-add_circle"></i></a>
 
                     
                     <!--  <a href="#" class="btn btn-outline-danger btn-xs">Delete All</a> -->
                   </div>
+                </div>
+                <div class="col" style="text-align: center">
+                             <div class="card my-3 my-3 no-b shadow" style="display: inline-block">
+                    <div class="card-header teal lighten-3 text-white">
+                        Budget
+                    </div>
+                    <div class="card-body no-b">
+                        <!-- Big Heading -->
+                        <div class="text-center">
+                            <h3 class="my-3">{{account_money.toString()}} CFA</h3>
+                            <button class="btn teal lighten-3 text-white" data-toggle="modal" data-target="#modalBudget"><i class="icon-budget yellow avatar cirlce"></i>
+                            Définir un bugdet</button>
+                           
+                        </div>
+                       <!--  <div class="d-flex justify-content-between">
+                            <div>
+                                <p>
+                                    <i class="icon-circle-o text-red mr-2"></i>Sales</p>
+                                <p>
+                                    <i class="icon-circle-o text-green mr-2"></i>Last Month</p>
+                            </div>
+                            <div>
+                                <p>
+                                    <i class="icon-angle-double-down text-red mr-2"></i>1,4,348</p>
+                                <p>
+                                    <i class="icon-angle-double-up text-green mr-2"></i>1,11,5</p>
+                            </div>
+                        </div> -->
+                        <div class="modal fade" id="modalBudget" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalsmall">Budget de campagne</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card no-b shadow white">
+          <div class="card-body no-b white">
+                      <div class="form-row text-center">
+                  <div class="col-md-12 mb-3 text">
+                    <h6 for="validationCustom01">Budget</h6>
+                    <input type="number" class="form-control" id="budget" (onkeyup)="handleImpressionsCount()" placeholder="Budget" min="10000"
+                      required>
+                      <small class="text-success">Saisir un montant supérieur ou égal à 10000 FCA</small>
+                      <div id="error_budget" style="display: none">
+                          <p class="text-danger">Eurreur budget invalide</p>
+                      </div>
+                  </div>
+                           <!--   <div class="col-md-4 mb-3 text">
+                    <small for="validationCustom01">Applications mobiles de destinations</small>
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                      [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                      (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                      (onDeSelectAll)="onAppsDeSelectAll()">
+                    </ng-multiselect-dropdown>
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4 mb-3">
+                    <small for="pattern">Urls de redirection séparées par des virgules</small>
+                    <input type="text" autocomplete="off" class="form-control" id="redirect"
+                      placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
+                   
+
+
+
+
+
+
+                  </div> -->
+                 
+                 
+  
+
+
+
+
+                </div>
+                 <div class="d-flex justify-content-between">
+                            <div>
+                                <p>
+                                    <i class="icon-angle-double-down text-red mr-2"></i><strong class="text-danger">{{number_of_impressions}} Impressions</strong></p>
+                                <p class="text-success">
+                                <i class="icon-circle-o text-green mr-2 text-infos"></i>Une impression signifie un affichage d'une annonce sur un site</p> 
+                            </div>
+                            <div>
+                                <!-- <p>
+                                    <i class="icon-angle-double-down text-red mr-2"></i>{{number_of_impressions}}</p>
+                                <p> -->
+                                   <!--  <i class="icon-angle-double-up text-green mr-2"></i>1,11,5</p> -->
+                            </div>
+                        </div>
+          </div>
+
+          <div class="card-footer white no-b">
+            <button type="button" class="btn teal lighten-1 text-white" id="budgetSet" (click)="defineBudget()">Définir mon budget</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger text-white" id="closeModalBudget" data-dismiss="modal">Close</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+                    </div>
+                </div>
                 </div>
               </div>
               <!--  <div class="col-md-12" *ngIf="isAdGroup">
@@ -325,7 +443,7 @@
                                        <div class="p-4">
                                            <div class="float-right"><span class="icon-stop-watch3 s-48"></span>
                                            </div>
-                                           <div class="counter-title">D�bute le {{ startDate }}</div>
+                                           <div class="counter-title">DÃ©bute le {{ startDate }}</div>
                                            <h5 class="sc-counter mt-3">Se termine le {{ endDate }}</h5>
                                            <a class="btn btn-warning" style="float: right"><i class="icon-edit"></i></a>
                                        </div>
@@ -629,7 +747,7 @@
           </div>
           <div class="form-group m-0">
             <label for="name" class="col-form-label s-12">Nom</label>
-            <input id="name" placeholder="Enter User Name" class="form-control r-0 light s-12 " type="text"
+            <input id="name" placeholder="Nom de la campagne" class="form-control r-0 light s-12 " type="text"
               value="{{name}}">
           </div>
           <hr>
