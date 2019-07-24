@@ -285,7 +285,12 @@
                   </div>
                   <div class="card-body text-center">
                     <ng-template #noAdGroups>
-                      <h6 class="text-danger" >Aucun groupe d'annonce cliquez sur le boutton pour crÃ©er un groupe d'annonce</h6>
+                      <div class="card white no-b">
+                        <div class="card-body white no-b shadow text-center">
+                          <h6 class="text-danger" >Aucun groupe d'annonce cliquez sur le boutton pour créer un groupe d'annonce</h6>
+
+                        </div>
+                      </div>
 
                     </ng-template>
                   </div>
@@ -304,8 +309,10 @@
                     <div class="card-body no-b">
                         <!-- Big Heading -->
                         <div class="text-center">
-                            <h3 class="my-3">{{account_money.toString()}} CFA</h3>
-                            <button class="btn teal lighten-3 text-white" data-toggle="modal" data-target="#modalBudget"><i class="icon-budget yellow avatar cirlce"></i>
+                            <p class="my-3">La campagne dure: {{numberOfDays}} jours</p>
+                            <p class="my-3">Budget journalier: {{dailyBudget}} CFA/jour</p>
+                            <p class="my-3">Budget Général: {{budget}} CFA</p>
+                            <button class="btn teal lighten-3 text-white" data-toggle="modal" data-target="#modalBudget" *ngIf="budget == 0"><i class="icon-budget yellow avatar cirlce"></i>
                             Définir un bugdet</button>
                            
                         </div>

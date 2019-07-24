@@ -40,8 +40,10 @@ export class CampaignSettingsComponent implements OnInit {
   @Input() id: string;
   @Input() status: string;
   @Input() ad_group_id: string;
-  @Input() account_money: any;
+  @Input() budget: any;
   @Input() budgetId: any;
+  @Input() dailyBudget : any;
+  @Input() numberOfDays: any
   uid: string;
   email: string;
   isEditor = false;

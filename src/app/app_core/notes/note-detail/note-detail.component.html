@@ -33,7 +33,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a class="btn-fab btn-fab-sm green accent-3 shadow text-white" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.account_money, note?.budgetId)"><i class="icon-settings2"></i></a>
+                                            <a class="btn-fab btn-fab-sm green accent-3 shadow text-white" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-settings2"></i></a>
                                         </td>
                                         <hr>
                                     </tr>
@@ -62,7 +62,7 @@
  </div>
 <div *ngIf="_showCampaignSettings_">
   <app-campaign-settings [id_campagne]="id_campagne" [id]="id" [name]="name" [_showCamp]="_showCampaignSettings_"
-    [status]="status" [ad_group_id]="ad_group_id" [account_money]="account_money" [budgetId]="budgetId"></app-campaign-settings>
+    [status]="status" [ad_group_id]="ad_group_id" [budget]="budget" [budgetId]="budgetId" [dailyBudget]="dailyBudget" [numberOfDays]="numberOfDays"></app-campaign-settings>
 </div>
 
 

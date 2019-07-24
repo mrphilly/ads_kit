@@ -33,6 +33,7 @@ from ads_scripts.targeting.update_location import UpdateLocation
 from ads_scripts.basic_operations.update_ad_group_status import UpdateAdGroupStatus
 from ads_scripts.basic_operations.remove_ad_group import DeleteAdGroup
 from ads_scripts.basic_operations.update_campaign_start_date import UpdateCampaignStartDate
+from ads_scripts.basic_operations.update_campaign_dates import UpdateCampaignDates
 from ads_scripts.basic_operations.update_campaign_end_date import UpdateCampaignEndDate
 from ads_scripts.basic_operations.get_campaigns_data import get_campaigns_data
 from ads_scripts.targeting.remove_ad_group_gender import RemoveTargetGender
@@ -100,15 +101,15 @@ def removeAd():
 def addAd():
     ad_group_id = request.json['ad_group_id']
     ad_name = request.json['ad_name']
-    ad_image_ref = request.json['ad_image_ref']
-    allUrls = request.json['allUrls']
-    print(allUrls)
+    ad_image_ref = request.json['url_image']
+ 
+    
 
-    urls = []
-    finalUrls = []
-    finalAppsUrls = []
+    finalUrls =  request.json['finalUrls']
+    finalMobileUrls =  request.json['finalMobileUrls']
+    finalAppsUrls =  request.json['finalAppUrls']
    
-    for item in allUrls:
+    """ for item in allUrls:
         
         if item['lib'] == 'Sites Nationaux' or item['lib'] == 'Sites Internationaux' or item['lib'] == "Site d'annonces":
             for el in item['content']:
@@ -121,20 +122,21 @@ def addAd():
             for el in item['content']:
                 finalAppsUrls.append(el['item_id'])
         else:
-            raise Exception('Not item found')
+            raise Exception('Not item found') """
     
-    print(urls)
     print(finalUrls)
     print(finalAppsUrls)
+    print(finalMobileUrls)
             
 
-    auth = firebase.auth()
+    """ auth = firebase.auth()
     user = auth.sign_in_with_email_and_password('test@user.com', '123456')
     image = firebase.storage().child(ad_image_ref).get_url(token=user['idToken'])
     
     print(type(image))
+    """
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
-    ad = add_display_ad(adwords_client, ad_group_id, ad_name, image, urls, finalUrls, finalAppsUrls)
+    ad = add_display_ad(adwords_client, ad_group_id, ad_name, ad_image_ref, finalUrls, finalAppsUrls, finalMobileUrls)
 
     response = {
         "ad": ad
@@ -144,12 +146,17 @@ def addAd():
 
    
 @app.route("/updateBudget", methods=['POST'])
-@app.route("/updateBudget/<budgetId>/<amount>", methods=['POST', 'GET'])
-def updateBudget(budgetId=None, amount=None):
+@app.route("/updateBudget/<budgetId>/<amount>/<idC>/<dure>/<ad_name>/<idA>/<ad_group_id>/<campagne_id>/<id_ad_firebase>", methods=['POST', 'GET'])
+def updateBudget(budgetId=None, amount=None, idC=None, dure=None, ad_name=None, idA=None, ad_group_id=None, campagne_id=None, id_ad_firebase=None):
     print(amount)
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
-    budget = UpdateBudget(adwords_client, budgetId, amount)
-    return jsonify(budget)
+    budget = UpdateBudget(adwords_client, budgetId, amount, dure)
+    #return redirect("http://localhost:4200/"+idC+"/"+amount+"/"+budget[0]['dailyBudget']+"/"+dure)
+
+    return redirect("http://localhost:4200/ads/"+ad_name+"/"+idC+"/"+idA+"/"+str(ad_group_id)+"/"+str(campagne_id)+"/"+str(amount)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure)+"/"+str(id_ad_firebase))
+
+
+
 
 
 
@@ -282,6 +289,18 @@ def updateCampaignStartDate():
     print(campaign_id)
     adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     update = UpdateCampaignStartDate(adwords_client, campaign_id, startDate)
+    return jsonify(update)
+
+@app.route('/upDateCampaignDates', methods=['POST'])
+def updateCampaignDates():
+    campaign_id = request.json['campaign_id']
+    startDate = (request.json['startDate'])
+    endDate = (request.json['endDate'])
+    print(startDate)
+    print(endDate)
+    print(campaign_id)
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    update = UpdateCampaignDates(adwords_client, campaign_id, startDate, endDate)
     return jsonify(update)
 
 
@@ -659,18 +678,19 @@ def pay():
 
 @app.route('/payBudget',  methods=['POST'])
 
-@app.route('/payBudget/<money>/<budgetId>/<budget_to_place>', methods=['POST'])
+@app.route('/payBudget/<money>/<budget_to_place>/<budgetId>/<idC>/<dure>/<ad_name>/<idA>/<ad_group_id>/<campagne_id>/<id_ad_firebase>', methods=['POST'])
 
-def payBudget(money=None, budgetId=None, budget_to_place=None):
+def payBudget(money=None, budget_to_place=None, budgetId=None, idC=None, dure=None, ad_name=None, idA=None, ad_group_id=None, campagne_id=None, id_ad_firebase=None):
         """
         Get payexpress token
         """
+        print(dure)
         print(money)
         print(budgetId)
         adwords_client = adwords.AdWordsClient.LoadFromStorage("./googleads.yaml")
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "http://127.0.0.1:5000/updateBudget/"+budgetId + "/" + budget_to_place
+        success_url = "http://127.0.0.1:5000/updateBudget/"+budgetId + "/" + budget_to_place+ "/"+idC+"/"+dure+"/"+ad_name+"/"+idA+"/"+ad_group_id+"/"+campagne_id+"/"+id_ad_firebase
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -700,6 +720,58 @@ def payBudget(money=None, budgetId=None, budget_to_place=None):
         req = req.json()
     
         print(req['success'])
+        
+        req['redirect_url'] = 'https://payexpresse.com/payment/checkout/' +req['token']
+        
+
+
+        return jsonify(req)
+
+
+@app.route('/rechargeAmount',  methods=['POST'])
+
+@app.route('/rechargeAmount/<money>', methods=['POST'])
+
+def rechargeAmount(money=None):
+        """
+        Get payexpress token
+        """
+        print(money)
+       
+     
+        url = 'https://payexpresse.com/api/payment/request-payment'
+        cancel_url = "http://www.google.com"
+        success_url = "http://localhost:4200/"+money
+        #cancel_url = "http://0.0.0.0:5009"
+        #success_url = "http://0.0.0.0:5009/?pay=ok"
+
+        #success_url = UpdateBudget(adwords_client, budgetId, money)
+        
+        amount_due = round(int(money))
+        print(money)
+        infos = {
+            'item_name':'Mon achat',
+            'item_price':amount_due,
+            'currency':'XOF',
+            'ref_command':time.time(),
+            'command_name':'Mon achat',
+            'env':'test',
+            'success_url': success_url,
+            'cancel_url':cancel_url
+        }
+
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
+            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+        }
+
+        req = requests.post(url, data=infos, headers=headers)
+
+        req = req.json()
+    
+        print(req['success'])
+        
         
         req['redirect_url'] = 'https://payexpresse.com/payment/checkout/' +req['token']
         

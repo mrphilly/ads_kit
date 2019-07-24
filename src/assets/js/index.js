@@ -180,7 +180,7 @@ $(document).ready(() => {
   const myParam = urlParams.get('pay');
   var timerInterval;
   data = "ok"
-  if (myParam != undefined) {
+ /*  if (myParam != undefined) {
     $.ajax({
       type: "POST",
       url: "http://127.0.0.1:5000/ads",
@@ -195,7 +195,7 @@ $(document).ready(() => {
     });
   } else {
     
-  }
+  } */
 });
 
 /* function terminer(){

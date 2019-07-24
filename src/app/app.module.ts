@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { AngularFireModule  } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';  
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import {  BrowserModule, BrowserTransferStateModule  } from '@angular/platform-browser';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireModule  } from '@angular/fire';
+import { NgModule } from '@angular/core';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
@@ -30,6 +30,7 @@ import { NotesModule } from './app_core/notes/notes.module';
 import { UiModule } from './app_core/ui/ui.module';
 
 import { AngularFireDatabaseModule } from '@angular/fire/database'
+
 
 
 
@@ -66,7 +67,9 @@ firebase.initializeApp(environment.firebase)
     ColorPickerModule,
     AngularFireDatabaseModule,
     NgbModule.forRoot(),
-    NgxFormatFieldModule
+    NgxFormatFieldModule,
+
+
    
     
     

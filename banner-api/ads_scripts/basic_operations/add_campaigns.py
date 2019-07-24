@@ -47,7 +47,7 @@ def CreateSharedBudget(client, name):
   budget = {
       'name': name,
       'amount': {
-          'microAmount': '10000'
+          'microAmount': '1000000'
       },
       'deliveryMethod': 'STANDARD',
       'isExplicitlyShared': 'false'

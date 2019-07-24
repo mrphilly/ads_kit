@@ -31,9 +31,11 @@ export class NoteDetailComponent implements OnInit {
   status: any;
   ad_group_id: any;
   _showCampaignSettings_ = false
-  account_money: any;
+  budget: any;
   uid: any;
   budgetId: any;
+  dailyBudget: any;
+  numberOfDays: any;
 
   constructor(private notesService: NotesService, private router: Router, private adgroup_service: AdGroupService,private auth: AuthService) { 
     
@@ -98,16 +100,18 @@ export class NoteDetailComponent implements OnInit {
                 })
   } */
 
-  goCampaignSettings(id: string,id_campagne: string, name: string, status: string, ad_group_id: string, account_money: any, budgetId: any) {
-    console.log(id + " " + id_campagne + " " + name + " " + status);
+  goCampaignSettings(id: string,id_campagne: string, name: string, status: string, ad_group_id: string, budget: any, budgetId: any, dailyBudget: any, numberOfDays: any) {
+    console.log(id + " " + id_campagne + " " + name + " " + status + " "+dailyBudget+" "+numberOfDays);
     this.id_campagne = id_campagne;
     this.id = id;
     this.name = name;
     this.status = status;
     this.ad_group_id = ad_group_id
     this.adgroup_service.campaign_id = id_campagne
-    this.account_money = account_money
+    this.budget = budget
     this.budgetId = budgetId
+    this.dailyBudget = dailyBudget
+    this.numberOfDays = numberOfDays
     this._showCampaignSettings_ = true
   }
   async loadScript(src){

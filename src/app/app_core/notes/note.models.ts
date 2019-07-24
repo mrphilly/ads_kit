@@ -9,8 +9,12 @@ export class Note {
     endDate?: any;
     startDateFrench?: any;
     endDateFrench?: any;
+    originalStartDate?: any;
+    originalEndDate?: any;
     servingStatus?: any;
-    account_money?: any;
+    budget?: any;
+    dailyBudget?: any;
+    numberOfDays?: any;
     budgetId?: any;
     dueDate?: any;
     createdAt?: any;

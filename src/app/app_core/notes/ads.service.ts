@@ -121,7 +121,7 @@ private basePath = '/uploads';
 
   
   
-  async addAd(ad_group_id: any, ad_name: any, uid: any, image_ref: any, image_content: any, allUrls: any) {
+  async addAd(ad_id: any, ad_group_id: any, ad_name: any, image_url: any, finalUrls: any, finalAppUrls: any, finalMobileUrls: any) {
    
   
   
@@ -132,9 +132,11 @@ private basePath = '/uploads';
         
         this.http.post('http://127.0.0.1:5000/addAd', {
        'ad_group_id': ad_group_id,
-          'ad_image_ref': image_ref,
+          'url_image': image_url,
           'ad_name': ad_name,
-          'allUrls': allUrls
+          'finalUrls': finalUrls,
+          'finalAppUrls': finalAppUrls,
+          'finalMobileUrls': finalMobileUrls
           
     })
       .subscribe(
@@ -156,7 +158,7 @@ private basePath = '/uploads';
           console.log(response['referenceId'])
           console.log(response['automated'])
 
-         this.createAd(response['ad_id'], ad_group_id, response['name'], response['status'], response['url_image'],image_content, response['displayUrl'], response['finalUrls'], response['finalMobileUrls'], response['finalAppUrls'], response['referenceId'], '' , uid).then(res=>{
+         this.updateAd(ad_id, {ad_id:response['ad_id'], ad_group_id:  ad_group_id , ad_name: response['name'], status: response['status'], url_image: response['url_image'], displayUrl: response['displayUrl'], finalUrls:  response['finalUrls'],finalMobileUrls:response['finalMobileUrls'], finalAppUrls: response['finalAppUrls'], automated: response['automated'], referenceId: response['referenceId'] }).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
               text: 'Annonce ajoutée avec succès',

@@ -23,7 +23,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 
-import {NgxImageCompressService} from 'ngx-image-compress';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
@@ -65,7 +65,8 @@ const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
     NgbModule,
     FontPickerModule,
     LazyLoadImageModule,
-    NgxFormatFieldModule
+    NgxFormatFieldModule,
+ 
 
     
     

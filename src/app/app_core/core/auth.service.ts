@@ -16,17 +16,25 @@ import { switchMap, startWith, tap, filter } from 'rxjs/operators';
 
 import { NotifyService } from './notify.service';
 
+import {map} from 'rxjs/operators'
 
 interface User {
   uid: string;
   email?: string | null;
   photoURL?: string;
   displayName?: string;
+  account_value?: any;
+}
+
+interface NotificationAccountValue {
+  uid: string;
+  notification?: any;
 }
 
 @Injectable()
 export class AuthService {
   user: Observable<User | null>;
+  notificationAccount: Observable<NotificationAccountValue | null>
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -38,6 +46,18 @@ export class AuthService {
       switchMap(user => {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+      // tap(user => localStorage.setItem('user', JSON.stringify(user))),
+      // startWith(JSON.parse(localStorage.getItem('user')))
+    );
+
+     this.notificationAccount = this.afAuth.authState.pipe(
+      switchMap(amount => {
+        if (amount) {
+          return this.afs.doc<NotificationAccountValue>(`notifications_account_value/${amount.uid}`).valueChanges();
         } else {
           return of(null);
         }
@@ -144,15 +164,76 @@ export class AuthService {
   // Sets user data to firestore after succesful login
   private updateUserData(user: User) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
-      `users/${user.uid}`
+      `users/${user.uid}` 
     );
-
+    const notificationRef: AngularFirestoreDocument<User> = this.afs.doc(
+      `notifications_account_value/${user.uid}`
+    );
+    const data_notification: NotificationAccountValue = {
+      uid: user.uid,
+      notification: "Veuillez définir vos paramètres de facturation en cliquant ici"
+    };
+    notificationRef.set(data_notification)
     const data: User = {
       uid: user.uid,
       email: user.email || null,
       displayName: user.displayName || 'nameless user',
-      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ'
+      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+      account_value: 0
     };
     return userRef.set(data);
+  }
+
+  getInfos(user_id: any) {
+        return  this.afs.collection('notifications_account_value', (ref) => ref.where('uid', '==', `${user_id}`)).snapshotChanges().pipe(
+      map((actions) => {
+        return actions.map((a) => {
+          const data = a.payload.doc.data();
+          return { id: a.payload.doc.id, ...data };
+        });
+      })
+    );
+  }
+
+   
+getUser(id: string) {
+    return this.afs.doc<any>(`users/${id}`);
+  }
+
+   updateUser(id: string, data: any) {
+    return this.getUser(id).update(data);
+  }
+
+  getNotification(id: string) {
+    return this.afs.doc<any>(`notifications_account_value/${id}`);
+  }
+
+   updateNotification(id: string, data: any) {
+    return this.getNotification(id).update(data);
+  }
+  public updateValueAccount(uid: any, account_value: any):Promise<any> {
+    return new Promise(resolve => {
+        const userRef: AngularFirestoreDocument<User> = this.afs.doc(
+      `users/${uid}` 
+    );
+    const data: User = {
+     uid: uid,
+      account_value: account_value
+    };
+    const notificationRef: AngularFirestoreDocument<User> = this.afs.doc(
+      `notifications_account_value/${uid}`
+      );
+      const data_notification: NotificationAccountValue = {
+        uid: uid,
+        notification: ""
+      };
+      userRef.set(data).then(() => {
+        notificationRef.set(data_notification).then(() => {
+          resolve("ok")
+        })
+        
+      })
+    })
+  
   }
 }

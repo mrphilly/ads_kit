@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {
+  ActivatedRoute
+} from '@angular/router';
 
 import { Observable } from 'rxjs';
 
@@ -10,8 +13,9 @@ import { AdGroupService } from '../ad-groupe.service'
 import Swal from 'sweetalert2'
 import * as $ from 'jquery'
 import * as moment from 'moment'
-
-
+//import '../../../../assets/js/payexpress/payExpress'
+declare const pQuery: any
+declare const PayExpresse: any
 
 @Component({
   selector: 'notes-list',
@@ -41,7 +45,7 @@ export class NotesListComponent implements AfterViewInit {
   @Input() btn_retour = "btn-fab btn-fab-sm shadow btn-primary"
 
   action_2 = () => {this.toggleAddCampaignBlock()}
-
+  montant: any;
 
   email_letter: any;
   @Input()
@@ -56,6 +60,7 @@ export class NotesListComponent implements AfterViewInit {
   isCampaign = false;
   ad_group_id: string;
   adgroups: any;
+  dure_campagne= 0
   //Si aucune campagne le bloc pour crÃ©er une nouvelle campagne
   _addCampaign_ = false;
 
@@ -63,18 +68,20 @@ export class NotesListComponent implements AfterViewInit {
 
   //Le bloc pour afficher la liste des campagnes
   showList = false
-
+  accountValue: any;
   //Le bloc pour afficher la page pour une campagne donnÃ©e
   _showCampaignSettings_ = false
   isCreating = false
+  notificationAccountValue: any;
+  numberOfNotifications = 0
 
-
-  constructor(private notesService: NotesService, private auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService) {
-    
+  constructor(private notesService: NotesService, private auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute) {
+      var self = this
     
        this.auth.user.forEach((value) => {
          this.uid = value.uid
          this.email = value.email
+         this.accountValue = value.account_value
          this.email_letter = value.email.charAt(0)
          this.notes = this.notesService.getListCampaign(value.uid)
          this.notes.forEach(child => {
@@ -86,6 +93,13 @@ export class NotesListComponent implements AfterViewInit {
         this.initCampagne()
       }
     })
+       })
+    
+    this.auth.notificationAccount.forEach((value) => {
+      if(value.notification != ""){
+        this.numberOfNotifications = 1
+        this.notificationAccountValue = value.notification
+      }
     })
   }
   ngAfterViewInit() {
@@ -100,8 +114,97 @@ export class NotesListComponent implements AfterViewInit {
    
   }
 
-   ngOnInit() {
+  ngOnInit() {
+   var self = this
+    this.route.params.subscribe(params => {
+      console.log(typeof (params['money']))
+      if (typeof (params['money']) != "undefined") {
+        this.isCreating = true
+        this.auth.user.forEach(data => {
+          this.auth.updateUser(data.uid, { account_value: params['money'] })
+          this.auth.getInfos(data.uid).subscribe(el => {
+            this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+              Swal.fire({
+                title: 'Service Rechargement!',
+                text: 'Compte mis à jour avec succès.',
+                type: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  window.history.pushState("", "", "/")
+                  this.isCreating = false
+                }
+              })
+            })
+      
    
+          })
+        })
+
+        // In a real app: dispatch action to load the details here.
+      }
+
+       if (typeof (params['idC']) != "undefined" && params['budget'] != "undefined" && params['dailyBudget'] != "undefined" && params['numberOfDays'] != "undefined") {
+        this.isCreating = true
+    
+         
+              this.notesService.updateNote(params['id'], { budget: params["budget"] , dailyBudget: params['dailyBudget'], numberOfDays: params['numberOfDays']}).then(() => {
+                Swal.fire({
+                  title: 'Service Campagne!',
+                  text: 'Budget mis à jour.',
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  if (result.value) {
+                    window.history.pushState("", "", "/")
+                    this.isCreating = false
+                  }
+                })
+                
+              })
+     
+
+        // In a real app: dispatch action to load the details here.
+      }
+    })
+   /* $(document).ready(() => {
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('pay');
+  var timerInterval;
+
+     if (myParam != undefined) {
+       const money = urlParams.get('money');
+    this.auth.user.forEach(data=>{
+      
+      this.auth.updateValueAccount(data.uid, money).then(res => {
+                    if (res == "ok") {
+                      Swal.fire({
+      title: 'Service Rechargement!',
+      text: 'Compte mis à jour avec succès.',
+      type: 'success',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.value) {
+        window.history.pushState("", "","/")
+      }
+    })
+                    }
+                  })
+    })
+  } else {
+    
+  } 
+}); */
   }
 
 
@@ -225,4 +328,95 @@ export class NotesListComponent implements AfterViewInit {
     $("body").css("background-image", "url('')")
   }
 
+  defineAmountAccount() {
+    var self = this
+    this.montant = $("#montant").val()
+    if (this.montant < 10000) {
+      $('#error_recharge').show()
+    } else {
+      
+      $('#closeModalRecharge').trigger('click')
+      var self = this
+      this.isCreating = true
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: 'http://127.0.0.1:5000/rechargeAmount/'+ self.montant,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+              self.isCreating = false
+              if (is_completed === true) {
+                  alert(success_url)
+                
+                  //window.location.href = success_url; 
+                } else {
+                  self.isCreating = false
+                    //window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                console.log('non success response ', jsonResponse);
+                alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+          
+        });
+    }, 500)
+
+      
+      
+      
+    }
+  }
+  
 }

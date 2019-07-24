@@ -363,7 +363,7 @@
     <div class="sticky">
         <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
-             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar teal lighten-4 shadow" >
+             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar teal lighten-4 shadow" style="height: 60px">
             <div class="relative">
                 <div class="d-flex">
                     <div class="d-none d-md-block">
@@ -378,27 +378,55 @@
         <!-- Messages-->
        
         <!-- Notifications -->
-        <li class="dropdown custom-dropdown notifications-menu">
+         <li style="margin-top: 3px">
+            <a class="nav-link text-white" title="Argent disponible dans votre compte" style="font-size: 12px">
+                <i class="icon-money-bag text-white"></i> {{accountValue}} CFA
+            </a>
+        </li>
+         <li class="dropdown custom-dropdown notifications-menu" *ngIf="!_init_campagne" style="margin-top: 5px">
             <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
-                
+                <i class="icon-notifications_none text-white"></i>
+                <span class="badge badge-danger badge-mini rounded-circle">{{numberOfNotifications}}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
-                
+                <li class="header">Vous avez {{numberOfNotifications}} notification(s)</li>
+                <li>
+                    <!-- inner menu: contains the actual data -->
+                    <ul class="menu">
+                        <li>
+                            <a data-toggle="modal" data-target="#modalRechargement" *ngIf="notificationAccountValue!==''" class="text-danger">
+                                <i class="icon icon-data_usage text-danger"></i>{{notificationAccountValue}} 
+                            </a>
+                              <a href="#" *ngIf="notificationAccountValue ===''">
+                                <i class="icon icon-data_usage text-danger"></i>Aucune Notification pour le moment 
+                            </a>
+                        </li>
+                       <!--  <li>
+                            <a href="#">
+                                <i class="icon icon-data_usage text-danger"></i> 5 new members joined today
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="icon icon-data_usage text-yellow"></i> 5 new members joined today
+                            </a>
+                        </li> -->
+                    </ul>
+                </li>
+                <li class="footer p-2 text-center"><a href="#">View all</a></li>
             </ul>
         </li>
-        <li>
-           
-        </li>
+       
+
+       
         <!-- Right Sidebar Toggle Button -->
-        <li>
-          
-        </li>
+       
         <!-- User Account-->
         <li class="dropdown custom-dropdown user user-menu ">
-            <a href="#" class="nav-link text-white" data-toggle="dropdown">
-                {{email}}
+            <a href="#" class="nav-link text-white" data-toggle="dropdown" style="font-size: 12px">
+                <p class="text-white d-none" style="font-size: 12px">{{email}}</p>
                
-                                                        <span class="avatar-letter avatar-letter-{{email_letter | lowercase}} avatar-md circle"></span>
+                                                        <span  style="font-size: 12px" class="avatar-letter avatar-letter-{{email_letter | lowercase}} avatar-md circle"></span>
                                                         <i class="icon-more_vert"></i>
                                                   
                                                         
@@ -408,7 +436,7 @@
                     <div class="col">
                         <a (click)="auth.signOut()">
                             <i class="icon-apps purple lighten-2 avatar  r-5"></i>
-                            <div class="pt-1" >Déconnexion</div>
+                            <div class="pt-1" >DÃ©connexion</div>
                         </a>
                     </div>
                     <div class="col"><a href="#">
@@ -459,5 +487,56 @@
 <!-- /.right-sidebar -->
 <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
+                                 <div class="modal fade" id="modalRechargement" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalsmall">Recharger mon compte pour mes campagnes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card no-b shadow white">
+          <div class="card-body no-b white">
+                      <div class="form-row text-center">
+                  <div class="col-md-12 mb-3 text">
+                    <h6 for="validationCustom01">Montant à recharger</h6>
+                    <input type="number" class="form-control" id="montant" (onkeyup)="handleImpressionsCount()" placeholder="Montant" min="10000"
+                      required>
+                      <small class="text-success">Saisir un montant supérieur ou égal à 10000 FCA</small>
+                      <div id="error_recharge" style="display: none">
+                          <p class="text-danger">Eurreur montant saisi invalide !</p>
+                      </div>
+                  </div>
+                        
+
+                </div>
+               <!--   <div class="d-flex justify-content-between">
+                            <div>
+                                <p>
+                                    <i class="icon-angle-double-down text-red mr-2"></i><strong class="text-danger">{{number_of_impressions}} Impressions</strong></p>
+                                <p class="text-success">
+                                <i class="icon-circle-o text-green mr-2 text-infos"></i>Une impression signifie un affichage d'une annonce sur un site</p> 
+                            </div>
+                            <div>
+                               
+                            </div>
+                        </div> -->
+          </div>
+
+          <div class="card-footer white no-b">
+            <button type="button" class="btn teal lighten-1 text-white" id="amountSet" (click)=" defineAmountAccount()">Recharger mon compte</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger text-white" id="closeModalRecharge" data-dismiss="modal">Close</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
 <div class="control-sidebar-bg shadow white fixed"></div>
 

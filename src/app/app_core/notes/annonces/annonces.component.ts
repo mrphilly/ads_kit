@@ -3,6 +3,7 @@ import {
   OnInit,
   AfterViewInit
 } from '@angular/core';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute
@@ -11,7 +12,8 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+
+import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 import * as $ from 'jquery';
 
@@ -36,12 +38,14 @@ import {
   AuthService
 } from '../../core/auth.service';
 
+
 import Swal from 'sweetalert2'
-
 import { Ads } from '../ads.service'
-import {AdGroupService} from '../ad-groupe.service'
-
-import '../../../../assets/js/payexpress/payExpress'
+import { AdGroupService } from '../ad-groupe.service'
+/* 
+import Swal from 'sweetalert2'
+import { Ads } from '../ads.service'
+import {AdGroupService} from '../ad-groupe.service' */
 
 type AdsFields = 'name' | 'finalUrls';
 type FormErrors = { [u in AdsFields]: string };
@@ -49,18 +53,96 @@ type FormErrors = { [u in AdsFields]: string };
 declare const fabric: any
 declare const pQuery: any
 declare const PayExpresse: any
-
+const MONTH = [{
+  "Jan": {
+    "name": "January",
+    "short": "Jan",
+    "number": '01',
+    "days": '31'
+  },
+  "Feb": {
+    "name": "February",
+    "short": "Feb",
+    "number": '2',
+    "days": '28'
+  },
+  "Mar": {
+    "name": "March",
+    "short": "Mar",
+    "number": '03',
+    "days": '31'
+  },
+  "Apr": {
+    "name": "April",
+    "short": "Apr",
+    "number": '04',
+    "days": '30'
+  },
+  "May": {
+    "name": "May",
+    "short": "May",
+    "number": '05',
+    "days": '31'
+  },
+  "Jun": {
+    "name": "June",
+    "short": "Jun",
+    "number": '06',
+    "days": '30'
+  },
+  "Jul": {
+    "name": "July",
+    "short": "Jul",
+    "number": '07',
+    "days": '31'
+  },
+  "Aug": {
+    "name": "August",
+    "short": "Aug",
+    "number": '08',
+    "days": '31'
+  },
+  "Sep": {
+    "name": "September",
+    "short": "Sep",
+    "number": '09',
+    "days": '30'
+  },
+  "Oct": {
+    "name": "October",
+    "short": "Oct",
+    "number": '10',
+    "days": '31'
+  },
+  "Nov": {
+    "name": "November",
+    "short": "Nov",
+    "number": '11',
+    "days": '30'
+  },
+  "Dec": {
+    "name": "December",
+    "short": "Dec",
+    "number": '12',
+    "days": '31'
+  }
+}]
 @Component({
   selector: 'app-annonces',
   templateUrl: './annonces.component.html',
   styleUrls: ['./annonces.component.css']
 })
+  
+  
+  
 export class AnnoncesComponent implements OnInit, AfterViewInit {
    public CURRENCY: string;
   public NUMERIC: string;
   public ALPHABET: string;
   public PATTERN: string;
   public COMMA: string;
+    notificationAccountValue: any;
+  numberOfNotifications = 0
   url_errors = [];
   adForm: FormGroup;
   FINAL_ARRAY_TO_SEND: any;
@@ -84,6 +166,25 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'maxlength': 'Url trop longue',
     },
   };
+  today: any;
+  modifyDate = false
+  dure_campagne = 0;
+  budget = 0;
+  isSetBudget = false
+  isSimulation = false
+  budget_to_place = 0;
+  my_gain = 0;
+  startDateFrench: any;
+  endDateFrench: any;
+  startDate: any;
+  endDate: any;
+  budgetId: any;
+  UpdatedStartDate = "";
+  UpdatedEndDate = "";
+  newStartDate = "";
+  newEndDate = "";
+  accountValue: any;
+  montant: any;
   campagne_name: any;
   campagne_id: any;
   ad_group_id: any;
@@ -91,9 +192,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   currentCanvasContent: any;
   adgroups: any;
   ads: any;
+  finalUrls: any;
+  finalAppUrls: any;
+  finalMobileUrls: any;
+  imageRefStorage: any;
+  image_content: any;
   status: any;
-  id: any;
+  idC: any;
+  idA: any;
   uid: any;
+  image_url: any;
+  ad_id: any;
   id_ad_firebase: any;
   ad_name: any;
   ages = []
@@ -117,8 +226,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   currentFinalUrls = ""
   currentImageUrl = ""
   number_ads: any
+  number_of_impressions_simulated = 0
   isNull = true
-  
+  choose = true
+  directBudget=false
   icon_toggle = 'icon-chevron-left'
   icon_toggle_options = 'icon-chevron-down'
   public isCollapsed = false;
@@ -175,7 +286,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   modify_age_text = "Modifier le ciblage des âges"
   modify_devices_text = "Modifier le ciblage des appareils"
   text_option = "Paramètres du canvas"
-  letter_email: any;
+  email_letter: any;
   iconEditor: any;
   genres: any;
   populations: any;
@@ -184,6 +295,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   isCiblageAge = false
   isCiblageDevices = false
   isCreating = false
+  isRoller = false
+  isRechargement = false
+  isPlacementBudget = false
   email: any;
   nationals_errors = ''
   _init_ad_list = false
@@ -497,12 +611,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 }
   ngOnInit() {
    
-    this.auth.user.subscribe(data => {
-      this.uid = data.uid
-      this.email = data.email
-      this.letter_email = data.email.charAt(0)
+   
+     this.auth.notificationAccount.forEach((value) => {
+      if(value.notification != ""){
+        this.numberOfNotifications = 1
+        this.notificationAccountValue = value.notification
+      }
     })
-
       
 
 
@@ -513,15 +628,96 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     // });
 
     this.route.params.subscribe(params => {
+     
+  
+      if (typeof(params['budget']) =="undefined") {
+  
       this.ad_group_name = params['name']
       this.campagne_id = params['campaign_id']
       this.ad_group_id = params['ad_group_id']
-      this.id = params['id']
+      this.idC = params['idC']
+        this.idA = params['idA']
+         this.auth.user.subscribe(data => {
+      this.uid = data.uid
+      this.email = data.email
+      this.email_letter = data.email.charAt(0)
+      this.accountValue = data.account_value
+       this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
+      console.log(res)
+      this.startDateFrench = res['startDateFrench']
+         this.endDateFrench = res['endDateFrench']
+         this.startDate = res['startDate']
+         this.endDate = res['endDate']
+         this.budget = res['budget']
+         this.budgetId = res['budgetId']
+         this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
+    })
+    })
+      } else {
+        console.log(params)
+        this.id_ad_firebase = params['id_ad_firebase']
+         this.ad_group_name = params['name']
+      this.campagne_id = params['campaign_id']
+      this.ad_group_id = params['ad_group_id']
+      this.idC = params['idC']
+      this.idA = params['idA']
+      
+        this.isCreating = true
+    
+         
+              this.notesService.updateNote(params['idC'], { budget: parseInt(params["budget"]) , dailyBudget: parseInt(params['dailyBudget']), numberOfDays: parseInt(params['numberOfDays'])}).then(() => {
+                Swal.fire({
+                  title: 'Service Campagne!',
+                  text: 'Budget mis à jour.',
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  if (result.value) {
+                    window.history.pushState("", "", "/ads/"+params['name']+"/"+params['idC']+"/"+params['idA']+"/"+params['ad_group_id']+"/"+params['campaign_id'])
+                    this.isCreating = false
+                
+                    
+                    this.auth.user.subscribe(data => {
+                    this.uid = data.uid
+                    this.email = data.email
+                    this.email_letter = data.email.charAt(0)
+                    this.accountValue = data.account_value
+                    this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
+                    console.log(res)
+                    this.startDateFrench = res['startDateFrench']
+                      this.endDateFrench = res['endDateFrench']
+                      this.startDate = res['startDate']
+                      this.endDate = res['endDate']
+                      this.budget = res['budget']
+                      this.budgetId = res['budgetId']
+                      this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
+                  })
+                  })
+                     
+                    document.getElementById(this.id_ad_firebase).click()
+                    this.isCreating = true
+                     setTimeout(function(){
+                       document.getElementById("publish").click()
+                       
+                      }, 2000);
+                      this.isCreating = false 
+                   
+                  }
+                })
+                
+              })
+      }
+
+      
+      })
 
 
       // In a real app: dispatch action to load the details here.
-    });
-    this.adgroups = this.adGroupService.getAdGroup(this.id).valueChanges().subscribe(res => {
+  
+    this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
       this.status = res['status']
       this.genres = res['sexes']
       this.populations = res['ages']
@@ -721,7 +917,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     //setup front side canvas
     this.ads = this.adsService.getListAd(this.ad_group_id)
     this.ads.forEach(child => {
-      console.log(child)
+
       if (child.length > 0) {
         this.number_ads = child.length
         this.isNull = true
@@ -733,6 +929,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       }
 
     })
+   
   
    this.buildForm()
  
@@ -961,7 +1158,7 @@ $('#popper').trigger('click')
 
       })
     } else {
-      this.adGroupService.targetGenre(this.id, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
+      this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
         this.sexes = []
       }).then(res => {
         this.isCiblageGenre = false
@@ -988,7 +1185,7 @@ $('#popper').trigger('click')
         if (result.value) {}
       })
     } else {
-      this.adGroupService.targetDevices(this.id, this.campagne_id, this.ad_group_id, this.devices).then(res => {
+      this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
         this.devices = []
       }).then(res => {
         this.isCreating = false
@@ -1028,7 +1225,7 @@ $('#popper').trigger('click')
         if (result.value) {}
       })
     } else {
-      this.adGroupService.targetAge(this.id, this.campagne_id, this.ad_group_id, this.ages).then(res => {
+      this.adGroupService.targetAge(this.idA, this.campagne_id, this.ad_group_id, this.ages).then(res => {
         this.ages = []
       }).then(res => {
         this.isCiblageAge = false
@@ -1480,11 +1677,11 @@ $('#popper').trigger('click')
 
   
 
-  saveImage() {
+ /*  saveImage() {
     this.saveCanvasToJSON()
     const image_content = JSON.stringify(this.canvas);
    
-   /*  this.getWebsites().then(res => {
+    this.getWebsites().then(res => {
       console.log(res)
       if (res != 'error') {
          var storage = firebase.app().storage("gs://comparez.appspot.com/");
@@ -1524,7 +1721,19 @@ $('#popper').trigger('click')
         
       }
     })
-    */
+    
+    
+    
+
+  } */
+
+  saveImage() {
+    this.isRoller = true
+   this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls).then(res => {
+        console.log('success')
+     console.log(res)
+     this.isRoller = false
+      })
     
     
 /* 
@@ -2921,7 +3130,7 @@ $('#popper').trigger('click')
     })
   }
 
-  goAdSettings(id: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, image_content: any) {
+  goAdSettings(id_ad_firebase: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, finalAppUrls: any, finalMobileUrls:any,  image_content: any) {
 
     this.isAdBlock = true
     this.isEditor = false
@@ -2929,8 +3138,15 @@ $('#popper').trigger('click')
     this.currentAdName = ad_name
     this.currentImageUrl = image_url
     this.currentCanvasContent = image_content
-    this.id_ad_firebase = id
+    this.ad_group_id = ad_group_id
+    this.id_ad_firebase = id_ad_firebase
+    this.image_url = image_url
+    this.ad_id = ad_id
     this.currentAdStatus = status
+    this.finalUrls = finalUrls
+    this.finalAppUrls = finalAppUrls
+    this.ad_name = ad_name
+    this.finalMobileUrls = finalMobileUrls
     
     /* this.handleCurrentCanvas() */
     
@@ -2969,26 +3185,63 @@ $('#popper').trigger('click')
   }
 
   publish() {
-    setTimeout(function () {
+    var jQuery = $
+if (this.budget === 0) {
+       
+        Swal.fire({
+          title: "Service annonce",
+          text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Définir ici mon On '
+        }).then((result) => {
+          if (result.value) {
+            jQuery('#button_modal_define_budget').trigger('click')
+          }
+        })
+} else {
+ jQuery('#button_modal_define_budget').trigger('click')
+   
+}
+}
+
+   defineAmountAccount() {
+    var self = this
+    this.montant = $("#montant").val()
+    if (this.montant < 10000) {
+      $('#error_recharge').show()
+    } else {
+      
+      $('#closeModalRecharge').trigger('click')
+      var self = this
+      this.isCreating = true
+      setTimeout(function () {
     
-      var btn = document.getElementById("publish");
+        var btn = document.getElementById("budgetSet");
         var selector = pQuery(btn);
         (new PayExpresse({
-            item_id: 1,
+          item_id: 1,
         })).withOption({
-            requestTokenUrl: 'http://127.0.0.1:5000/pay',
+            requestTokenUrl: 'http://127.0.0.1:5000/rechargeAmount/'+ self.montant,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
-            },
+          },
+       
+          
             //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
             prensentationMode: PayExpresse.OPEN_IN_POPUP,
             didPopupClosed: function (is_completed, success_url, cancel_url) {
-                if (is_completed === true) {
-    
-        window.location.href = success_url;               
+              self.isCreating = false
+              if (is_completed === true) {
+                  alert(success_url)
+                
+                  //window.location.href = success_url; 
                 } else {
-                    window.location.href = cancel_url
+                  self.isCreating = false
+                    //window.location.href = cancel_url
                 }
             },
             willGetToken: function () {
@@ -3034,10 +3287,922 @@ $('#popper').trigger('click')
             formLabelTextColor: '#292b2c',
             alertDialogTextColor: '#333',
             alertDialogConfirmButtonBackgroundColor: '#0178bc',
-            alertDialogConfirmButtonTextColor: '#fff'
+          alertDialogConfirmButtonTextColor: '#fff',
+          
         });
-    }, 500) 
+    }, 500)
+
+      
+      
+      
+    }
+   }
+  
+  
+  defineBudget() {
+    var self = this
+   
+      
+      $('#button_modal_define_budget').trigger('click')
+      var self = this
+    this.isCreating = true
+    
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: 'http://127.0.0.1:5000/payBudget/'+ self.montant+"/"+self.budget_to_place+"/"+self.budgetId+"/"+self.idC+"/"+self.dure_campagne+"/"+self.ad_name+"/"+self.idA+"/"+self.ad_group_id+"/"+self.campagne_id+"/"+self.id_ad_firebase,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+              self.isCreating = false
+              if (is_completed === true) {
+                  alert(success_url)
+                
+                  //window.location.href = success_url; 
+                } else {
+                  self.isCreating = false
+                    //window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                console.log('non success response ', jsonResponse);
+                alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+          
+        });
+    }, 500)
+
+      
+      
+      
+    
+   }
+  handleAccountRechargement() {
+    this.choose = false
+    this.directBudget = true
+    this.isRechargement = true
+  }
+  
+  handleBudgetPlacement() {
+   
+    Swal.fire({
+        title: 'Service Campagne',
+        text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
+        type: 'info',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, Je confirme ces dates'
+      }).then((result) => {
+        if (result.value) {
+          this.modifyDate = false
+          this.isSetBudget = true
+         }
+      })
+    
+    
+  }
+  parseDate(str) {
+    var mdy = str.split('/');
+    return new Date(mdy[2], mdy[1], mdy[0]);
+}
+
+ datediff(first, second) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    return Math.round((second-first)/(1000*60*60*24));
+ }
+  
+  OpenModifyDateCampaign() {
+    this.modifyDate = true
+    this.isSetBudget = false
+    $("#finalButtonPublier").hide()
+    $("#dateBlock").hide()
+  }
+  CloseUpdateCampaignDate() {
+    this.modifyDate = false
+    $("#finalButtonPublier").show()
+    $("#dateBlock").show()
+
+  }
+  CloseBudgetOperation() {
+    this.isSetBudget = false
+  }
+  onEndDateChange(args) {
+    console.log(args.value)
+    if (args.value != undefined) {
+      this.newEndDate = args.value.toString()
+      
+    } else {
+      this.newEndDate = ""
+    }
+  
+    }
+  
+  onStartDateChange(args) {
+    console.log(args.value)
+    if (args.value != undefined) {
+      this.newStartDate = args.value.toString()
+      console.log(this.newStartDate)
+      
+    } else {
+      this.newStartDate = ""
+    }
+      }
+  updateCampaignDate() {
+    
+    var parsed = JSON.parse(JSON.stringify(MONTH))
+    
+    var tabStart = this.startDateFrench.split("/")
+    var tabEnd = this.endDateFrench.split("/")
+    var frenchDateStart = tabStart[2] + "-" + tabStart[1] + "-" + tabStart[0]
+    var frenchDateEnd = tabEnd[2] + "-" + tabEnd[1] + "-" + tabEnd[0]
+    console.log(date)
+    console.log(new Date(frenchDateStart))
+    console.log(new Date(frenchDateEnd))
+    var today_date = new Date().getDate()
+    var today_day = new Date().getDay()
+    var years = new Date().getFullYear()
+    var month = new Date().getMonth() + 1
+    new Date().valueOf()
+    if (month < 10 && today_date < 10) {
+      this.today =  years.toString() + "-0" + month.toString() + "-0" + today_date.toString()
+    } else if (month < 10 && today_date > 10) {
+      this.today = years.toString() + "-0" + month.toString() +"-"+ today_date.toString()
+    } else if (month > 10 && today_date < 10) {
+      this.today =  years.toString() + month.toString() + "-0" + today_date.toString()
+    } else {
+      this.today = years.toString() + "-"+ month.toString() +"-"+ today_date.toString()
+      
+    }
+    var date = new Date();
+    
+    if (this.newEndDate == "" && this.newStartDate == "") {
+      Swal.fire({
+        title: 'Service Campagne',
+        text: 'Renseigner au moins une date',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) { }
+      })
+    } else if (this.newEndDate == "" && this.newStartDate != "") {
+      var DATE_START = this.newStartDate.split(' ')
+      var DATE_ELEMENT_START = parsed[0][DATE_START[1]]
+      var _day_start = DATE_START[2]
+      var _month_start = DATE_ELEMENT_START.number
+      var _years_start = DATE_START[3]
+      this.UpdatedStartDate = `${_day_start}/${_month_start}/${_years_start}`
+      var date_start = `${_years_start}${_month_start}${_day_start}`
+      var date_start_check = `${_years_start}-${_month_start}-${_day_start}`
+      Swal.fire({
+        title: 'Service Campagne',
+        text: 'Date de début de campagne uniquement changer',
+        type: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Confirmer"
+      }).then((result) => {
+        if (result.value) {
+          if (new Date(frenchDateStart) < date) {
+                
+            Swal.fire({
+              title: 'Service Campagne',
+              text: 'campagne déjà commencé Vous ne pouver plus modifier la date de début',
+              type: 'warning',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Confirmer'
+            }).then((result) => {
+              if (result.value) {
+             
+              }
+            })
+          } else if (new Date(frenchDateEnd) < date) {
+            
+            Swal.fire({
+              title: 'Service Campagne',
+              text: 'Campagne déjà arrivée à terme',
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) { }
+            })
+          } else if (new Date(frenchDateStart) == date) {
+            Swal.fire({
+              title: 'Service Campagne',
+              text: 'Cette campagne à déjà commencer à diffuser vous pouver uniquement modifier la date de fin',
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) { }
+            })
+          } else if (new Date(frenchDateEnd) == date) {
+            Swal.fire({
+              title: 'Service Campagne',
+              text: "Cette campagne se termine aujourd'hui vous pouver uniquement modifier la date de fin",
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) { }
+            })
+              
+          } else {
+            if (new Date(date_start_check) > new Date()) {
+              Swal.fire({
+                title: 'Service Campagne',
+                text: "Date valide",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, confirmer'
+              }).then((result) => {
+                  this.modifyDate = false
+                 this.isRoller = true
+                if (result.value) {
+                   this.notesService.updateStartDate(this.idC, this.campagne_id, date_start, this.UpdatedStartDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+            
+            } else if (date_start_check == this.today) {
+              
+              Swal.fire({
+                title: 'Service Campagne',
+                text: "Campagne commence aujourd'hui",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, confirmer'
+              }).then((result) => {
+                 this.modifyDate = false
+                 this.isRoller = true
+                if (result.value) {
+                   this.notesService.updateStartDate(this.idC, this.campagne_id, date_start, this.UpdatedStartDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+            } else if (new Date(date_start_check) > new Date(frenchDateEnd)) {
+              Swal.fire({
+                title: 'Service Campagne',
+                text: "date de début ne peut être après la date de fin",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+          
+          
+                }
+              })
+            } else if (date_start_check == frenchDateEnd) {
+              Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de début et date de fin ne peuvent être définies à la même date",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+          
+          
+                }
+              })
+            } else {
+               alert(date_start_check+" "+ this.today)
+              Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de début"+new Date(date_start_check)+" ne peut être définie dans le passé",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) { }
+              })
+            }
+      
+ 
+          }
+          
+        }
+      }
+    
+      )
+      
+    } else if (this.newStartDate == "" && this.newEndDate != "") {
+    
+      var DATE_END = this.newEndDate.split(' ')
+     
+      var DATE_ELEMENT_END = parsed[0][DATE_END[1]]
+      var _day_end = DATE_END[2]
+      var _month_end = DATE_ELEMENT_END.number
+      var _years_end = DATE_END[3]
+      this.UpdatedEndDate = `${_day_end}/${_month_end}/${_years_end}`
+      var date_end = `${_years_end}${_month_end}${_day_end}`
+      var date_end_check = `${_years_end}-${_month_end}-${_day_end}`
+        Swal.fire({
+        title: 'Service Campagne',
+        text: 'Date de début inchangé, date de fin changée',
+        type: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Confirmer"
+      }).then((result) => {
+        if (result.value) {
+          if (new Date(frenchDateEnd) < date) {
+         Swal.fire({
+                title: 'Service Campagne',
+                text: "Cette campagne est déjà arrivée à terme",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+          
+          
+                }
+              })
+    } else if (new Date(frenchDateEnd) == date) { 
+      Swal.fire({
+                title: 'Service Campagne',
+                text: "Cette campagne se termine aujourd'hui, vous voulez prolonger sa date de fin",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, prolonger'
+      }).then((result) => {
+                this.modifyDate = false
+                
+                this.isRoller = true
+                if (result.value) {
+                   this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+    } else {
+            if (new Date(date_end_check) < new Date()) {
+          Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de fin ne peut être définie dans le passé",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+          
+                }
+              })
+      
+            } else if (date_end_check== this.today) {
+                Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de fin définie à la date d'aujourd'hui",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                this.modifyDate = false
+                
+                this.isRoller = true
+                if (result.value) {
+                   this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+         
+      } else if (new Date(date_end_check) < new Date(frenchDateStart)) {
+            Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de fin ne peut être définie avant la date de début",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+          
+                }
+              })
+      } else if (date_end_check==frenchDateStart) {
+      
+              Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de début et date de fin ne peuvent être définies à la même date",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+          
+                }
+              })
+      } else{
+         Swal.fire({
+                title: 'Service Campagne',
+                text: "Vous êtes sur des données saisies ?",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, sûr!'
+              }).then((result) => {
+                this.modifyDate = false
+                
+                this.isRoller = true
+                if (result.value) {
+                   this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+      }
+      
+ 
+    }
+        }
+      })
+     
+      
+    } else {
+      var DATE_START = this.newStartDate.split(' ')
+      var DATE_ELEMENT_START = parsed[0][DATE_START[1]]
+      var _day_start = DATE_START[2]
+      var _month_start = DATE_ELEMENT_START.number
+      var _years_start = DATE_START[3]
+      this.UpdatedStartDate = `${_day_start}/${_month_start}/${_years_start}`
+      var date_start = `${_years_start}${_month_start}${_day_start}`
+      var date_start_check = `${_years_start}-${_month_start}-${_day_start}`
+
+       var DATE_END = this.newEndDate.split(' ')
+     
+      var DATE_ELEMENT_END = parsed[0][DATE_END[1]]
+      var _day_end = DATE_END[2]
+      var _month_end = DATE_ELEMENT_END.number
+      var _years_end = DATE_END[3]
+      this.UpdatedEndDate = `${_day_end}/${_month_end}/${_years_end}`
+      var date_end = `${_years_end}${_month_end}${_day_end}`
+      var date_end_check = `${_years_end}-${_month_end}-${_day_end}`
+      if (frenchDateStart == this.today ) {
+       Swal.fire({
+              title: 'Service Campagne',
+              text: "Cette campagne Commence aujourd'hui vous pouver uniquement modifier la date de fin",
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) { }
+            })
+    } else if (new Date(frenchDateEnd) < new Date()) {
+      Swal.fire({
+              title: 'Service Campagne',
+              text: "Cette campagne est arrivée à terme",
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) { }
+            })
+    } else if (new Date(frenchDateStart) < new Date()) {
+    Swal.fire({
+                title: 'Service Campagne',
+                text: "Cette campagne à déjà commencé à diffuser, seul sa date de fin sera changée",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, changer'
+              }).then((result) => {
+                 this.modifyDate = false
+                
+                this.isRoller = true
+                if (result.value) {
+                   this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+    } else if (frenchDateEnd == this.today) { 
+        Swal.fire({
+                title: 'Service Campagne',
+                text: "Cette campagne se termine aujourd'hui, vous pouvez prolonger sa date de fin",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, prolonger'
+              }).then((result) => {
+                this.modifyDate = false
+                
+                this.isRoller = true
+                if (result.value) {
+                   this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+      } else {
+        if(date_start_check == this.today && new Date(date_end_check) > new Date()){
+           Swal.fire({
+                title: 'Service Campagne',
+                text: "La campagne va commencer aujourd'hui",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, confirmer'
+           }).then((result) => {
+                  this.modifyDate = false
+                 this.isRoller = true
+                if (result.value) {
+                  this.notesService.updateDates(this.idC, this.campagne_id, date_start, this.UpdatedStartDate, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+               
+              })
+        
+     
+      }else if (new Date(date_start_check) < new Date()  && new Date(date_end_check) > new Date()) {
+        Swal.fire({
+          title: 'Service Campagne',
+          text: "Date de début ne peut être définie dans le passé",
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+                  
+          
+          }
+        })
+      }else if(new Date(date_end_check) < new Date()){
+          Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de fin ne peut être définie dans le passé",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+          
+                }
+              })
+      } else if (new Date(date_start_check) > new Date(date_end_check)) {
+   
+         Swal.fire({
+                title: 'Service Campagne',
+                text: "date de début ne peut être après la date de fin",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+          
+                }
+              })
+      } else if (date_start_check==this.today && date_end_check != this.today) {
+    
+       Swal.fire({
+                title: 'Service Campagne',
+                text: "Campagne va commencer aujourd'hui",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, commencer'
+              }).then((result) => {
+                 this.modifyDate = false
+                 this.isRoller = true
+                if (result.value) {
+                  this.notesService.updateDates(this.idC, this.campagne_id, date_start, this.UpdatedStartDate, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+      }else if (date_end_check == this.today) {
+        
+          Swal.fire({
+                title: 'Service Campagne',
+                text: "Impossible de finir une campagne qui n'a pas commencé à diffuser",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+          
+                }
+              })
+      } else if (date_end_check==date_start_check) {
+      
+          Swal.fire({
+                title: 'Service Campagne',
+                text: "Date de début et date de fin ne peuvent être définies à la même date",
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+          
+                }
+              })
+      
+        } else {
+           Swal.fire({
+                title: 'Service Campagne',
+                text: "Vous êtes sur des données saisies ?",
+                type: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, sûr!'
+              }).then((result) => {
+                 this.modifyDate = false
+                 this.isRoller = true
+                if (result.value) {
+                  this.notesService.updateDates(this.idC, this.campagne_id, date_start, this.UpdatedStartDate, date_end, this.UpdatedEndDate).then(res=>{
+                     if (res != "error") {
+                       this.isRoller = false
+                       this.modifyDate = true
+                     }
+                   })
+          
+                }
+              })
+      
+      }
+      
+ 
+    }
+    }
+    
+    
+   
+
+
+
+    
+  
+   
+    
 
    
+    /* var today_date = new Date().getDate()
+    var today_day = new Date().getDay()
+    var years = new Date().getFullYear()
+    var month = new Date().getMonth() + 1
+    
+    if (month < 10 && today_date < 10) {
+      this.today = "0" + today_date.toString() + "/0" + month.toString() + "/" + years.toString()
+    } else if (month < 10 && today_date > 10) {
+      this.today = today_date.toString() + "/0" + month.toString() + "/" + years.toString()
+    } else if (month > 10 && today_date < 10) {
+      this.today = "0" + today_date.toString() + "/" + month.toString() + "/" + years.toString()
+    } else {
+      this.today = today_date.toString() + "/" + month.toString() + "/" + years.toString()
+    }
+
+
+    console.log(`startDate: ${this.startDate}, updatedStartDate: ${this.UpdatedStartDate}`)
+    console.log(`endDate: ${this.endDate}, updatedEndDate: ${this.UpdatedEndDate}`)
+    console.log(`startDateFrench: ${this.startDateFrench.replace("/", "-").replace("/", "-")}, endDateFrench: ${this.endDateFrench.replace("/", "-").replace("/", "-")}`)
+    console.log(this.today)
+ */
   }
+
+
+  
+  setStartDate(): Promise<any> {
+    return new Promise(resolve => {
+      var DATE = this.newStartDate.split(' ')
+  
+    var parsed = JSON.parse(JSON.stringify(MONTH))
+    var DATE_ELEMENT = parsed[0][DATE[1]]
+    var day = DATE[2]
+    var month = DATE_ELEMENT.number
+    var years = DATE[3]
+
+
+      //this.startDate = `${day}/${month}/${years}`
+      this.UpdatedStartDate = `${day}/${month}/${years}`
+    var date = `${years}${month}${day}`
+    this.isCreating = true
+if (this.startDate == date || this.endDate == date) {
+     /*    console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
+      console.log(`end date from me: ${date}`)  */
+       resolve('error')
+        
+      } else {
+  this.notesService.updateStartDate(this.idC, this.campagne_id, date, this.UpdatedStartDate)
+  console.log(this.idC)
+          
+        resolve('ok')
+      }
+    })
+    
+  
+    
+  }
+
+  setEndDate(): Promise<any> {
+    return new Promise(resolve => {
+      var DATE = this.newEndDate.split(' ')
+  
+    var parsed = JSON.parse(JSON.stringify(MONTH))
+    var DATE_ELEMENT = parsed[0][DATE[1]]
+    var day = DATE[2]
+    var month = DATE_ELEMENT.number
+    var years = DATE[3]
+
+
+      //this.endDate = `${day}/${month}/${years}`
+      this.UpdatedEndDate = `${day}/${month}/${years}`
+    var date = `${years}${month}${day}`
+    this.isCreating = true
+if (this.endDate == date || this.startDate == date) {
+     /*    console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
+      console.log(`end date from me: ${date}`)  */
+          resolve('error')
+          
+
+      } else {
+        this.notesService.updateEndDate(this.idC, this.campagne_id, date, this.UpdatedEndDate)
+        resolve('ok')
+      }
+    })
+  }
+  retourRechargement() {
+    this.directBudget = false
+    this.choose = true
+  }
+ 
+  handleSimulatedImpressionsCount() {
+    console.log('keyup')
+    $('#error_recharge').hide()
+    this.isSimulation = true
+    var montant = $("#montant").val()
+    if (montant < 10000) {
+      this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      $('#error_recharge').show()
+    } else if(montant==""){
+      this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+       $('#error_recharge').show()
+    } else{
+      this.my_gain = (20 * montant) / 100
+      this.budget_to_place = montant - this.my_gain
+      this.number_of_impressions_simulated = (this.budget_to_place *1000) / 33.3
+      this.montant = montant
+      //var budget_to_place_in_dollar = budget_to_place * 550
+      
+      
+    }
+  }
+  
 }

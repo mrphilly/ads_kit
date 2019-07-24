@@ -157,8 +157,10 @@ export class SettingsComponent {
   @Input() status: string;
   @Input() ad_group_id: string;
   @Input() uid: string;
-  @Input() account_money: any;
+  @Input() budget: any;
   @Input() budgetId: any;
+  @Input() dailyBudget: any;
+  @Input() numberOfDays: any;
   ad_group_tab_content =  [];
   email: string;
   ad_groups_list_id = []
@@ -193,6 +195,7 @@ export class SettingsComponent {
   dropdownListZones = [];
   selectedItems = [];
   dropdownSettingsZones = {};
+  dure_campagne = 0
   
 
 
@@ -230,6 +233,7 @@ export class SettingsComponent {
       res.forEach(data => {
             this.startDate = data['startDateFrench']
         this.endDate = data['endDateFrench'] 
+         this.dure_campagne = this.datediff(this.parseDate(data['startDateFrench']), this.parseDate(data['endDateFrench'] ))
         this.servingStatus = data['servingStatus']
         var result = data['zones']
         this.zone = result
@@ -292,7 +296,17 @@ export class SettingsComponent {
     this.zones = []
     console.log(this.zones)
   } */
+  parseDate(str) {
+    var mdy = str.split('/');
+    return new Date(mdy[2], mdy[1], mdy[0]);
+}
 
+ datediff(first, second) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    return Math.round((second-first)/(1000*60*60*24));
+ }
+  
 
   getData(): Observable < any[] > {
     // ['added', 'modified', 'removed']
@@ -951,12 +965,13 @@ this.getListIdAd().then(res => {
 
   }
 
-  goAdGroups(ad_group_name: string, id: string, ad_group_id: string) {
-     this.router.navigate(['ads', ad_group_name, id, ad_group_id, this.id_campagne])
+  goAdGroups(ad_group_name: string, idA: string, ad_group_id: string) {
+     this.router.navigate(['ads', ad_group_name, this.id, idA, ad_group_id, this.id_campagne])
    
   }
   handleErrorBudget() {
     $('#error_budget').hide()
+    
   }
   handleImpressionsCount() {
 
@@ -972,6 +987,103 @@ this.getListIdAd().then(res => {
       
     }
   }
+  
+  /* defineBudget() {
+    var budget_value = $("#budget").val()
+    if (budget_value < 10000) {
+      $('#error_budget').show()
+    } else {
+      var my_gain = (20 * budget_value) / 100
+      var budget_to_place = budget_value - my_gain
+      console.log(`my gain ${my_gain} CFA`)
+      console.log(`budget_to_place ${budget_to_place}`)
+      var budget_to_place_in_dollar = budget_to_place * 550
+      this.number_of_impressions = (budget_to_place * 1000) / 33
+      var data =  {
+              "amount_due": budget_to_place
+      }
+      $('#closeModalBudget').trigger('click')
+      var self = this
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: 'http://127.0.0.1:5000/payBudget/'+budget_value+'/'+self.budgetId+'/'+budget_to_place,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+                if (is_completed === true) {
+    
+        window.location.href = success_url;               
+                } else {
+                    window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                console.log('non success response ', jsonResponse);
+                alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+            "price": budget_to_place
+        });
+    }, 500) 
+
+      
+      
+      
+    }
+  } */
+
+
+
   
   defineBudget() {
     var budget_value = $("#budget").val()
@@ -1066,50 +1178,5 @@ this.getListIdAd().then(res => {
       
     }
   }
-  pay() {
-   let paymentRequestUrl = "https://payexpresse.com/api/payment/request-payment";
-    let fetch = require('node-fetch');// http client
-    let params = {
-    item_name:"Iphone 7",
-    item_price:"560000",
-    currency:"XOF",
-    ref_command:"HBZZYZVUZZZV",
-    command_name:"Paiement Iphone 7 Gold via PayExpresse",
-    env:"test",
-    ipn_url:"https://domaine.com/ipn",
-    success_url:"https://domaine.com/success",
-    cancel_url:"https://domaine.com/cancel",
-    custom_field:JSON.stringify({
-       custom_fiel1:"value_1",
-       custom_fiel2:"value_2",
-    })
-    };
-
-    let headers = {
-    Accept: "application/json",
-    'Content-Type': "application/json",
-    API_KEY:"1afac858d4fa5ec74e3e3734c3829793eb6bd5f4602c84ac4a5069369812915e",
-    API_SECRET:"96bc36c11560f2151c4b43eee310cefabc2e9e9000f7e315c3ca3d279e3f98ac",
-    };
-
-    fetch(paymentRequestUrl, {
-    method:'POST',
-    body:JSON.stringify(params),
-    headers: headers
-    })
-    .then(function (response) {
-    return response.json()
-    })
-    .then(function (jsonResponse) {
-    console.log(jsonResponse)
-    /*
-    {
-        "success":1,
-        "redirect_url":"https://preview.payexpresse.com/payment/checkout/98b1c97af00c8b2a92f2",
-      token:"98b1c97af00c8b2a92f2"}
-
-    */
-    })
-}
   
 }

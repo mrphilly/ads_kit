@@ -256,6 +256,18 @@ export class NotesService implements OnInit {
   
   }
 
+  getSingleCampaignWithId(uid: any, campaign_id: any): Promise<any> {
+    
+   
+    return new Promise(resolve => {
+      this.afs.collection('notes', (ref) => ref.where('owner', '==', uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(data => {
+        resolve(data[0])
+      })
+    
+  
+    })
+  }
+
   getCampaignZones(campaign_id: string, name: string) {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -281,49 +293,54 @@ export class NotesService implements OnInit {
   }
 
   
-  updateStartDate(id: string, campaign_id: string, startDate: string, startDateFrench: string) {
-      return      this.http.post('http://127.0.0.1:5000/upDateCampaignStartDate', {
-       'campaign_id': campaign_id,
-       'startDate': startDate
-    })
-      .subscribe(
-        res => {
-          console.log(res)
+  updateStartDate(id: string, campaign_id: string, startDate: string, startDateFrench: string): Promise<any> {
+    return new Promise(resolve => {
+      this.http.post('http://127.0.0.1:5000/upDateCampaignStartDate', {
+        'campaign_id': campaign_id,
+        'startDate': startDate
+      })
+        .subscribe(
+          res => {
+            console.log(res)
          
          
-        this.updateNote(id, {startDate: res[0]['startDate'], startDateFrench: startDateFrench, servingStatus: res[0]['servingStatus']}).then(res=>{
-           /*  Swal.fire({
+            this.updateNote(id, { startDate: res[0]['startDate'], startDateFrench: startDateFrench, servingStatus: res[0]['servingStatus'] }).then(res => {
+              resolve('ok')
+              /*  Swal.fire({
+                 title: 'Modification date de début',
+                 text: 'Date de début modifiée',
+                 type: 'success',
+                 showCancelButton: false,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'Ok'
+               }).then((result) => {
+                 if (result.value) {}
+               }) */
+            })
+          
+          },
+          err => {
+            Swal.fire({
               title: 'Modification date de début',
-              text: 'Date de début modifiée',
-              type: 'success',
+              text: this.text_error_date,
+              type: 'error',
               showCancelButton: false,
               confirmButtonColor: '#3085d6',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) {}
-            }) */
-         })
-          
-        },
-        err => {
-          Swal.fire({
-          title: 'Modification date de début',
-          text: this.text_error_date,
-          type: 'error',
-          showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-            if (result.value){}
-          })
-        }
-      );
+              if (result.value) { }
+            })
+            resolve('error')
+          }
+        )
+    })
   }
   
-    updateEndDate(id: string, campaign_id: string, endDate: string, endDateFrench: string) {
-       return     this.http.post('http://127.0.0.1:5000/upDateCampaignEndDate', {
+    updateEndDate(id: string, campaign_id: string, endDate: string, endDateFrench: string): Promise<any> {
+       return  new Promise(resolve=>{
+         this.http.post('http://127.0.0.1:5000/upDateCampaignEndDate', {
        'campaign_id': campaign_id,
        'endDate': endDate
     })
@@ -332,7 +349,8 @@ export class NotesService implements OnInit {
           console.log(res)
          
          
-        this.updateNote(id, {endDate: res[0]['endDate'], endDateFrench: endDateFrench, servingStatus: res[0]['servingStatus']}).then(res=>{
+          this.updateNote(id, { endDate: res[0]['endDate'], endDateFrench: endDateFrench, servingStatus: res[0]['servingStatus'] }).then(res => {
+          resolve('ok')
            /*  Swal.fire({
               title: 'Modification date de fin',
               text: 'Date de fin modifiée',
@@ -358,9 +376,37 @@ export class NotesService implements OnInit {
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
-          })
+        })
+          resolve('error')
         }
       );
+       })
+  }
+
+  updateDates(id: string, campaign_id: string, startDate: string, startDateFrench: string, endDate: string, endDateFrench: string): Promise<any> {
+    return new Promise(resolve => {
+      
+      this.http.post('http://127.0.0.1:5000/upDateCampaignDates', {
+        'campaign_id': campaign_id,
+        'startDate': startDate,
+         'endDate': endDate
+      })
+        .subscribe(
+          res => {
+            console.log(res)
+           
+           
+            this.updateNote(id, { endDate: res[0]['endDate'], endDateFrench: endDateFrench, startDate: res[0]['startDate'], startDateFrench: startDateFrench, servingStatus: res[0]['servingStatus'] }).then(res => {
+            resolve('ok')
+           })
+            
+          },
+          err => {
+          resolve('error')
+          }
+        );
+    })
+    
   }
 
 
@@ -400,9 +446,19 @@ export class NotesService implements OnInit {
   }
 
   
+parseDate(str) {
+    var mdy = str.split('/');
+    return new Date(mdy[2], mdy[1], mdy[0]);
+}
 
+ datediff(first, second) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    return Math.round((second-first)/(1000*60*60*24));
+ }
 
-  prepareSaveCampaign(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string ,servingStatus: string, budgetId: any): Note {
+  prepareSaveCampaign(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string, budgetId: any): Note {
+    
     const userDoc = this.afs.doc(`users/${this.uid}`);
       const newCampaign = {
       id_campagne: id,
@@ -412,8 +468,12 @@ export class NotesService implements OnInit {
         endDate: endDate,
         startDateFrench: startDateFrench,
         endDateFrench: endDateFrench,
+        originalStartDate: new Date().valueOf(),
+        originalEndDate: new Date().valueOf(),
         servingStatus: servingStatus,
-        account_money: 0, 
+        budget: 0, 
+        dailyBudget: 0,
+        numberOfDays: this.datediff(this.parseDate(startDateFrench), this.parseDate(endDateFrench)),
       budgetId: budgetId,
       zones: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),

@@ -26,44 +26,33 @@ section of our README.
 """
 
 from googleads import adwords
-import math
-
-def place_value(number): 
-    return ("{:,}".format(number))
+from .get_campaigns_using_id import get_campaign_with_id
 
 
-def UpdateBudget(client, budgetId, amount, dure):
+
+
+def UpdateCampaignDates(client, campaign_id, startDate, endDate):
   # Initialize appropriate service.
-  response = []
-  budget_service = client.GetService('BudgetService', version='v201809')
-  value_in_dollar = round((float(amount) / 550)/int(dure))
-  print('value in dollar: ' + str(value_in_dollar))
-  value_in_micro_dollar = value_in_dollar * 1000000
-  print(value_in_micro_dollar)
-  print(place_value(value_in_micro_dollar))
-  
-  #0,01$ ==> 10000 µ$
-
-  print('value in micro dollar:'+ str(value_in_micro_dollar))
-  
+  campaign_service = client.GetService('CampaignService', version='v201809')
+  campagne = []
   operations = [{
      'operator': 'SET',
           'operand': {
-              'budgetId': budgetId,
-               'amount': {
-          'microAmount': value_in_micro_dollar
-      },
-             
+              'id': campaign_id,
+              'startDate': startDate,
+              'endDate': endDate,
           }
   }]
-  budget = budget_service.mutate(operations)
-  response.append({
-    "dailyBudget": (value_in_dollar*555)
-  })
-  for item in budget['value']:
-    print(item)
-    
+  campaigns = campaign_service.mutate(operations)
+  for campaign in campaigns['value']:
+    print ('Campaign with name "%s" and id "%s" was updated.' % (campaign['name'], campaign['id']))
+    campagne.append({
+      "id": campaign['id'],
+      "startDate": campaign['startDate'],
+      "endDate": campaign['endDate'],
+       "servingStatus": campaign['servingStatus']
+    })
     
 
-  return response
+  return campagne
 
