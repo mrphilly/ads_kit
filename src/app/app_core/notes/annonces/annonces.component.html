@@ -4,7 +4,7 @@
       <div class="d-flex hv-100 align-items-stretch">
         <div class="text-white teal darken-1">
           <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <!--  <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+             <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                        aria-controls="v-pills-home" aria-selected="true"><i class="icon-inbox2"></i></a>
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
                        aria-controls="v-pills-profile" aria-selected="false"><i class="icon-add"></i></a>
@@ -13,9 +13,9 @@
                     <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a> -->
             <a href="">
               <figure class="avatar">
-                <img src="assets/img/dummy/u3.png" alt="">
-                <span class="avatar-badge online"></span>
-              </figure>
+                  <img src="assets/img/adafri.png" alt="">
+                 <span class="avatar-badge online"></span>
+              </figure> 
             </a>
           </div>
         </div>
@@ -336,7 +336,10 @@
 
 
   <a href="#" data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed" *ngIf="!_init_campagne">
-    <i class="icon-toggle-nav white"></i>
+     <figure class="avatar">
+                  <img src="assets/img/adafri.png" alt="">
+                <!-- <span class="avatar-badge online"></span> -->
+              </figure>
   </a>
   <div class="has-sidebar-left has-sidebar-tabs">
     <!--navbar-->
@@ -538,14 +541,14 @@
                     (onDeSelect)="onAdsWebsitesDeSelect($event)" (onDeSelectAll)="onAdsWebsitesDeSelectAll()">
                   </ng-multiselect-dropdown>
                 </li>
-                <li class="treeview"><a class="text-white"><i class="icon icon-male indigo-text s-18"></i><small
+               <!--  <li class="treeview"><a class="text-white"><i class="icon icon-male indigo-text s-18"></i><small
                       for="validationCustom01">Applications mobiles de destinations</small></a>
                   <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
                     [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
                     (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
                     (onDeSelectAll)="onAppsDeSelectAll()">
                   </ng-multiselect-dropdown>
-                </li>
+                </li> -->
               </ul>
 
             </div>
@@ -717,7 +720,7 @@
                 <div class="card-body">
                   <form [formGroup]="adForm">
                     <div class="form-row text-center">
-                      <div class="col-md-4 mb-3 text">
+                      <div class="col-md-6 mb-3 text">
                         <small for="validationCustom01">Nom de l'annonce</small>
                         <input type="text" class="form-control" id="ad_name" placeholder="Nom" formControlName="name"
                           required>
@@ -725,7 +728,7 @@
                           {{ formErrors.name }}
                         </div>
                       </div>
-                      <div class="col-md-4 mb-3 text">
+                      <!-- <div class="col-md-4 mb-3 text">
                         <small for="validationCustom01">Applications mobiles de destinations</small>
                         <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
                           [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
@@ -735,8 +738,8 @@
                         <div class="valid-feedback">
                           Looks good!
                         </div>
-                      </div>
-                      <div class="form-group col-md-4 mb-3">
+                      </div> -->
+                      <div class="form-group col-md-6 mb-3">
                         <small for="pattern">Urls de redirection séparées par des virgules</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
@@ -864,7 +867,7 @@
                 <div class="card-body text-center">
 
                   <div class="form-row text-center">
-                    <div class="col-md-4 mb-3 text">
+                    <div class="col-md-6 mb-3 text">
                       <small for="validationCustom01">Nom de l'annonce</small>
                       <input type="text" class="form-control" id="ad_name" placeholder="Nom" [value]="currentAdName"
                         formControlName="name" required>
@@ -872,7 +875,7 @@
                         {{ formErrors.name }}
                       </div>
                     </div>
-                    <div class="col-md-4 mb-3 text">
+                    <!-- <div class="col-md-4 mb-3 text">
                       <small for="validationCustom01">Applications mobiles de destinations</small>
                       <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
                         [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
@@ -882,8 +885,8 @@
                       <div class="valid-feedback">
                         Looks good!
                       </div>
-                    </div>
-                    <div class="form-group col-md-4 mb-3">
+                    </div> -->
+                    <div class="form-group col-md-6 mb-3">
                       <small for="pattern">Urls de redirection séparées par des virgules</small>
                       <input type="text" autocomplete="off" class="form-control" id="redirect"
                         placeholder="Url de redirection" id="finalUrls" [value]="currentFinalUrls" required
@@ -923,15 +926,15 @@
                         </div>
                         <div class="card-body white no-b">
                           <div class="card-img no-b">
-                            <img class="img-responsive" [src]="currentImageUrl" style="width: 300 px; height: 250px">
+                            <img class="img-responsive" [src]="currentImageUrl">
                           </div>
                         </div>
                         <div class="card-footer white no-b text-center">
                           <button class="btn shadow teal lighten-1 text-white r-20" title="Ajouter un texte"
                             (click)="toggleCurrentEditor()"><i [class]="iconEditor"></i>modifier</button>
                           <button class="btn shadow teal lighten-1 text-white r-20" (click)="publish()"
-                            title="Ajouter un texte" id="publish"><i class="icon-send"
-                              *ngIf="currentAdStatus==''"></i>Publier</button>
+                            title="Ajouter un texte" id="publish" *ngIf="currentAdStatus==''"><i class="icon-send"
+                              ></i>Publier</button>
                         </div>
                       </div>
                     </div>
@@ -1084,7 +1087,7 @@
                             </td>
                             <td>
                               <a class="btn-fab btn-fab-sm green accent-3 shadow text-white" [id]="ad?.id"
-                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content)"><i
+                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content)" style="float: right"><i
                                   class="icon-settings2"></i></a>
                             </td>
                             <hr>
@@ -1319,20 +1322,22 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="card">
-          <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg" style="width: 250px; height: 300px"
+        <div class="card white no-b shadow">
+          <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg"
             alt="card my-3 image cap" id="ad_image_modified">
 
-          <div class="card-footer">
+          <div class="card-footer no-b">
+            <small>Nom: </small>
             <small class="text-muted" id="modified_name"></small>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger text-white" id="closeModalViewModified"
-          data-dismiss="modal">Close</button>
-        <button type="button" class="btn teal lighten-1 text-white" (click)="updateAdOnFirebase()">Enregistrer les
-          modification</button>
+      <div class="modal-footer whtite no-b">
+
+        <button type="button" class="btn btn-danger btn-sm text-white r-20 btn-social" id="closeModalViewModified"
+          data-dismiss="modal" *ngIf="!isRoller"><i class="icon-arrow_back"></i>Revenir</button>
+        <button type="button" class="btn teal lighten-1 text-white btn-sm r-20 btn-social" (click)="updateAdOnFirebase()" *ngIf="!isRoller"><i class="icon-send"></i>Enregistrer</button>
+         <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@ import {
   OnInit,
   AfterViewInit
 } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
@@ -11,7 +12,6 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -166,6 +166,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'maxlength': 'Url trop longue',
     },
   };
+  new_image_content: any;
   today: any;
   modifyDate = false
   dure_campagne = 0;
@@ -194,6 +195,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   ads: any;
   finalUrls: any;
   finalAppUrls: any;
+  newfinalUrls: any;
+  newfinalAppUrls: any;
+  newfinalMobileUrls: any;
   finalMobileUrls: any;
   imageRefStorage: any;
   image_content: any;
@@ -671,7 +675,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   text: 'Budget mis à jour.',
                   type: 'success',
                   showCancelButton: false,
-                  confirmButtonColor: '#3085d6',
+                  confirmButtonColor: '#26a69a',
                   cancelButtonColor: '#d33',
                   confirmButtonText: 'Ok'
                 }).then((result) => {
@@ -1150,7 +1154,7 @@ $('#popper').trigger('click')
         text: 'Aucun genre séléctionné',
         type: 'error',
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ok'
       }).then((result) => {
@@ -1178,7 +1182,7 @@ $('#popper').trigger('click')
         text: 'Aucun appareil séléctionné',
         type: 'error',
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ok'
       }).then((result) => {
@@ -1218,7 +1222,7 @@ $('#popper').trigger('click')
         text: 'Aucun genre séléctionné',
         type: 'error',
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ok'
       }).then((result) => {
@@ -1497,7 +1501,9 @@ $('#popper').trigger('click')
     })
   }
 
-   handleModifiedImage() {
+  handleModifiedImage() {
+     this.new_image_content = ""
+     this.new_image_content = JSON.stringify(this.canvas)
     console.log(this.canvas.toDataURL('png'))
     this.getWebsites().then(res => { 
       if (res != 'error') {
@@ -1572,7 +1578,10 @@ $('#popper').trigger('click')
 
 
   updateAdOnFirebase() {
-     var displayUrl = []
+
+    if (this.currentAdStatus == "") {
+      this.isRoller = true
+      var displayUrl = []
      var finalUrls = []
      var finalMobileUrls = []
      var finalAppUrls = []
@@ -1634,17 +1643,20 @@ $('#popper').trigger('click')
     }).then(res => {
           console.log('success')
       console.log(res)
-      $("#closeModalViewModified").trigger('click')
-       Swal.fire({
-              title: 'Modification annonce',
-              text: 'Annonce modifiée avec succès',
-              type: 'success',
-              showCancelButton: false,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {}
+      Swal.fire({
+        title: 'Modification annonce',
+        text: 'Annonce modifiée avec succès',
+        type: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {
+          self.isRoller = false
+          document.getElementById("closeModalViewModified").click()
+          
+              }
             })
       
         }).catch(err=>{
@@ -1653,7 +1665,7 @@ $('#popper').trigger('click')
               text: 'Erreur Service !',
               type: 'error',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
@@ -1673,9 +1685,335 @@ $('#popper').trigger('click')
         
       }
     })
+    } else {
+       var name= $('#ad_name').val()
+      this.getModifiedWebsites().then(res => {
+        console.log(res)
+        if (res != "error") {
+          console.log(this.compareObjectsUrls(this.newfinalUrls, this.finalUrls))
+          
+          console.log(this.newfinalUrls)
+          console.log(this.finalUrls)
+          var previous_content = JSON.parse(this.image_content)
+      var update_content = JSON.parse(this.new_image_content)
+  
+      var comparaison_content = this.compareObjects(update_content, previous_content)
+      var comparaison_url =  this.compareObjectsUrls(this.newfinalUrls, this.finalUrls)
+          if (comparaison_content === true && comparaison_url === true && name === this.ad_name) {
+            Swal.fire({
+              title: 'Modification annonce',
+              text: "Aucun changement n'a été détecté",
+              type: 'warning',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+          } else if (comparaison_content === false && comparaison_url === true && name === this.ad_name) {
+            Swal.fire({
+              title: 'Modification annonce',
+              text: "Seul l'image sera modifiée",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+          } else if (comparaison_content === false && comparaison_url === false && name === this.ad_name) {
+            Swal.fire({
+              title: 'Modification annonce',
+              text: "Seul l'image et les urls de destination seront modifiées",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+          } else if (comparaison_content === false && comparaison_url === true && name !== this.ad_name) {
+            Swal.fire({
+              title: 'Modification annonce',
+              text: "Seul l'image et le nom de l'annonce seront modifiés",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+          } else if (comparaison_content === true && comparaison_url === true && name !== this.ad_name) {
+            Swal.fire({
+              title: 'Modification annonce',
+              text: "Seul le nom de l'annonce sera modifié",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+          } else if (comparaison_content === true && comparaison_url === false && name === this.ad_name) {
+            Swal.fire({
+              title: 'Modification annonce',
+              text: "Seul les urls de destinations seront modifiées",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+          } else if (comparaison_content === true && comparaison_url === false && name !== this.ad_name) { 
+             Swal.fire({
+              title: 'Modification annonce',
+              text: "Seul le nom de l'annonce et les urls de destinations seront modifiées",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+          }else{
+         Swal.fire({
+              title: 'Modification annonce',
+              text: "L'image, le nom ainsi que les urls de redirections de l'annonce seront modifés !",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modidifier'
+            }).then((result) => {
+              if (result.value) {
+          
+          
+              }
+            })
+      }
+        }
+      })
+      
+       
+      
+      /* if (previous_content.length === update_content.length) {
+        for (let i = 0; i < previous_content.length; i++){
+          if (previous_content[i] === update_content[i]) {
+            console.log(`avant ${previous_content[i]}`)
+            console.log(previous_content[i])
+            console.log(`après ${update_content[i]}`)
+            console.log(update_content[i])
+            console.log('longueurs égales mais aucun changement détecté')
+          } else {
+             console.log(`avant ${previous_content[i]}`)
+            console.log(previous_content[i])
+            console.log(`après ${update_content[i]}`)
+            console.log(update_content[i])
+            console.log('longueurs égales mais aucun changement détecté')
+          }
+        }
+      } else {
+        console.log('longueurs inégales')
+      } */
+      
+    }
+     
   }
 
-  
+  compareObjects (value, other) {
+
+	// Get the value type
+	var type = Object.prototype.toString.call(value);
+
+	// If the two objects are not the same type, return false
+	if (type !== Object.prototype.toString.call(other)) return false;
+
+	// If items are not an object or array, return false
+	if (['[object Array]', '[object Object]'].indexOf(type) < 0) return false;
+
+	// Compare the length of the length of the two items
+	var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
+	var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+	if (value['objects'].length !== other['objects'].length) return false;
+
+  // Compare two items
+    var isEqual = function (value, other) {
+
+	// ...
+
+	// Compare properties
+	if (type === '[object Array]') {
+		for (var i = 0; i < valueLen; i++) {
+			if (compare(value[i], other[i]) === false) return false;
+		}
+	} else {
+		for (var key in value) {
+			if (value.hasOwnProperty(key)) {
+				if (compare(value[key], other[key]) === false) return false;
+			}
+		}
+	}
+
+	// If nothing failed, return true
+	return true;
+
+};
+	var compare = function (value, other) {
+
+		// Get the object type
+		var itemType = Object.prototype.toString.call(value);
+
+		// If an object or array, compare recursively
+		if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
+			if (!isEqual(value, other)) return false;
+		}
+
+		// Otherwise, do a simple comparison
+		else {
+
+			// If the two items are not the same type, return false
+			if (itemType !== Object.prototype.toString.call(other)) return false;
+
+			// Else if it's a function, convert to a string and compare
+			// Otherwise, just compare
+			if (itemType === '[object Function]') {
+				if (value.toString() !== other.toString()) return false;
+			} else {
+				if (value !== other) return false;
+			}
+
+		}
+	};
+
+	// Compare properties
+	if (type === '[object Array]') {
+		for (var i = 0; i < valueLen; i++) {
+			if (compare(value[i], other[i]) === false) return false;
+		}
+	} else {
+		for (var key in value) {
+			if (value.hasOwnProperty(key)) {
+				if (compare(value[key], other[key]) === false) return false;
+			}
+		}
+	}
+
+	// If nothing failed, return true
+	return true;
+
+};
+
+  compareObjectsUrls (value, other) {
+
+	// Get the value type
+	var type = Object.prototype.toString.call(value);
+
+	// If the two objects are not the same type, return false
+	if (type !== Object.prototype.toString.call(other)) return false;
+
+	// If items are not an object or array, return false
+	if (['[object Array]', '[object Object]'].indexOf(type) < 0) return false;
+
+	// Compare the length of the length of the two items
+	var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
+	var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+	if (value.length !== other.length) return false;
+
+  // Compare two items
+    var isEqual = function (value, other) {
+
+	// ...
+
+	// Compare properties
+	if (type === '[object Array]') {
+		for (var i = 0; i < valueLen; i++) {
+			if (compare(value[i], other[i]) === false) return false;
+		}
+	} else {
+		for (var key in value) {
+			if (value.hasOwnProperty(key)) {
+				if (compare(value[key], other[key]) === false) return false;
+			}
+		}
+	}
+
+	// If nothing failed, return true
+	return true;
+
+};
+	var compare = function (value, other) {
+
+		// Get the object type
+		var itemType = Object.prototype.toString.call(value);
+
+		// If an object or array, compare recursively
+		if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
+			if (!isEqual(value, other)) return false;
+		}
+
+		// Otherwise, do a simple comparison
+		else {
+
+			// If the two items are not the same type, return false
+			if (itemType !== Object.prototype.toString.call(other)) return false;
+
+			// Else if it's a function, convert to a string and compare
+			// Otherwise, just compare
+			if (itemType === '[object Function]') {
+				if (value.toString() !== other.toString()) return false;
+			} else {
+				if (value !== other) return false;
+			}
+
+		}
+	};
+
+	// Compare properties
+	if (type === '[object Array]') {
+		for (var i = 0; i < valueLen; i++) {
+			if (compare(value[i], other[i]) === false) return false;
+		}
+	} else {
+		for (var key in value) {
+			if (value.hasOwnProperty(key)) {
+				if (compare(value[key], other[key]) === false) return false;
+			}
+		}
+	}
+
+	// If nothing failed, return true
+	return true;
+
+};
 
  /*  saveImage() {
     this.saveCanvasToJSON()
@@ -1814,6 +2152,78 @@ $('#popper').trigger('click')
     
   }
   
+
+  checkIfIsEmptyModifiedFinalUrls(): Promise<any> {
+    
+    return new Promise(resolve => {
+       var urls_destination = []
+      var urls = $('#finalUrls').val()
+      if (urls !== '') {
+            if (urls.includes(',')) {
+      var tab = urls.toString().split(',')
+      tab.pop()
+    
+      for (let i = 0; i < tab.length; i++) {
+        
+        console.log(`urls ${tab}`)
+        console.log(`actuelle url ${tab[i]}`)
+     
+        if (this.validURL(tab[i]) == true) {
+          console.log(tab[i] + ' est valide')
+          var url = this.setHttp(tab[i])
+          urls_destination.push(url)
+           this.newfinalUrls = urls_destination
+          this.FINAL_ARRAY_TO_SEND.push({
+          "lib": "finalUrls",
+          "content": urls_destination
+          })
+           resolve('ok')
+        } else {
+          this.url_errors.push({
+            "url": tab[i],
+            "text": "est une url invalide"
+          })
+          console.log(tab[i] + " est invalide")
+          resolve('error')
+        }
+    }
+    } else {
+              var check = this.validURL(urls)
+             
+      
+      if (check === true) {
+        console.log(urls + " valide")
+          var url = this.setHttp(urls)
+        urls_destination.push(url)
+        this.newfinalUrls = urls_destination
+         this.FINAL_ARRAY_TO_SEND.push({
+          "lib": "finalUrls",
+          "content": urls_destination
+         })
+         resolve('ok')
+      } else {
+        this.url_errors.push({
+          "url": urls,
+          "text": "est une url invalide"
+        })
+        console.log(urls + ' invalide, vérifier les urls renseignées')
+        resolve('error')
+      }
+    }
+      }else{
+         this.url_errors.push({
+          "url": "",
+          "text": "Url de destination ne peut être vide"
+        })
+      }
+      
+
+
+
+   })
+    
+  }
+  
  
   
   checkIfIsEmptyNationals(array): Promise<any> {
@@ -1868,6 +2278,29 @@ $('#popper').trigger('click')
      
       var mobile_apps = this.apps
    this.checkIfIsEmptyFinalUrls().then(res => {
+            if (res != 'error') {
+       
+              this.checkIfIsEmptyMobileApps(mobile_apps)
+              resolve(res)
+            }else{
+              
+              resolve('error')
+              
+            }
+            })
+    })
+  
+    
+   
+  }
+
+  getModifiedWebsites(): Promise<any> {
+    return new Promise(resolve => {
+      
+      this.FINAL_ARRAY_TO_SEND = []
+     
+      var mobile_apps = this.apps
+   this.checkIfIsEmptyModifiedFinalUrls().then(res => {
             if (res != 'error') {
        
               this.checkIfIsEmptyMobileApps(mobile_apps)
@@ -3024,7 +3457,7 @@ $('#popper').trigger('click')
       text: "Voulez vous modifier le status de votre annonce ?",
       type: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#26a69a',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Oui, modifier!'
     }).then((result) => {
@@ -3061,7 +3494,7 @@ $('#popper').trigger('click')
                 text: 'Erreur.',
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3082,7 +3515,7 @@ $('#popper').trigger('click')
       text: "Voulez vous supprimer cette annonce ?",
       type: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#26a69a',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Oui, supprimer!'
     }).then((result) => {
@@ -3117,7 +3550,7 @@ $('#popper').trigger('click')
                 text: 'Erreur.',
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3141,6 +3574,7 @@ $('#popper').trigger('click')
     this.ad_group_id = ad_group_id
     this.id_ad_firebase = id_ad_firebase
     this.image_url = image_url
+    this.image_content = image_content
     this.ad_id = ad_id
     this.currentAdStatus = status
     this.finalUrls = finalUrls
@@ -3193,7 +3627,7 @@ if (this.budget === 0) {
           text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
+          confirmButtonColor: '#26a69a',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Définir ici mon On '
         }).then((result) => {
@@ -3400,7 +3834,7 @@ if (this.budget === 0) {
         text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
         type: 'info',
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Oui, Je confirme ces dates'
       }).then((result) => {
@@ -3493,7 +3927,7 @@ if (this.budget === 0) {
         text: 'Renseigner au moins une date',
         type: 'error',
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ok'
       }).then((result) => {
@@ -3513,7 +3947,7 @@ if (this.budget === 0) {
         text: 'Date de début de campagne uniquement changer',
         type: 'warning',
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: "Confirmer"
       }).then((result) => {
@@ -3525,7 +3959,7 @@ if (this.budget === 0) {
               text: 'campagne déjà commencé Vous ne pouver plus modifier la date de début',
               type: 'warning',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Confirmer'
             }).then((result) => {
@@ -3540,7 +3974,7 @@ if (this.budget === 0) {
               text: 'Campagne déjà arrivée à terme',
               type: 'error',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
@@ -3552,7 +3986,7 @@ if (this.budget === 0) {
               text: 'Cette campagne à déjà commencer à diffuser vous pouver uniquement modifier la date de fin',
               type: 'error',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
@@ -3564,7 +3998,7 @@ if (this.budget === 0) {
               text: "Cette campagne se termine aujourd'hui vous pouver uniquement modifier la date de fin",
               type: 'error',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
@@ -3578,7 +4012,7 @@ if (this.budget === 0) {
                 text: "Date valide",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok, confirmer'
               }).then((result) => {
@@ -3602,7 +4036,7 @@ if (this.budget === 0) {
                 text: "Campagne commence aujourd'hui",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok, confirmer'
               }).then((result) => {
@@ -3624,7 +4058,7 @@ if (this.budget === 0) {
                 text: "date de début ne peut être après la date de fin",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3639,7 +4073,7 @@ if (this.budget === 0) {
                 text: "Date de début et date de fin ne peuvent être définies à la même date",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3655,7 +4089,7 @@ if (this.budget === 0) {
                 text: "Date de début"+new Date(date_start_check)+" ne peut être définie dans le passé",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3687,7 +4121,7 @@ if (this.budget === 0) {
         text: 'Date de début inchangé, date de fin changée',
         type: 'warning',
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: "Confirmer"
       }).then((result) => {
@@ -3698,7 +4132,7 @@ if (this.budget === 0) {
                 text: "Cette campagne est déjà arrivée à terme",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3713,7 +4147,7 @@ if (this.budget === 0) {
                 text: "Cette campagne se termine aujourd'hui, vous voulez prolonger sa date de fin",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok, prolonger'
       }).then((result) => {
@@ -3737,7 +4171,7 @@ if (this.budget === 0) {
                 text: "Date de fin ne peut être définie dans le passé",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3753,7 +4187,7 @@ if (this.budget === 0) {
                 text: "Date de fin définie à la date d'aujourd'hui",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3777,7 +4211,7 @@ if (this.budget === 0) {
                 text: "Date de fin ne peut être définie avant la date de début",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3793,7 +4227,7 @@ if (this.budget === 0) {
                 text: "Date de début et date de fin ne peuvent être définies à la même date",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3808,7 +4242,7 @@ if (this.budget === 0) {
                 text: "Vous êtes sur des données saisies ?",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Oui, sûr!'
               }).then((result) => {
@@ -3858,7 +4292,7 @@ if (this.budget === 0) {
               text: "Cette campagne Commence aujourd'hui vous pouver uniquement modifier la date de fin",
               type: 'error',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
@@ -3870,7 +4304,7 @@ if (this.budget === 0) {
               text: "Cette campagne est arrivée à terme",
               type: 'error',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
@@ -3882,7 +4316,7 @@ if (this.budget === 0) {
                 text: "Cette campagne à déjà commencé à diffuser, seul sa date de fin sera changée",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok, changer'
               }).then((result) => {
@@ -3905,7 +4339,7 @@ if (this.budget === 0) {
                 text: "Cette campagne se termine aujourd'hui, vous pouvez prolonger sa date de fin",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok, prolonger'
               }).then((result) => {
@@ -3929,7 +4363,7 @@ if (this.budget === 0) {
                 text: "La campagne va commencer aujourd'hui",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok, confirmer'
            }).then((result) => {
@@ -3954,7 +4388,7 @@ if (this.budget === 0) {
           text: "Date de début ne peut être définie dans le passé",
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
+          confirmButtonColor: '#26a69a',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
@@ -3969,7 +4403,7 @@ if (this.budget === 0) {
                 text: "Date de fin ne peut être définie dans le passé",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -3985,7 +4419,7 @@ if (this.budget === 0) {
                 text: "date de début ne peut être après la date de fin",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -4001,7 +4435,7 @@ if (this.budget === 0) {
                 text: "Campagne va commencer aujourd'hui",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok, commencer'
               }).then((result) => {
@@ -4024,7 +4458,7 @@ if (this.budget === 0) {
                 text: "Impossible de finir une campagne qui n'a pas commencé à diffuser",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -4040,7 +4474,7 @@ if (this.budget === 0) {
                 text: "Date de début et date de fin ne peuvent être définies à la même date",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ok'
               }).then((result) => {
@@ -4056,7 +4490,7 @@ if (this.budget === 0) {
                 text: "Vous êtes sur des données saisies ?",
                 type: 'warning',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#26a69a',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Oui, sûr!'
               }).then((result) => {

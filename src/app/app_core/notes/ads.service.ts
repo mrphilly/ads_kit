@@ -218,6 +218,11 @@ private basePath = '/uploads';
      for (let i = 0; i < allUrls.length; i++){
        if (allUrls[i]['lib'] == 'finalUrls') {
          displayUrl.push(allUrls[i]['content'])
+         
+       }
+       if (allUrls[i]['lib'] == 'Application Mobiles') {
+         finalAppUrls.push(allUrls[i]['content'])
+         
        }
      }
   
@@ -227,7 +232,7 @@ private basePath = '/uploads';
       
       if (`${value}` == '0') {
         
-            this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid).then(res=>{
+            this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls[0], '', '' , uid).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
               text: 'Annonce ajoutée avec succès',

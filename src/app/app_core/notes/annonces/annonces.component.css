@@ -3,10 +3,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 }
 
-nouislider {
-    margin-left: 15px;
-    margin-right: 15px;
-}
 
 div.font-select {
     box-shadow: inset 0 -1px 0 #dddddd;
@@ -299,3 +295,4 @@ div.font-select {
     transform: rotate(360deg);
   }
 }
+

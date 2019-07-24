@@ -135,8 +135,10 @@ def addAd():
     
     print(type(image))
     """
+    
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     ad = add_display_ad(adwords_client, ad_group_id, ad_name, ad_image_ref, finalUrls, finalAppsUrls, finalMobileUrls)
+
 
     response = {
         "ad": ad

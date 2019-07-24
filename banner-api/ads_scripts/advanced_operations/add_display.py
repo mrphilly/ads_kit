@@ -128,6 +128,7 @@ def UploadImageAsset(client, url, image_ref_on_file):
 
 
 def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls, finalMobileUrls):
+    print(finalAppsUrls)
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'
     }
@@ -232,7 +233,10 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
           'finalUrls': final_url,
           'displayUrl': final_url,
          
-          'finalAppUrls': app_url
+          'finalAppUrls': {
+            "url": app_url['item_id'], 
+          'osType': 'UNKNOWN'
+          }
           
           
 
