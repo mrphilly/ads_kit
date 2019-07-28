@@ -33,7 +33,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a class="btn-fab btn-fab-sm green accent-3 shadow text-white" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-settings2"></i></a>
+                                            <a class="btn-fab btn-fab-sm green accent-3 shadow text-white" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-settings2"></i></a>
                                         </td>
                                         <hr>
                                     </tr>

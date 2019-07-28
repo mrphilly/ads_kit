@@ -43,6 +43,9 @@ from ads_scripts.advanced_operations.add_display import add_display_ad
 from ads_scripts.basic_operations.change_ad_status import ChangeAdStatus
 from ads_scripts.basic_operations.remove_ad import RemoveAd
 from ads_scripts.basic_operations.update_budget import UpdateBudget
+
+from ads_scripts.basic_operations.update_ad import UpdateAd
+from ads_scripts.targeting.placement import SetPlacement
 import pyrebase
 config = {
       "apiKey": "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
@@ -97,6 +100,19 @@ def removeAd():
 
 
 
+
+@app.route('/UpdateAd', methods=['POST'])
+def updateAd():
+     ad_group_id = request.json['ad_group_id']
+     ad_id = request.json['ad_id']
+     data = request.json['data']
+     #print(data)
+     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+     update = UpdateAd(adwords_client, ad_group_id, ad_id, data)
+     return jsonify(update)
+     
+
+
 @app.route("/addAd", methods=["POST"])
 def addAd():
     ad_group_id = request.json['ad_group_id']
@@ -147,7 +163,7 @@ def addAd():
     
 
    
-@app.route("/updateBudget", methods=['POST'])
+@app.route("/updateBudget", methods=['POST', 'GET'])
 @app.route("/updateBudget/<budgetId>/<amount>/<idC>/<dure>/<ad_name>/<idA>/<ad_group_id>/<campagne_id>/<id_ad_firebase>", methods=['POST', 'GET'])
 def updateBudget(budgetId=None, amount=None, idC=None, dure=None, ad_name=None, idA=None, ad_group_id=None, campagne_id=None, id_ad_firebase=None):
     print(amount)
@@ -156,6 +172,31 @@ def updateBudget(budgetId=None, amount=None, idC=None, dure=None, ad_name=None, 
     #return redirect("http://localhost:4200/"+idC+"/"+amount+"/"+budget[0]['dailyBudget']+"/"+dure)
 
     return redirect("http://localhost:4200/ads/"+ad_name+"/"+idC+"/"+idA+"/"+str(ad_group_id)+"/"+str(campagne_id)+"/"+str(amount)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure)+"/"+str(id_ad_firebase))
+
+
+@app.route("/setBudgetFromAccount", methods=['POST', 'GET'])
+
+def setBudgetFromAccount():
+
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    budgetId = request.json['budgetId']
+    amount = request.json['amount']
+    dure = request.json['dure']
+    budget = UpdateBudget(adwords_client, budgetId, amount, dure)
+    #return redirect("http://localhost:4200/"+idC+"/"+amount+"/"+budget[0]['dailyBudget']+"/"+dure)
+
+    return jsonify(budget)
+
+#http://127.0.0.1:5000/updateBudgetA/hDxHvCnoc5sgwKZclltG/2078906359/6446768384/10000/8000/10
+
+@app.route("/updateBudgetA/<idC>/<campagne_id>/<budgetId>/<total>/<budget_to_place>/<dure>", methods=['POST', 'GET'])
+def updateBudgetA(idC=None, campagne_id=None, budgetId=None, total=None, budget_to_place= None, dure=None):
+    print('success')
+    print(total)
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    budget = UpdateBudget(adwords_client, budgetId, budget_to_place, dure)
+
+    return redirect("http://localhost:4200/"+idC+"/"+str(campagne_id)+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure))
 
 
 
@@ -526,6 +567,18 @@ def targetLocation():
     return jsonify(location)
 
 
+@app.route("/setPlacement", methods=["POST"])
+def setPlacement():
+    ad_group_id = request.json['ad_group_id']
+    placement = request.json['placement']
+    last_placement = request.json['last_placement']
+    print(placement)
+  
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    placement = SetPlacement(adwords_client, ad_group_id, placement, last_placement)
+    return jsonify(placement)
+
+
 @app.route("/targetDevices", methods=["POST"])
 def targetDevices():
     ad_group_id = request.json['ad_group_id']
@@ -682,6 +735,7 @@ def pay():
 
 @app.route('/payBudget/<money>/<budget_to_place>/<budgetId>/<idC>/<dure>/<ad_name>/<idA>/<ad_group_id>/<campagne_id>/<id_ad_firebase>', methods=['POST'])
 
+
 def payBudget(money=None, budget_to_place=None, budgetId=None, idC=None, dure=None, ad_name=None, idA=None, ad_group_id=None, campagne_id=None, id_ad_firebase=None):
         """
         Get payexpress token
@@ -693,6 +747,55 @@ def payBudget(money=None, budget_to_place=None, budgetId=None, idC=None, dure=No
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
         success_url = "http://127.0.0.1:5000/updateBudget/"+budgetId + "/" + budget_to_place+ "/"+idC+"/"+dure+"/"+ad_name+"/"+idA+"/"+ad_group_id+"/"+campagne_id+"/"+id_ad_firebase
+        #cancel_url = "http://0.0.0.0:5009"
+        #success_url = "http://0.0.0.0:5009/?pay=ok"
+
+        #success_url = UpdateBudget(adwords_client, budgetId, money)
+        
+        amount_due = round(int(money))
+        print(money)
+        infos = {
+            'item_name':'Mon achat',
+            'item_price':amount_due,
+            'currency':'XOF',
+            'ref_command':time.time(),
+            'command_name':'Mon achat',
+            'env':'test',
+            'success_url': success_url,
+            'cancel_url':cancel_url
+        }
+
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
+            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+        }
+
+        req = requests.post(url, data=infos, headers=headers)
+
+        req = req.json()
+    
+        print(req['success'])
+        
+        req['redirect_url'] = 'https://payexpresse.com/payment/checkout/' +req['token']
+        
+
+
+        return jsonify(req)
+
+
+@app.route('/Budget/<idC>/<campagne_id>/<budgetId>/<money>/<budget_to_place>/<dure>', methods=['POST'])
+def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None, budget_to_place=None,  dure=None):
+        """
+        Get payexpress token
+        """
+        print(dure)
+        print(money)
+        print(budgetId)
+        adwords_client = adwords.AdWordsClient.LoadFromStorage("./googleads.yaml")
+        url = 'https://payexpresse.com/api/payment/request-payment'
+        cancel_url = "http://www.google.com"
+        success_url = "http://127.0.0.1:5000/updateBudgetA/"+idC+"/"+campagne_id+"/"+budgetId + "/" +money+"/"+ budget_to_place+"/"+dure
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -744,6 +847,59 @@ def rechargeAmount(money=None):
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
         success_url = "http://localhost:4200/"+money
+        #cancel_url = "http://0.0.0.0:5009"
+        #success_url = "http://0.0.0.0:5009/?pay=ok"
+
+        #success_url = UpdateBudget(adwords_client, budgetId, money)
+        
+        amount_due = round(int(money))
+        print(money)
+        infos = {
+            'item_name':'Mon achat',
+            'item_price':amount_due,
+            'currency':'XOF',
+            'ref_command':time.time(),
+            'command_name':'Mon achat',
+            'env':'test',
+            'success_url': success_url,
+            'cancel_url':cancel_url
+        }
+
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
+            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+        }
+
+        req = requests.post(url, data=infos, headers=headers)
+
+        req = req.json()
+    
+        print(req['success'])
+        
+        
+        req['redirect_url'] = 'https://payexpresse.com/payment/checkout/' +req['token']
+        
+
+
+        return jsonify(req)
+
+
+
+@app.route('/rechargeAmountBeforeBudget',  methods=['POST'])
+
+@app.route('/rechargeAmountBeforeBudget/<money>/<idC>', methods=['POST'])
+
+def rechargeAmountBeforeBudget(money=None, idC=None):
+        """
+        Get payexpress token
+        """
+        print(money)
+       
+     
+        url = 'https://payexpresse.com/api/payment/request-payment'
+        cancel_url = "http://www.google.com"
+        success_url = "http://localhost:4200/"+money+"/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 

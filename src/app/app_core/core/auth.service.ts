@@ -211,14 +211,16 @@ getUser(id: string) {
    updateNotification(id: string, data: any) {
     return this.getNotification(id).update(data);
   }
-  public updateValueAccount(uid: any, account_value: any):Promise<any> {
+  public updateValueAccount(uid: any, email, account_value: any):Promise<any> {
     return new Promise(resolve => {
         const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${uid}` 
     );
     const data: User = {
      uid: uid,
-      account_value: account_value
+      account_value: account_value,
+      email: email,
+      
     };
     const notificationRef: AngularFirestoreDocument<User> = this.afs.doc(
       `notifications_account_value/${uid}`

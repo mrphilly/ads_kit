@@ -1,11 +1,11 @@
+import { AngularFireModule  } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';  
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import {  BrowserModule, BrowserTransferStateModule  } from '@angular/platform-browser';
-import { AngularFireModule  } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { NgModule } from '@angular/core';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { AngularFirestoreModule } from '@angular/fire/firestore';

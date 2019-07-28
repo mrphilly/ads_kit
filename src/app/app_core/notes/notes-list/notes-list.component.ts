@@ -147,11 +147,45 @@ export class NotesListComponent implements AfterViewInit {
         // In a real app: dispatch action to load the details here.
       }
 
-       if (typeof (params['idC']) != "undefined" && params['budget'] != "undefined" && params['dailyBudget'] != "undefined" && params['numberOfDays'] != "undefined") {
+
+       if (typeof (params['money']) != "undefined" && typeof(params['idC']) != "undefined") {
+        this.isCreating = true
+        this.auth.user.forEach(data => {
+          this.auth.updateUser(data.uid, { account_value: params['money'] })
+          this.auth.getInfos(data.uid).subscribe(el => {
+            this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+              Swal.fire({
+                title: 'Service Rechargement!',
+                text: 'Compte mis à jour avec succès.',
+                type: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  window.history.pushState("", "", "/")
+                  this.isCreating = false
+                  document.getElementById(params['idC']).click()
+                  setTimeout(() => {
+                   $('#button_modal_define_budget').trigger('click')
+                  },2000)
+                }
+              })
+            })
+      
+   
+          })
+        })
+
+        // In a real app: dispatch action to load the details here.
+      }
+
+       if (typeof (params['idC']) != "undefined" && typeof(params['campagne_id']) && params['budget'] != "undefined" && params['dailyBudget'] != "undefined" && params['numberOfDays'] != "undefined") {
         this.isCreating = true
     
          
-              this.notesService.updateNote(params['id'], { budget: params["budget"] , dailyBudget: params['dailyBudget'], numberOfDays: params['numberOfDays']}).then(() => {
+              this.notesService.updateNote(params['idC'], { budget: params["budget"] , dailyBudget: params['dailyBudget'], numberOfDays: params['numberOfDays']}).then(() => {
                 Swal.fire({
                   title: 'Service Campagne!',
                   text: 'Budget mis à jour.',
@@ -164,6 +198,7 @@ export class NotesListComponent implements AfterViewInit {
                   if (result.value) {
                     window.history.pushState("", "", "/")
                     this.isCreating = false
+                    document.getElementById(params['idC']).click()
                   }
                 })
                 

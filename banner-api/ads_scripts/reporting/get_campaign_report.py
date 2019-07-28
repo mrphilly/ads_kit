@@ -29,6 +29,7 @@ import sys
 from googleads import adwords
 import csv
 import json
+from io import StringIO
 
 
 def main(client):
@@ -37,23 +38,30 @@ def main(client):
 
   # Create report query.
   report_query = (adwords.ReportQueryBuilder()
-                  .Select('CampaignId','AdGroupId', 'Id', 'Criteria',
-                          'CriteriaType', 'FinalUrls', 'Impressions', 'Clicks',
-                          'Cost')
-                  .From('CRITERIA_PERFORMANCE_REPORT')
-                  .Where('Status').In('ENABLED', 'PAUSED')
+                  .Select('Amount','AverageCpm',
+                          'Cost', 'Clicks', 'Impressions', 'AverageCost',
+                          'InteractionTypes', 'ServingStatus', 'TotalAmount')
+                  .From('CAMPAIGN_PERFORMANCE_REPORT')
+              
                   .Where('CampaignId').In('2075578938')
                   .During('LAST_7_DAYS')
                   .Build())
 
   # You can provide a file object to write the output to. For this
   # demonstration we use sys.stdout to write the report to the screen.
-  report = report_downloader.DownloadReportWithAwql(
-      report_query, 'CSV', sys.stdout, skip_report_header=False,
+  report = report_downloader.DownloadReportAsStreamWithAwql(
+      report_query, 'CSV' , skip_report_header=False,
       skip_column_header=False, skip_report_summary=False,
       include_zero_impressions=True)
-  #reader = csv.DictReader( report, fieldnames = ( "fieldname0","fieldname1","fieldname2","fieldname3" ))  
-  print(report)
+
+  response = report.read().decode('utf-8')
+  s = response.splitlines()
+  x = csv.reader(s)
+  print(list(x))
+  
+  
+  """  reader = csv.DictReader(report, fieldnames = ( "Budget","Avg. CPM","Cost","Clicks", "Impressions,Avg. Cost", "Interaction Types", "Campaign serving status", "Total Budget amount" ))
+  out = json.dumps( [ row for row in reader ] )    """ 
 
 
 

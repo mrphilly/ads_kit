@@ -312,7 +312,7 @@
                             <p class="my-3">La campagne dure: {{numberOfDays}} jours</p>
                             <p class="my-3">Budget journalier: {{dailyBudget}} CFA/jour</p>
                             <p class="my-3">Budget Général: {{budget}} CFA</p>
-                            <button class="btn teal lighten-3 text-white" data-toggle="modal" data-target="#modalBudget" *ngIf="budget == 0"><i class="icon-budget yellow avatar cirlce"></i>
+                            <button class="btn teal lighten-3 text-white" data-toggle="modal" data-target="#modalDefineBudget" *ngIf="budget == 0"><i class="icon-budget yellow avatar cirlce"></i>
                             Définir un bugdet</button>
                            
                         </div>
@@ -330,206 +330,22 @@
                                     <i class="icon-angle-double-up text-green mr-2"></i>1,11,5</p>
                             </div>
                         </div> -->
-                        <div class="modal fade" id="modalBudget" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalsmall">Budget de campagne</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="card no-b shadow white">
-          <div class="card-body no-b white">
-                      <div class="form-row text-center">
-                  <div class="col-md-12 mb-3 text">
-                    <h6 for="validationCustom01">Budget</h6>
-                    <input type="number" class="form-control" id="budget" (onkeyup)="handleImpressionsCount()" placeholder="Budget" min="10000"
-                      required>
-                      <small class="text-success">Saisir un montant supérieur ou égal à 10000 FCA</small>
-                      <div id="error_budget" style="display: none">
-                          <p class="text-danger">Eurreur budget invalide</p>
-                      </div>
-                  </div>
-                           <!--   <div class="col-md-4 mb-3 text">
-                    <small for="validationCustom01">Applications mobiles de destinations</small>
-                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
-                      [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
-                      (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
-                      (onDeSelectAll)="onAppsDeSelectAll()">
-                    </ng-multiselect-dropdown>
-                    <div class="valid-feedback">
-                      Looks good!
-                    </div>
-                  </div>
-                  <div class="form-group col-md-4 mb-3">
-                    <small for="pattern">Urls de redirection séparées par des virgules</small>
-                    <input type="text" autocomplete="off" class="form-control" id="redirect"
-                      placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
-                   
 
-
-
-
-
-
-                  </div> -->
-                 
-                 
-  
-
-
-
-
-                </div>
-                 <div class="d-flex justify-content-between">
-                            <div>
-                                <p>
-                                    <i class="icon-angle-double-down text-red mr-2"></i><strong class="text-danger">{{number_of_impressions}} Impressions</strong></p>
-                                <p class="text-success">
-                                <i class="icon-circle-o text-green mr-2 text-infos"></i>Une impression signifie un affichage d'une annonce sur un site</p> 
-                            </div>
-                            <div>
-                                <!-- <p>
-                                    <i class="icon-angle-double-down text-red mr-2"></i>{{number_of_impressions}}</p>
-                                <p> -->
-                                   <!--  <i class="icon-angle-double-up text-green mr-2"></i>1,11,5</p> -->
-                            </div>
-                        </div>
-          </div>
-
-          <div class="card-footer white no-b">
-            <button type="button" class="btn teal lighten-1 text-white" id="budgetSet" (click)="defineBudget()">Définir mon budget</button>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger text-white" id="closeModalBudget" data-dismiss="modal">Close</button>
-      
-      </div>
-    </div>
-  </div>
-</div>
                     </div>
                 </div>
                 </div>
-              </div>
-              <!--  <div class="col-md-12" *ngIf="isAdGroup">
-                                   <div class="card">
-                                       <div class="card-header indigo text-center text-white">
-                                           <h6>Nouveau groupe d'annonce</h6>
-                                       </div>
-                                       <div class="card-body">
-                                           <input placeholder="Nom du groupe d'annonce" class="form-control" name="adgroup_name" id="adgroup" style="max-width: 200 px !important">
-        <hr>
-       <button href="#" class="btn btn-primary shadow btn-sm r-20" (click)="addAdGroup()"><i class="icon-plus-circle mr-2 "></i>Nouveau groupe d'annonce</button>
-        <button href="#" class="btn btn-danger shadow btn-sm r-20" (click)="closeAddAdGroup()"><i class="icon-close mr-2 "></i>Annuler</button>
-                                       </div>
-                                   </div>
-                               </div> -->
-              <!-- /bar charts group -->
+            
 
 
             </div>
             <div class="row">
-              <!--  <div class="col-lg-4">
-                                   <div class="card r-3 bg-dark text-white">
-                                       <div class="p-4">
-                                           <div class="float-right">
-                                               <span class="icon-award text-light-blue s-48"></span>
-                                           </div>
-                                           <div class="counter-title">Vous avez</div>
-                                           <h5 class="sc-counter mt-3">{{number_ad_groups}} groupes d'annonces</h5>
-                                       </div>
-                                   </div>
-                               </div> -->
-              <!--  <div class="col-lg-4" *ngIf="startDate != ''">
-                                   <div class="card r-3 bg-success text-white">
-                                       <div class="p-4">
-                                           <div class="float-right"><span class="icon-stop-watch3 s-48"></span>
-                                           </div>
-                                           <div class="counter-title">DÃ©bute le {{ startDate }}</div>
-                                           <h5 class="sc-counter mt-3">Se termine le {{ endDate }}</h5>
-                                           <a class="btn btn-warning" style="float: right"><i class="icon-edit"></i></a>
-                                       </div>
-                                       
-                                   </div>
-                               </div> -->
-              <!--          <div class="col-lg-4">
-                                  <div class="card-body b-b">
-                          
-                            <div class="input-group">
-                               
-                              
-                            </div>
-                        </div>
-                               </div>  
-                               <div class="col-lg-4">
-                                  <div class="card-body b-b">
-                           
-                            <div class="input-group">
-                               
-                               <ejs-datepicker id='datepicker' placeholder="Date de fin de la campagne"  [min]='minDate' [max]='maxDate' (change)=" onEndDateChange($event)"></ejs-datepicker>
-                            </div>
-                        </div>
-                               </div>   -->
+            
             </div>
           
 
-            <!--              <div class="row">
-                               <div class="col-md-12">
-                                   <div class="card">
-                                       <div class="card-header white">
-                                           <h6>Liste des groupes d'annonces <span class="badge badge-success r-3">30+</span></h6>
-                                       </div>
-                                       <div class="card-body">
-
-                                           <ul class="list-inline mt-3">
-                                               <li class="list-inline-item ">
-                                                   <img src="assets/img/dummy/u13.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u12.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u11.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u10.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u9.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u8.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item ">
-                                                   <img src="assets/img/dummy/u7.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u6.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u5.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u4.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u3.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                               <li class="list-inline-item">
-                                                   <img src="assets/img/dummy/u2.png" alt="" class="img-responsive w-40px circle mb-3">
-                                               </li>
-                                           </ul>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div> -->
           </div>
         </div>
+      </div>
       </div>
       <div class="tab-pane fade" id="v-pills-payments" role="tabpanel" aria-labelledby="v-pills-payments-tab">
         <div class="row">
@@ -774,6 +590,187 @@
       </div>
     </div>
   </div>
+</div>
+                        <button style="display: none" data-toggle="modal" data-target="#modalDefineBudget"
+  id="button_modal_define_budget"></button>
+<div class="modal fade no-b" id="modalDefineBudget" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-hidden="true">
+  <div class="modal-dialog no-b" role="document">
+    <div class="modal-content no-b">
+      <div class="modal-header no-b">
+        <h6 class="modal-title" id="exampleModalsmall">Définition du budget</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body no-b text-center">
+        <div class="row">
+          <div class="col-md-12">
+               <div class="text-center" style="display: inline-block">
+          <h6 class="my-3">{{accountValue}} CFA dans le compte</h6>
+          <h6 class="my-3">Budget de la campagne: {{budget}} CFA </h6>
+          <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
+          <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
+            <i class="icon-payment text-white"></i> Placement depuis mon solde 
+          </a>
+            <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
+            <i class="icon-payment text-white"></i> Recharger mon compte d'abord
+          </a>
+          <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
+            <i class="icon-pay-point text-white"></i> Placer directement un budget
+          </a>
+       <!--    <a class="btn btn-lg btn-block btn-social btn-warning text-white r-20 blink"
+            style="width: 250px; font-size: 12px" (click)="saveImage()" *ngIf="budget!=0" id="finalButtonPublier">
+            <i class="icon-pay-point text-white"></i>Je suis prêt, publier l'annonce
+          </a> -->
+        </div>
+          </div>
+        </div>
+        <div class="row">
+          
+           <div class="col-md-12" style="margin: auto" id="dateBlock" *ngIf="budget==0">
+                         <div class="d-flex justify-content-between align-items-center">
+                                    <div><span class="text-success">Date de début: {{startDateFrench}}</span></div>
+                                    <div><span class="text-danger">Date de fin: {{endDateFrench}}</span></div>
+                                </div>
+                                <div class="text-center">
+                                  Cette campagne dure {{dure_campagne}} jours
+                                    <a class="btn btn-sm teal darken-3  text-white r-20 btn-social" (click)="OpenModifyDateCampaign()" style="font-size: 12px"> 
+                                      <i class="icon-edit"></i>Modifier les dates
+  
+                                    </a>
+                                  
+                                </div>
+                    </div>
+        </div>
+     
+       <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        
+        <div class="form-row text-center" *ngIf="modifyDate">
+
+          <div style="display: inline-block; margin: auto">
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item"><i class="icon icon-hourglass-start text-info" style="float: left"></i><strong
+                  class="s-12 text-info" style="float: right">Date de début</strong> <strong class="s-12 text-info"
+                  style="float: left">{{startDateFrench}}</strong>
+                <ejs-datepicker id='datepicker' (change)="onStartDateChange($event)" [min]='minDate' [max]='maxDate'>
+                </ejs-datepicker>
+              </li>
+              <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong
+                  class="s-12 text-info" style="float: right">Date de fin</strong><strong class="s-12 text-info"
+                  style="float: left">{{endDateFrench}}</strong>
+                <ejs-datepicker id='datepicker' (change)=" onEndDateChange($event)" [min]='minDate' [max]='maxDate'>
+                </ejs-datepicker>
+              </li>
+              <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
+              <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="updateCampaignDate()">Appliquer</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="CloseUpdateCampaignDate()">Annuler</button>
+            </ul>
+          </div>
+
+        </div>
+
+       <div class="form-row text-center" *ngIf="isSetBudget">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: Seul 80% du montant seront placés les 20% pour les frais de service</small>
+            <input type="number" class="form-control" id="montant" (keyup)="handleSimulatedImpressionsCount()"
+              placeholder="Montant" min="10000" placeholder="Montant supérieur ou égal à 10000 FCA" required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 10000
+              FCA</small>
+             <div class="d-flex justify-content-between align-items-center bg-grey shadow" *ngIf="budget_to_place!=0 && my_gain!=0">
+                                    <div><span class="text-white" style="font-size: 12px">Budget placé: {{budget_to_place}} CFA</span></div>
+                                    <div><span class="text-white" style="font-size: 12px">Frais de service: {{my_gain}} CFA</span></div>
+                                </div>
+                                <div class="text-center">
+                                
+                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
+                                  
+                                </div>
+               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineBudget()">Placer le budget</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="CloseBudgetOperation()">Annuler</button>
+
+
+
+          </div>
+          
+
+        </div>
+
+               <div class="form-row text-center" *ngIf="isAccountRechargement">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: Cette opération vous permettra dans la suite d'éviter les paiments pour démarrer une nouvelle campagne</small>
+            <input type="number" class="form-control" id="montant" (keyup)="handleIfValide()"
+              placeholder="Montant" min="10000" placeholder="Montant supérieur ou égal à 20 000 FCA" required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
+              FCA</small>
+              
+               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="CloseRechargeAccountOperation()">Annuler</button>
+
+
+
+          </div>
+          
+
+        </div>
+
+         <div class="form-row text-center" *ngIf="isPlacementBudgetFromAccount">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: La valeur du budget doit être disponible dans votre compte et supérieur ou égale à 10 000 FCFA</small>
+            <input type="number" class="form-control" id="montant" (keyup)="handleIfBudgetToPlaceFromAccountIsValid()"
+              placeholder="Montant" placeholder="Montant supérieur ou égal à 10 000 FCA" required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none">La valeur du budget invalide</small>
+               <div class="d-flex justify-content-between align-items-center bg-grey shadow" *ngIf="budget_to_place!=0 && my_gain!=0">
+                                    <div><span class="text-white" style="font-size: 12px">Budget placé: {{budget_to_place}} CFA</span></div>
+                                    <div><span class="text-white" style="font-size: 12px">Frais de service: {{my_gain}} CFA</span></div>
+                                </div>
+                                <div class="text-center">
+                                
+                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
+                                  
+                                </div>
+               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineBudgetFromAccount()">Placer mon budget</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)=" ClosePlaceBudgetFromAccountValue()">Annuler</button>
+
+
+
+          </div>
+          
+
+        </div>
+
+    </div>
+  </div>
+</div>
 </div>
 <div *ngIf="isCreating">
   <app-spinner-overlay [message]="message"></app-spinner-overlay>

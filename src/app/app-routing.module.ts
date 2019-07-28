@@ -11,14 +11,16 @@ import { AnnoncesComponent } from './app_core/notes/annonces/annonces.component'
 
 
 const routes: Routes = [
- /*  { path: '', component: HomePageComponent, canActivate: [AuthGuard] }, */
+
   { path: 'login', component: UserLoginComponent },
-/*   { path: 'editor', component: EditorComponent}, */
+
   { path: '', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
+    { path: ':money/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
+  { path: ':idC/:campagne_id/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent, canActivate: [AuthGuard] },
    { path: ':idC/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent,  canActivate: [AuthGuard] },
    
- /*  { path: 'uploads',  component: UploadPageComponent,  canActivate: [AuthGuard] }, */
+  
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id', component: AnnoncesComponent},
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id/:budget/:dailyBudget/:numberOfDays/:id_ad_firebase', component: AnnoncesComponent},
   { path: 'ssr', component: SsrPageComponent },

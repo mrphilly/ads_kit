@@ -11,11 +11,13 @@ import { DndModule } from 'ng2-dnd';
 
 import { NgxPicaModule } from 'ngx-pica';
 
+import { ChartsModule, ThemeService } from 'ng2-charts';
+
 import { NouisliderModule } from 'ng2-nouislider';
 
-import { FONT_PICKER_CONFIG } from 'ngx-font-picker';
 import { FontPickerConfigInterface } from 'ngx-font-picker';
 import { FontPickerModule } from 'ngx-font-picker';
+import { FONT_PICKER_CONFIG } from 'ngx-font-picker';
 
 import { NgxFormatFieldModule } from 'ngx-format-field';
 
@@ -66,13 +68,14 @@ const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
     FontPickerModule,
     LazyLoadImageModule,
     NgxFormatFieldModule,
+    ChartsModule
  
 
     
     
   ],
   declarations: [NotesListComponent, NoteDetailComponent, CampaignSettingsComponent, AnnoncesComponent, SettingsComponent, CreateCampaignComponent,AnnonceServiceComponentComponent, SpinnerOverlayComponent],
-  providers: [NotesService, AdGroupService, Ads, NgxImageCompressService, { provide: FONT_PICKER_CONFIG,
+  providers: [NotesService, AdGroupService, Ads, NgxImageCompressService, ThemeService, { provide: FONT_PICKER_CONFIG,
       useValue: DEFAULT_FONT_PICKER_CONFIG}]
 })
 export class NotesModule { }

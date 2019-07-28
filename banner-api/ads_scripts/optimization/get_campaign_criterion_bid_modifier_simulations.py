@@ -28,7 +28,7 @@ section of our README.
 from googleads import adwords
 
 
-CAMPAIGN_ID = '20190801'
+CAMPAIGN_ID = '2075578938'
 PAGE_SIZE = 100
 
 

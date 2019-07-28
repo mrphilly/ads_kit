@@ -84,6 +84,20 @@ export class AdGroupService {
     });
   }
 
+ getAdGroupPlacement(campaign_id: string, ad_group_id: any) {
+     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+            console.log(el)
+          resolve(el[0]['criterion_placement'])
+        })
+      }, 2000);
+    });
+  }
+
+  
   getAdGroupAge(campaign_id: string, ad_group_id: any) {
      console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
     return new Promise(resolve => {
@@ -132,6 +146,40 @@ export class AdGroupService {
         err => {
           Swal.fire({
           title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+    })
+   
+  }
+
+  async targetPlacement(id: string, campaign_id: string, ad_group_id: any,  placement: any) {
+   var genre_legnth = placement.length[0];
+   return await this.getAdGroupPlacement(campaign_id, ad_group_id).then(value => {
+      
+    
+        this.http.post('http://127.0.0.1:5000/setPlacement', {
+       'ad_group_id': ad_group_id,
+          'placement': placement,
+       'last_placement': value
+    })
+      .subscribe(
+        res => {
+          console.log(`res from location backend: ${res}`)
+          console.log(res)
+          this.updateAdgroup(id, {placement: placement[0], criterion_placement: res })
+        },
+        err => {
+          Swal.fire({
+          title: "Placement de groupe d'annonce",
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
@@ -326,6 +374,8 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
       ages: [],
       sexes: [],
       devices: [],
+      placement: [],
+      criterion_placement: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: userDoc.ref,
       owner: this.uid,  

@@ -47,7 +47,7 @@ tinify.key = "mkXrWqhxCxjDHj8O0t8S5698DdY833Qo"
 
 
 
-def UploadImageAsset(client, url, image_ref_on_file):
+def UploadImageAsset(client, url, image_ref_on_file, image_name):
   """Uploads the image from the specified url.
   Args:
     client: An AdWordsClient instance.
@@ -77,9 +77,26 @@ def UploadImageAsset(client, url, image_ref_on_file):
   print(image_asset)
 
   # Create the image asset.
+  try:
+    source = tinify.tinify.tinify.from_url(url)
+    print(source)
+    resized_image = source.resize(method="fit", width=300, height=250)
+    data = resized_image.to_file(image_ref_on_file)
+    print(sys.getsizeof(data))
+    #print(data)
+  except:
+    try:
+      source = tinify.tinify.tinify.from_url(url)
+      print(source)
+      resized_image = source.resize(method="fit", width=300, height=250)
+      data = resized_image.to_file(image_ref_on_file)
+      print(sys.getsizeof(data))
+      #print(data)
+    except Exception as e:
+      print(e)
   image_asset = {
       'xsi_type': 'ImageAsset',
-      'imageData': image_asset,
+      'imageData': urlopen(url_for('uploaded_file', filename=image_name, _external=True)).read(),
       # This field is optional, and if provided should be unique.
       # 'assetName': 'Image asset ' + str(uuid.uuid4()),
   }
@@ -93,7 +110,6 @@ def UploadImageAsset(client, url, image_ref_on_file):
   # Create the asset and return the ID.
   result = asset_service.mutate([operation])
   print(result)
-  source = tinify.tinify.tinify.from_url(result['value'][0]['fullSizeInfo']['imageUrl'])
   """ print(sys.getsizeof(result['value'][0]['fullSizeInfo']['imageUrl']))
   response = tinify.tinify.tinify.get_client().request('POST', '/shrink', {"source": {"url":result['value'][0]['fullSizeInfo']['imageUrl'] }})
   resultat = response.content.decode("utf-8") 
@@ -103,11 +119,6 @@ def UploadImageAsset(client, url, image_ref_on_file):
   im = Image.open(BytesIO(requests.get(json_obj["output"]['url']).content))
   im.thumbnail(size, Image.ADAPTIVE)
   data = im.save('uploads/'+image_ref_on_file) """
-  print(source)
-  resized_image = source.resize(method="fit", width=300, height=250)
-  data = resized_image.to_file(image_ref_on_file)
-  print(sys.getsizeof(data))
-  print(data)
   
    
    
@@ -122,7 +133,7 @@ def UploadImageAsset(client, url, image_ref_on_file):
   pngquant.config('../../uploads/')
   data = pngquant.quant_image(im) """
   
-  return result['value'][0]['assetId'], data
+  return result['value'][0]['assetId']
 
 
 
@@ -143,7 +154,7 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
     print(ad_group_id)
     image_name = ad_name + ".png"
     image_ref_on_file ='uploads/' +image_name
-    UploadImageAsset(client, image, image_ref_on_file)
+    meadiaId = UploadImageAsset(client, image, image_ref_on_file, image_name)
   
     
     response = []
@@ -169,7 +180,8 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
         # the AssetService, and asset.assetId must be populated when creating
         # the ad.
           'image': {
-                'data':  data 
+              'referenceId': meadiaId,
+              'data':  data 
           },
           'finalUrls': final_url,
           'displayUrl': final_url,

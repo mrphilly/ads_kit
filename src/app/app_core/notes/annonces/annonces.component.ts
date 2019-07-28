@@ -1,10 +1,8 @@
 import {
   Component,
   OnInit,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute
@@ -12,6 +10,8 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -306,6 +306,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   nationals_errors = ''
   _init_ad_list = false
   currentEditor = false
+  referenceId: any
   NATIONALS_WEBSITES = [
   [1,"infos","dakarbuzz.net","http://dakarbuzz.net"  ],
   [2,"infos","galsen221.com","http://galsen221.com"  ],
@@ -379,7 +380,19 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 ]
 
   model: any = {};
- 
+   public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData = [
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'
+    },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series C' }
+  ];
   public canvas: any;
  
 
@@ -1172,6 +1185,39 @@ $('#popper').trigger('click')
     }
   }
 
+  targetPlacement() {
+    var self = this
+    var placement = []
+    console.log(this.ads_websites)
+    console.log(this.nationals_websites)
+    console.log(this.internationals_websites)
+    this.isCreating = true
+    if (this.nationals_websites.length == 0) {
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Séléctionner au moins un site national',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+
+      })
+    } else {
+      placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
+      this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
+        this.sexes = []
+      }).then(res => {
+        this.isCiblageGenre = false
+        this.isCreating = false
+      })
+
+    }
+  }
+
   targetDevices() {
     console.log(this.devices)
     this.isCreating = true
@@ -1206,7 +1252,9 @@ $('#popper').trigger('click')
   closeAddCiblageDevices() {
     this.isCiblageDevices = false
   }
-
+  closeAddPlacement() {
+  this.isPlacement = false
+}
 
   openAddCiblageAge() {
     this.isCiblageAge = true;
@@ -1270,7 +1318,7 @@ $('#popper').trigger('click')
 
 
   onNationalsWebsitesSelect(item: any) {
-     this.nationals_errors = ''
+    this.nationals_errors = ''
     this.nationals_websites.push(item)
     console.log(this.nationals_websites)
   }
@@ -1324,7 +1372,7 @@ $('#popper').trigger('click')
    onAdsWebsitesSelect(item: any) {
     this.ads_websites.push(item)
     console.log(this.ads_websites)
-  }
+   }
   onAdsWebsitesSelectAll(items: any) {
     this.ads_websites = []
     this.ads_websites = items
@@ -1557,7 +1605,8 @@ $('#popper').trigger('click')
    xhr.open('GET', url);
          xhr.send();
        
-        const image_content = JSON.stringify(self.canvas);
+         const image_content = JSON.stringify(self.canvas);
+         console.log(self.FINAL_ARRAY_TO_SEND)
         self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND).then(res => {
           console.log('success')
           console.log(res)
@@ -1686,7 +1735,11 @@ $('#popper').trigger('click')
       }
     })
     } else {
-       var name= $('#ad_name').val()
+
+
+      
+      var name = $('#ad_name').val()
+      var data_to_send = []
       this.getModifiedWebsites().then(res => {
         console.log(res)
         if (res != "error") {
@@ -1710,7 +1763,7 @@ $('#popper').trigger('click')
               confirmButtonText: 'Ok'
             }).then((result) => {
               if (result.value) {
-          
+               
           
               }
             })
@@ -1725,8 +1778,56 @@ $('#popper').trigger('click')
               confirmButtonText: 'Ok, Modifier'
             }).then((result) => {
               if (result.value) {
+                this.isRoller = true
+                this.uploadFileOnFirebase(name).then(res => {
+                  if (res != "error") {
+                       data_to_send.push({
+                   
+                  "fieldFirebase": "url_image",
+                  "fieldAdwords": "image",
+                   "content": this.currentImageUrl,
+                         "img_last_name": this.ad_name,
+                         "last_final_urls": this.finalUrls,
+                         "referenceId": this.referenceId,
+                   "status": this.status
+                   
+                       })
+                     data_to_send.push({
+                   
+                  "fieldFirebase": "image_content",
+                  "fieldAdwords": "",
+                   "content": this.new_image_content
+                   
+                       })
+                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
+                  if (res == "ok") {
+                    this.isRoller = false
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Annonce modifiée avec succès !",
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
           
           
+              }
+            })
+                  }
+                }).catch(err => {
+                  this.isRoller = false
+                })
+                  } else {
+                    this.isRoller = false
+                  }
+                })
+             
+                
+              } else {
+                this.isRoller = false
               }
             })
           } else if (comparaison_content === false && comparaison_url === false && name === this.ad_name) {
@@ -1740,8 +1841,61 @@ $('#popper').trigger('click')
               confirmButtonText: 'Ok, Modifier'
             }).then((result) => {
               if (result.value) {
+                this.isRoller = true
+                this.uploadFileOnFirebase(name).then(res => {
+                  if (res != "error") {
+                       data_to_send.push({
+                   
+                  "fieldFirebase": "url_image",
+                  "fieldAdwords": "image",
+                         "content": this.currentImageUrl,
+                         "img_last_name": this.ad_name,
+                         "referenceId": this.referenceId,
+                         "last_final_urls": this.finalUrls,
+                   "status": this.status
+                   
+                       })
+                     data_to_send.push({
+                   
+                  "fieldFirebase": "image_content",
+                  "fieldAdwords": "",
+                   "content": this.new_image_content
+                   
+                       })
+                    data_to_send.push({
+                  "fieldFirebase": "finalUrls",
+                  "fieldAdwords": "finalUrls",
+                   "content": this.newfinalUrls 
+                    })
+                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
+                  if (res == "ok") {
+                    this.isRoller = false
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Annonce modifiée avec succès !",
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
           
           
+              }
+            })
+                  }
+                }).catch(err=>{
+                  this.isRoller = false
+                })
+                  }else{
+                    this.isRoller = false
+                  }
+                })
+             
+                
+              } else {
+                this.isRoller =false
               }
             })
           } else if (comparaison_content === false && comparaison_url === true && name !== this.ad_name) {
@@ -1754,9 +1908,62 @@ $('#popper').trigger('click')
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok, Modifier'
             }).then((result) => {
+                if (result.value) {
+                this.isRoller = true
+                this.uploadFileOnFirebase(name).then(res => {
+                  if (res != "error") {
+                       data_to_send.push({
+                   
+                  "fieldFirebase": "url_image",
+                  "fieldAdwords": "image",
+                         "content": this.currentImageUrl,
+                         "img_last_name": this.ad_name,
+                         "referenceId": this.referenceId,
+                         "last_final_urls": this.finalUrls,
+                   "status": this.status
+                   
+                       })
+                     data_to_send.push({
+                   
+                  "fieldFirebase": "image_content",
+                  "fieldAdwords": "",
+                   "content": this.new_image_content
+                   
+                       })
+                    data_to_send.push({
+                  "fieldFirebase": "ad_name",
+                  "fieldAdwords": "name",
+                   "content": name 
+                    })
+                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
+                  if (res == "ok") {
+                    this.isRoller = false
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Annonce modifiée avec succès !",
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
               if (result.value) {
+                
           
-          
+              }
+            })
+                  }
+                }).catch(err => {
+                  this.isRoller = false
+                })
+                  } else {
+                    this.isRoller = false
+                  }
+                })
+             
+                
+                } else {
+                  this.isRoller = false
               }
             })
           } else if (comparaison_content === true && comparaison_url === true && name !== this.ad_name) {
@@ -1770,8 +1977,44 @@ $('#popper').trigger('click')
               confirmButtonText: 'Ok, Modifier'
             }).then((result) => {
               if (result.value) {
+                              if (result.value) {
+                this.isRoller = true
+                        data_to_send.push({
+                   
+                  "fieldFirebase": "ad_name",
+                  "fieldAdwords": "name",
+                   "content": name 
+                   
+                })
+                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
+                  if (res == "ok") {
+                    this.isRoller = false
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Annonce modifiée avec succès !",
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
           
           
+              }
+            })
+                  }
+                }).catch(err=>{
+                  this.isRoller =false
+                })
+             
+                
+              }else{
+                this.isRoller =false
+              }
+          
+              }else{
+                this.isRoller =false
               }
             })
           } else if (comparaison_content === true && comparaison_url === false && name === this.ad_name) {
@@ -1785,8 +2028,39 @@ $('#popper').trigger('click')
               confirmButtonText: 'Ok, Modifier'
             }).then((result) => {
               if (result.value) {
+                          data_to_send.push({
+                   
+                  "fieldFirebase": "finalUrls",
+                  "fieldAdwords": "finalUrls",
+                   "content": this.newfinalUrls 
+                   
+                })
+                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
+                  if (res == "ok") {
+                    this.isRoller = false
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Annonce modifiée avec succès !",
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
           
           
+              }
+            })
+                  }else{
+                this.isRoller =false
+              }
+                }).catch(res => {
+                  this.isRoller =false
+                })
+          
+              }else{
+                this.isRoller =false
               }
             })
           } else if (comparaison_content === true && comparaison_url === false && name !== this.ad_name) { 
@@ -1800,8 +2074,44 @@ $('#popper').trigger('click')
               confirmButtonText: 'Ok, Modifier'
             }).then((result) => {
               if (result.value) {
+                           data_to_send.push({
+                   
+                  "fieldFirebase": "ad_name",
+                  "fieldAdwords": "name",
+                   "content": name 
+                   
+                       })
+                    data_to_send.push({
+                  "fieldFirebase": "finalUrls",
+                  "fieldAdwords": "finalUrls",
+                   "content": this.newfinalUrls
+                    })
+                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
+                  if (res == "ok") {
+                    this.isRoller = false
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Annonce modifiée avec succès !",
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
+              if (result.value) {
           
           
+              }
+            })
+                  }else{
+                this.isRoller =false
+              }
+                }).catch(res=>{
+                  this.isRoller =false
+                })
+          
+              }else{
+                this.isRoller =false
               }
             })
           }else{
@@ -1814,9 +2124,69 @@ $('#popper').trigger('click')
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok, Modidifier'
             }).then((result) => {
+                  if (result.value) {
+                this.isRoller = true
+                this.uploadFileOnFirebase(name).then(res => {
+                  if (res != "error") {
+                       data_to_send.push({
+                   
+                  "fieldFirebase": "url_image",
+                  "fieldAdwords": "image",
+                         "content": this.currentImageUrl,
+                         "img_last_name": this.ad_name,
+                         "referenceId": this.referenceId,
+                         "last_final_urls": this.finalUrls,
+                   "status": this.status
+                   
+                       })
+                     data_to_send.push({
+                   
+                  "fieldFirebase": "image_content",
+                  "fieldAdwords": "",
+                   "content": this.new_image_content
+                   
+                       })
+                    data_to_send.push({
+                  "fieldFirebase": "ad_name",
+                  "fieldAdwords": "name",
+                   "content": name 
+                    })
+                      data_to_send.push({
+                  "fieldFirebase": "finalUrls",
+                  "fieldAdwords": "finalUrls",
+                   "content": this.newfinalUrls 
+                    })
+                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
+                  if (res == "ok") {
+                    this.isRoller = false
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Annonce modifiée avec succès !",
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok, Modifier'
+            }).then((result) => {
               if (result.value) {
           
           
+              }
+            })
+                  }else{
+                this.isRoller =false
+              }
+                }).catch(err => {
+                  this.isRoller = false 
+                })
+                  }else{
+                this.isRoller =false
+              }
+                })
+             
+                
+              }else{
+                this.isRoller =false
               }
             })
       }
@@ -1847,6 +2217,54 @@ $('#popper').trigger('click')
       
     }
      
+  }
+
+
+  uploadFileOnFirebase(name: any): Promise<any> {
+    return new Promise(resolve => {
+      var storage = firebase.app().storage("gs://comparez.appspot.com/");
+    var storageRef = storage.ref();
+    var imageRefStorage = this.uid + "/" + name + new Date().getTime().toString()+ ".png"
+    var imagesRef = storageRef.child(imageRefStorage);
+    var metadata = {
+  contentType: 'image/png',
+};
+    
+    if (!fabric.Canvas.supports('toDataURL')) {
+      alert('This browser doesn\'t provide means to serialize canvas to an image');
+      resolve('error')
+    } else {
+      var image_url = ""
+      var self = this
+      this.ad_name = $("#ad_name").val()
+      var image_name = this.ad_name +  new Date().getTime().toString()
+      //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
+      //console.log(this.canvas.toDataURL('png'))
+      this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
+      //console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
+      imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+        console.log('ok')
+      
+        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+          xhr.responseType = 'blob';
+          xhr.onload = function (event) {
+            var blob = xhr.response;
+          };
+          xhr.open('GET', url);
+          xhr.send();
+          self.currentImageUrl = url
+        
+          resolve('ok')
+       
+        });
+      
+      })  
+     
+     
+    
+    } 
+   })
   }
 
   compareObjects (value, other) {
@@ -1945,7 +2363,8 @@ $('#popper').trigger('click')
 
 	// Compare the length of the length of the two items
 	var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
-	var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+    var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+  
 	if (value.length !== other.length) return false;
 
   // Compare two items
@@ -2226,14 +2645,10 @@ $('#popper').trigger('click')
   
  
   
-  checkIfIsEmptyNationals(array): Promise<any> {
+  /* checkIfIsEmptyNationals(array): Promise<any> {
     return new Promise(resolve => {
       if (array.length != 0) {
-        this.FINAL_ARRAY_TO_SEND.push({
-          "lib": "Sites Nationaux",
-          "content": array
-          })
-          resolve(this.FINAL_ARRAY_TO_SEND)
+          resolve(this.FINAL_ARRAY)
       } else {
         resolve('error')
       }
@@ -2268,7 +2683,7 @@ $('#popper').trigger('click')
         })
     }
     return this.FINAL_ARRAY_TO_SEND
-  }
+  } */
 
   
   getWebsites(): Promise<any> {
@@ -2280,7 +2695,7 @@ $('#popper').trigger('click')
    this.checkIfIsEmptyFinalUrls().then(res => {
             if (res != 'error') {
        
-              this.checkIfIsEmptyMobileApps(mobile_apps)
+             
               resolve(res)
             }else{
               
@@ -2303,7 +2718,7 @@ $('#popper').trigger('click')
    this.checkIfIsEmptyModifiedFinalUrls().then(res => {
             if (res != 'error') {
        
-              this.checkIfIsEmptyMobileApps(mobile_apps)
+            
               resolve(res)
             }else{
               
@@ -3563,7 +3978,7 @@ $('#popper').trigger('click')
     })
   }
 
-  goAdSettings(id_ad_firebase: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, finalAppUrls: any, finalMobileUrls:any,  image_content: any) {
+  goAdSettings(id_ad_firebase: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, finalAppUrls: any, finalMobileUrls:any,  image_content: any, referenceId: any) {
 
     this.isAdBlock = true
     this.isEditor = false
@@ -3581,6 +3996,7 @@ $('#popper').trigger('click')
     this.finalAppUrls = finalAppUrls
     this.ad_name = ad_name
     this.finalMobileUrls = finalMobileUrls
+    this.referenceId = referenceId
     
     /* this.handleCurrentCanvas() */
     

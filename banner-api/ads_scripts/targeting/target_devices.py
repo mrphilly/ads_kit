@@ -123,6 +123,7 @@ def TargetDevices(client, ad_group_id, criterions_id, last_criterion):
             modifier['criterion']['id'], value))
     result.append({
           "status": "ok"
+          
       })
   else:
     print('No modifiers were added.')

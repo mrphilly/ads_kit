@@ -33,7 +33,7 @@ export class Ads {
 private basePath = '/uploads';
   private annonceCollection:
     AngularFirestoreCollection<Annonces>;
-  
+   
  
 
   constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient, private db: AngularFireDatabase) {
@@ -220,10 +220,10 @@ private basePath = '/uploads';
          displayUrl.push(allUrls[i]['content'])
          
        }
-       if (allUrls[i]['lib'] == 'Application Mobiles') {
+      /*  if (allUrls[i]['lib'] == 'Application Mobiles') {
          finalAppUrls.push(allUrls[i]['content'])
          
-       }
+       } */
      }
   
   
@@ -232,7 +232,7 @@ private basePath = '/uploads';
       
       if (`${value}` == '0') {
         
-            this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls[0], '', '' , uid).then(res=>{
+            this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
               text: 'Annonce ajoutée avec succès',
@@ -264,6 +264,49 @@ private basePath = '/uploads';
    
   }
 
+  UpdateAdModified(id_ad_firebase: any, ad_id: any, ad_group_id: any, data: any): Promise<any> {
+    return new Promise(resolve => {
+       this.http.post('http://127.0.0.1:5000/UpdateAd', {
+          'ad_group_id': ad_group_id,
+         'ad_id': ad_id,
+          'data': data
+
+          })
+
+          .subscribe(
+            res => {
+              console.log(res)
+              if (res[0]['status'] == "ok") {
+                for (let i = 0; i < data.toString().length; i++){
+                  console.log(data[i])
+                  var field = data[i].fieldFirebase
+                  var content = data[i].content
+                 this.updateAd(id_ad_firebase, {field : content})
+                }
+                resolve('ok')
+                
+                
+              }
+            },
+            err => {
+              
+              Swal.fire({
+                title: "Service Annonce!",
+                text: 'Erreur.',
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#26a69a',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  
+                }
+              })
+            }
+          );
+    })
+  }
 
   prepareSaveAd(ad_id: any,ad_group_id: any, ad_name: any, status: any,  url_image: any, image_content: any, displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any): Annonces {
     const userDoc = this.afs.doc(`users/${uid}`);

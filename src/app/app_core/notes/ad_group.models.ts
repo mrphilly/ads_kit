@@ -5,6 +5,8 @@ export class AdGroup {
   status?: any;
   ages?: any;
   sexes?: any;
+  placement?: any;
+  criterion_placement?: any;
   devices?: any;
   createdAt?: any;
   createdBy?: any;

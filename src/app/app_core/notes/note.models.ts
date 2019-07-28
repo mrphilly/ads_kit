@@ -5,6 +5,10 @@ export class Note {
     name?: any;
     status?: any;
     zones?: any;
+    ages?: any;
+    sexes?: any;
+    devices?: any;
+    placement?: any;
     startDate?: any;
     endDate?: any;
     startDateFrench?: any;
