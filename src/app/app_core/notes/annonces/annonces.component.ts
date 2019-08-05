@@ -55,7 +55,7 @@ declare const pQuery: any
 declare const PayExpresse: any
 declare const require: any;
 
-
+const SERVER_URL = ""
 const MONTH = [{
   "Jan": {
     "name": "January",

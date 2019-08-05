@@ -36,10 +36,18 @@ import { AngularFireDatabaseModule } from '@angular/fire/database'
 
 
 
+const credentials = {
+     apiKey: "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
+    authDomain: "comparez.firebaseapp.com",
+    databaseURL: "https://comparez.firebaseio.com",
+    projectId: "comparez",
+    storageBucket: "gs://comparez.appspot.com/",
+    messagingSenderId: "975260713071",
+  }
+  
 
 
-
-firebase.initializeApp(environment.firebase)
+firebase.initializeApp(credentials)
 
 
 
@@ -55,7 +63,7 @@ firebase.initializeApp(environment.firebase)
     CoreModule,
     UiModule,
     NotesModule,
-    AngularFireModule.initializeApp(environment.firebase, 'firestarter'),
+    AngularFireModule.initializeApp(credentials, 'firestarter'),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     AngularFireStorageModule,
