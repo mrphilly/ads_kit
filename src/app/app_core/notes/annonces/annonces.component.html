@@ -1,27 +1,17 @@
 <div id="app">
- <div>
-  <div style="display: block">
-    <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType">
-    </canvas>
-  </div>
-</div>
-  <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas' *ngIf="!_init_campagne">
+
+ <!--  <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas' *ngIf="!_init_campagne">
     <div class="sidebar">
       <div class="d-flex hv-100 align-items-stretch">
         <div class="text-white teal darken-1">
           <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-             <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                       aria-controls="v-pills-home" aria-selected="true"><i class="icon-inbox2"></i></a>
-                    <a class="nav-link teal darken" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+             <a class="nav-link teal darken-1" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                       aria-controls="v-pills-home" aria-selected="true" (click)="toggleListAd()"><i class="icon-inbox2"></i></a>
+                    <a class="nav-link teal darken-1" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
                        aria-controls="v-pills-profile" aria-selected="false"  (click)='toggleEditor()'><i class="icon-add"></i></a>
                     <a class="nav-link blink skin_handle"  href="#"><i class="icon-lightbulb_outline"></i></a>
                     <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
-                    <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a> -->
+                    <a class="nav-link" id="v-pills-add-ad-tab" href="#"><i class="icon-settings"></i></a> 
             <a href="">
               <figure class="avatar">
                   <img src="assets/img/adafri.png" alt="">
@@ -46,7 +36,7 @@
                   <i class="icon icon-sailing-boat-water s-24"></i> <span>Dashboard</span>
                 </a>
               </li>
-              <!--  <li class="treeview"><a href="#">
+                <li class="treeview"><a href="#">
                             <i class="icon icon icon-package s-24"></i>
                             <span>Products</span>
                             <span class="badge r-3 badge-primary pull-right">4</span>
@@ -59,7 +49,7 @@
                                     New </a>
                                 </li>
                             </ul>
-                        </li> -->
+                        </li> 
               <li class="treeview"><a href="#"><i class="icon icon-bandcamp s-24"></i>Campagne<i
                     class=" icon-angle-left  pull-right"></i></a>
                 <ul class="treeview-menu">
@@ -71,7 +61,7 @@
                   </li>
                 </ul>
               </li>
-              <!--  <li class="treeview"><a href="#">
+             <li class="treeview"><a href="#">
                             <i class="icon icon-package s-24"></i>
                             <i class=" icon-angle-left  pull-right"></i>
                             <span>Gallerie images</span>
@@ -79,8 +69,8 @@
                             <ul class="treeview-menu" style="overflow: auto; height: 100%">
                                 
                             </ul>
-                        </li> -->
-              <!-- <li class="treeview"><a href="#">
+                        </li> 
+               <li class="treeview"><a href="#">
                             <i class="icon icon-package s-24"></i>
                             <i class=" icon-angle-left  pull-right"></i>
                             <span>Inbox</span>
@@ -323,7 +313,7 @@
                                 </a>
                                 </li>
                             </ul>
-                        </li> -->
+                        </li>
             </ul>
           </div>
           <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-smallledby="v-pills-profile-tab">
@@ -343,17 +333,18 @@
         </div>
       </div>
     </div>
-  </aside>
+  </aside> -->
 
 
-  <a href="#" data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed" *ngIf="!_init_campagne">
+ <!--  <a href="#" data-toggle="push-menu" class="paper-nav-toggle left ml-2 fixed" *ngIf="!_init_campagne">
      <figure class="avatar">
                   <img src="assets/img/adafri.png" alt="">
-                <!-- <span class="avatar-badge online"></span> -->
+              
               </figure>
-  </a>
-  <div class="has-sidebar-left has-sidebar-tabs">
+  </a> -->
+  <!-- <div class="has-sidebar-left has-sidebar-tabs"> -->
     <!--navbar-->
+    <div>
     <div class="sticky">
       <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
@@ -420,7 +411,6 @@
             <!-- User Account-->
             <li class="dropdown custom-dropdown user user-menu ">
               <a href="#" class="nav-link text-white" data-toggle="dropdown" style="font-size: 12px">
-                {{email}}
 
                 <span style="font-size: 12px"
                   class="avatar-letter avatar-letter-{{email_letter | lowercase}} avatar-md circle"></span>
@@ -430,6 +420,7 @@
               </a>
               <div class="dropdown-menu p-4 dropdown-menu-right">
                 <div class="row box justify-content-between my-4">
+                  <p>{{email}}</p>
                   <div class="col">
                     <a (click)="auth.signOut()">
                       <i class="icon-apps purple lighten-2 avatar  r-5"></i>
@@ -456,47 +447,730 @@
     </div>
     <!--  
     <!--#navbar-->
-
-    <div class="container-fluid relative animatedParent animateOnce p-0">
-      <div class="row bd-highlight no-gutters">
-        <div class="col-md-3 no-b">
-
-          <div id="collapseExample" [ngbCollapse]="isCollapsed" class='no-b'>
-
-
-            <div class="card r-3 teal lighten-3 no-b shadow" style="margin-top: 10px;">
+      <header class="white pt-3 relative shadow bg-light" >
+  <div class="container-fluid text-center">
+    <div class="row p-t-b-10 ">
+      <div class="col">
+        <div class="card r-3 teal lighten-3 no-b shadow" style="margin-top: 10px;">
               <div class="p-4">
-                <div class="float-right">
-                  <span class="icon-award text-white s-48"></span>
+                <div class="text-center">
+                  <!-- <span class="icon-award text-white s-48"></span> -->
+                  <img class="img-responsive" src="assets/img/images/groupe d'annonces.png">
                 </div>
-                <div class="counter-title text-white">{{ad_group_name}}</div>
-                <h5 class="sc-counter mt-3 text-white">Nombre d'annonces: {{number_ads}}</h5>
-                <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i
-                      class="icon icon-circle mr-2" style="color: green"></i>Groupe d'annonce actif</span></span>
-                <span class="badge badge-danger pink" *ngIf="status==='PAUSED'"><span class="blink"><i
-                      class="icon icon-circle mr-2"></i>Group d'annonce non actif</span></span>
+                <div class="sc-counter mt-3 text-white text-center">Paramètre groupe d'annonce</div>
+                <div class="counter-title text-white text-center">{{ad_group_name}}</div>
+                <div class="text-center">
+                  <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i
+                        class="icon icon-circle mr-2" style="color: green"></i>Groupe d'annonce actif</span></span>
+                  <span class="badge badge-danger pink" *ngIf="status==='PAUSED'"><span class="blink"><i
+                        class="icon icon-circle mr-2"></i>Group d'annonce non actif</span></span>
+
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <ul class="nav nav-material responsive-tab" id="v-pills-tab" role="tablist">
+        <li>
+          <a class="nav-link active" style="" id="v-pills-tab1-tab" data-toggle="pill" href="#v-pills-tab1" role="tab"
+            aria-controls="v-pills-tab1" style="color: #009688">
+            <i class="icon icon-home2" style="color: #009688"></i>Liste des annonces 
+          </a>
+        </li>
+            <li>
+                <a class="nav-link" id="v-pills-placement-tab" style="color: #009688" data-toggle="pill" href="#v-pills-placement" role="tab" aria-controls="v-pills-placement" aria-selected="false"><i class="icon icon-cog"></i>Emplacement</a>
+            </li>
+          <li>
+                          <a class="nav-link" id="v-pills-ciblage-ads-tab" style="color: #009688" data-toggle="pill" href="#v-pills-ciblage-ads" role="tab" aria-controls="v-pills-ciblage-ads" aria-selected="false"><i class="icon icon-money-1"></i>Ciblage</a>
+                      </li>
+        <li>
+          <a class="nav-link" id="v-pills-add-ad-tab" data-toggle="pill" href="#v-pills-add-ad" role="tab"
+            aria-controls="v-pills-add-ad" aria-selected="false" style="color: #009688" *ngIf="number_ads!=='0'"><i class="icon icon-cog"
+              style="color: #009688" ></i>Créer une annonce</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</header>
+
+<div class="container-fluid animatedParent animateOnce my-3">
+  <div class="">
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-tab1" role="tabpanel" aria-labelledby="v-pills-home-tab">
+     
+
+          <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+
+              <li class="treeview"><a (click)="toggleListAd()" style="cursor: pointer"
+                  *ngIf="!list_ad && number_ads != 0"><i
+                    class="icon icon-send-o indigo-text s-18"></i>retour à la liste des annonces</a>
+              </li>
+              <!-- <li class="treeview"><a (click)="handleToggleGender()" style="cursor: pointer"
+                  [attr.aria-expanded]="!isGender" aria-controls="collapseGender"><i
+                    class="icon icon-inbox text-purple s-18"></i>Ciblage des genres</a>
+              </li>
+              <li class="treeview"><a style="cursor: pointer" (click)='handleToggleAge()' [attr.aria-expanded]="!isAge"
+                  aria-controls="collapseAge"><i class="icon icon-star-o lime-text s-18"></i>Ciblage des âges</a>
+              </li>
+              <li class="treeview"><a (click)="handleToggleDevice()" [attr.aria-expanded]="!isDevice"
+                  aria-controls="collapseDevice"><i class="icon icon-send-o indigo-text s-18"></i>Ciblage de
+                  terminaux</a>
+              </li> -->
+
+            </ul>        
+  <ng-container *ngIf="number_ads != 0 && list_ad;">
+
+
+            <div class="container-fluid text-center">
+              <br>
+              <h5 style="color: #4db6ac">Liste des annonces</h5>
+              <br>
+              <div class="card no-b shadow teal lighten-2">
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+
+                    <table class="table table-hover text-center">
+                      <tbody>
+                        <ng-container *ngIf="ads.toString().length > 0; else noAds">
+
+                          <tr class="no-b" *ngFor="let ad of ads | async">
+
+
+                            <td class="table-img">
+                              <img src="{{ad?.url_image}}" alt="">
+
+                            </td>
+                            <td>
+                              <small class="text-white">Annonce display</small>
+                              <h6 style="font-weight: bold" class="text-white">{{ ad?.ad_name }}</h6>
+                            </td>
+                            <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
+                            <td *ngIf="ad?.status=='ENABLED'" class="text-center">
+                              <small class="text-white">Etat de l'annonce</small>
+                              <h6 class="text-white">Activer</h6>
+
+                            </td>
+                            <td *ngIf="ad?.status=='PAUSED'" class="text-center">
+                              <small class="text-white">Etat de l'annonce</small>
+                              <h6 class="text-danger">Désactiver</h6>
+
+                            </td>
+                            <!-- <td>
+                                                 <div class="d-none d-lg-block">
+                                                 <span><i class="icon icon-data_usage"></i> Commence le {{ note?.startDateFrench }}</span><br>
+                                                 <span><i class="icon icon-timer"></i> Se termine le {{ note?.endDateFrench }}</span>
+                                                 </div>
+                                             </td> -->
+                            <td class="text-center">
+                              <div class="row text-center d-none">
+                                <small class="text-white" *ngIf="ad?.status==='PAUSED'">Activer/Supprimer</small>
+                                <small class="text-white" *ngIf="ad?.status==='ENABLED'">Désactiver/Supprimer</small>
+
+                              </div>
+                              <div class="row">
+                                <a class="text-danger" style="cursor: pointer" title="désactiver"
+                                  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
+                                  *ngIf="ad?.status==='ENABLED'">
+                                  <i class="icon-stop text-danger"></i>
+                                </a>
+                                <a class="text-white" title="activer" style="cursor: pointer"
+                                  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
+                                  *ngIf="ad?.status==='PAUSED'" title="">
+                                  <i class="icon-play text-white"></i>
+                                </a>
+                                <div style="cursor: pointer; margin-left: 5px" *ngIf="ad?.status!==''">
+                                  <a class="text-danger" style="cursor: pointer; float: right"
+                                    (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)">
+                                    <i class="icon-close2 text-danger"></i>
+                                  </a>
+
+                                </div>
+                                <div style="cursor: pointer; margin-left: 5px" *ngIf="ad?.status===''">
+                                  <a class="text-danger" style="cursor: pointer; float: right"
+                                    (click)="removeAdFirebase(ad?.id)">
+                                    <i class="icon-close2 text-danger"></i>
+                                  </a>
+
+                                </div>
+                              </div>
+
+                            </td>
+                            <td>
+                              <a class="btn btn-md green accent-3 shadow text-white" [id]="ad?.id"
+                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId, ad?.size, ad?.ad_type)" style="float: right"><i
+                                  class="icon-settings2" ></i>Voir</a>
+                            </td>
+                            <hr>
+                          </tr>
+                        </ng-container>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
 
+          </ng-container>
+          <ng-container *ngIf="number_ads==='0' && init_choose_ad_size!==true">
+            <div class="container-fluid">
+              <div class="text-center p-5">
+                <i class="icon-note-important s-64 text-white"></i>
+                <h4 class="my-3">Aucune annonce trouvée</h4>
+                <p>Vous devez creer une nouvelle annonce pour commencer</p>
+                <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20" (click)='initAdd()'><i
+                    class="icon-plus-circle mr-2 "></i>Créer une annonce</button>
+              </div>
+            </div>
+          </ng-container>
 
-            <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+                <ng-container *ngIf="init_choose_ad_size && number_ads==='0'">
+                      <div class="card no-b shadow" *ngIf="chooseAdSize">
+      <div class="card-header no-b white text-center">
+        Type d'annonces
+      </div>
+      <div class="card-body no-b white">
+        	<div class="row">	
 
-              <li class="treeview"><a (click)="toggleListAd()" style="cursor: pointer"><i
-                    class="icon icon-inbox text-purple s-18"></i>Liste des annonces</a>
-              </li>
-              <li class="treeview"><a (click)=" loadCanvasFromJSON()" style="cursor: pointer"><i
-                    class="icon icon-inbox text-purple s-18"></i>Charger le canvas</a>
-              </li>
-              <li class="treeview"><a style="cursor: pointer" (click)='toggleEditor()'><i
-                    class="icon icon-star-o lime-text s-18"></i>Editeur d'annonce</a>
-              </li>
-              <li class="treeview"><a (click)="handleToggleOptions()" [attr.aria-expanded]="!isOptions"
-                  aria-controls="collapseOptions"><i class="icon icon-send-o indigo-text s-18"></i>Paramètres du groupe
-                  d'annonce</a>
-              </li>
+			<div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+             
+    </div>
+    <div class="row">	
 
-            </ul>
-            <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+		<div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+             
+    </div>
+      </div>
+      <div class="card-footer text-center white no-b">
+         <div class="card no-b shadow" style="display: inline-block" *ngIf="illustration">
+                          <div class="card-header teal lighten-3 text-white no-b">
+                            <h6 class="text-white">Format annonce</h6>
+                          </div>
+                          <div class="card-body white no-b">
+                            <div class="card-img no-b">
+                              <img class="img-responsive" [src]="illustrationUrl">
+                            </div>
+                          </div>
+                          <div class="card-footer white no-b text-center">
+                            <button class="btn shadow teal lighten-1 text-white r-20 btn-social" title="Ajouter un texte"
+                              (click)="chooseAdType()"><i class="icon-check"></i>choisir</button>
+                           
+                          </div>
+                        </div>
+       
+      </div>
+    </div>
+
+<div class="row text-center">
+     <div class="col text-center">
+<div class="card no-b shadow" *ngIf="chooseBlock" style="display: inline-block">
+       <div class="card-header teal lighten-3 text-white no-b text-center">
+                            <h6 class="text-white">Format: {{selectedWidth}}x{{selectedHeight}}</h6>
+                          </div>
+                    <div class="card-body text-center no-b">
+                        <a class="btn btn-md btn-social teal lighten-1 text-white r-20" (click)="handleUploadBanner()">
+                            <i class="icon-cloud_upload text-white"></i> Charger une bannière
+                        </a>
+                        <hr class="invisible">
+                        <a class="btn btn-md btn-social teal lighten-1 text-white r-20" (click)="handleCreatives()">
+                            <i class="icon-creativity text-white"></i> Construire une bannière
+                        </a>
+                        
+                    </div>
+                    <div class="card-footer white no-b text-center">
+                      <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackSelectSize()"
+                              title="Ajouter un texte"><i class="icon-edit"
+                                ></i>Changer le format</button>
+                    </div>
+                </div>
+     </div>
+</div>
+
+     <div class="container-fluid text-center" *ngIf="handleCreateCanvas && number_ads==='0'">
+      
+              <div class="card mb-3 shadow no-b r-0">
+                <div class="card-header teal lighten-1 text-center text-white no-b">
+                  <h6>Construire son annonce</h6>
+                </div>
+                <div class="card-body">
+                  <form [formGroup]="adForm">
+                    <div class="form-row text-center">
+                      <div class="col-md-6 mb-3 text">
+                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <input type="text" class="form-control" id="ad_name" placeholder="Nom" formControlName="name"
+                          required>
+                        <div *ngIf="formErrors.name" class="help is-danger">
+                          {{ formErrors.name }}
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4 mb-3 text">
+                        <small for="validationCustom01">Applications mobiles de destinations</small>
+                        <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                          [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                          (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                          (onDeSelectAll)="onAppsDeSelectAll()">
+                        </ng-multiselect-dropdown>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
+                      </div> -->
+                      <div class="form-group col-md-6 mb-3">
+                        <small for="pattern">Urls de redirection séparées par des virgules</small>
+                        <input type="text" autocomplete="off" class="form-control" id="redirect"
+                          placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
+                        <ng-container *ngIf="url_errors != ''">
+                          <div class="text-danger" *ngFor="let error of url_errors">
+                            {{error.url}} {{error.text}}
+                          </div>
+
+                        </ng-container>
+     
+
+
+
+
+
+
+                      </div>
+
+
+
+
+
+
+
+                    </div>
+
+                  </form>
+
+
+
+                </div>
+              </div>
+              <div class="card no-b shadow">
+
+                <div class="card-header white text-center b-0"> <a
+                    class="btn-fab btn-fab-md shadow teal lighten-1 text-white" (click)="triggerImage()"
+                    title="Ajouter une image"><i class="icon-image"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
+                    title="Ajouter un texte"><i class="icon-title"></i></a>
+                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
+                      class="icon-circle-o"></i></a>
+
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('triangle');"><i
+                      class="icon-toggle-up"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('rectangle');"><i
+                      class="icon-border_horizontal"></i></a>
+
+
+                </div>
+                <div class="card-body white no-b">
+                <div class="row">
+                  <div class="col-md-12" style="text-align: center;">
+                    <div style="display: inline-block">
+
+                      <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
+                        *ngIf="selected"
+                        style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
+                          class="icon-settings2"></i></button>
+
+                      <div class="canvas-container" style="margin-left: -18px" (drop)="handleDropOnCanvas($event)"
+                        (dragover)="handleDragOverCanvas($event)" placeholder="canvas">
+                        <canvas id="canvas"
+                          [ngStyle]="canvas_style"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+                <div class="card-footer border-0 white text-center">
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
+                    title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
+                    title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
+
+                  <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
+                      class="icon-clone"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
+                      class="icon-delete_forever"></i></a><br><br>
+
+                  <button class="btn btn-md btn-social teal lighten-1 text-white"
+                    (click)="handleImageModal()">
+                    <i class="icon-paper-plane"></i> Terminer l'annonce
+                  </button>
+                   <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackFromCreatives()"
+                              title="Ajouter un texte"><i class="icon-edit"
+                                ></i>Retour</button>
+                </div>
+
+              </div>
+
+            </div>
+          </ng-container>
+               <ng-container *ngIf="isAdBlock">
+            <div class="container-fluid text-center" style="margin-top: 15px">
+
+              <div class="card mb-3 shadow no-b r-0">
+                <div class="card-header teal lighten-1 text-center text-white no-b">
+                  <h6>Paramètre annonce</h6>
+                </div>
+                <div class="card-body text-center">
+                  <form>
+
+                    <div class="form-row text-center">
+                      <div class="col-md-6 mb-3 text">
+                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <input type="text" class="form-control no-b teal lighten-3 text-white" id="ad_name" placeholder="Nom" [value]="currentAdName"
+                           readonly>
+                        <div *ngIf="formErrors.name" class="help is-danger">
+                          {{ formErrors.name }}
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4 mb-3 text">
+                        <small for="validationCustom01">Applications mobiles de destinations</small>
+                        <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                          [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                          (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                          (onDeSelectAll)="onAppsDeSelectAll()">
+                        </ng-multiselect-dropdown>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
+                      </div> -->
+                      <div class="form-group col-md-6 mb-3">
+                        <small for="pattern">Urls de redirection</small>
+                        <input type="text" autocomplete="off" class="form-control no-b teal lighten-3 text-white" id="redirect"
+                          placeholder="Url de redirection"  id="finalUrls" [value]="currentFinalUrls" required
+                          (keyup)="handleErrorUrl()" readonly>
+                        <ng-container *ngIf="url_errors != ''">
+                          <div class="text-danger" *ngFor="let error of url_errors">
+                            {{error.url}} {{error.text}}
+                          </div>
+  
+                        </ng-container>
+                        <!--  </div>
+      <div class="form-group col-md-3">
+        <small>Actual Value</small>
+        <div>{{pattern.value}}</div>
+      </div>
+   -->
+  
+  
+  
+  
+  
+  
+                      </div>
+  
+  
+  
+  
+  
+  
+  
+                    </div>
+                    <div class="row text-center">
+                      <div class="col text-center" style="text-align: center">
+                        <div class="card no-b shadow" style="display: inline-block">
+                          <div class="card-header teal lighten-3 text-white no-b">
+                            <h6 class="text-white">Image</h6>
+                          </div>
+                          <div class="card-body white no-b">
+                            <div class="card-img no-b">
+                              <img class="img-responsive" [src]="currentImageUrl">
+                            </div>
+                          </div>
+                          <div class="card-footer white no-b text-center">
+                            <button class="btn shadow teal lighten-1 text-white r-20" title="modifier"
+                              (click)="toggleCurrentEditor()" *ngIf="currentAdType==='CREATIVE'"><i [class]="iconEditor"></i>{{text_modify}}</button>
+                              <button class="btn shadow teal lighten-1 text-white r-20" title="modifier"
+                              (click)="toggleCurrentUploadBlock()"><i [class]="iconEditor" *ngIf="currentAdType==='UPLOAD' && !isRoller"></i>{{text_modify}}</button>
+                            <button class="btn shadow teal lighten-1 text-white r-20" (click)="publish()"
+                              title="Ajouter un texte" id="publish" *ngIf="currentAdStatus==''"><i class="icon-send"
+                                ></i>Publier</button>
+                          </div>
+                        </div>
+                      </div>
+  
+                    </div>
+                  </form>
+
+
+
+
+
+                </div>
+              </div>
+              <div class="card no-b shadow" *ngIf="currentEditor && currentAdStatus===''">
+
+                <div class="card-header white text-center b-0"> <a
+                    class="btn-fab btn-fab-md shadow teal lighten-1 text-white" (click)="triggerImage()"
+                    title="Ajouter une image"><i class="icon-image"></i></a> 
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
+                    title="Ajouter un texte"><i class="icon-title"></i></a>
+                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
+                      class="icon-circle-o"></i></a>
+
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('triangle');"><i
+                      class="icon-toggle-up"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('rectangle');"><i
+                      class="icon-border_horizontal"></i></a>
+
+
+                </div>
+                <div class="card-body white no-b">
+                   <div class="row">
+                  <div class="col-md-12" style="text-align: center;">
+                    <div style="display: inline-block">
+
+                      <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
+                        *ngIf="selected"
+                        style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
+                          class="icon-settings2"></i></button>
+
+                      <div class="canvas-container" style="margin-left: -18px" (drop)="handleDropOnCanvas($event)"
+                        (dragover)="handleDragOverCanvas($event)" placeholder="canvas">
+                        <canvas id="canvas"
+                          [ngStyle]="canvas_style"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+                <div class="card-footer border-0 white text-center">
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
+                    title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
+                    title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
+
+                  <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
+                      class="icon-clone"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
+                      class="icon-delete_forever"></i></a>
+
+                  <button class="btn btn-lg btn-block teal lighten-1 text-white" style="float: right"
+                    (click)="handleModifiedImage()">
+                    <i class="icon-paper-plane"></i> Visualiser
+                  </button>
+
+                </div>
+
+              </div>
+              
+
+            </div>
+          </ng-container>
+          <div style="display: none" id="blockUploadModified">
+                 <div class="card b-0 r-0 shadow">
+                      
+                         <div class="b-b"></div>
+                         <input hidden id="file" name="file"/>
+                         <div class="dropzone dropzone-file-area p-3 m-3 bg-light" id="fileUpload">
+                             <div class="dz-default dz-message">
+                                 <span>Glisser ici une image </span>
+                                 <div>Vous pouvez aussi cliquer pour choisir une image</div>
+                             </div>
+                         </div>
+                         <div class="card-footer white text-center">
+  
+                             <button class="btn btn-md btn-social teal lighten-1 text-white"
+                  (click)="handleModifiedImage()">
+                  <i class="icon-paper-plane"></i> Visualiser
+                </button>
+                            
+                         </div>
+  
+                    
+                 </div>
+              </div>
+<ng-container>
+
+               <div class="card mb-3 shadow no-b r-0" *ngIf="modifyPublishAd">
+                <div class="card-header teal lighten-1 text-center text-white no-b">
+                  <h6>Modifier l'annonce</h6>
+                </div>
+                <div class="card-body text-center"  *ngIf="!isRoller">
+                  <form>
+
+                    <div class="form-row text-center">
+                      <div class="col-md-6 mb-3 text">
+                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <input type="text" class="form-control" id="ad_name_modify" placeholder="Nom" [value]="currentAdName" required>
+                        <div *ngIf="formErrors.name" class="help is-danger">
+                          {{ formErrors.name }}
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4 mb-3 text">
+                        <small for="validationCustom01">Applications mobiles de destinations</small>
+                        <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                          [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                          (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                          (onDeSelectAll)="onAppsDeSelectAll()">
+                        </ng-multiselect-dropdown>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
+                      </div> -->
+                      <div class="form-group col-md-6 mb-3">
+                        <small for="pattern">Urls de redirection séparées par des virgules</small>
+                        <input type="text" autocomplete="off" class="form-control" id="redirect"
+                          placeholder="Url de redirection"  id="  odify" [value]="currentFinalUrls" required
+                          (keyup)="handleErrorUrl()">
+                        <ng-container *ngIf="url_errors != ''">
+                          <div class="text-danger" *ngFor="let error of url_errors">
+                            {{error.url}} {{error.text}}
+                          </div>
+  
+                        </ng-container>
+                        <!--  </div>
+      <div class="form-group col-md-3">
+        <small>Actual Value</small>
+        <div>{{pattern.value}}</div>
+      </div>
+   -->
+  
+  
+  
+  
+  
+  
+                      </div>
+  
+  
+  
+  
+  
+  
+  
+                    </div>
+                    
+                  </form>
+
+
+
+
+
+                </div>
+                 <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="card-footer white no-b text-center">
+                  <a class="btn btn-md teal darken-1 text-white r-20 btn social" (click)="updateAdOnFirebase()"  *ngIf="!isRoller"><i class="icon-check text-white"></i> Enregistrer </a>
+                </div>
+              </div>
+  <div class="col-md-12 text-center" id="block" style="display: none">
+              <div class="card mb-3 shadow no-b r-0">
+              <div class="card-header teal lighten-1 text-center text-white no-b">
+                <h6>Construire son annonce</h6>
+              </div>
+              <div class="card-body">
+                <form >
+                  <div class="form-row text-center">
+                    <div class="col-md-6 mb-3 text">
+                      <small for="validationCustom01">Nom de l'annonce</small>
+                      <input type="text" class="form-control" id="ad_name" placeholder="Nom" 
+                        required>
+                      <div *ngIf="formErrors.name" class="help is-danger">
+                        {{ formErrors.name }}
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-4 mb-3 text">
+                      <small for="validationCustom01">Applications mobiles de destinations</small>
+                      <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                        [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                        (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                        (onDeSelectAll)="onAppsDeSelectAll()">
+                      </ng-multiselect-dropdown>
+                      <div class="valid-feedback">
+                        Looks good!
+                      </div>
+                    </div> -->
+                    <div class="form-group col-md-6 mb-3">
+                      <small for="pattern">Urls de redirection séparées par des virgules</small>
+                      <input type="text" autocomplete="off" class="form-control" id="redirect"
+                        placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
+                      <ng-container *ngIf="url_errors != ''">
+                        <div class="text-danger" *ngFor="let error of url_errors">
+                          {{error.url}} {{error.text}}
+                        </div>
+  
+                      </ng-container>
+   
+  
+  
+  
+  
+  
+  
+                    </div>
+  
+  
+  
+  
+  
+  
+  
+                  </div>
+  
+                </form>
+  
+  
+  
+              </div>
+            </div>
+                 <div class="card b-0 r-0 shadow">
+                      
+                         <div class="b-b"></div>
+                         <input hidden id="file" name="file"/>
+                         <div class="dropzone dropzone-file-area p-3 m-3 bg-light" id="fileUpload">
+                             <div class="dz-default dz-message">
+                                 <span>Glisser ici une image </span>
+                                 <div>Vous pouvez aussi cliquer pour choisir une image</div>
+                             </div>
+                         </div>
+                         <div class="card-footer white text-center">
+  
+                             <button class="btn btn-md btn-social teal lighten-1 text-white"
+                  (click)=" handleImageUploadModal()">
+                  <i class="icon-paper-plane"></i> Terminer l'annonce
+                </button>
+                             <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackFromUpload()"
+                            title="Ajouter un texte"><i class="icon-edit"
+                              ></i>Retour</button>
+                         </div>
+  
+                    
+                 </div>
+             </div>
+</ng-container>
+</div>
+<div class="tab-pane fade" id="v-pills-placement" role="tabpanel" aria-labelledby="v-pills-add-ad-tab">
+<!--   <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
 
               <li class="treeview"><a (click)="handleTogglePlacement()" style="cursor: pointer"
                   [attr.aria-expanded]="!isPlacement" aria-controls="collapsePlacement"><i
@@ -515,11 +1189,53 @@
                   terminaux</a>
               </li>
 
-            </ul>
-            <div id="collapsePlacement" [ngbCollapse]="isPlacement">
+            </ul> -->
 
-              <ul class="sidebar-menu text-center text-white grey darken-3" style="margin-top: 10px">
-                <li class="treeview"><a class="text-white"><i class="icon icon-male indigo-text s-18"></i> <small
+              <div class="card no-b white shadow">
+                  <div class="card-header no-b teal darken-1 text-white">
+                    <span>Sites webs où les annonces de ce groupe seront affichées</span>
+                  </div>
+                  <div class="card-body no-b white">
+                     <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr>
+                          <th>Sites webs</th>
+                          <th>Supprimer l'emplacement</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="placement==''" class="text-center">
+                            Aucun emplacement pour le moment
+                        </tr>
+                        <ng-container >
+                          <tr *ngFor="let place of placement">
+                            <td>{{place.item_text}}</td>
+                      
+                           <td><a (click)="removePlacement(place?.item_text, place?.criterion_id)"><i class="icon-delete text-danger"></i></a></td>
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                  </div>
+                  <div class="card-footer white no-b text-center">
+                    <a class="btn btn-md shadow teal darken-1 text-white r-20" (click)="handleTogglePlacement()" *ngIf="placement==''" ><i
+                      class="icon-check"></i>Définir un emplacement</a>
+                  <a class="btn btn-md shadow teal darken-1 text-white r-20" (click)=" handleTogglePlacement()"
+                   *ngIf="placement!=''"><i class="icon-close" ></i>Modifier les emplacement</a>
+                  </div>
+              </div>
+            
+
+              <div class="card white no-b shadow" *ngIf="!isPlacement"> 
+                  <div class="card-header white no-b teal darken-1">
+                    <span class="text-white">Définissez ici les sites où les annonces de ce groupe seront affichées</span>
+                  </div>
+                  <div class="card-body no-b white">
+                    <ul class="sidebar-menu text-center" style="margin-top: 10px">
+                <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i> <small
                       for="validationCustom01">Placement Sites Nationnaux</small></a>
                   <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites Nationnaux'"
                     [data]="dropdownListNationalsWebsites" [settings]="dropdownSettingsNationalsWebsites"
@@ -534,7 +1250,7 @@
 
                   </ng-container>
                 </li>
-                <li class="treeview"><a class="text-white"><i class="icon icon-male indigo-text s-18"></i> <small
+                <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i> <small
                       for="validationCustom01">Placement Sites Internationnaux</small></a>
                   <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites Internationnaux'"
                     [data]="dropdownListInternationalsWebsites" [settings]="dropdownSettingsInternationalsWebsites"
@@ -544,7 +1260,619 @@
                     (onDeSelectAll)="onInternationalesWebsitesDeSelectAll()">
                   </ng-multiselect-dropdown>
                 </li>
-                <li class="treeview"><a class="text-white"><i class="icon icon-male indigo-text s-18"></i><small
+                <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i><small
+                      for="validationCustom01">Placement Sites d'annonces</small></a>
+                  <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites annonces'"
+                    [data]="dropdownListAdsWebsites" [settings]="dropdownSettingsAdsWebsites"
+                    (onSelect)="onAdsWebsitesSelect($event)" (onSelectAll)="onAdsWebsitesSelectAll($event)"
+                    (onDeSelect)="onAdsWebsitesDeSelect($event)" (onDeSelectAll)="onAdsWebsitesDeSelectAll()">
+                  </ng-multiselect-dropdown>
+                </li>
+                 
+               <!--  <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i><small
+                      for="validationCustom01">Applications mobiles de destinations</small></a>
+                  <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                    [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                    (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                    (onDeSelectAll)="onAppsDeSelectAll()">
+                  </ng-multiselect-dropdown>
+                </li> -->
+              </ul>
+                  </div>
+              <div class="card-footer white no-b text-center">
+                <a class="btn btn-md shadow teal darken-1 text-white r-20" (click)="targetPlacement()" ><i
+                      class="icon-check"></i>Cibler</a>
+                  <a class="btn btn-md shadow btn-danger text-white r-20" (click)="closeAddPlacement()"
+                   ><i class="icon-close"></i>Annuler</a>
+              </div>
+              </div>
+
+            
+</div>
+<div class="tab-pane fade" id="v-pills-ciblage-ads" role="tabpanel" aria-labelledby="v-pills-add-ad-tab">
+
+   <ul class="timeline">
+     <div class="text-center">
+
+       <small>Tous les ciblages qui seront fait ici concerneront uniquement les annonces de ce groupe</small>
+     </div>
+          <li class="time-label">
+                <span class="badge badge-warning r-3">
+                  Liste de vos types de ciblage
+                </span>
+              </li>
+          <li>
+                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
+
+                  <i class="ion icon-envelope"></i> Ciblage des âges
+                </a>
+                <div class="collapse" id="collapseAge">
+                        <div class="card no-b shadow timeline-item">
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h4 class="card-title">Liste des âges ciblés</h4>
+                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos tranches d'âges ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr class="text-center">
+                          <th>Âges ciblés</th>
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="populations==''" class="text-center">
+                            Aucune tranche d'âge ciblée
+                        </tr>
+                        <ng-container >
+                          <tr *ngFor="let pop of populations" class="text-center">
+                            <td>{{pop.item_text}}</td>
+                           
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer white no-b text-center">
+                     <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations==''"><i
+                        class="icon-add_location"></i>Ajouter une tranche d'âge</a>
+                   <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations!=''"><i
+                        class="icon-add_location"></i>Modifier le ciblage</a>
+                        
+                                 <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageAge">
+      
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Âges'"
+                      [data]="dropdownListAges" [settings]="dropdownSettingsAges" (onSelect)="onAgeSelect($event)"
+                      (onSelectAll)="onAgeSelectAll($event)" (onDeSelect)="onAgeDeSelect($event)"
+                      (onDeSelectAll)="onDeSelectAllAge()">
+                    </ng-multiselect-dropdown>
+
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetAge()" *ngIf="isCiblageAge"><i
+                      class="icon-check"></i> Ajouter</a>
+                  <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageAges()"
+                    *ngIf="isCiblageAge"><i class="icon-close"></i> Fermer</a>
+
+                </div>
+              </div>
+             
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+               <li>
+                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
+
+                  <i class="ion icon-envelope"></i> Ciblage des genres
+                </a>
+                <div class="collapse" id="collapseGenre">
+                        <div class="card no-b shadow timeline-item">
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h4 class="card-title">Liste des genres ciblés</h4>
+                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos genres ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr class="text-center">
+                          <th>Genres ciblés</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="genre==''" class="text-center">
+                            Aucun genre ciblé
+                        </tr>
+                        <ng-container >
+                          <tr *ngFor="let gen of genres" class="text-center">
+                            <td>{{gen.item_text}}</td>
+                           
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                 <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageGenre()" *ngIf="!isCiblageGenre && genres ==''"><i
+                      class="icon-check"></i> Cibler un genre</a>
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageGenre()"
+                    *ngIf="!isCiblageGenre && genres!=''"><i class="icon-close"></i>Modifier le ciblage</a>
+                     <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageGenre">
+           
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Genres'"
+                      [data]="dropdownListSexes" [settings]="dropdownSettingsSexes" (onSelect)="onSexeSelect($event)"
+                      (onSelectAll)="onSexeSelectAll($event)" (onDeSelect)="onSexeDeSelect($event)"
+                      (onDeSelectAll)="onDeSelectAllSexe()">
+                    </ng-multiselect-dropdown>
+
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetGender()" *ngIf="isCiblageGenre"><i
+                      class="icon-check"></i> Ajouter</a>
+                  <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageGenre()"
+                    *ngIf="isCiblageGenre"><i class="icon-close"></i> Fermer</a>
+
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+              </li>
+             
+              <li>
+                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
+
+                  <i class="ion icon-envelope"></i> Ciblage d'appareils
+                </a>
+                <div class="collapse" id="collapseAppareil"> 
+                           <div class="card no-b shadow timeline-item">
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h4 class="card-title">Liste des appareils ciblés</h4>
+                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos appareils ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr>
+                          <th>Appareils</th>
+                          <th>Enchères</th>
+                          <th>Coût de l'enchère</th>
+                          <th>Supprimer le ciblage</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="appareils==''" class="text-center">
+                            Aucun appareil
+                        </tr>
+                        <ng-container>
+                          <tr *ngFor="let app of appareils">
+                            <td>{{app.item_text}}</td>
+                            <td>0</td>
+                            <td>0 CFA</td>
+                           <td><i class="icon-delete text-danger"></i></td>
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                            <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageDevices()" *ngIf="!isCiblageDevices && appareils ==''"><i
+                      class="icon-check"></i> Cibler un appareil</a>
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageDevices()"
+                    *ngIf="!isCiblageDevices && appareils!=''"><i class="icon-close"></i>Modifier le ciblage</a>
+                     <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageDevices">
+           
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Appareils'"
+                      [data]="dropdownListDevices" [settings]="dropdownSettingsDevices"
+                      (onSelect)="onDevicesSelect($event)" (onSelectAll)="onDevicesSelectAll($event)"
+                      (onDeSelect)="onDevicesDeSelect($event)" (onDeSelectAll)="onDeSelectAllDevices()">
+                    </ng-multiselect-dropdown>
+
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20"  (click)="targetDevices()" *ngIf="isCiblageDevices"><i
+                      class="icon-check"></i> Ajouter</a>
+                  <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageDevices()"
+                    *ngIf="isCiblageDevices"><i class="icon-close"></i> Fermer</a>
+
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+                </div>
+              </li>
+           
+        </ul>
+
+        
+        
+        
+        
+        </div>
+<div class="tab-pane fade" id="v-pills-add-ad" role="tabpanel" aria-labelledby="v-pills-add-ad-tab">
+
+    <div class="card no-b shadow" *ngIf="chooseAdSize">
+      <div class="card-header no-b white text-center">
+        Type d'annonces
+      </div>
+      <div class="card-body no-b white">
+        	<div class="row">	
+
+			<div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+             
+    </div>
+    <div class="row">	
+
+		<div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+             
+    </div>
+      </div>
+      <div class="card-footer text-center white no-b">
+         <div class="card no-b shadow" style="display: inline-block" *ngIf="illustration">
+                          <div class="card-header teal lighten-3 text-white no-b">
+                            <h6 class="text-white">Format annonce</h6>
+                          </div>
+                          <div class="card-body white no-b">
+                            <div class="card-img no-b">
+                              <img class="img-responsive" [src]="illustrationUrl">
+                            </div>
+                          </div>
+                          <div class="card-footer white no-b text-center">
+                            <button class="btn shadow teal lighten-1 text-white r-20 btn-social" title="Ajouter un texte"
+                              (click)="chooseAdType()"><i class="icon-check"></i>choisir</button>
+                           
+                          </div>
+                        </div>
+       
+      </div>
+    </div>
+
+<div class="row text-center">
+     <div class="col text-center">
+<div class="card no-b shadow" *ngIf="chooseBlock" style="display: inline-block">
+       <div class="card-header teal lighten-3 text-white no-b text-center">
+                            <h6 class="text-white">Format: {{selectedWidth}}x{{selectedHeight}}</h6>
+                          </div>
+                    <div class="card-body text-center no-b">
+                        <a class="btn btn-md btn-social teal lighten-1 text-white r-20" (click)="handleUploadBanner()">
+                            <i class="icon-cloud_upload text-white"></i> Uploader une bannière
+                        </a>
+                        <hr class="invisible">
+                        <a class="btn btn-md btn-social teal lighten-1 text-white r-20" (click)="handleCreatives()">
+                            <i class="icon-creativity text-white"></i> Construire une bannière
+                        </a>
+                        
+                    </div>
+                    <div class="card-footer white no-b text-center">
+                      <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackSelectSize()"
+                              title="Ajouter un texte"><i class="icon-edit"
+                                ></i>Changer le format</button>
+                    </div>
+                </div>
+     </div>
+     
+</div>
+
+
+
+
+     <div class="container-fluid text-center" *ngIf="handleCreateCanvas">
+      
+              <div class="card mb-3 shadow no-b r-0">
+                <div class="card-header teal lighten-1 text-center text-white no-b">
+                  <h6>Construire son annonce</h6>
+                </div>
+                <div class="card-body">
+                  <form [formGroup]="adForm">
+                    <div class="form-row text-center">
+                      <div class="col-md-6 mb-3 text">
+                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <input type="text" class="form-control" id="ad_name" placeholder="Nom" formControlName="name"
+                          required>
+                        <div *ngIf="formErrors.name" class="help is-danger">
+                          {{ formErrors.name }}
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4 mb-3 text">
+                        <small for="validationCustom01">Applications mobiles de destinations</small>
+                        <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                          [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                          (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                          (onDeSelectAll)="onAppsDeSelectAll()">
+                        </ng-multiselect-dropdown>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
+                      </div> -->
+                      <div class="form-group col-md-6 mb-3">
+                        <small for="pattern">Urls de redirection séparées par des virgules</small>
+                        <input type="text" autocomplete="off" class="form-control" id="redirect"
+                          placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
+                        <ng-container *ngIf="url_errors != ''">
+                          <div class="text-danger" *ngFor="let error of url_errors">
+                            {{error.url}} {{error.text}}
+                          </div>
+
+                        </ng-container>
+     
+
+
+
+
+
+
+                      </div>
+
+
+
+
+
+
+
+                    </div>
+
+                  </form>
+
+
+
+                </div>
+              </div>
+              <div class="card no-b shadow">
+
+                <div class="card-header white text-center b-0"> <a
+                    class="btn-fab btn-fab-md shadow teal lighten-1 text-white" (click)="triggerImage()"
+                    title="Ajouter une image"><i class="icon-image"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
+                    title="Ajouter un texte"><i class="icon-title"></i></a>
+                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
+                      class="icon-circle-o"></i></a>
+
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('triangle');"><i
+                      class="icon-toggle-up"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('rectangle');"><i
+                      class="icon-border_horizontal"></i></a>
+
+
+                </div>
+                <div class="card-body white no-b">
+                <div class="row">
+                  <div class="col-md-12" style="text-align: center;">
+                    <div style="display: inline-block">
+
+                      <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
+                        *ngIf="selected"
+                        style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
+                          class="icon-settings2"></i></button>
+
+                      <div class="canvas-container" style="margin-left: -18px" (drop)="handleDropOnCanvas($event)"
+                        (dragover)="handleDragOverCanvas($event)" placeholder="canvas">
+                        <canvas id="canvas"
+                          [ngStyle]="canvas_style"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+                <div class="card-footer border-0 white text-center">
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
+                    title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
+                    title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
+
+                  <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
+                      class="icon-clone"></i></a>
+                  <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
+                      class="icon-delete_forever"></i></a><br><br>
+
+                  <button class="btn btn-md btn-social teal lighten-1 text-white"
+                    (click)="handleImageModal()">
+                    <i class="icon-paper-plane"></i> Terminer l'annonce
+                  </button>
+                   <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackFromCreatives()"
+                              title="Ajouter un texte"><i class="icon-edit"
+                                ></i>Retour</button>
+                </div>
+
+              </div>
+
+            </div>
+</div>
+ <div class="row" id="block1">
+ <div class="col-md-12 text-center">
+              <div class="card mb-3 shadow no-b r-0">
+              <div class="card-header teal lighten-1 text-center text-white no-b">
+                <h6>Construire son annonce</h6>
+              </div>
+              <div class="card-body">
+                <form >
+                  <div class="form-row text-center">
+                    <div class="col-md-6 mb-3 text">
+                      <small for="validationCustom01">Nom de l'annonce</small>
+                      <input type="text" class="form-control" id="ad_name" placeholder="Nom" 
+                        required>
+                      <div *ngIf="formErrors.name" class="help is-danger">
+                        {{ formErrors.name }}
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-4 mb-3 text">
+                      <small for="validationCustom01">Applications mobiles de destinations</small>
+                      <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
+                        [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
+                        (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
+                        (onDeSelectAll)="onAppsDeSelectAll()">
+                      </ng-multiselect-dropdown>
+                      <div class="valid-feedback">
+                        Looks good!
+                      </div>
+                    </div> -->
+                    <div class="form-group col-md-6 mb-3">
+                      <small for="pattern">Urls de redirection séparées par des virgules</small>
+                      <input type="text" autocomplete="off" class="form-control" id="redirect"
+                        placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
+                      <ng-container *ngIf="url_errors != ''">
+                        <div class="text-danger" *ngFor="let error of url_errors">
+                          {{error.url}} {{error.text}}
+                        </div>
+  
+                      </ng-container>
+   
+  
+  
+  
+  
+  
+  
+                    </div>
+  
+  
+  
+  
+  
+  
+  
+                  </div>
+  
+                </form>
+  
+  
+  
+              </div>
+            </div>
+                 <div class="card b-0 r-0 shadow">
+                      
+                         <div class="b-b"></div>
+                         <input hidden id="file" name="file"/>
+                         <div class="dropzone dropzone-file-area p-3 m-3 bg-light" id="fileUpload">
+                             <div class="dz-default dz-message">
+                                 <span>Glisser ici une image </span>
+                                 <div>Vous pouvez aussi cliquer pour choisir une image</div>
+                             </div>
+                         </div>
+                         <div class="card-footer white text-center">
+  
+                             <button class="btn btn-md btn-social teal lighten-1 text-white"
+                  (click)=" handleImageUploadModal()">
+                  <i class="icon-paper-plane"></i> Terminer l'annonce
+                </button>
+                             <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackFromUpload()"
+                            title="Ajouter un texte"><i class="icon-edit"
+                              ></i>Retour</button>
+                         </div>
+  
+                    
+                 </div>
+             </div>
+
+ </div>
+</div>
+</div>
+</div>
+<!--     <div class="container-fluid relative animatedParent animateOnce p-0">
+      <div class="row bd-highlight no-gutters">
+        <div class="col-md-3 no-b">
+
+          <div id="collapseExample" [ngbCollapse]="isCollapsed" class='no-b'>
+
+
+            
+
+
+          <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+
+              <li class="treeview"><a (click)="toggleListAd()" style="cursor: pointer"><i
+                    class="icon icon-inbox text-purple s-18"></i>Liste des annonces</a>
+              </li>
+      
+              <li class="treeview"><a style="cursor: pointer" (click)='toggleEditor()'><i
+                    class="icon icon-star-o lime-text s-18"></i>Editeur d'annonce</a>
+              </li>
+              <li class="treeview"><a (click)="handleToggleOptions()" [attr.aria-expanded]="!isOptions"
+                  aria-controls="collapseOptions"><i class="icon icon-send-o indigo-text s-18"></i>Paramètres du groupe
+                  d'annonce</a>
+              </li>
+
+            </ul> 
+            
+            <div id="collapsePlacement" [ngbCollapse]="isPlacement">
+
+              <ul class="sidebar-menu text-center text-white grey darken-3" style="margin-top: 10px">
+                <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i> <small
+                      for="validationCustom01">Placement Sites Nationnaux</small></a>
+                  <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites Nationnaux'"
+                    [data]="dropdownListNationalsWebsites" [settings]="dropdownSettingsNationalsWebsites"
+                    (onSelect)="onNationalsWebsitesSelect($event)" (onSelectAll)="onNationalsWebsitesSelectAll($event)"
+                    (onDeSelect)="onNationalsWebsitesDeSelect($event)"
+                    (onDeSelectAll)="onNationalsWebsitesDeSelectAll()">
+                  </ng-multiselect-dropdown>
+                  <ng-container *ngIf="nationals_errors != ''">
+                    <div class="text-danger">
+                      {{nationals_errors}}
+                    </div>
+
+                  </ng-container>
+                </li>
+                <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i> <small
+                      for="validationCustom01">Placement Sites Internationnaux</small></a>
+                  <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites Internationnaux'"
+                    [data]="dropdownListInternationalsWebsites" [settings]="dropdownSettingsInternationalsWebsites"
+                    (onSelect)="onInternationalsWebsitesSelect($event)"
+                    (onSelectAll)="onInternationalsWebsitesSelectAll($event)"
+                    (onDeSelect)="onInternationalsWebsitesDeSelect($event)"
+                    (onDeSelectAll)="onInternationalesWebsitesDeSelectAll()">
+                  </ng-multiselect-dropdown>
+                </li>
+                <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i><small
                       for="validationCustom01">Placement Sites d'annonces</small></a>
                   <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Sites annonces'"
                     [data]="dropdownListAdsWebsites" [settings]="dropdownSettingsAdsWebsites"
@@ -556,14 +1884,14 @@
                       class="icon-check"></i></a>
                   <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddPlacement()"
                    ><i class="icon-close"></i></a>
-               <!--  <li class="treeview"><a class="text-white"><i class="icon icon-male indigo-text s-18"></i><small
+                <li class="treeview"><a><i class="icon icon-male indigo-text s-18"></i><small
                       for="validationCustom01">Applications mobiles de destinations</small></a>
                   <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
                     [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
                     (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
                     (onDeSelectAll)="onAppsDeSelectAll()">
                   </ng-multiselect-dropdown>
-                </li> -->
+                </li> 
               </ul>
 
             </div>
@@ -716,418 +2044,19 @@
 
 
           </div>
-          <!--  <a class="btn-fab btn-fab-md teal lighten-3 shadow" (click)="handleToggleAdGroupSettings()" style="margin-right: -20px"
-       [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample"> 
-       <i [class]="icon_toggle"></i>
-   </a> -->
+ 
         </div>
 
 
         <div class="col-md-9 height-full white">
 
-          <ng-container *ngIf='isEditor'>
-            <div class="container-fluid text-center">
+    
 
-              <div class="card mb-3 shadow no-b r-0">
-                <div class="card-header teal lighten-1 text-center text-white no-b">
-                  <h6>Construire son annonce</h6>
-                </div>
-                <div class="card-body">
-                  <form [formGroup]="adForm">
-                    <div class="form-row text-center">
-                      <div class="col-md-6 mb-3 text">
-                        <small for="validationCustom01">Nom de l'annonce</small>
-                        <input type="text" class="form-control" id="ad_name" placeholder="Nom" formControlName="name"
-                          required>
-                        <div *ngIf="formErrors.name" class="help is-danger">
-                          {{ formErrors.name }}
-                        </div>
-                      </div>
-                      <!-- <div class="col-md-4 mb-3 text">
-                        <small for="validationCustom01">Applications mobiles de destinations</small>
-                        <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
-                          [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
-                          (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
-                          (onDeSelectAll)="onAppsDeSelectAll()">
-                        </ng-multiselect-dropdown>
-                        <div class="valid-feedback">
-                          Looks good!
-                        </div>
-                      </div> -->
-                      <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Urls de redirection séparées par des virgules</small>
-                        <input type="text" autocomplete="off" class="form-control" id="redirect"
-                          placeholder="Url de redirection" id="finalUrls" required (keyup)="handleErrorUrl()">
-                        <ng-container *ngIf="url_errors != ''">
-                          <div class="text-danger" *ngFor="let error of url_errors">
-                            {{error.url}} {{error.text}}
-                          </div>
 
-                        </ng-container>
-                        <!--  </div>
-    <div class="form-group col-md-3">
-      <small>Actual Value</small>
-      <div>{{pattern.value}}</div>
-    </div>
- -->
+ 
 
+     
 
-
-
-
-
-                      </div>
-
-
-
-
-
-
-
-                    </div>
-
-                  </form>
-
-
-
-                </div>
-              </div>
-              <div class="card no-b shadow">
-
-                <div class="card-header white text-center b-0"> <a
-                    class="btn-fab btn-fab-md shadow teal lighten-1 text-white" (click)="triggerImage()"
-                    title="Ajouter une image"><i class="icon-image"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
-                    title="Ajouter un texte"><i class="icon-title"></i></a>
-                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
-                      class="icon-circle-o"></i></a>
-
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('triangle');"><i
-                      class="icon-toggle-up"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('rectangle');"><i
-                      class="icon-border_horizontal"></i></a>
-
-
-                </div>
-                <div class="card-body white no-b">
-                  <div class="col" style="text-align: center;">
-                    <div style="display: inline-block">
-
-                      <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
-                        *ngIf="selected"
-                        style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
-                          class="icon-settings2"></i></button>
-
-                      <div class="canvas-container" (drop)="handleDropOnCanvas($event)"
-                        (dragover)="handleDragOverCanvas($event)">
-                        <canvas id="canvas"
-                          style="border-color: rgb(233, 216, 216); width: 250px !important; height: 250px !important; display: inline-block"></canvas>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-
-
-
-
-                </div>
-
-
-
-
-                <div class="card-footer border-0 white text-center">
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
-                    title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
-                    title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
-
-                  <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
-                      class="icon-clone"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
-                      class="icon-delete_forever"></i></a>
-
-                  <button class="btn btn-lg btn-block teal lighten-1 text-white" style="float: right"
-                    (click)="handleImageModal()">
-                    <i class="icon-paper-plane"></i> Terminer l'annonce
-                  </button>
-                </div>
-
-              </div>
-
-            </div>
-          </ng-container>
-
-
-          <!--    <ng-container *ngIf="_init_ad">
-            <div class="text-center p-5">
-              <i class="icon-note-important s-64 text-white"></i>
-              <h4 class="my-3">Aucune annonce trouvée</h4>
-              <p>Vous devez creer une nouvelle annonce pour commencer</p>
-              <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20" (click)='toggleEditor()'><i
-                  class="icon-plus-circle mr-2 "></i>Créer une annonce</button>
-            </div>
-
-          </ng-container> -->
-
-          <ng-container *ngIf="isAdBlock">
-            <div class="container-fluid text-center">
-
-              <div class="card mb-3 shadow no-b r-0">
-                <div class="card-header teal lighten-1 text-center text-white no-b">
-                  <h6>Paramètre annonce</h6>
-                </div>
-                <div class="card-body text-center">
-
-                  <div class="form-row text-center">
-                    <div class="col-md-6 mb-3 text">
-                      <small for="validationCustom01">Nom de l'annonce</small>
-                      <input type="text" class="form-control" id="ad_name" placeholder="Nom" [value]="currentAdName"
-                        formControlName="name" required>
-                      <div *ngIf="formErrors.name" class="help is-danger">
-                        {{ formErrors.name }}
-                      </div>
-                    </div>
-                    <!-- <div class="col-md-4 mb-3 text">
-                      <small for="validationCustom01">Applications mobiles de destinations</small>
-                      <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
-                        [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
-                        (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
-                        (onDeSelectAll)="onAppsDeSelectAll()">
-                      </ng-multiselect-dropdown>
-                      <div class="valid-feedback">
-                        Looks good!
-                      </div>
-                    </div> -->
-                    <div class="form-group col-md-6 mb-3">
-                      <small for="pattern">Urls de redirection séparées par des virgules</small>
-                      <input type="text" autocomplete="off" class="form-control" id="redirect"
-                        placeholder="Url de redirection" id="finalUrls" [value]="currentFinalUrls" required
-                        (keyup)="handleErrorUrl()">
-                      <ng-container *ngIf="url_errors != ''">
-                        <div class="text-danger" *ngFor="let error of url_errors">
-                          {{error.url}} {{error.text}}
-                        </div>
-
-                      </ng-container>
-                      <!--  </div>
-    <div class="form-group col-md-3">
-      <small>Actual Value</small>
-      <div>{{pattern.value}}</div>
-    </div>
- -->
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                  </div>
-                  <div class="row text-center">
-                    <div class="col text-center" style="text-align: center">
-                      <div class="card no-b shadow" style="display: inline-block; width: 300px;">
-                        <div class="card-header teal lighten-3 text-white no-b">
-                          <h6 class="text-white">Image</h6>
-                        </div>
-                        <div class="card-body white no-b">
-                          <div class="card-img no-b">
-                            <img class="img-responsive" [src]="currentImageUrl">
-                          </div>
-                        </div>
-                        <div class="card-footer white no-b text-center">
-                          <button class="btn shadow teal lighten-1 text-white r-20" title="Ajouter un texte"
-                            (click)="toggleCurrentEditor()"><i [class]="iconEditor"></i>modifier</button>
-                          <button class="btn shadow teal lighten-1 text-white r-20" (click)="publish()"
-                            title="Ajouter un texte" id="publish" *ngIf="currentAdStatus==''"><i class="icon-send"
-                              ></i>Publier</button>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-
-
-
-
-                </div>
-              </div>
-              <div class="card no-b shadow" *ngIf="currentEditor">
-
-                <div class="card-header white text-center b-0"> <a
-                    class="btn-fab btn-fab-md shadow teal lighten-1 text-white" (click)="triggerImage()"
-                    title="Ajouter une image"><i class="icon-image"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
-                    title="Ajouter un texte"><i class="icon-title"></i></a>
-                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
-                      class="icon-circle-o"></i></a>
-
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('triangle');"><i
-                      class="icon-toggle-up"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('rectangle');"><i
-                      class="icon-border_horizontal"></i></a>
-
-
-                </div>
-                <div class="card-body white no-b">
-                  <div class="col" style="text-align: center;">
-                    <div style="display: inline-block">
-
-                      <button type="button" class="btn btn-warning r-20 blink" id="popper" data-toggle="control-sidebar"
-                        *ngIf="selected"
-                        style="float: left !important; height: 40px; margin-top: -35px; margin-left: -40px"><i
-                          class="icon-settings2"></i></button>
-
-                      <div class="canvas-container" (drop)="handleDropOnCanvas($event)"
-                        (dragover)="handleDragOverCanvas($event)">
-                        <canvas id="canvas"
-                          style="border-color: rgb(233, 216, 216); width: 250px !important; height: 250px !important; display: inline-block"></canvas>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-
-
-
-
-                </div>
-
-
-
-
-                <div class="card-footer border-0 white text-center">
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
-                    title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
-                    title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
-
-                  <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
-                      class="icon-clone"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
-                      class="icon-delete_forever"></i></a>
-
-                  <button class="btn btn-lg btn-block teal lighten-1 text-white" style="float: right"
-                    (click)=" handleModifiedImage()">
-                    <i class="icon-paper-plane"></i> Visualiser
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-          </ng-container>
-          <ng-container *ngIf="number_ads != 0 && list_ad;">
-
-
-            <div class="container-fluid text-center">
-              <br>
-              <h5 style="color: #4db6ac">Liste des annonces</h5>
-              <br>
-              <div class="card no-b shadow teal lighten-2">
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-
-                    <table class="table table-hover text-center">
-                      <tbody>
-                        <ng-container *ngIf="ads.toString().length > 0; else noAds">
-
-                          <tr class="no-b" *ngFor="let ad of ads | async">
-
-
-                            <td class="table-img">
-                              <img src="{{ad?.url_image}}" alt="">
-
-                            </td>
-                            <td>
-                              <small class="text-white">Annonce display</small>
-                              <h6 style="font-weight: bold" class="text-white">{{ ad?.ad_name }}</h6>
-                            </td>
-                            <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
-                            <td *ngIf="ad?.status=='ENABLED'" class="text-center">
-                              <small class="text-white">Etat de l'annonce</small>
-                              <h6 class="text-white">Activer</h6>
-
-                            </td>
-                            <td *ngIf="ad?.status=='PAUSED'" class="text-center">
-                              <small class="text-white">Etat de l'annonce</small>
-                              <h6 class="text-danger">Désactiver</h6>
-
-                            </td>
-                            <!-- <td>
-                                                 <div class="d-none d-lg-block">
-                                                 <span><i class="icon icon-data_usage"></i> Commence le {{ note?.startDateFrench }}</span><br>
-                                                 <span><i class="icon icon-timer"></i> Se termine le {{ note?.endDateFrench }}</span>
-                                                 </div>
-                                             </td> -->
-                            <td class="text-center">
-                              <div class="row text-center d-none">
-                                <small class="text-white" *ngIf="ad?.status==='PAUSED'">Activer/Supprimer</small>
-                                <small class="text-white" *ngIf="ad?.status==='ENABLED'">Désactiver/Supprimer</small>
-
-                              </div>
-                              <div class="row">
-                                <a class="text-danger" style="cursor: pointer" title="désactiver"
-                                  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
-                                  *ngIf="ad?.status==='ENABLED'">
-                                  <i class="icon-stop text-danger"></i>
-                                </a>
-                                <a class="text-white" title="activer" style="cursor: pointer"
-                                  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
-                                  *ngIf="ad?.status==='PAUSED'" title="">
-                                  <i class="icon-play text-white"></i>
-                                </a>
-                                <div style="cursor: pointer; margin-left: 5px">
-                                  <a class="text-danger" style="cursor: pointer; float: right"
-                                    (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)">
-                                    <i class="icon-close2 text-danger"></i>
-                                  </a>
-
-                                </div>
-                              </div>
-
-                            </td>
-                            <td>
-                              <a class="btn-fab btn-fab-sm green accent-3 shadow text-white" [id]="ad?.id"
-                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId)" style="float: right"><i
-                                  class="icon-settings2" ></i></a>
-                            </td>
-                            <hr>
-                          </tr>
-                        </ng-container>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </ng-container>
-          <ng-container *ngIf="number_ads==='0' && isEditor!==true">
-            <div class="container-fluid">
-              <div class="text-center p-5">
-                <i class="icon-note-important s-64 text-white"></i>
-                <h4 class="my-3">Aucune annonce trouvée</h4>
-                <p>Vous devez creer une nouvelle annonce pour commencer</p>
-                <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20" (click)='toggleEditor()'><i
-                    class="icon-plus-circle mr-2 "></i>Créer une annonce</button>
-              </div>
-            </div>
-          </ng-container>
 
 
 
@@ -1137,7 +2066,7 @@
         </div>
 
       </div>
-    </div>
+    </div> -->
   </div>
 
 
@@ -1281,7 +2210,7 @@
                     <div class="btn-group btn-group-justified" role="group" aria-small="...">
                       <div class="btn-group" role="group">
                         <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeWhite(url);">
-                          <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+                          <i class="fa fa-times" aria-d-none="true"></i> Remove</button>
                       </div>
                     </div>
                   </div>
@@ -1299,44 +2228,45 @@
 <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
 <div class="control-sidebar-bg shadow white fixed draggable" style="height: 300px; margin-top: 20% !important"></div>
-<div class="modal fade" id="modalViewInit" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+<div class="modal fade no-b" id="modalViewInit" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-d-none="true">
+  <div class="modal-dialog no-b" role="document">
+    <div class="modal-content no-b">
+      <div class="modal-header no-b">
         <h5 class="modal-title" id="exampleModalsmall">{{text_visualise}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-small="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-d-none="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="card">
-          <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg" style="width: 250px; height: 300px"
-            alt="card my-3 image cap" id="ad_image">
+      <div class="modal-body no-b">
+        <div class="card no-b shadow">
+          <img class="img-responsive" src="assets/img/demo/portfolio/p6.jpg" [ngStyle]="img_view_create_style"
+            alt="{{ad_name}}" id="ad_image">
 
-          <div class="card-footer">
-            <small class="text-muted">{{ad_name}}</small>
+          <div class="card-footer no-b">
+            <small class="text-muted">Nom: {{ad_name}}</small>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn teal lighten-1 text-white" (click)=" saveAdOnFirebase()">Sauvegarder</button>
+      <div class="modal-footer white no-b">
+        <button  *ngIf="!isRoller" type="button" class="btn btn-danger text-white" data-dismiss="modal">Fermer</button>
+        <button  *ngIf="!isRoller" type="button" class="btn teal darken-1 text-white" (click)=" saveAdOnFirebase()">Sauvegarder</button>
+          <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
     </div>
   </div>
 </div>
 <div class="modal fade" id="modalViewModified" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+  aria-d-none="true">
+  <div class="modal-dialog no-b" role="document">
+    <div class="modal-content no-b">
+      <div class="modal-header no-b">
         <h5 class="modal-title" id="exampleModalsmall">{{text_visualise}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-small="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-d-none="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body no-b">
         <div class="card white no-b shadow">
           <img class="card-img-top" src="assets/img/demo/portfolio/p6.jpg"
             alt="card my-3 image cap" id="ad_image_modified">
@@ -1358,13 +2288,13 @@
   </div>
 </div>
 <div class="modal fade" id="modalPayment" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
-  aria-hidden="true">
+  aria-d-none="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalsmall">Publier l'annonce</h5>
         <button type="button" class="close" data-dismiss="modal" aria-small="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-d-none="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
@@ -1393,13 +2323,13 @@
   id="button_modal_define_budget"></button>
 <!--/#app -->
 <div class="modal fade no-b" id="modalDefineBudget" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
-  aria-hidden="true">
+  aria-d-none="true">
   <div class="modal-dialog no-b" role="document">
     <div class="modal-content no-b">
       <div class="modal-header no-b">
         <h6 class="modal-title" id="exampleModalsmall">Définition du budget</h6>
         <button type="button" class="close" data-dismiss="modal" aria-small="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-d-none="true">&times;</span>
         </button>
       </div>
       <div class="modal-body no-b text-center">
@@ -1408,18 +2338,21 @@
                <div class="text-center" style="display: inline-block">
           <h6 class="my-3">{{accountValue}} CFA dans le compte</h6>
           <h6 class="my-3">Budget de la campagne: {{budget}} CFA </h6>
-          <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-          <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="budget==0">
+         <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
+            <i class="icon-payment text-white"></i> Placement depuis mon solde 
+          </a>
+            <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
           <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>
-          <a class="btn btn-lg btn-block btn-social btn-warning text-white r-20 blink"
-            style="width: 250px; font-size: 12px" (click)="saveImage()" *ngIf="budget!=0" id="finalButtonPublier">
-            <i class="icon-pay-point text-white"></i>Je suis prêt, publier l'annonce
+           <a class="btn btn-lg btn-block btn-social btn-warning blink text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="buildAd()" *ngIf="budget!=0">
+            <i class="icon-pay-point text-white"></i> Publier l'annonce
           </a>
         </div>
           </div>
@@ -1494,10 +2427,69 @@
                                 </div>
                <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
-                (click)="defineBudget()">Placer le budget</button>
+                (click)="defineBudget()" id="budgetSet">Placer le budget</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="CloseBudgetOperation()">Annuler</button>
+
+
+
+          </div>
+          
+
+        </div>
+                       <div class="form-row text-center" *ngIf="isAccountRechargement">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: Cette opération vous permettra dans la suite d'éviter les paiments pour démarrer une nouvelle campagne</small>
+            <input type="number" class="form-control" id="montant" (keyup)="handleIfValide()"
+              placeholder="Montant" min="10000" placeholder="Montant supérieur ou égal à 20 000 FCA" required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
+              FCA</small>
+              
+               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="CloseRechargeAccountOperation()">Annuler</button>
+
+                 <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+
+
+          </div>
+          
+
+        </div>
+
+         <div class="form-row text-center" *ngIf="isPlacementBudgetFromAccount">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: La valeur du budget doit être disponible dans votre compte et supérieur ou égale à 10 000 FCFA</small>
+            <input type="number" class="form-control" id="montant" (keyup)="handleIfBudgetToPlaceFromAccountIsValid()"
+              placeholder="Montant" placeholder="Montant supérieur ou égal à 10 000 FCA" required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none">La valeur du budget invalide</small>
+               <div class="d-flex justify-content-between align-items-center bg-grey shadow" *ngIf="budget_to_place!=0 && my_gain!=0">
+                                    <div><span class="text-white" style="font-size: 12px">Budget placé: {{budget_to_place}} CFA</span></div>
+                                    <div><span class="text-white" style="font-size: 12px">Frais de service: {{my_gain}} CFA</span></div>
+                                </div>
+                                <div class="text-center">
+                                
+                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
+                                  
+                                </div>
+               <button  *ngIf="!isRoller" type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineBudgetFromAccount()">Placer mon budget</button>
+                <button  *ngIf="!isRoller" type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)=" ClosePlaceBudgetFromAccountValue()">Annuler</button>
+                 <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 
 
 
@@ -1511,13 +2503,13 @@
 </div>
 </div>
 <div class="modal fade" id="modalRechargement" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
-  aria-hidden="true">
+  aria-d-none="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalsmall">Recharger mon compte pour mes campagnes</h5>
         <button type="button" class="close" data-dismiss="modal" aria-small="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-d-none="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">

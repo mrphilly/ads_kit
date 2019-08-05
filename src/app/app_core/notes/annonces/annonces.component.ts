@@ -3,15 +3,15 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import { s } from '@angular/core/src/render3';
-import {
-  ActivatedRoute
-} from '@angular/router';
 import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { s } from '@angular/core/src/render3';
+import {
+  ActivatedRoute
+} from '@angular/router';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -53,6 +53,9 @@ type FormErrors = { [u in AdsFields]: string };
 declare const fabric: any
 declare const pQuery: any
 declare const PayExpresse: any
+declare const require: any;
+
+
 const MONTH = [{
   "Jan": {
     "name": "January",
@@ -166,6 +169,21 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'maxlength': 'Url trop longue',
     },
   };
+  text_modify = "modifier"
+  upload_modified = false
+  init_choose_ad_size = false
+  modifyPublishAd=false
+  ad_type=""
+  is_upload_way = false
+  is_creative_way = false
+  img_view_create_style: Object = { 'width': '100px', 'height': '100px' }
+  canvas_style: Object = {'width': '', 'height': '', 'border-color': 'rgb(233, 216, 216); width: 300px !important; height: 250px !important; display: inline-block'}
+  chooseBlock = false
+  chooseAdSize = true
+  selectedWidth: any
+  selectedHeight: any
+  isUpload = false
+  handleCreateCanvas=false
   new_image_content: any;
   today: any;
   modifyDate = false
@@ -217,6 +235,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   internationals_websites = []
   ads_websites = []
   currentAdStatus: any
+  currentAdSize: any
+  currentAdType = ""
   apps = []
   ad_group_name: any;
   label_enabled = 'Actif'
@@ -228,12 +248,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   isAdBlock = false;
   currentAdName = "";
   currentFinalUrls = ""
+  tabCurrentFinalUrls = []
+  tabUpdatedCurrentFinalUrls = []
   currentImageUrl = ""
   number_ads: any
   number_of_impressions_simulated = 0
   isNull = true
   choose = true
-  directBudget=false
+  directBudget = false
+  placement: any;
+  isAccountRechargement = false
+  isPlacementBudgetFromAccount = false
   icon_toggle = 'icon-chevron-left'
   icon_toggle_options = 'icon-chevron-down'
   public isCollapsed = false;
@@ -307,6 +332,24 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   _init_ad_list = false
   currentEditor = false
   referenceId: any
+  element_checked = ""
+  illustration = false
+  illustrationUrl = ""
+  AD_TYPES_1 = [
+    { "name": "Medium Rectangle", "width": "300", "height": "250", "id": "MediumRectangle", "img": "https://dummyimage.com/300x250/000/fff" },
+    { "name": "Large Rectangle", "width": "336", "height": "280", "id": "LargeRectangle", "img": "https://dummyimage.com/336x280/000/fff" },
+    { "name": "Leaderboard", "width": "728", "height": "90", "id": "Leaderboard", "img": "https://dummyimage.com/728x90/000/fff" },
+    { "name": "Large Skyscraper", "width": "300", "height": "600", "id": "LargeSkyscraper", "img": "https://dummyimage.com/300x600/000/fff" },
+    {"name": "Large Leaderboard", "width": "970", "height": "90", "id": "LargerLeaderboard", "img": "https://dummyimage.com/970x90/000/fff"},
+    
+  ]
+  AD_TYPES_2 = [
+    { "name": "Banner", "width": "468", "height": "60", "id": "Banner", "img": "https://dummyimage.com/468x60/000/fff" },
+    {"name": "Skyscraper", "width": "120", "height": "600", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"},
+    { "name": "Wideskyscraper", "width": "160", "height": "600", "id": "Wideskyscraper", "img": "https://dummyimage.com/160x600/000/fff" },
+    { "name": "Square", "width": "250", "height": "250", "id": "Square", "img": "https://dummyimage.com/250x250/000/fff" },
+    {"name": "Smallsquare", "width": "200", "height": "200", "id": "Smallsquare", "img": "https://dummyimage.com/200x100/000/fff"}  
+  ]
   NATIONALS_WEBSITES = [
   [1,"infos","dakarbuzz.net","http://dakarbuzz.net"  ],
   [2,"infos","galsen221.com","http://galsen221.com"  ],
@@ -380,19 +423,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 ]
 
   model: any = {};
-   public barChartOptions = {
-    scaleShowVerticalLines: false,
-    responsive: true
-  };
-  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartType = 'bar';
-  public barChartLegend = true;
-  public barChartData = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'
-    },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series C' }
-  ];
+  
   public canvas: any;
  
 
@@ -526,7 +557,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     canva_state = false
 
   
-  handleCanvas() {
+  handleCanvas(width: number, height: number) {
   
  
     this.canvas = ""
@@ -534,7 +565,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             hoverCursor: 'pointer',
             selection: true,
             selectionBorderColor: 'blue',
-            preserveObjectStacking: true
+      preserveObjectStacking: true,
+        
         });
 
         this.loadPalette();
@@ -608,9 +640,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 this.resetPanels();
             }
         });
-
-        this.canvas.setWidth(this.size.width);
-    this.canvas.setHeight(this.size.height);
+    this.canvas_style['width']=width
+    this.canvas_style['height']=height
+    this.canvas.setWidth(width);
+    this.canvas.setHeight(height);
     this.canva_state = true
     console.log('handled')
     
@@ -622,10 +655,146 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
    
-    if (this.isEditor == true) {
+    var button = document.getElementById('v-pills-add-ad-tab')
+    var image = document.querySelector('.img-check')
+    this.isEditor = false
+    this.isAdBlock = false
+     button.addEventListener("click", () => {
       
+    $('#block').css("display", "none")
+
+      
+    }) 
+
+   
+  
+  }
+  
+  checkAdType(img, width, height, url) {
+    console.log('click on img')
+    console.log(img)
+    if (this.element_checked == "") {
+      $("#" + img).toggleClass('check')
+      this.element_checked = "#" + img
+      this.selectedWidth = width
+      this.selectedHeight = height
+      this.illustration = true
+      this.illustrationUrl = url
+      
+    } else {
+      this.illustration = false
+      $(this.element_checked).toggleClass('check')
+      $("#"+img).toggleClass('check')
+      this.element_checked = "#" + img
+      this.selectedWidth = width
+      this.selectedHeight = height
+      this.illustration = true
+      this.illustrationUrl = url
     }
+  }
+  public loadScript(src) {
+    var isFound = false;
+    var scripts = document.getElementsByTagName("script")
+    for (var i = 0; i < scripts.length; ++i) {
+      if (scripts[i].getAttribute('src') != null && scripts[i].getAttribute('src').includes("loader")) {
+        isFound = true;
+      }
+    }
+
+    if (!isFound) {
+      var dynamicScripts = [src];
+
+      for (var i = 0; i < dynamicScripts.length; i++) {
+        let node = document.createElement('script');
+        node.src = dynamicScripts[i];
+        node.type = 'text/javascript';
+        node.async = false;
+        node.charset = 'utf-8';
+        document.getElementsByTagName('body')[0].appendChild(node);
+      }
+
+    }
+  }
+  goBackSelectSize() {
+    this.chooseBlock = false
+    this.chooseAdSize = true
+   
+  }
+ async handleUploadBanner(){
+   this.chooseBlock = false
+   this.chooseAdSize = false
+  
+   this.is_upload_way = true
+   this.ad_type = "UPLOAD"
+   $("#block1").css("display", "block")
+   setTimeout(() => {
+      this.isUpload = true
+     
+   }, 2000)
+    
+    document.getElementById('block').style.display = "block"
+    
+    
+  }
+  goBackFromUpload() {
+    this.isUpload = false
+    this.is_upload_way = false
+    this.ad_type=""
+    $('#block1').css("display", "none")
+  this.chooseBlock = true
+  }
+
+  goBackFromCreatives() {
+  this.handleCreateCanvas = false
+    this.chooseBlock = true
+    this.ad_type = ""
+  }
+  
+  handleCreatives() {
+    var self = this
+    this.ad_type="CREATIVE"
+    this.chooseBlock = false
+      if (this.handleCreateCanvas == false) {
+      
+      this.handleCreateCanvas = true
+      if (this.canva_state == false) {
+        this.isCreating  =true
+        
+  
+  
+        setTimeout(function(){ 
+         
+          self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
+          self.isCreating = false
+         
+        }, 2000);
+      } else {
+        self.isCreating = true
+         setTimeout(function(){ 
+         
+         self.canvas.clear()
+         
+         }, 2000);
+        setTimeout(function(){ 
+         
+          self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
+         
+         self.isCreating=false
+        }, 2000);
+       
 }
+      
+    } else {
+      this.handleCreateCanvas = false
+      }
+  }
+
+  chooseAdType() {
+
+    this.chooseAdSize = false
+    this.chooseBlock = true
+ 
+  }
   ngOnInit() {
    
    
@@ -728,8 +897,42 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
               })
       }
 
+      if (typeof (params['money']) != "undefined" && typeof (params['id_ad_firebase']) != "undefined") {
+        this.isCreating = true
+        this.auth.user.forEach(data => {
+          this.auth.updateUser(data.uid, { account_value: params['money'] })
+          this.auth.getInfos(data.uid).subscribe(el => {
+            this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+              Swal.fire({
+                title: 'Service Rechargement!',
+                text: 'Compte mis à jour avec succès.',
+                type: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  this.isCreating = false
+                  setTimeout(() => {
+                    document.getElementById(params['id_ad_firebase']).click()
+                  },2000)
+                  window.history.pushState("", "", "/ads/" + params['name'] + "/" + params['idC'] + "/" + params['idA'] + "/" + params['ad_group_id'] + "/" + params['campaign_id'])
+                   setTimeout(() => {
+                    document.getElementById("publish").click()
+                  },2000)
+                  
+                }
+              })
+            })
       
-      })
+   
+          })
+        })
+      }
+    })
+    
+    
 
 
       // In a real app: dispatch action to load the details here.
@@ -739,6 +942,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.genres = res['sexes']
       this.populations = res['ages']
       this.appareils = res['devices']
+      this.placement=res['placement']
       console.log('populations')
       /* console.log(this.genres) */
       console.log(this.populations)
@@ -946,9 +1150,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       }
 
     })
-   
-  
-   this.buildForm()
+
+    setTimeout(() => {
+      
+      $("#block1").css("display", "none")
+    }, 2000)
+
+
  
 
   }
@@ -1087,6 +1295,7 @@ $('#popper').trigger('click')
     this.list_ad = true
     this.currentEditor = false
     this.isAdBlock = false
+     $("#blockUploadModified").css({'display': 'none'})
    
    /*  if (this.list_ad == true) {
       this.list_ad = false
@@ -1123,7 +1332,7 @@ $('#popper').trigger('click')
   
         setTimeout(function(){ 
          
-          self.handleCanvas()
+          self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
           self.isCreating = false
          
         }, 2000);
@@ -1136,7 +1345,7 @@ $('#popper').trigger('click')
          }, 2000);
         setTimeout(function(){ 
          
-         self.handleCanvas()
+         self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
          self.isCreating=false
         }, 2000);
        
@@ -1183,6 +1392,48 @@ $('#popper').trigger('click')
       })
 
     }
+  }
+  
+  removePlacement(name: any, criterion_id: any) {
+    Swal.fire({
+        title: 'Emplacement',
+        text: "Vous allez supprimer l'emplacement "+name+" ?",
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, Supprimer'
+      }).then((result) => {
+        if (result.value) {
+          this.isCreating = true
+          this.adGroupService.removePlacement(this.idA, this.campagne_id, this.ad_group_id, criterion_id).then(res => {
+            if (res != "error") {
+              Swal.fire({
+        title: 'Emplacement',
+        text: 'Emplacement suprimé avec succès',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {
+          this.isCreating = false
+        } else {
+          this.isCreating = false
+        }
+
+      })
+            } else {
+              this.isCreating = false
+            }
+          })
+          
+        } else {
+          this.isCreating = false
+        }
+
+      })
   }
 
   targetPlacement() {
@@ -1253,7 +1504,13 @@ $('#popper').trigger('click')
     this.isCiblageDevices = false
   }
   closeAddPlacement() {
-  this.isPlacement = false
+  if(this.isPlacement == false){
+      this.isPlacement = true
+
+    }else{
+      this.isPlacement = false
+
+    }
 }
 
   openAddCiblageAge() {
@@ -1539,7 +1796,10 @@ $('#popper').trigger('click')
     console.log(this.canvas.toDataURL('png'))
     this.getWebsites().then(res => { 
       if (res != 'error') {
+      
+       
         $('#button_modal_init').trigger('click')
+        
         $('#ad_image').attr("src", this.canvas.toDataURL('png'))
         this.ad_name = $("#ad_name").val()
         
@@ -1548,9 +1808,45 @@ $('#popper').trigger('click')
       }
     })
   }
+   handleImageUploadModal() {
+    this.getWebsites().then(res => { 
+      if (res != 'error') {
+       
+        var image = document.querySelector('.dz-image').getElementsByTagName('img')
+        console.log(image)
+        if (image[0].naturalWidth != parseInt(this.selectedWidth) || image[0].naturalHeight != parseInt(this.selectedHeight)) {
+          Swal.fire({
+                 title: "Service Groupe d'annonce!",
+                 text: 'Image invalide',
+                 type: 'error',
+                 showCancelButton: false,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'Ok'
+               }).then((result) => {
+                 if (result.value) {
+                 
+                 }else{
+                 
+                 }
+               })
+        } else {
+        this.img_view_create_style['width']=this.selectedWidth+'px'
+        this.img_view_create_style['height']=this.selectedHeight+'px'
+           $('#button_modal_init').trigger('click')
+          $('#ad_image').attr("src", $('.dz-image').find('img').attr("src"))
+          this.ad_name = $("#ad_name").val()
+        }
+        
+      } else{
+
+      }
+    })
+  }
 
   handleModifiedImage() {
-     this.new_image_content = ""
+    if (this.currentAdType === 'CREATIVE') {
+   this.new_image_content = ""
      this.new_image_content = JSON.stringify(this.canvas)
     console.log(this.canvas.toDataURL('png'))
     this.getWebsites().then(res => { 
@@ -1563,6 +1859,43 @@ $('#popper').trigger('click')
 
       }
     })
+    } else {
+        this.getWebsites().then(res => { 
+      if (res != 'error') {
+       
+        var image = document.querySelector('.dz-image').getElementsByTagName('img')
+        console.log(image)
+        if (image[0].naturalWidth != parseInt(this.currentAdSize[0]['width']) || image[0].naturalHeight != parseInt(this.currentAdSize[0]['height'])) {
+          Swal.fire({
+                 title: "Service Groupe d'annonce!",
+                 text: 'Image invalide',
+                 type: 'error',
+                 showCancelButton: false,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'Ok'
+               }).then((result) => {
+                 if (result.value) {
+                 
+                 }else{
+                 
+                 }
+               })
+        } else {
+        this.img_view_create_style['width']=this.selectedWidth+'px'
+        this.img_view_create_style['height']=this.selectedHeight+'px'
+           $('#button_modal_modified').trigger('click')
+          $('#ad_image_modified').attr("src", $('.dz-image').find('img').attr("src"))
+          $("#modified_name").text($("#ad_name").val())
+        }
+        
+      } else{
+
+      }
+    })
+}
+
+    
   }
   
 
@@ -1570,9 +1903,15 @@ $('#popper').trigger('click')
 
 
   saveAdOnFirebase() {
+    this.isRoller = true
+
+
+
     this.getWebsites().then(res => {
       console.log(res)
       if (res != 'error') {
+        var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
+        
          var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
     this.ad_name=$('#ad_name').val()
@@ -1589,11 +1928,31 @@ $('#popper').trigger('click')
       var self = this
       this.ad_name = $("#ad_name").val()
       var image_name = this.ad_name +  new Date().getTime().toString()
-      //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
-      //console.log(this.canvas.toDataURL('png'))
-      this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
-      //console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
-      imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+      if (this.is_upload_way === true) {
+        imagesRef.putString($("#ad_image").attr('src').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+       console.log('ok')
+      
+       storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+   xhr.responseType = 'blob';
+   xhr.onload = function(event) {
+     var blob = xhr.response;
+   };
+   xhr.open('GET', url);
+         xhr.send();
+       
+         const image_content = "";
+         console.log(self.FINAL_ARRAY_TO_SEND)
+        self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
+          console.log('success')
+          console.log(res)
+          self.isRoller = false
+        })
+     })
+       
+     }); 
+      } else {
+        imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
        console.log('ok')
       
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
@@ -1607,13 +1966,31 @@ $('#popper').trigger('click')
        
          const image_content = JSON.stringify(self.canvas);
          console.log(self.FINAL_ARRAY_TO_SEND)
-        self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND).then(res => {
+        self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
           console.log('success')
           console.log(res)
+          self.isRoller = false
+           this.ads = this.adsService.getListAd(this.ad_group_id)
+    this.ads.forEach(child => {
+
+      if (child.length > 0) {
+        this.number_ads = child.length
+        this.isNull = true
+      } else {
+        this.list_ad = false
+        this._init_ad = true
+        this.number_ads = "0"
+        this.isNull = false
+      }
+
+    })
         })
      })
        
      }); 
+      }
+
+      
       
        
      
@@ -1625,7 +2002,158 @@ $('#popper').trigger('click')
     })
   }
 
+defineBudgetFromAccount() {
+    var montant = parseInt($("#montant").val())
+    var newAccountValue = this.accountValue - montant
+    if (montant > this.accountValue || montant < 10000) {
+      $('#error_recharge').show()
+    } else if (montant == null) {
+      $('#error_recharge').show()
+       
+    } else {
+      this.isRoller = true
+      this.isPlacementBudgetFromAccount = false
+      this.montant = montant
+         this.http.post('http://127.0.0.1:5000/setBudgetFromAccount', {
+      'budgetId': this.budgetId,
+           'amount': this.budget_to_place,
+      'dure': this.dure_campagne,
+    })
+      .subscribe(
+        res => {
+          console.log(res)
+           this.notesService.updateNote(this.idC, { budget: this.budget_to_place , dailyBudget: res[0]['dailyBudget']}).then(() => {
+             this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
+               
+               Swal.fire({
+                 title: 'Service Campagne!',
+                 text: 'Budget mis à jour.',
+                 type: 'success',
+                 showCancelButton: false,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'Ok'
+               }).then((result) => {
+                 if (result.value) {
+                  this.isRoller = false
+                 }else{
+                   this.isRoller = false
+                 }
+               })
+             })
+                
+              })
+          
+          
+        },
+        err => {
+          Swal.fire({
+      title: 'Service Campagne!',
+      text: 'Erreur.',
+      type: 'error',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.value) {}
+    })
+        }
+      );
+    }
+  }
+  
+  defineAmountAccountBeforeBudget() {
+     $('#button_modal_define_budget').trigger('click')
+    var self = this
+    this.montant = $("#montant").val()
+    if (this.montant < 20000) {
+      $('#error_recharge').show()
+    } else {
+      
+      $('#closeModalRecharge').trigger('click')
+      var self = this
+      this.isCreating = true
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: 'http://127.0.0.1:5000/rechargeAmountBeforeBudgetFromAd/'+ self.ad_group_name+ "/"+self.idC+"/"+self.idA+"/"+self.ad_group_id+"/"+self.campagne_id+"/"+self.montant+"/"+self.id_ad_firebase,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+              self.isCreating = false
+              if (is_completed === true) {
+                  alert(success_url)
+                
+                  //window.location.href = success_url; 
+                } else {
+                  self.isCreating = false
+                    //window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
 
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                console.log('non success response ', jsonResponse);
+                alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+          
+        });
+    }, 500)
+
+      
+      
+      
+    }
+  }
   updateAdOnFirebase() {
 
     if (this.currentAdStatus == "") {
@@ -1738,21 +2266,21 @@ $('#popper').trigger('click')
 
 
       
-      var name = $('#ad_name').val()
+      var name = $('#ad_name_modify').val()
       var data_to_send = []
       this.getModifiedWebsites().then(res => {
         console.log(res)
         if (res != "error") {
-          console.log(this.compareObjectsUrls(this.newfinalUrls, this.finalUrls))
+          console.log(this.compareObjectsUrls(this.tabUpdatedCurrentFinalUrls, this.finalUrls))
           
-          console.log(this.newfinalUrls)
+          console.log(this.tabUpdatedCurrentFinalUrls)
           console.log(this.finalUrls)
-          var previous_content = JSON.parse(this.image_content)
-      var update_content = JSON.parse(this.new_image_content)
+          //var previous_content = JSON.parse(this.image_content)
+      //var update_content = JSON.parse(this.new_image_content)
   
-      var comparaison_content = this.compareObjects(update_content, previous_content)
+      //var comparaison_content = this.compareObjects(update_content, previous_content)
       var comparaison_url =  this.compareObjectsUrls(this.newfinalUrls, this.finalUrls)
-          if (comparaison_content === true && comparaison_url === true && name === this.ad_name) {
+          if (comparaison_url === true && name === this.ad_name) {
             Swal.fire({
               title: 'Modification annonce',
               text: "Aucun changement n'a été détecté",
@@ -1767,10 +2295,10 @@ $('#popper').trigger('click')
           
               }
             })
-          } else if (comparaison_content === false && comparaison_url === true && name === this.ad_name) {
+          } else if (comparaison_url === false && name === this.ad_name) {
             Swal.fire({
               title: 'Modification annonce',
-              text: "Seul l'image sera modifiée",
+              text: "Seul les urls de destination seront modifiées",
               type: 'warning',
               showCancelButton: true,
               confirmButtonColor: '#26a69a',
@@ -1779,194 +2307,73 @@ $('#popper').trigger('click')
             }).then((result) => {
               if (result.value) {
                 this.isRoller = true
-                this.uploadFileOnFirebase(name).then(res => {
-                  if (res != "error") {
-                       data_to_send.push({
-                   
-                  "fieldFirebase": "url_image",
-                  "fieldAdwords": "image",
-                   "content": this.currentImageUrl,
-                         "img_last_name": this.ad_name,
-                         "last_final_urls": this.finalUrls,
-                         "referenceId": this.referenceId,
-                   "status": this.status
-                   
-                       })
-                     data_to_send.push({
-                   
-                  "fieldFirebase": "image_content",
-                  "fieldAdwords": "",
-                   "content": this.new_image_content
-                   
-                       })
-                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
-                  if (res == "ok") {
-                    this.isRoller = false
-                     Swal.fire({
-              title: 'Modification annonce',
-              text: "Annonce modifiée avec succès !",
-              type: 'success',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-          
-          
-              }
-            })
-                  }
-                }).catch(err => {
-                  this.isRoller = false
-                })
-                  } else {
-                    this.isRoller = false
-                  }
-                })
-             
-                
-              } else {
-                this.isRoller = false
-              }
-            })
-          } else if (comparaison_content === false && comparaison_url === false && name === this.ad_name) {
-            Swal.fire({
-              title: 'Modification annonce',
-              text: "Seul l'image et les urls de destination seront modifiées",
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-                this.isRoller = true
-                this.uploadFileOnFirebase(name).then(res => {
-                  if (res != "error") {
-                       data_to_send.push({
-                   
-                  "fieldFirebase": "url_image",
-                  "fieldAdwords": "image",
-                         "content": this.currentImageUrl,
-                         "img_last_name": this.ad_name,
-                         "referenceId": this.referenceId,
-                         "last_final_urls": this.finalUrls,
-                   "status": this.status
-                   
-                       })
-                     data_to_send.push({
-                   
-                  "fieldFirebase": "image_content",
-                  "fieldAdwords": "",
-                   "content": this.new_image_content
-                   
-                       })
-                    data_to_send.push({
+                data_to_send.push({
+                  "field": "finalUrls",
                   "fieldFirebase": "finalUrls",
-                  "fieldAdwords": "finalUrls",
-                   "content": this.newfinalUrls 
-                    })
-                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
-                  if (res == "ok") {
-                    this.isRoller = false
+                  "content": this.newfinalUrls,
+                }, {
+                  "field": "name",
+                  "fieldFirebase": "ad_name",
+                  "content": this.currentAdName
+                }
+                
+                )
+
+                this.removeAdBeforeUpdate(this.id_ad_firebase, this.ad_group_id, this.ad_id).then(res=>{
+                  if (res != "error") {
+                    
+                    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.currentAdName, this.currentImageUrl, this.tabUpdatedCurrentFinalUrls, [], [], this.currentAdSize).then(res => {
+                           if (res != "error") {
                      Swal.fire({
               title: 'Modification annonce',
-              text: "Annonce modifiée avec succès !",
+              text: "Annonce modifiée avec succès",
               type: 'success',
-              showCancelButton: true,
+              showCancelButton: false,
               confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-          
-          
-              }
-            })
-                  }
-                }).catch(err=>{
-                  this.isRoller = false
-                })
-                  }else{
-                    this.isRoller = false
-                  }
-                })
-             
-                
-              } else {
-                this.isRoller =false
-              }
-            })
-          } else if (comparaison_content === false && comparaison_url === true && name !== this.ad_name) {
-            Swal.fire({
-              title: 'Modification annonce',
-              text: "Seul l'image et le nom de l'annonce seront modifiés",
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
+              confirmButtonText: 'Ok'
             }).then((result) => {
                 if (result.value) {
-                this.isRoller = true
-                this.uploadFileOnFirebase(name).then(res => {
-                  if (res != "error") {
-                       data_to_send.push({
-                   
-                  "fieldFirebase": "url_image",
-                  "fieldAdwords": "image",
-                         "content": this.currentImageUrl,
-                         "img_last_name": this.ad_name,
-                         "referenceId": this.referenceId,
-                         "last_final_urls": this.finalUrls,
-                   "status": this.status
-                   
-                       })
-                     data_to_send.push({
-                   
-                  "fieldFirebase": "image_content",
-                  "fieldAdwords": "",
-                   "content": this.new_image_content
-                   
-                       })
-                    data_to_send.push({
-                  "fieldFirebase": "ad_name",
-                  "fieldAdwords": "name",
-                   "content": name 
-                    })
-                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
-                  if (res == "ok") {
-                    this.isRoller = false
-                     Swal.fire({
-              title: 'Modification annonce',
-              text: "Annonce modifiée avec succès !",
-              type: 'success',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-                
-          
-              }
-            })
-                  }
-                }).catch(err => {
-                  this.isRoller = false
-                })
-                  } else {
-                    this.isRoller = false
-                  }
-                })
+                this.isRoller = false
+         
              
                 
                 } else {
                   this.isRoller = false
               }
             })
-          } else if (comparaison_content === true && comparaison_url === true && name !== this.ad_name) {
+                  } else {
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Erreur service",
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'réessayer'
+            }).then((result) => {
+                if (result.value) {
+                this.isRoller = false
+         
+             
+                
+                } else {
+                  this.isRoller = false
+              }
+            })
+                  }
+                    })
+                  }
+                })
+
+                
+             
+                
+              } else {
+                this.isRoller =false
+              }
+            })
+          } else if (comparaison_url === true && name !== this.ad_name) {
             Swal.fire({
               title: 'Modification annonce',
               text: "Seul le nom de l'annonce sera modifié",
@@ -1976,148 +2383,74 @@ $('#popper').trigger('click')
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok, Modifier'
             }).then((result) => {
-              if (result.value) {
-                              if (result.value) {
+                if (result.value) {
                 this.isRoller = true
-                        data_to_send.push({
-                   
-                  "fieldFirebase": "ad_name",
-                  "fieldAdwords": "name",
-                   "content": name 
-                   
+                  data_to_send.push({
+                    "field": "name",
+                    "fieldFirebase": "ad_name",
+                   "content": name
+                 }, {
+                      "field": "finalUrls",
+                   "fieldFirebase": "finalUrls",
+                  "content": this.finalUrls
                 })
-                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
-                  if (res == "ok") {
-                    this.isRoller = false
+               
+                this.removeAdBeforeUpdate(this.id_ad_firebase, this.ad_group_id, this.ad_id).then(res=>{
+                  if (res != "error") {
+                    
+                    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, name, this.currentImageUrl, this.finalUrls, [], [], this.currentAdSize).then(res => {
+                           if (res != "error") {
                      Swal.fire({
               title: 'Modification annonce',
-              text: "Annonce modifiée avec succès !",
+              text: "Annonce modifiée avec succès",
               type: 'success',
-              showCancelButton: true,
+              showCancelButton: false,
               confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
+              confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) {
-          
-          
+                if (result.value) {
+                this.isRoller = false
+         
+             
+                
+                } else {
+                  this.isRoller = false
+              }
+            })
+                  } else {
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Erreur service",
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'réessayer'
+            }).then((result) => {
+                if (result.value) {
+                this.isRoller = false
+         
+             
+                
+                } else {
+                  this.isRoller = false
               }
             })
                   }
-                }).catch(err=>{
-                  this.isRoller =false
+                    })
+                  }
                 })
              
                 
-              }else{
-                this.isRoller =false
-              }
-          
-              }else{
-                this.isRoller =false
+                } else {
+                  this.isRoller = false
               }
             })
-          } else if (comparaison_content === true && comparaison_url === false && name === this.ad_name) {
-            Swal.fire({
-              title: 'Modification annonce',
-              text: "Seul les urls de destinations seront modifiées",
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-                          data_to_send.push({
-                   
-                  "fieldFirebase": "finalUrls",
-                  "fieldAdwords": "finalUrls",
-                   "content": this.newfinalUrls 
-                   
-                })
-                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
-                  if (res == "ok") {
-                    this.isRoller = false
-                     Swal.fire({
-              title: 'Modification annonce',
-              text: "Annonce modifiée avec succès !",
-              type: 'success',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-          
-          
-              }
-            })
-                  }else{
-                this.isRoller =false
-              }
-                }).catch(res => {
-                  this.isRoller =false
-                })
-          
-              }else{
-                this.isRoller =false
-              }
-            })
-          } else if (comparaison_content === true && comparaison_url === false && name !== this.ad_name) { 
-             Swal.fire({
-              title: 'Modification annonce',
-              text: "Seul le nom de l'annonce et les urls de destinations seront modifiées",
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-                           data_to_send.push({
-                   
-                  "fieldFirebase": "ad_name",
-                  "fieldAdwords": "name",
-                   "content": name 
-                   
-                       })
-                    data_to_send.push({
-                  "fieldFirebase": "finalUrls",
-                  "fieldAdwords": "finalUrls",
-                   "content": this.newfinalUrls
-                    })
-                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
-                  if (res == "ok") {
-                    this.isRoller = false
-                     Swal.fire({
-              title: 'Modification annonce',
-              text: "Annonce modifiée avec succès !",
-              type: 'success',
-              showCancelButton: true,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
-            }).then((result) => {
-              if (result.value) {
-          
-          
-              }
-            })
-                  }else{
-                this.isRoller =false
-              }
-                }).catch(res=>{
-                  this.isRoller =false
-                })
-          
-              }else{
-                this.isRoller =false
-              }
-            })
-          }else{
+          } else{
          Swal.fire({
               title: 'Modification annonce',
-              text: "L'image, le nom ainsi que les urls de redirections de l'annonce seront modifés !",
+              text: "Le nom ainsi que les urls de redirections de l'annonce seront modifés !",
               type: 'warning',
               showCancelButton: true,
               confirmButtonColor: '#26a69a',
@@ -2126,62 +2459,64 @@ $('#popper').trigger('click')
             }).then((result) => {
                   if (result.value) {
                 this.isRoller = true
-                this.uploadFileOnFirebase(name).then(res => {
+                    data_to_send.push(
+                      {
+                        "field": "name",
+                        "fieldFirebase": "ad_name",
+                      "content": name
+                    },
+                    {
+                      "field": "finalUrls",
+                      "fieldFirebase": "finalUrls",
+                      "content": this.newfinalUrls
+                    
+                      })
+
+                this.removeAdBeforeUpdate(this.id_ad_firebase, this.ad_group_id, this.ad_id).then(res=>{
                   if (res != "error") {
-                       data_to_send.push({
-                   
-                  "fieldFirebase": "url_image",
-                  "fieldAdwords": "image",
-                         "content": this.currentImageUrl,
-                         "img_last_name": this.ad_name,
-                         "referenceId": this.referenceId,
-                         "last_final_urls": this.finalUrls,
-                   "status": this.status
-                   
-                       })
-                     data_to_send.push({
-                   
-                  "fieldFirebase": "image_content",
-                  "fieldAdwords": "",
-                   "content": this.new_image_content
-                   
-                       })
-                    data_to_send.push({
-                  "fieldFirebase": "ad_name",
-                  "fieldAdwords": "name",
-                   "content": name 
-                    })
-                      data_to_send.push({
-                  "fieldFirebase": "finalUrls",
-                  "fieldAdwords": "finalUrls",
-                   "content": this.newfinalUrls 
-                    })
-                this.adsService.UpdateAdModified(this.id_ad_firebase, this.ad_id, this.ad_group_id, data_to_send).then(res => {
-                  if (res == "ok") {
-                    this.isRoller = false
+                    
+                    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, name, this.currentImageUrl, this.tabUpdatedCurrentFinalUrls, [], [], this.currentAdSize).then(res => {
+                           if (res != "error") {
                      Swal.fire({
               title: 'Modification annonce',
-              text: "Annonce modifiée avec succès !",
+              text: "Annonce modifiée avec succès",
               type: 'success',
-              showCancelButton: true,
+              showCancelButton: false,
               confirmButtonColor: '#26a69a',
               cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok, Modifier'
+              confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) {
-          
-          
+                if (result.value) {
+                this.isRoller = false
+         
+             
+                
+                } else {
+                  this.isRoller = false
               }
             })
-                  }else{
-                this.isRoller =false
+                  } else {
+                     Swal.fire({
+              title: 'Modification annonce',
+              text: "Erreur service",
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'réessayer'
+            }).then((result) => {
+                if (result.value) {
+                this.isRoller = false
+         
+             
+                
+                } else {
+                  this.isRoller = false
               }
-                }).catch(err => {
-                  this.isRoller = false 
-                })
-                  }else{
-                this.isRoller =false
-              }
+            })
+                  }
+                    })
+                  }
                 })
              
                 
@@ -2195,26 +2530,7 @@ $('#popper').trigger('click')
       
        
       
-      /* if (previous_content.length === update_content.length) {
-        for (let i = 0; i < previous_content.length; i++){
-          if (previous_content[i] === update_content[i]) {
-            console.log(`avant ${previous_content[i]}`)
-            console.log(previous_content[i])
-            console.log(`après ${update_content[i]}`)
-            console.log(update_content[i])
-            console.log('longueurs égales mais aucun changement détecté')
-          } else {
-             console.log(`avant ${previous_content[i]}`)
-            console.log(previous_content[i])
-            console.log(`après ${update_content[i]}`)
-            console.log(update_content[i])
-            console.log('longueurs égales mais aucun changement détecté')
-          }
-        }
-      } else {
-        console.log('longueurs inégales')
-      } */
-      
+     
     }
      
   }
@@ -2484,12 +2800,17 @@ $('#popper').trigger('click')
 
   } */
 
-  saveImage() {
+  buildAd() {
     this.isRoller = true
-   this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls).then(res => {
+   this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls, this.currentAdSize).then(res => {
         console.log('success')
      console.log(res)
-     this.isRoller = false
+     if (res != "error") {
+       this.isRoller = false
+       
+     } else {
+       this.isRoller = false
+     }
       })
     
     
@@ -2507,6 +2828,7 @@ $('#popper').trigger('click')
     return new Promise(resolve => {
        var urls_destination = []
       var urls = $('#finalUrls').val()
+      alert('urls')
       if (urls !== '') {
             if (urls.includes(',')) {
       var tab = urls.toString().split(',')
@@ -2576,11 +2898,16 @@ $('#popper').trigger('click')
     
     return new Promise(resolve => {
        var urls_destination = []
-      var urls = $('#finalUrls').val()
+      var urls = $('#finalUrlsmodify').val()
+      alert(urls)
       if (urls !== '') {
             if (urls.includes(',')) {
       var tab = urls.toString().split(',')
-      tab.pop()
+      1003
+
+if(tab[tab.length-1] == ''){
+ tab.pop()
+}
     
       for (let i = 0; i < tab.length; i++) {
         
@@ -2591,6 +2918,7 @@ $('#popper').trigger('click')
           console.log(tab[i] + ' est valide')
           var url = this.setHttp(tab[i])
           urls_destination.push(url)
+          this.tabUpdatedCurrentFinalUrls.push(url)
            this.newfinalUrls = urls_destination
           this.FINAL_ARRAY_TO_SEND.push({
           "lib": "finalUrls",
@@ -2615,6 +2943,7 @@ $('#popper').trigger('click')
           var url = this.setHttp(urls)
         urls_destination.push(url)
         this.newfinalUrls = urls_destination
+         this.tabUpdatedCurrentFinalUrls.push(url)
          this.FINAL_ARRAY_TO_SEND.push({
           "lib": "finalUrls",
           "content": urls_destination
@@ -2644,46 +2973,7 @@ $('#popper').trigger('click')
   }
   
  
-  
-  /* checkIfIsEmptyNationals(array): Promise<any> {
-    return new Promise(resolve => {
-      if (array.length != 0) {
-          resolve(this.FINAL_ARRAY)
-      } else {
-        resolve('error')
-      }
-      
-    })
-  }
-    checkIfIsEmptyInternationals(array) {
-    if (array.length != 0) {
-      this.FINAL_ARRAY_TO_SEND.push({
-        "lib": "Sites Internationaux",
-        "content": array
-        })
-    }
-    return this.FINAL_ARRAY_TO_SEND
-    }
-  
-    checkIfIsEmptyAdsWebsites(array) {
-    if (array.length != 0) {
-      this.FINAL_ARRAY_TO_SEND.push({
-        "lib": "Site d'annonces",
-        "content": array
-        })
-    }
-    return this.FINAL_ARRAY_TO_SEND
-    }
-  
-    checkIfIsEmptyMobileApps(array) {
-    if (array.length != 0) {
-      this.FINAL_ARRAY_TO_SEND.push({
-        "lib": "Application Mobiles",
-        "content": array
-        })
-    }
-    return this.FINAL_ARRAY_TO_SEND
-  } */
+
 
   
   getWebsites(): Promise<any> {
@@ -2944,6 +3234,37 @@ $('#popper').trigger('click')
       }
     })
   }
+  toggleCurrentUploadBlock() {
+
+    if (this.currentAdStatus.toString === '') {
+      
+      if ($("#blockUploadModified").css('display') === 'none') {
+         
+        $("#blockUploadModified").css({ 'display': 'block' })
+        this.iconEditor = "icon-chevron-up"
+        this.text_modify = "Annuler la modification"
+        
+      } else {
+        $("#blockUploadModified").css({ 'display': 'none' })
+        this.iconEditor = "icon-chevron-down"
+        this.text_modify = "modifier"
+      }
+    } else {
+      if (this.modifyPublishAd===false) {
+         
+      this.modifyPublishAd=true
+        this.iconEditor = "icon-chevron-up"
+        this.text_modify = "Annuler la modification"
+        
+      } else {
+         this.modifyPublishAd=true
+        this.iconEditor = "icon-chevron-down"
+        this.text_modify = "modifier"
+      }
+      
+    }
+    
+  }
   
   async toggleCurrentEditor() {
     var self = this
@@ -2965,7 +3286,7 @@ $('#popper').trigger('click')
        self.isCreating= true
        setTimeout(function(){ 
        
-       self.handleCanvas()
+       self.handleCanvas(parseInt(self.currentAdSize[0]['width']), parseInt(self.currentAdSize[0]['height']))
        
        }, 2000);
         setTimeout(function(){ 
@@ -2980,7 +3301,7 @@ $('#popper').trigger('click')
         }, 2000);
        setTimeout(function(){ 
          
-         self.handleCanvas()
+         self.handleCanvas(parseInt(self.currentAdSize[0]['width']), parseInt(self.currentAdSize[0]['height']))
          
        }, 2000);
        setTimeout(function(){ 
@@ -3923,6 +4244,24 @@ $('#popper').trigger('click')
     })
   }
 
+  removeAdFirebase(id: string){
+      Swal.fire({
+      title: "Service annonce",
+      text: "Voulez vous supprimer cette annonce ?",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#26a69a',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer!'
+    }).then((result) => {
+      if (result.value) {
+        this.isCreating = true
+        this.adsService.deleteAd(id).then(res => {
+          this.isCreating = false
+        })
+      }
+    })
+  }
 
   removeAd(id: string, adgroup_id: string, ad_id: string) {
     Swal.fire({
@@ -3978,7 +4317,31 @@ $('#popper').trigger('click')
     })
   }
 
-  goAdSettings(id_ad_firebase: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, finalAppUrls: any, finalMobileUrls:any,  image_content: any, referenceId: any) {
+
+  removeAdBeforeUpdate(id: string, adgroup_id: string, ad_id: string): Promise<any> {
+    return new Promise(resolve => {
+      this.http.post('http://127.0.0.1:5000/removeAd', {
+        'ad_group_id': adgroup_id,
+        'ad_id': ad_id
+
+      })
+
+        .subscribe(
+          res => {
+            console.log(res)
+            if (res[0]['status'] == "ok") {
+              
+              resolve('ok')
+            }
+          }
+            )
+              
+        
+   
+    })
+  }
+
+  goAdSettings(id_ad_firebase: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, finalAppUrls: any, finalMobileUrls:any,  image_content: any, referenceId: any, size: any, ad_type: any) {
 
     this.isAdBlock = true
     this.isEditor = false
@@ -3997,8 +4360,10 @@ $('#popper').trigger('click')
     this.ad_name = ad_name
     this.finalMobileUrls = finalMobileUrls
     this.referenceId = referenceId
+    this.currentAdSize = size
+    this.currentAdType = ad_type
     
-    /* this.handleCurrentCanvas() */
+   
     
     this.iconEditor = "icon-chevron-down"
     console.log(finalUrls.length)
@@ -4006,32 +4371,18 @@ $('#popper').trigger('click')
       this.currentFinalUrls = ""
     } else if(finalUrls.length == 1) {
       this.currentFinalUrls = finalUrls[0].toString() + ","
+      
     } else{
        for (let i = 0; i < finalUrls.length - 1; i++) {
-     
+         
         console.log(finalUrls)
         console.log(finalUrls[i])
         this.currentFinalUrls += finalUrls[i].toString() + ","
       
       }
     }
-   /*  for (let i = 0; i < finalUrls.length - 1; i++) {
-      if (finalUrls.length > 1) {
-        console.log(finalUrls)
-        console.log(finalUrls[i])
-        this.currentFinalUrls += finalUrls[i].toString() + ","
-      
-      }
-      else if(finalUrls.length === 1) {
-        
-        this.currentFinalUrls = finalUrls[i]
+    
 
-      } else {
-        this.currentFinalUrls = ""
-      }
-
-     
-    } */
   }
 
   publish() {
@@ -4045,7 +4396,7 @@ if (this.budget === 0) {
           showCancelButton: true,
           confirmButtonColor: '#26a69a',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Définir ici mon On '
+          confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
             jQuery('#button_modal_define_budget').trigger('click')
@@ -4154,9 +4505,10 @@ if (this.budget === 0) {
    
       
       $('#button_modal_define_budget').trigger('click')
-      var self = this
+      var self = this 
     this.isCreating = true
-    
+    var url = 'http://127.0.0.1:5000/payBudget/' + self.montant + "/" + self.budget_to_place + "/" + self.budgetId + "/" + self.idC + "/" + self.dure_campagne + "/" + self.ad_group_name + "/" + self.idA + "/" + self.ad_group_id + "/" + self.campagne_id + "/" + self.id_ad_firebase
+    alert(url)
       setTimeout(function () {
     
         var btn = document.getElementById("budgetSet");
@@ -4164,7 +4516,7 @@ if (this.budget === 0) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: 'http://127.0.0.1:5000/payBudget/'+ self.montant+"/"+self.budget_to_place+"/"+self.budgetId+"/"+self.idC+"/"+self.dure_campagne+"/"+self.ad_name+"/"+self.idA+"/"+self.ad_group_id+"/"+self.campagne_id+"/"+self.id_ad_firebase,
+            requestTokenUrl: url,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -4196,7 +4548,8 @@ if (this.budget === 0) {
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-                alert('erreur inconnu');
+              alert('erreur inconnu');
+              self.isCreating = false
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
@@ -4237,19 +4590,67 @@ if (this.budget === 0) {
       
     
    }
-  handleAccountRechargement() {
-    this.choose = false
-    this.directBudget = true
-    this.isRechargement = true
-  }
+
+
+   handleIfValide() {
+    console.log('keyup')
+    $('#error_recharge').hide()
+    var montant = $("#montant").val()
+    if (montant < 20000) {
+    this.montant = 0
+      $('#error_recharge').show()
+    } else if(montant==""){
+    this.montant = 0
+       $('#error_recharge').show()
+    } else{
+     this.montant = montant
+      //var budget_to_place_in_dollar = budget_to_place * 550
+      
+      
+    }
+   }
   
-  handleBudgetPlacement() {
-   
+  handleIfBudgetToPlaceFromAccountIsValid() {
+    $('#error_recharge').hide()
+    var montant = parseInt($("#montant").val())
+
+
+    if (montant > this.accountValue) {
+      this.montant = 0
+       this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      $('#error_recharge').show()
+    } else if(montant==null){
+      this.montant = 0
+      this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+       $('#error_recharge').show()
+    } else if(montant < 10000){
+       this.montant = 0
+       this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      $('#error_recharge').show()
+    }else{
+     this.my_gain = (20 * montant) / 100
+      this.budget_to_place = montant - this.my_gain
+      this.number_of_impressions_simulated = (this.budget_to_place *1000) / 33.3
+      this.montant = montant
+      
+      
+    }
+  }
+
+   handleBudgetPlacement() {
+     this.isAccountRechargement = false
+     this.isPlacementBudgetFromAccount = false
     Swal.fire({
         title: 'Service Campagne',
         text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
         type: 'info',
-        showCancelButton: false,
+        showCancelButton: true,
         confirmButtonColor: '#26a69a',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Oui, Je confirme ces dates'
@@ -4259,6 +4660,34 @@ if (this.budget === 0) {
           this.isSetBudget = true
          }
       })
+    
+    
+   }
+  handlePlaceBudgetFromSolde() {
+    this.isAccountRechargement = false
+    this.isSetBudget = false
+    Swal.fire({
+        title: 'Service Campagne',
+        text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, Je confirme ces dates'
+      }).then((result) => {
+        if (result.value) {
+          this.modifyDate = false
+          this.isPlacementBudgetFromAccount = true
+         }
+      })
+  }
+  
+   handleAccountRechargement() {
+   
+     this.modifyDate = false;
+     this.isSetBudget = false
+     this.isPlacementBudgetFromAccount = false;
+     this.isAccountRechargement = true
     
     
   }
@@ -4273,9 +4702,13 @@ if (this.budget === 0) {
     return Math.round((second-first)/(1000*60*60*24));
  }
   
+ 
+ 
   OpenModifyDateCampaign() {
     this.modifyDate = true
     this.isSetBudget = false
+    this.isAccountRechargement = false
+    this.isPlacementBudgetFromAccount = false
     $("#finalButtonPublier").hide()
     $("#dateBlock").hide()
   }
@@ -4287,6 +4720,12 @@ if (this.budget === 0) {
   }
   CloseBudgetOperation() {
     this.isSetBudget = false
+  }
+  ClosePlaceBudgetFromAccountValue() {
+    this.isPlacementBudgetFromAccount = false
+  }
+   CloseRechargeAccountOperation() {
+    this.isAccountRechargement = false
   }
   onEndDateChange(args) {
     console.log(args.value)
@@ -5027,6 +5466,9 @@ if (this.endDate == date || this.startDate == date) {
   retourRechargement() {
     this.directBudget = false
     this.choose = true
+  }
+  initAdd() {
+    this.init_choose_ad_size = true
   }
  
   handleSimulatedImpressionsCount() {

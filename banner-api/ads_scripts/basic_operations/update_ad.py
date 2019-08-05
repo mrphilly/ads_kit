@@ -142,65 +142,25 @@ def UpdateAd(client, ad_group_id, ad_id, data):
   print(ad_id)
   print(ad_group_id)
   for el in data:
-      print(el)
-      if el['fieldAdwords'] == "image":
-        if len(data)==2:
-          RemoveAd(client, ad_group_id, ad_id)
-          index = data.index(el)
-          image_name = data[0]['img_last_name'] + ".png"
-          image_ref_on_file ='uploads/' +image_name
-          UploadImageAsset(client, el['content'], image_ref_on_file)
-          url_ = url_for('uploaded_file', filename=image_name, _external=True)
-          data_img = urlopen(url_).read()
-          #print(data_img)
-          for finalUrls in el['last_final_urls ']:
-            operations.append({
-                'operator': 'ADD',
-              'operand': {
-                  'xsi_type': 'AdGroupAd',
-                  'adGroupId': ad_group_id,
-                  'ad': {
-                'xsi_type': 'ImageAd',
-                
-              'name': el['img_last_name'],
-            # This ad format does not allow the creation of an image asset by setting
-            # the asset.imageData field. An image asset must first be created using
-            # the AssetService, and asset.assetId must be populated when creating
-            # the ad.
-              'image': {
-                  'data':  data_img 
-              },
-              'finalUrls': finalUrls,
-              'displayUrl': finalUrls,
-            
-              
-              
-
-                  },
-                  # Optional fields.
-                  'status': el['status']
-              }
-            })
-
-          del data[index]
-          del data[index]
-          if data != []:
-              operations.append({
-              'operator': 'SET',
-              'operand': {
-                'id': ad_id,
-            
-            el['fieldAdwords']: el['content']
-                  }
-          })
-        elif len(data) > 2:
-          print('e')
-          
+    print(el)
+      
+    operations=[{
+            'operator': 'SET',
+            'operand': {
+              'Ad.Type': 'ImageAd',
+              'id': ad_id,
+          el['field']: el['content']
+        
+        
+            }
+        }]
+  
 
 
 
   print(operations)
-  ad_group_ad_service = client.GetService('AdGroupAdService', version='v201809')
+  ad_group_ad_service = client.GetService('AdService', version='v201809')
+  print(ad_group_ad_service)
 
   # Construct operations and update an ad.
  

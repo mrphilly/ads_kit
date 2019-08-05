@@ -25,16 +25,16 @@
             <div class="text-white teal darken-1">
                 <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist"
                      aria-orientation="vertical">
-                   <!--  <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                       aria-controls="v-pills-home" aria-selected="true"><i class="icon-inbox2"></i></a>
-                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                       aria-controls="v-pills-profile" aria-selected="false"><i class="icon-add"></i></a>
+                    <a class="nav-link teal darken-1" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                       aria-controls="v-pills-home" aria-selected="true" (click)="toggleListCampaign()"><i class="icon-inbox2"></i></a>
+                    <a class="nav-link teal darken-1" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                       aria-controls="v-pills-profile" aria-selected="false" (click)="action_2()"><i class="icon-add"></i></a>
                     <a class="nav-link blink skin_handle"  href="#"><i class="icon-lightbulb_outline"></i></a>
-                    <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
+                    <!-- <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
                     <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a> -->
                     <a href="">
                         <figure class="avatar">
-                            <img src="assets/img/dummy/u3.png" alt="">
+                            <img src="assets/img/adafri.png" alt="">
                             <span class="avatar-badge online"></span>
                         </figure>
                     </a>
@@ -48,15 +48,15 @@
                             <div class="text-xs-center">
                                 <span class="font-weight-lighter s-18">Menu</span>
                             </div>
-                            <div class="badge badge-danger r-0">New Panel</div>
+                            <div class="badge badge-danger r-0">Accueil campagne</div>
                         </div>
                     </div>
                     <ul class="sidebar-menu">
-                        <li class="treeview">
+                    <!--     <li class="treeview">
                             <a href="index.html">
-                            <i class="icon icon-sailing-boat-water s-24"></i> <span>Dashboard</span>
+                            <i class="icon icon-sailing-boat-water s-24"></i> <span></span>
                             </a>
-                        </li>
+                        </li> -->
                        <!--  <li class="treeview"><a href="#">
                             <i class="icon icon icon-package s-24"></i>
                             <span>Products</span>
@@ -71,24 +71,36 @@
                                 </li>
                             </ul>
                         </li> -->
-                        <li class="treeview"><a href="#"><i class="icon icon-bandcamp s-24" ></i>Campagne<i
-                                class=" icon-angle-left  pull-right"></i></a>
+                        <li class="treeview"><a (click)="toggleListCampaign()" style="cursor: pointer"><i class="icon icon-circle-o"></i>Toutes les campagnes</a>
+                        </li>
+                            
+                        <li><a  class="treeview" (click)="action_2()" style="cursor: pointer"><i class="icon icon-add"></i>Ajouter une nouvelle campagne</a>
+                        </li>
+                         <li class="treeview" *ngIf="_showCampaignSettings_===true"><a href="#">
+                            <i class="icon icon icon-package s-24"></i>
+                            <span>Options de ciblages</span>
+                            <span class="badge r-3 badge-primary pull-right">4</span>
+                        </a>
                             <ul class="treeview-menu">
-                                <li><a (click)="toggleListCampaign()" style="cursor: pointer"><i class="icon icon-circle-o"></i>Toutes les campagnes</a>
+                                <li><a href=""><i class="icon icon-circle-o" (click)="toggleCiblageZone()"></i>Zones</a>
                                 </li>
-                                <li><a (click)="action_2()" style="cursor: pointer"><i class="icon icon-add"></i>Ajouter une nouvelle campagne</a>
+                                <li><a href=""><i class="icon icon-add"></i>Âges</a>
+                                </li>
+                                <li><a href=""><i class="icon icon-add"></i>Genre</a>
+                                </li>
+                                 <li><a href=""><i class="icon icon-add"></i>Appareils</a>
                                 </li>
                             </ul>
                         </li>
-                       <!--  <li class="treeview"><a href="#">
-                            <i class="icon icon-package s-24"></i>
-                            <i class=" icon-angle-left  pull-right"></i>
-                            <span>Gallerie images</span>
-                        </a>
-                            <ul class="treeview-menu" style="overflow: auto; height: 100%">
-                                
-                            </ul>
+                        
+                       <!--  <li class="treeview"><a style="cursor: pointer"><i class="icon icon-circle-o"></i>Ciblage de zones</a>
+                        </li>
+                        
+                         <li class="treeview"><a style="cursor: pointer"><i class="icon icon-circle-o"></i>Appareils</a>
                         </li> -->
+                         <li class="treeview" *ngIf="_showCampaignSettings_===true"><a style="cursor: pointer"><i class="icon icon-circle-o"></i>Statistiques de la campagne</a>
+                        </li>
+                        
                         <!-- <li class="treeview"><a href="#">
                             <i class="icon icon-package s-24"></i>
                             <i class=" icon-angle-left  pull-right"></i>
@@ -475,8 +487,9 @@
    
     <ng-container *ngIf="!showList">
         <!-- <h5 style="margin-top: 20px; font-weight: bold">Toutes les camapgnes</h5> -->
-        <note-detail [show]="toggleSignleCampaign()"></note-detail>
+        <note-detail></note-detail>
     </ng-container>
+
 </div>
 <div *ngIf="isCreating">
       <app-spinner-overlay [message]="message"></app-spinner-overlay>

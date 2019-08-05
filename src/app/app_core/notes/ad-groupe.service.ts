@@ -84,7 +84,7 @@ export class AdGroupService {
     });
   }
 
- getAdGroupPlacement(campaign_id: string, ad_group_id: any) {
+ getAdGroupPlacement(campaign_id: string, ad_group_id: any): Promise<any> {
      console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
     return new Promise(resolve => {
         setTimeout(() => {
@@ -161,6 +161,48 @@ export class AdGroupService {
    
   }
 
+  removePlacement(id: any, campaign_id: any, ad_group_id: any, criterion: any): Promise<any> {
+    return new Promise(resolve => {
+      this.http.post('http://127.0.0.1:5000/removeSinglePlacement', {
+         'ad_group_id': ad_group_id,
+          'criterion': criterion,
+      
+      }).subscribe(
+        res => {
+          if (res[0]['status'] == "ok") {
+            this.getAdGroupPlacement(campaign_id, ad_group_id).then(res => {
+              var last_placement = res
+              for( var i = 0; i < last_placement.length; i++){ 
+   if ( last_placement[i]['criterion_id'] == criterion ) {
+     last_placement.splice(i, 1); 
+   }
+                this.updateAdgroup(id, { placement: last_placement, criterion_placement: last_placement }).then(res => {
+     resolve('ok')
+   })
+}
+            })
+           
+         }
+        },
+        err => {
+          Swal.fire({
+          title: "Placement de groupe d'annonce",
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+              resolve('error')
+            }
+          })
+        }
+      );
+    })
+  }
+
   async targetPlacement(id: string, campaign_id: string, ad_group_id: any,  placement: any) {
    var genre_legnth = placement.length[0];
    return await this.getAdGroupPlacement(campaign_id, ad_group_id).then(value => {
@@ -175,7 +217,7 @@ export class AdGroupService {
         res => {
           console.log(`res from location backend: ${res}`)
           console.log(res)
-          this.updateAdgroup(id, {placement: placement[0], criterion_placement: res })
+          this.updateAdgroup(id, {placement: res, criterion_placement: res })
         },
         err => {
           Swal.fire({
@@ -250,7 +292,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
 
 
   async targetAge(id: string, campaign_id: string, ad_group_id: any,  age: any) {
-   var genre_legnth = age.length;
+
    return await this.getAdGroupAge(campaign_id, ad_group_id).then(value => {
   
      console.log(`value:`)

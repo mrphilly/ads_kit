@@ -47,7 +47,7 @@ tinify.key = "mkXrWqhxCxjDHj8O0t8S5698DdY833Qo"
 
 
 
-def UploadImageAsset(client, url, image_ref_on_file, image_name):
+def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
   """Uploads the image from the specified url.
   Args:
     client: An AdWordsClient instance.
@@ -80,7 +80,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name):
   try:
     source = tinify.tinify.tinify.from_url(url)
     print(source)
-    resized_image = source.resize(method="fit", width=300, height=250)
+    resized_image = source.resize(method="fit", width=int(width), height=int(height))
     data = resized_image.to_file(image_ref_on_file)
     print(sys.getsizeof(data))
     #print(data)
@@ -88,7 +88,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name):
     try:
       source = tinify.tinify.tinify.from_url(url)
       print(source)
-      resized_image = source.resize(method="fit", width=300, height=250)
+      resized_image = source.resize(method="fit", width=int(width), height=int(height))
       data = resized_image.to_file(image_ref_on_file)
       print(sys.getsizeof(data))
       #print(data)
@@ -138,7 +138,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name):
 
 
 
-def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls, finalMobileUrls):
+def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls, finalMobileUrls, width, height):
     print(finalAppsUrls)
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'
@@ -154,13 +154,15 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
     print(ad_group_id)
     image_name = ad_name + ".png"
     image_ref_on_file ='uploads/' +image_name
-    meadiaId = UploadImageAsset(client, image, image_ref_on_file, image_name)
+    meadiaId = UploadImageAsset(client, image, image_ref_on_file, image_name, width, height)
   
     
     response = []
     url_ = url_for('uploaded_file', filename=image_name, _external=True)
     data = urlopen(url_).read()
     print(data)
+
+    
     
     if finalAppsUrls == []:
       print(finalUrls)
@@ -201,6 +203,7 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
       ]
 
       # Make the mutate request.
+      os.remove(image_ref_on_file)
       print('ads.......................................')
       ads = ad_group_ad_service.mutate(operations)
       print(ads)
@@ -208,8 +211,11 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
       # Display results.
       for ad in ads['value']:
         print(['ad'])
-        asset_image = ad['ad']['image']['urls'][1]
-        print(asset_image)
+        image_url = ""
+        asset_image = ad['ad']['image']['urls']
+        for item in asset_image:
+          if (item['key'] == "FULL"):
+            image_url = item['value']
         
           
         response.append({
@@ -222,7 +228,7 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
           "finalAppUrls": ad['ad']['finalAppUrls'],
           "automated": ad['ad']['automated'],
           "referenceId": ad['ad']['image']['referenceId'],
-          "url_image": asset_image['value']
+          "url_image": image_url  
 
         })
     else:
@@ -263,6 +269,7 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
       for app_url in finalAppsUrls]
 
       # Make the mutate request.
+      os.remove(image_ref_on_file)
       print('ads.......................................')
       ads = ad_group_ad_service.mutate(operations)
       print(ads)
@@ -270,7 +277,12 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
       # Display results.
       for ad in ads['value']:
         print(ad['ad'])
-        asset_image = ad['ad']['image']['urls'][1]
+        image_url = ""
+        asset_image = ad['ad']['image']['urls']
+        for item in asset_image:
+          if (item['key'] == "FULL"):
+            image_url = item['value']
+            
         response.append({
           "ad_id": ad['ad']['id'],
           "name": ad['ad']['name'],
@@ -281,16 +293,13 @@ def add_display_ad(client, ad_group_id, ad_name, image, finalUrls, finalAppsUrls
           "finalAppUrls": ad['ad']['finalAppUrls'],
           "automated": ad['ad']['automated'],
           "referenceId": ad['ad']['image']['referenceId'],
-          "url_image":asset_image['value  ']
+          "url_image":image_url
 
         })
 
         
 
-  #except Exception as e:
-    #response.append({
-     # "status": "error"
-    #})
+ 
     
 
     return response

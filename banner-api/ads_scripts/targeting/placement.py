@@ -68,60 +68,70 @@ def SetPlacement(client, ad_group_id, placement, last_placement):
           'operand': criterion
       })
 
-    remove = ad_group_criterion_service.mutate(operations)         
+    remove = ad_group_criterion_service.mutate(operations)
+    print(remove)
+    if 'value' in remove:  
 
-    for place in placement:
-      ad_group_criteria = []
-      if len(place) !=0:
-          for ul in place:
-            print(ul['item_id'])
-            ad_group_criteria.append(
-                # Exclusion criterion.
-                {
-                    'xsi_type': 'BiddableAdGroupCriterion',
-                    'adGroupId': ad_group_id,
-                    'criterion': {
-                        'xsi_type': 'Placement',
-                        # Create age range criteria. The IDs can be found in the
-                        # documentation:
-                        # https://developers.google.com/adwords/api/docs/appendix/ages.
-                        'url': ul['item_id']
-                    }
-                })
+      for place in placement:
+        i=0
+        ad_group_criteria = []
+        if len(place) !=0:
+          while i<len(place):
+            
         
+            ad_group_criteria.append(
+                  # Exclusion criterion.
+                  {
+                      'xsi_type': 'BiddableAdGroupCriterion',
+                      'adGroupId': ad_group_id,
+                      'criterion': {
+                          'xsi_type': 'Placement',
+                          # Create age range criteria. The IDs can be found in the
+                          # documentation:
+                          # https://developers.google.com/adwords/api/docs/appendix/ages.
+                          'url': place[i]['item_id']
+                      }
+                  })
 
 
-  # Create operations.
-          operations = []
-          for criterion in ad_group_criteria:
-            operations.append({
-                'operator': 'ADD',
-                'operand': criterion
-            })
-
-          response = ad_group_criterion_service.mutate(operations)
-
-          if response and response['value']:
-            criteria = response['value']
-            for ad_group_criterion in criteria:
-              criterion = ad_group_criterion['criterion']
-              print ('Ad group criterion with ad group ID %s, criterion ID %s and '
-                    'type "%s" was added.' %
-                    (ad_group_criterion['adGroupId'], criterion['id'],
-                      criterion['type']))
-              result.append({
-                  "criterion_id": criterion['id'],
-                  "citerion_type": criterion['type']
+    # Create operations.
+            operations = []
+            for criterion in ad_group_criteria:
+              operations.append({
+                  'operator': 'ADD',
+                  'operand': criterion
               })
-          else:
-            print('No criteria were returned.')
+
+            response = ad_group_criterion_service.mutate(operations)
+
+            if response and response['value']:
+              criteria = response['value']
+              for ad_group_criterion in criteria:
+                criterion = ad_group_criterion['criterion']
+                print ('Ad group criterion with ad group ID %s, criterion ID %s and '
+                      'type "%s" was added.' %
+                      (ad_group_criterion['adGroupId'], criterion['id'],
+                        criterion['type']))
+                result.append({
+                    "item_id": place[i]['item_id'],
+                    "item_text": place[i]['item_text'],
+                    "criterion_id": criterion['id'],
+                    "citerion_type": criterion['type']
+                })
+              criteria = []
+              criterion = []
+              ad_group_criteria = []
+            else:
+              print('No criteria were returned.')
+          i = i+1
   else:
     print('condition')
     for place in placement:
       ad_group_criteria = []
+      i=0
       if len(place) !=0:
-          for ul in place:
-            print(ul['item_id'])
+          while i<len(place):
+            
             ad_group_criteria.append(
                 # Exclusion criterion.
                 {
@@ -132,36 +142,41 @@ def SetPlacement(client, ad_group_id, placement, last_placement):
                         # Create age range criteria. The IDs can be found in the
                         # documentation:
                         # https://developers.google.com/adwords/api/docs/appendix/ages.
-                        'url': ul['item_id']
+                        'url': place[i]['item_id']
                     }
                 })
         
 
-
   # Create operations.
-          operations = []
-          for criterion in ad_group_criteria:
-            operations.append({
-                'operator': 'ADD',
-                'operand': criterion
-            })
-
-          response = ad_group_criterion_service.mutate(operations)
-
-          if response and response['value']:
-            criteria = response['value']
-            for ad_group_criterion in criteria:
-              criterion = ad_group_criterion['criterion']
-              print ('Ad group criterion with ad group ID %s, criterion ID %s and '
-                    'type "%s" was added.' %
-                    (ad_group_criterion['adGroupId'], criterion['id'],
-                      criterion['type']))
-              result.append({
-                  "criterion_id": criterion['id'],
-                  "citerion_type": criterion['type']
+            operations = []
+            for criterion in ad_group_criteria:
+              operations.append({
+                  'operator': 'ADD',
+                  'operand': criterion
               })
-          else:
-            print('No criteria were returned.')
+
+            response = ad_group_criterion_service.mutate(operations)
+
+            if response and response['value']:
+              criteria = response['value']
+              for ad_group_criterion in criteria:
+                criterion = ad_group_criterion['criterion']
+                print ('Ad group criterion with ad group ID %s, criterion ID %s and '
+                      'type "%s" was added.' %
+                      (ad_group_criterion['adGroupId'], criterion['id'],
+                        criterion['type']))
+                result.append({
+                    "item_id": place[i]['item_id'],
+                    "item_text": place[i]['item_text'],
+                    "criterion_id": criterion['id'],
+                    "citerion_type": criterion['type']
+                })
+              criteria = []
+              criterion = []
+              ad_group_criteria = []
+            else:
+              print('No criteria were returned.')
+            i = i+1
 
     
   return result

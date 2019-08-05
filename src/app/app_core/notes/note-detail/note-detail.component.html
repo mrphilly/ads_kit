@@ -24,7 +24,7 @@
                                         <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
                                         <td *ngIf="note?.status=='ENABLED'" class="text-center"><div class="d-lg-block"><span class="badge badge-success">Activer</span>
                                         </div></td>
-                                         <td *ngIf="note?.status=='PAUSED'"><div class="d-lg-block"><span class="badge badge-danger">DÃ©sactiver</span>
+                                         <td *ngIf="note?.status=='PAUSED'"><div class="d-lg-block"><span class="badge badge-danger">Désactiver</span>
                                         </div></td>
                                         <td>
                                             <div class="d-none d-lg-block">
@@ -33,7 +33,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a class="btn-fab btn-fab-sm green accent-3 shadow text-white" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-settings2"></i></a>
+                                            <a class="btn btn-sm green accent-3 shadow text-white" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)" style="    margin-left: -40px;width: 100px;"><i class="icon-settings2"></i>Configurer</a>
                                         </td>
                                         <hr>
                                     </tr>

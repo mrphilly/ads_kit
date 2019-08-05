@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Injectable } from '@angular/core';
+import { Component, Input, OnInit, Injectable, ViewChild, AfterViewInit } from '@angular/core';
 
 import * as $ from 'jquery';
 
@@ -8,6 +8,7 @@ import { Router } from '@angular/router'
 import { Observable } from 'rxjs'
 
 import { AdGroupService } from '../ad-groupe.service'
+
 
 @Component({
   selector: 'note-detail',
@@ -23,7 +24,7 @@ export class NoteDetailComponent implements OnInit {
   notes: Observable<any[]>;
   user: any;
   goCampaign = false
-  @Input() show: any;
+ 
   title = "Liste des campagnes";
   id: any;
   id_campagne: any;
@@ -103,6 +104,7 @@ export class NoteDetailComponent implements OnInit {
   goCampaignSettings(id: string,id_campagne: string, name: string, status: string, ad_group_id: string, budget: any, budgetId: any, dailyBudget: any, numberOfDays: any) {
     console.log(id + " " + id_campagne + " " + name + " " + status + " "+dailyBudget+" "+numberOfDays);
     this.id_campagne = id_campagne;
+    
     this.id = id;
     this.name = name;
     this.status = status;

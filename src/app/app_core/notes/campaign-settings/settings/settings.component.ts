@@ -155,6 +155,7 @@ export class SettingsComponent {
   @Input() budgetId: any;
   @Input() dailyBudget: any;
   @Input() numberOfDays: any;
+  button_payments = true
   ad_group_tab_content =  [];
   email: string;
   ad_groups_list_id = []
@@ -184,12 +185,23 @@ export class SettingsComponent {
   dk = 'Dakar'
   generale='Général'
   zone: any;
+
+  ages = []
+  sexes = [];
   zones = [];
-  selectedZones = []
-  dropdownListZones = [];
-  selectedItems = [];
-  dropdownSettingsZones = {};
+  devices = []
+  genres: any;
+  populations: any;
+  appareils: any;
+  isCiblageGenre = false
+  isCiblageAge = false
+  isCiblageDevices = false
+  isPlacement = false
+  nationals_errors: any
+ 
+ 
   dure_campagne = 0
+  
   
   budget_to_place = 0;
   my_gain = 0;
@@ -209,8 +221,25 @@ export class SettingsComponent {
   UpdatedStartDate: any;
   UpdatedEndDate: any
   today: any
+   nationals_websites = []
+  internationals_websites = []
+  ads_websites = []
+  currentAdStatus: any
+  apps = []
   
-  
+   public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels = [];
+  public barChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData = [
+   {data: [0], label: 'Clicks'},
+    {data: [0], label: 'Coût'
+    },
+    { data: [0], label: 'Impressions' }
+  ];
 
   constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads) {
     this.getUser().then(res => {
@@ -219,6 +248,110 @@ export class SettingsComponent {
 
     })
   }
+  dropdownListAges = [];
+  dropdownListSexes = [];
+  dropdownListZones = [];
+  dropdownListDevices = [];
+  dropdownListNationalsWebsites = [];
+   dropdownListInternationalsWebsites = [];
+  dropdownListAdsWebsites = [];
+  dropdownListApps = [];
+  selectedItems = [];
+  selectedZones = [];
+  dropdownSettingsAges = {};
+  dropdownSettingsSexes = {};
+  dropdownSettingsZones = {};
+  dropdownSettingsDevices = {};
+  dropdownSettingsNationalsWebsites = {};
+  dropdownSettingsInternationalsWebsites = {};
+  dropdownSettingsAdsWebsites = {};
+  dropdownSettingsApps = {};
+  
+   NATIONALS_WEBSITES = [
+  [1,"infos","dakarbuzz.net","http://dakarbuzz.net"  ],
+  [2,"infos","galsen221.com","http://galsen221.com"  ],
+  [3,"infos","leral.net","http://leral.net"  ],
+  [4,"infos","limametti.com","http://limametti.com"  ],
+  [5,"infos","sanslimitesn.com","http://sanslimitesn.com"  ],
+  [6,"infos","senego.com","http://senego.com"  ],
+  [7,"infos","seneweb.com","http://seneweb.com"  ],
+  [8,"infos","www.buzzsenegal.com","http://www.buzzsenegal.com"  ],
+  [9,"infos","www.dakar7.com","http://www.dakar7.com"  ],
+  [10,"infos","www.dakarflash.com","http://www.dakarflash.com"  ],
+  [11,"infos","www.lequotidien.sn","http://www.lequotidien.sn"  ],
+  [12,"infos","www.pressafrik.com","http://www.pressafrik.com"  ],
+  [13,"infos","www.senenews.com","http://www.senenews.com"  ],
+  [14,"infos","xalimasn.com","http://xalimasn.com"  ],
+  [15,"infos","metrodakar.net","http://metrodakar.net"  ],
+  [16,"infos","sunubuzzsn.com","http://sunubuzzsn.com"  ],
+  [17,"infos","senegal7.com","http://senegal7.com"  ],
+  [18,"infos","senescoop.net","http://senescoop.net"  ],
+  [19,"infos","sunugal24.net","http://sunugal24.net"  ],
+  [20,"infos","dakar92.com","http://dakar92.com"  ],
+  [21,"infos","rumeurs221.com","http://rumeurs221.com"  ],
+  [22,"infos","bonjourdakar.com","http://bonjourdakar.com"  ],
+  [23,"infos","vipeoples.net","http://vipeoples.net"  ],
+  [24,"infos","seneplus.com","http://seneplus.com"  ],
+  [25,"infos","wiwsport.com","http://wiwsport.com"  ],
+  [26,"infos","viberadio.sn","http://viberadio.sn"  ],
+  [27,"infos","yerimpost.com","http://yerimpost.com"  ],
+  [28,"infos","ndarinfo.com","http://ndarinfo.com"  ],
+  [29,"infos","dakarposte.com","http://dakarposte.com"  ],
+  [30,"infos","exclusif.net","http://exclusif.net"  ],
+  [31,"infos","senegaldirect.net","http://senegaldirect.net"  ]
+  ]
+  
+  INTERNATIONALS_WEBSITES = [
+  [1,"sport ","footmercato.net","http://www.footmercato.net"  ],
+  [2,"infos","lexpress.fr","http://www.lexpress.fr"  ],
+  [3,"sport ","mercatolive.fr","http://www.mercatolive.fr"  ],
+  [4,"sport ","maxifoot.fr","http://maxifoot.fr"  ],
+  [5,"sport ","livefoot.fr","http://livefoot.fr"  ],
+  [6,"forum","01net.com","http://01net.com"  ],
+  [7,"sport ","le10sport.com","http://le10sport.com"  ],
+  [8,"sport ","maxifoot-live.com","http://maxifoot-live.com"  ],
+  [9,"forum","01net.com","http://01net.com"  ],
+  [10,"infos","bfmtv.com","http://bfmtv.com"  ],
+  [11,"sport ","besoccer.com","http://besoccer.com"  ],
+  [12,"sport ","foot01.com","http://foot01.com"  ],
+  [13,"sport ","basketsession.com","http://basketsession.com"  ],
+  [14,"sport ","basket-infos.com","http://basket-infos.com"  ],
+  [15,"infos","skyrock.com","http://skyrock.com"  ],
+  [16,"infos","leparisien.fr","http://leparisien.fr"  ],
+  ]
+  
+  SITES_ANNONCES = [
+     [1,"annonces","deals.jumia.sn","http://deals.jumia.sn"  ],
+  [2,"annonces","expat-dakar.com","http://expat-dakar.com"  ],
+  [3,"annonces","coinafrique.com","http://coinafrique.com"  ]
+  ]
+
+  APP_MOBILES = [
+  [1,"App","Senego","https://play.google.com/store/apps/details?id=com.nextwebart.senego"  ],
+  [2,"App","Super-Bright LED Flashlight ","https://play.google.com/store/apps/details?id=com.surpax.ledflashlight.panel"  ],
+  [3,"App","CallApp: Caller ID","https://play.google.com/store/apps/details?id=com.callapp.contacts"  ],
+  [4,"App","PhotoGrid: Video & Pic Collage Maker, ","https://play.google.com/store/apps/details?id=com.roidapp.photogrid"  ],
+  [5,"App","Bubble Shooter ","https://play.google.com/store/apps/details?id=bubbleshooter.orig"  ],
+  [6,"App"," MAX Cleaner - Antivirus, Phone Cleaner","https://play.google.com/store/apps/details?id=com.oneapp.max.cleaner.booster"  ],
+  [7,"App","Block Puzzle ","https://play.google.com/store/apps/details?id=com.puzzlegamesclassic.tetris.blockpuzzle"  ],
+  [8,"App","Bubble Breaker ","https://play.google.com/store/apps/details?id=com.faceplus.bubble.breaker"  ],
+  [9,"App","Flashlight ","https://play.google.com/store/apps/details?id=com.splendapps.torch"  ],
+  [10,"App","Photo Lock App ","https://play.google.com/store/apps/details?id=vault.gallery.lock"  ]
+]
+
+getDateArray(start, end) {
+    var arr = new Array();
+  var dt = new Date(start);
+  var _end = new Date(end)
+  console.log(dt)
+    while (dt <= _end) {
+        arr.push(new Date(dt).getDate()+"/"+(new Date(dt).getMonth()+1)+"/"+new Date(dt).getFullYear())
+        dt.setDate(dt.getDate() + 1);
+    }
+    return arr;
+}
+
+
   getUser() {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -230,7 +363,7 @@ export class SettingsComponent {
           } else {
             this.accountValue = parseInt(data.account_value)
           }
-          alert(this.accountValue)
+        
           resolve(data.uid)
         })
       }, 2000);
@@ -247,8 +380,8 @@ export class SettingsComponent {
         }) */
     ;
  
-    
-    this.notesService.getCampaignRealTimeData(this.id, this.id_campagne)
+    this.auth.user.subscribe(data => {
+      this.notesService.getCampaignRealTimeData(data.uid, this.id_campagne)
     this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
       res.forEach(data => {
             this.startDateFrench = data['startDateFrench']
@@ -257,8 +390,24 @@ export class SettingsComponent {
         this.servingStatus = data['servingStatus']
         var result = data['zones']
         this.zone = result
-        console.log(this.zone[0])
+        this.appareils = data['devices']
+        this.populations = data['ages']
+        this.genres = data['sexes']
+        console.log(data['startDate'])
+        var startDate = data['startDate'].slice(0,4)+"-"+ data['startDate'].slice(4,6)+"-"+ data['startDate'].slice(6,8)
+        var endDate = data['endDate'].slice(0, 4) + "-" + data['endDate'].slice(4, 6) + "-" + data['endDate'].slice(6, 8)
+        console.log(startDate)
+        console.log(endDate)
+        var dateArr = this.getDateArray(startDate, endDate);
+        console.log(dateArr)
+// Output
+for (var i = 0; i < dateArr.length; i++) {
+  this.barChartLabels.push(dateArr[i])
+  console.log(this.barChartLabels)
+}
+    
       })
+    })
     })
 
     this.adgroups = this.adGroupService.getListAdGroup(this.id_campagne)
@@ -289,6 +438,195 @@ export class SettingsComponent {
       allowSearchFilter: false,
       searchPlaceholderText: 'Rechercher',
 
+     };
+    
+
+     this.dropdownListAges = [{
+        item_id: 503999,
+        item_text: 'indéterminé'
+      },
+      {
+        item_id: 503001,
+        item_text: '18-24 ans'
+      },
+      {
+        item_id: 503002,
+        item_text: '25-34 ans'
+      },
+      {
+        item_id: 503003,
+        item_text: '35-44 ans'
+      },
+      {
+        item_id: 503004,
+        item_text: '45-54 ans'
+      },
+      {
+        item_id: 503005,
+        item_text: '55-64 ans'
+      },
+      {
+        item_id: 503006,
+        item_text: '+64 ans'
+      }
+    ];
+    this.dropdownListSexes = [{
+        item_id: 20,
+        item_text: 'indéterminé'
+      },
+      {
+        item_id: 10,
+        item_text: 'Hommes'
+      },
+      {
+        item_id: 11,
+        item_text: 'Femmes'
+      },
+    ];
+    this.dropdownListDevices = [{
+        item_id: 30000,
+        item_text: 'Ordinateurs'
+      },
+      {
+        item_id: 30001,
+        item_text: 'Mobiles'
+      },
+      {
+        item_id: 30002,
+        item_text: 'Tablettes'
+      },
+      {
+        item_id: 30004,
+        item_text: "Tv Connectée"
+      }
+    ];
+    this.dropdownListZones = [{
+      item_id: 9070424,
+      item_text: 'Dakar'
+    },];
+    for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++){
+      console.log(this.NATIONALS_WEBSITES[i][2])
+      this.dropdownListNationalsWebsites.push({
+         item_id: this.NATIONALS_WEBSITES[i][3],
+         item_text: this.NATIONALS_WEBSITES[i][2]
+       }
+      );
+    }
+
+    for (let i = 0; i < this.INTERNATIONALS_WEBSITES.length; i++) {
+      
+      this.dropdownListInternationalsWebsites.push({
+        item_id: this.INTERNATIONALS_WEBSITES[i][3],
+        item_text: this.INTERNATIONALS_WEBSITES[i][2]
+      
+      }
+      );
+    }
+
+    for (let i = 0; i < this.SITES_ANNONCES.length; i++){
+      
+      this.dropdownListAdsWebsites.push({
+       item_id: this.SITES_ANNONCES[i][3],
+       item_text: this.SITES_ANNONCES[i][2]
+     }
+      );
+    }
+
+    for (let i = 0; i < this.APP_MOBILES.length; i++){
+      
+      this.dropdownListApps.push({
+        item_id: this.APP_MOBILES[i][3],
+        item_text: this.APP_MOBILES[i][2]
+      }
+      );
+    }
+    this.dropdownSettingsAges = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 8,
+      allowSearchFilter: false,
+      searchPlaceholderText: 'Rechercher',
+
+    };
+    this.dropdownSettingsSexes = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
+    };
+    this.dropdownSettingsZones = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
+    };
+    this.dropdownSettingsDevices = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 3,
+      allowSearchFilter: false,
+      searchPlaceholderText: 'Rechercher',
+
+    };
+     this.dropdownSettingsNationalsWebsites = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
+     };
+       this.dropdownSettingsInternationalsWebsites = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
+       };
+       this.dropdownSettingsAdsWebsites = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: false,
+      searchPlaceholderText: 'Rechercher',
+
+       };
+       this.dropdownSettingsApps = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Tout sélectionner',
+      unSelectAllText: 'annuler',
+      itemsShowLimit: 10,
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Rechercher',
+
     };
 
   }
@@ -297,7 +635,324 @@ export class SettingsComponent {
    
     
    })  */
+  openAddCiblageGenre() {
+    this.isCiblageGenre = true;
 
+  }
+  openAddCiblageDevices() {
+    this.isCiblageDevices = true;
+
+  }
+  targetGender() {
+    console.log(this.sexes)
+    this.isCreating = true
+    if (this.sexes.length == 0) {
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Aucun genre séléctionné',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+
+      })
+    } else {
+    /*   this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
+        this.sexes = []
+      }).then(res => {
+        this.isCiblageGenre = false
+        this.isCreating = false
+      }) */
+
+    }
+  }
+
+  targetPlacement() {
+    var self = this
+    var placement = []
+    console.log(this.ads_websites)
+    console.log(this.nationals_websites)
+    console.log(this.internationals_websites)
+    this.isCreating = true
+    if (this.nationals_websites.length == 0) {
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Séléctionner au moins un site national',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+
+      })
+    } else {
+      placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
+      /* this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
+        this.sexes = []
+      }).then(res => {
+        this.isCiblageGenre = false
+        this.isCreating = false
+      }) */
+
+    }
+  }
+
+  targetDevices() {
+    console.log(this.devices)
+    this.isCreating = true
+    if (this.devices.length == 0) {
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Aucun appareil séléctionné',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+      })
+    } else {
+     /*  this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
+        this.devices = []
+      }).then(res => {
+        this.isCreating = false
+        this.isCiblageDevices = false
+
+      }) */
+
+    }
+  }
+
+  closeAddCiblageGenre() {
+    this.isCiblageGenre = false
+  }
+  closeAddCiblageDevices() {
+    this.isCiblageDevices = false
+  }
+  closeAddPlacement() {
+  this.isPlacement = false
+}
+
+  openAddCiblageAge() {
+    this.isCiblageAge = true;
+
+  }
+  targetAge() {
+    console.log(this.ages)
+    this.isCreating = true
+    if (this.ages.length == 0) {
+      this.isCreating = false
+      Swal.fire({
+        title: 'Ciblage',
+        text: 'Aucun genre séléctionné',
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+      })
+    } else {
+       this.notesService.targetAge(this.id, this.id_campagne, this.ages, this.uid).then(res => {
+        this.ages = []
+      }).then(res => {
+        this.isCiblageAge = false
+        this.isCreating = false
+
+      })
+
+    }
+  }
+
+  closeAddCiblageAges() {
+    this.isCiblageAge = false
+  }
+
+  onAgeSelect(item: any) {
+    this.ages.push(item)
+    console.log(this.ages)
+  }
+  onAgeSelectAll(items: any) {
+    console.log(items);
+    this.ages = []
+    this.ages = items
+  }
+  onAgeDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.ages.length; i++) {
+      if (this.ages[i]['item_id'] == item.item_id) {
+        this.ages.splice(i, 1)
+      }
+    }
+    console.log(this.ages)
+
+  }
+  onDeSelectAllAge() {
+    this.ages = []
+    console.log(this.ages)
+  }
+
+
+  onNationalsWebsitesSelect(item: any) {
+    this.nationals_errors = ''
+    this.nationals_websites.push(item)
+    console.log(this.nationals_websites)
+  }
+  onNationalsWebsitesSelectAll(items: any) {
+     this.nationals_errors = ''
+    this.nationals_websites = []
+    this.nationals_websites = items
+    console.log(this.nationals_websites);
+  }
+  onNationalsWebsitesDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.nationals_websites.length; i++) {
+      if (this.nationals_websites[i]['item_id'] == item.item_id) {
+        this.nationals_websites.splice(i, 1)
+      }
+    }
+    console.log(this.nationals_websites)
+
+  }
+  onNationalsWebsitesDeSelectAll() {
+    this.nationals_websites = []
+    console.log(this.nationals_websites)
+  }
+
+
+   onInternationalsWebsitesSelect(item: any) {
+    this.internationals_websites.push(item)
+    console.log(this.internationals_websites)
+  }
+  onInternationalsWebsitesSelectAll(items: any) {
+    
+    this.internationals_websites = []
+    this.internationals_websites = items
+    console.log(this.internationals_websites)
+  }
+  onInternationalsWebsitesDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.internationals_websites.length; i++) {
+      if (this.internationals_websites[i]['item_id'] == item.item_id) {
+        this.internationals_websites.splice(i, 1)
+      }
+    }
+
+
+  }
+  onInternationalsWebsitesDeSelectAll() {
+    this.internationals_websites = []
+   
+  }
+
+   onAdsWebsitesSelect(item: any) {
+    this.ads_websites.push(item)
+    console.log(this.ads_websites)
+   }
+  onAdsWebsitesSelectAll(items: any) {
+    this.ads_websites = []
+    this.ads_websites = items
+    console.log(this.ads_websites);
+    
+  }
+  onAdsWebsitesDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.ads_websites.length; i++) {
+      if (this.ads_websites[i]['item_id'] == item.item_id) {
+        this.ads_websites.splice(i, 1)
+      }
+    }
+    console.log(this.ads_websites)
+
+  }
+  onAdsWebsitesDeSelectAll() {
+    this.ads_websites = []
+    console.log(this.ads_websites)
+  }
+
+   onAppsSelect(item: any) {
+    this.apps.push(item)
+    console.log(this.apps)
+  }
+  onAppsSelectAll(items: any) {
+    this.apps = []
+    this.apps = items
+    console.log(this.apps);
+  }
+  onAppsDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.apps.length; i++) {
+      if (this.apps[i]['item_id'] == item.item_id) {
+        this.apps.splice(i, 1)
+      }
+    }
+    console.log(this.apps)
+
+  }
+  onAppsDeSelectAll() {
+    this.apps = []
+    console.log(this.apps)
+  }
+
+
+
+  onDevicesSelect(item: any) {
+    this.devices.push(item)
+    console.log(this.devices)
+  }
+  onDevicesSelectAll(items: any) {
+    console.log(items);
+    this.devices = []
+    this.devices = items
+  }
+  onDevicesDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.devices.length; i++) {
+      if (this.devices[i]['item_id'] == item.item_id) {
+        this.devices.splice(i, 1)
+      }
+    }
+    console.log(this.devices)
+
+  }
+  onDeSelectAllDevices() {
+    this.devices = []
+    console.log(this.devices)
+  }
+
+  onSexeSelect(item: any) {
+    this.sexes.push(item)
+    console.log(this.sexes)
+  }
+  onSexeSelectAll(items: any) {
+    console.log(items);
+    this.sexes = []
+    this.sexes = items
+  }
+  onSexeDeSelect(item: any) {
+    console.log(item)
+    for (var i = 0; i < this.sexes.length; i++) {
+      if (this.sexes[i]['item_id'] == item.item_id) {
+        this.sexes.splice(i, 1)
+      }
+    }
+    console.log(this.sexes)
+
+  }
+  onDeSelectAllSexe() {
+    this.sexes = []
+    console.log(this.sexes)
+  }
   onZoneSelect(item: any) {
     this.selectedZones = []
     this.selectedZones.push(item)
@@ -984,6 +1639,7 @@ this.getListIdAd().then(res => {
   }
 
   goAdGroups(ad_group_name: string, idA: string, ad_group_id: string) {
+ 
      this.router.navigate(['ads', ad_group_name, this.id, idA, ad_group_id, this.id_campagne])
    
   }
@@ -992,6 +1648,7 @@ this.getListIdAd().then(res => {
     
   }
   OpenModifyDateCampaign() {
+    this.button_payments = false
     this.modifyDate = true
     this.isSetBudget = false
     this.isAccountRechargement = false
@@ -1001,18 +1658,22 @@ this.getListIdAd().then(res => {
   }
   CloseUpdateCampaignDate() {
     this.modifyDate = false
+    this.button_payments = true
     $("#finalButtonPublier").show()
     $("#dateBlock").show()
 
   }
   CloseBudgetOperation() {
     this.isSetBudget = false
+    this.button_payments = true
   }
   ClosePlaceBudgetFromAccountValue() {
     this.isPlacementBudgetFromAccount = false
+    this.button_payments = true
   }
    CloseRechargeAccountOperation() {
-    this.isAccountRechargement = false
+     this.isAccountRechargement = false
+     this.button_payments = true
   }
   onEndDateChange(args) {
     console.log(args.value)
@@ -1832,6 +2493,7 @@ if (this.endDate == date || this.startDate == date) {
    handleBudgetPlacement() {
      this.isAccountRechargement = false
      this.isPlacementBudgetFromAccount = false
+     this.button_payments = false
     Swal.fire({
         title: 'Service Campagne',
         text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
@@ -1852,6 +2514,7 @@ if (this.endDate == date || this.startDate == date) {
   handlePlaceBudgetFromSolde() {
     this.isAccountRechargement = false
     this.isSetBudget = false
+    this.button_payments = false
     Swal.fire({
         title: 'Service Campagne',
         text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
@@ -1873,6 +2536,7 @@ if (this.endDate == date || this.startDate == date) {
      this.modifyDate = false;
      this.isSetBudget = false
      this.isPlacementBudgetFromAccount = false;
+     this.button_payments = false
      this.isAccountRechargement = true
     
     
@@ -1967,6 +2631,7 @@ if (this.endDate == date || this.startDate == date) {
   }
 
   defineBudgetFromAccount() {
+    
     var montant = parseInt($("#montant").val())
     var newAccountValue = this.accountValue - montant
     if (montant > this.accountValue || montant < 10000) {
@@ -2026,7 +2691,7 @@ if (this.endDate == date || this.startDate == date) {
   }
   
   defineAmountAccountBeforeBudget() {
-     $('#button_modal_define_budget').trigger('click')
+
     var self = this
     this.montant = $("#montant").val()
     if (this.montant < 20000) {
@@ -2076,12 +2741,14 @@ if (this.endDate == date || this.startDate == date) {
             },
             didReceiveError: function (error) {
                 alert('erreur inconnu');
-                selector.prop('disabled', false);
+              selector.prop('disabled', false);
+              self.isCreating = false
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
                 console.log('non success response ', jsonResponse);
                 alert(jsonResponse.errors);
-                selector.prop('disabled', false);
+              selector.prop('disabled', false);
+              self.isCreating = false
             }
         }).send({
             pageBackgroundRadianStart: '#0178bc',

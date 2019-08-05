@@ -9,6 +9,10 @@ export class Note {
     sexes?: any;
     devices?: any;
     placement?: any;
+    criterion_ages?: any;
+    criterion_sexes?: any;
+    criterion_devices?: any;
+    criterion_placement?: any;
     startDate?: any;
     endDate?: any;
     startDateFrench?: any;

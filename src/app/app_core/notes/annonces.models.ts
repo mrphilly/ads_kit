@@ -12,6 +12,8 @@ export class Annonces {
   automated?: any;
   referenceId?: any;
   image_ref?: any;
+  size?: any;
+  ad_type?: any;
   createdAt?: any;
   createdBy?: any;
   owner?: any;

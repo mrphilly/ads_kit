@@ -70,7 +70,7 @@ def RemoveLocation(client, campaign_id, location):
   for campaign_criterion in result['value']:
     INFOS.append({
        "status": "removed",
-       "criterion": campaign_criterion['id']
+       
     })
     print('removed')
   return INFOS

@@ -36,7 +36,7 @@
                 </div>
             </div>
     </div> -->
-<header class="white pt-3 relative shadow" >
+<header class="white pt-3 relative shadow bg-light" >
   <div class="container-fluid text-center">
     <div class="row p-t-b-10 ">
       <div class="col">
@@ -45,6 +45,17 @@
           <div>
             <h6 class="p-t-10" style="color: #009688">A propos de la campagne</h6>
             <h6 style="color: #009688"><strong>{{name}}</strong></h6>
+            <!-- <div>
+  <div style="display: block">
+    <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [chartType]="barChartType">
+    </canvas>
+  </div>
+</div> -->
           </div>
         </div>
       </div>
@@ -58,16 +69,16 @@
             <i class="icon icon-home2" style="color: #009688"></i>{{generale}}
           </a>
         </li>
-        <!--  <li>
-                          <a class="nav-link" id="v-pills-payments-tab" data-toggle="pill" href="#v-pills-payments" role="tab" aria-controls="v-pills-payments" aria-selected="false"><i class="icon icon-money-1"></i>Payments</a>
+            <li>
+                <a class="nav-link" id="v-pills-timeline-tab" style="color: #009688" data-toggle="pill" href="#v-pills-payments" role="tab" aria-controls="v-pills-payments" aria-selected="false"><i class="icon icon-cog"></i>Budget</a>
+            </li>
+          <li>
+                          <a class="nav-link" id="v-pills-payments-tab" style="color: #009688" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="icon icon-money-1"></i>Ciblage de zone</a>
                       </li>
-                      <li>
-                          <a class="nav-link" id="v-pills-timeline-tab" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="icon icon-cog"></i>Timeline</a>
-                      </li> -->
         <li>
           <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
             aria-controls="v-pills-settings" aria-selected="false" style="color: #009688"><i class="icon icon-cog"
-              style="color: #009688"></i>Modifier la campagne</a>
+              style="color: #009688"></i>Modifier</a>
         </li>
       </ul>
     </div>
@@ -84,7 +95,13 @@
 
               <ul class="list-group list-group-flush">
                 <!--     <li class="list-group-item grey lighten-2"><i class="icon-chevron-circle-right text-white" style="float: left"></i><strong class="s-12 text-white" style="float: left">Nom</strong> <span class="float-right s-12 text-white" style="font-weight: bold">{{name}}</span></li> -->
-                <li class="list-group-item" *ngIf="status=='PAUSED'"><i class="icon icon-mail text-success"
+                <li class="list-group-item text-center">
+                  <img class="img-responsive" src="assets/img/images/campaign.png">
+
+                </li>
+                <li class="list-group-item" *ngIf="status=='PAUSED'">
+                
+                  <i class="icon icon-mail text-success"
                     style="float: left"></i><strong class="s-12" style="float: left">Status</strong> <span
                     class="float-right s-12 text-danger"
                     style="font-weight: bold">{{text_status_deactive_campaign}}</span></li>
@@ -107,90 +124,25 @@
                 <li class="list-group-item" *ngIf="servingStatus=='ENDED'"><i class="icon-alarm_off text-danger"
                     style="float: left"></i><strong class="s-12 text-danger"
                     style="float: right">{{labelEnded}}</strong></li>
-                <li class="list-group-item"><i class="icon icon-hourglass-start text-info"
+               <!--  <li class="list-group-item"><i class="icon icon-hourglass-start text-info"
                     style="float: left"></i><strong class="s-12 text-info"
                     style="float: right">{{labelDateStart}}</strong> <strong class="s-12 text-info"
                     style="float: left">{{startDate}}</strong>
                   <ejs-datepicker id='datepicker' (change)=" onDateStartChange($event)" [min]='minDate' [max]='maxDate'>
                   </ejs-datepicker>
-                </li>
-                <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong
+                </li> -->
+              <!--   <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong
                     class="s-12 text-info" style="float: right">{{labelDateEnd}}</strong><strong class="s-12 text-info"
                     style="float: left">{{endDate}}</strong>
                   <ejs-datepicker id='datepicker' (change)=" onEndDateChange($event)" [min]='minDate' [max]='maxDate'>
                   </ejs-datepicker>
-                </li>
+                </li> -->
+                 
                 <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
               </ul>
             </div>
             
-                <div class="card mt-3 mb-3 text-center no-b" *ngIf="zone==''">
-                  <div class="card-header bg-white no-b">
-                    <strong class="card-title">Ciblage de zones</strong>
-    
-                  </div>
-                  <ul class="no-b">
-                    <li class="list-group-item">
-                      <h6 class="text-info">{{text_no_zone}}</h6>
-                    </li>
-                    <li class="list-group-item" *ngIf="isCiblage">
-                      <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
-                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
-                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
-                        (onDeSelectAll)="onDeSelectAllZone()">
-                      </ng-multiselect-dropdown>
-    
-                    </li>
-    
-                  </ul>
-    
-                  <div class="card-footer text-center white no-b">
-                    <a class="btn-fab btn-fab-sm shadow btn-info" (click)="openAddLocation()" *ngIf="!isCiblage"><i
-                        class="icon-add_location"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-success" (click)="targetZones()" *ngIf="isCiblage"><i
-                        class="icon-check"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddLocation()" *ngIf="isCiblage"><i
-                        class="icon-close"></i></a>
-    
-                  </div>
-                </div>
 
-          
-           
-
-                <div class="card mt-3 mb-3 text-center no-b" *ngIf="zone!=''">
-                  <div class="card-header bg-white no-b">
-                    <strong class="card-title">Ciblage de zones</strong>
-    
-                  </div>
-                  <ul class="no-b">
-                    <li class="list-item" *ngFor="let loc of zone">
-                      <!-- <p class="text-info">{{loc.item_id}}</p> -->
-                    
-                        <span class="badge badge-primary r-3 blink">{{loc.item_text}}<i class="icon-location-arrow" style="float: left"></i></span>
-    
-                    </li>
-                    <li class="list-group-item" *ngIf="isCiblage">
-                      <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
-                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
-                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
-                        (onDeSelectAll)="onDeSelectAllZone()">
-                      </ng-multiselect-dropdown>
-    
-                    </li>
-    
-                  </ul>
-    
-                  <div class="card-footer text-center white">
-                    <a class="btn-fab btn-fab-sm shadow btn-info" (click)="openAddLocation()" *ngIf="!isCiblage"><i
-                        class="icon-add_location"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-success" (click)="updateTargetZones()" *ngIf="isCiblage"><i
-                        class="icon-check"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddLocation()" *ngIf="isCiblage"><i
-                        class="icon-close"></i></a>
-    
-                  </div>
-                </div>
          
    
 
@@ -217,6 +169,9 @@
                 </div>
 
                 <div class="card my-3 my-3 no-b shadow no-b">
+                 <!--  <button class="btn btn-sm btn-secondary bg-gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="float: right !important; width: 20px">
+                    <i class="icon-edit"></i>
+                  </button> -->
                   <div class="card-header teal lighten-1 text-center no-b" *ngIf="number_ad_groups!='0'">
                     <i class="icon-clipboard-edit text-white"></i>
                     <h6 style="color: white">Groupes d'annonces </h6>
@@ -236,7 +191,7 @@
                             <th>Action</th>
                           </tr>
 
-                          <tr *ngFor="let adgroup of adgroups | async" class="no-b">
+                          <tr *ngFor="let adgroup of adgroups | async" class="no-b" title="cliquez sur le nom du groupe pour créer des annonces">
                             <!-- Check box -->
                             <!-- <td>
                                         <input type="checkbox">
@@ -263,7 +218,7 @@
                             <td class='no-b text-center'>
                             
                              
-                              <a class="text-danger" style="cursor: pointer" title="dÃ©sactiver"
+                              <a class="text-danger" style="cursor: pointer" title="désactiver"
                                 (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"
                                 *ngIf="adgroup?.status==='ENABLED'">
                                 <i class="icon-stop text-danger"></i>
@@ -283,31 +238,34 @@
                       </table>
                     </div>
                   </div>
-                  <div class="card-body text-center">
+                  <div class="card-body text-center no-b">
                     <ng-template #noAdGroups>
                       <div class="card white no-b">
-                        <div class="card-body white no-b shadow text-center">
-                          <h6 class="text-danger" >Aucun groupe d'annonce cliquez sur le boutton pour créer un groupe d'annonce</h6>
-
+                        <div class="card-body white no-b text-center">
+                          <a class="btn btn-md teal darken-1 shadow  text-white" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle"></i> Cliquer pour commencer</a><br>
+                          <small>Cliquer pour créer un groupe d'annonce</small><br>
+                          <small>Un groupe d'annonce est un dossier qui contient des annonces</small><br>
+                          <small>Lorsque la campagne commencera à diffuser se sont ces dossiers qui</small><br> 
+                          <small>seront placés dans les sites de detinations propres à chaque groupe définis par vous même</small>
                         </div>
                       </div>
 
                     </ng-template>
                   </div>
-                  <div class="card-footer white text-center no-b">
-                    <a class="btn-fab btn-fab-md teal lighten-3 shadow btn-md text-white" (click)="toggleAddNewAdGroup()" style="margin-top: -15px; position: absolute;margin-left: -25px;"><i class="icon-add_circle"></i></a>
+                  <div class="card-footer white text-center no-b" *ngIf="number_ad_groups!=0">
+                    <a class="btn btn-md teal darken-1 shadow  text-white" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe d'annonces</a>
 
                     
                     <!--  <a href="#" class="btn btn-outline-danger btn-xs">Delete All</a> -->
                   </div>
                 </div>
                 <div class="col" style="text-align: center">
-                             <div class="card my-3 my-3 no-b shadow" style="display: inline-block">
+                     <!--         <div class="card my-3 my-3 no-b shadow" style="display: inline-block">
                     <div class="card-header teal lighten-3 text-white">
                         Budget
                     </div>
                     <div class="card-body no-b">
-                        <!-- Big Heading -->
+            
                         <div class="text-center">
                             <p class="my-3">La campagne dure: {{numberOfDays}} jours</p>
                             <p class="my-3">Budget journalier: {{dailyBudget}} CFA/jour</p>
@@ -316,23 +274,10 @@
                             Définir un bugdet</button>
                            
                         </div>
-                       <!--  <div class="d-flex justify-content-between">
-                            <div>
-                                <p>
-                                    <i class="icon-circle-o text-red mr-2"></i>Sales</p>
-                                <p>
-                                    <i class="icon-circle-o text-green mr-2"></i>Last Month</p>
-                            </div>
-                            <div>
-                                <p>
-                                    <i class="icon-angle-double-down text-red mr-2"></i>1,4,348</p>
-                                <p>
-                                    <i class="icon-angle-double-up text-green mr-2"></i>1,11,5</p>
-                            </div>
-                        </div> -->
+                      
 
                     </div>
-                </div>
+                </div> -->
                 </div>
             
 
@@ -349,91 +294,226 @@
       </div>
       <div class="tab-pane fade" id="v-pills-payments" role="tabpanel" aria-labelledby="v-pills-payments-tab">
         <div class="row">
+       
           <div class="col-md-12">
-            <div class="card no-b">
-              <div class="card-header white b-0 p-3">
-                <h4 class="card-title">Invoices</h4>
-                <small class="card-subtitle mb-2 text-muted">Items purchase by users.</small>
+            <div class="card no-b shadow">
+              <div class="card-header teal darken-1 b-0 p-3 text-center no-b">
+                <h6 class="card-title text-white">Budget de la campagne</h6>
+               <!--  <small class="card-subtitle mb-2 text-muted">Sélectionner parmis les options ci-dessous pour placer un budget</small> -->
               </div>
-              <div class="collapse show" id="invoiceCard">
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
-                      <thead class="bg-light">
-                        <tr>
-                          <th>SKU</th>
-                          <th>Invoice#</th>
-                          <th>Customer Name</th>
-                          <th>Status</th>
-                          <th>Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>PAP-10521</td>
-                          <td><a href="#">INV-281281</a></td>
-                          <td>Baja Khan</td>
-                          <td><span class="badge badge-success">Paid</span></td>
-                          <td>$ 1228.28</td>
-                        </tr>
-                        <tr>
-                          <td>PAP-532521</td>
-                          <td><a href="#">INV-01112</a></td>
-                          <td>Khan Sab</td>
-                          <td><span class="badge badge-warning">Overdue</span>
-                          </td>
-                          <td>$ 5685.28</td>
-                        </tr>
-                        <tr>
-                          <td>PAP-05521</td>
-                          <td><a href="#">INV-281012</a></td>
-                          <td>Bin Ladin</td>
-                          <td><span class="badge badge-success">Paid</span></td>
-                          <td>$ 152.28</td>
-                        </tr>
-                        <tr>
-                          <td>PAP-15521</td>
-                          <td><a href="#">INV-281401</a></td>
-                          <td>Zoor Shoor</td>
-                          <td><span class="badge badge-success">Paid</span></td>
-                          <td>$ 1450.28</td>
-                        </tr>
-                        <tr>
-                          <td>PAP-532521</td>
-                          <td><a href="#">INV-01112</a></td>
-                          <td>Khan Sab</td>
-                          <td><span class="badge badge-warning">Overdue</span>
-                          </td>
-                          <td>$ 5685.28</td>
-                        </tr>
-                        <tr>
-                          <td>PAP-05521</td>
-                          <td><a href="#">INV-281012</a></td>
-                          <td>Bin Ladin</td>
-                          <td><span class="badge badge-success">Paid</span></td>
-                          <td>$ 152.28</td>
-                        </tr>
-                        <tr>
-                          <td>PAP-15521</td>
-                          <td><a href="#">INV-281401</a></td>
-                          <td>Zoor Shoor</td>
-                          <td><span class="badge badge-success">Paid</span></td>
-                          <td>$ 1450.28</td>
-                        </tr>
-                        <tr>
-                          <td>PAP-32521</td>
-                          <td><a href="#">INV-288101</a></td>
-                          <td>Walter R.</td>
-                          <td><span class="badge badge-warning">Overdue</span>
-                          </td>
-                          <td>$ 685.28</td>
-                        </tr>
-                      </tbody>
-                    </table>
+
+              <div class="card-body no-b text-center">
+                         <div class="card no-b" style="display: inline-block">
+                   <!--  <div class="card-header white no-b">
+                        <strong style="color: #00897b"> Options </strong>
+                    </div> -->
+                    <div class="card-body pt-0 text-center no-b">
+
+                    <div class="row">
+                      <div class="col text-center">
+                        <p class="text-muted well well-sm shadow mt-3" >
+                          {{accountValue}} CFA dans le compte<br>
+                          Budget de la campagne: {{budget}} CFA 
+                        </p>
+                      </div>
+                       <div class="col text-center">
+                         <a class="btn-fab btn-fab-sm teal darken-1 text-white" style="float: right" (click)="OpenModifyDateCampaign()"><i class="icon-edit"></i></a>
+                         <p class="text-muted well well-sm shadow" >
+                           
+                           Date de début de campagne: {{startDateFrench}}<br>
+                           Date de fin de campagne: {{endDateFrench}}
+                         </p>
+                      </div>
+                      
+                     
                   </div>
+                       <div class="text-center" *ngIf="button_payments">
+                         <div class="my-3">
+                           <a class="btn btn-social teal darken-1 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
+            <i class="icon-payment text-white"></i> Placement depuis mon solde 
+          </a>
+        
+                        </div>
+                         <div class="my-3">
+                           
+            <a class="btn btn-social teal darken-1 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
+            <i class="icon-payment text-white"></i> Recharger mon compte
+          </a>
+         
+                        </div>
+                         <div class="my-3">
+   
+          <a class="btn btn-social teal darken-1 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
+            <i class="icon-pay-point text-white"></i> Placer directement un budget
+          </a>
+                        </div>
+                       </div>
+                            <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        
+        <div class="form-row text-center" *ngIf="modifyDate">
+
+          <div style="display: inline-block; margin: auto">
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item"><i class="icon icon-hourglass-start text-info" style="float: left"></i><strong
+                  class="s-12 text-info" style="float: right">Date de début</strong> <strong class="s-12 text-info"
+                  style="float: left">{{startDateFrench}}</strong>
+                <ejs-datepicker id='datepicker' (change)="onStartDateChange($event)" [min]='minDate' [max]='maxDate'>
+                </ejs-datepicker>
+              </li>
+              <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong
+                  class="s-12 text-info" style="float: right">Date de fin</strong><strong class="s-12 text-info"
+                  style="float: left">{{endDateFrench}}</strong>
+                <ejs-datepicker id='datepicker' (change)=" onEndDateChange($event)" [min]='minDate' [max]='maxDate'>
+                </ejs-datepicker>
+              </li>
+              <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
+              <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="updateCampaignDate()">Appliquer</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="CloseUpdateCampaignDate()">Annuler</button>
+            </ul>
+          </div>
+
+        </div>
+                             <div class="form-row text-center" *ngIf="isSetBudget">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: Seul 80% du montant seront placés les 20% pour les frais de service</small>
+            <input type="number" class="form-control no-b bg-light" id="montant" (keyup)="handleSimulatedImpressionsCount()"
+              placeholder="Montant" min="10000" placeholder="Montant supérieur ou égal à 10000 FCA" required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none; ">Saisir un montant supérieur ou égal à 10000
+              FCA</small>
+             <div class="d-flex justify-content-between align-items-center bg-grey shadow" *ngIf="budget_to_place!=0 && my_gain!=0">
+                                    <div><span class="text-white" style="font-size: 12px">Budget placé: {{budget_to_place}} CFA</span></div>
+                                    <div><span class="text-white" style="font-size: 12px">Frais de service: {{my_gain}} CFA</span></div>
+                                </div>
+                                <div class="text-center">
+                                
+                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
+                                  
+                                </div>
+               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineBudget()">Placer le budget</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="CloseBudgetOperation()">Annuler</button>
+
+
+
+          </div>
+          
+
+        </div>
+         <div class="form-row text-center" *ngIf="isAccountRechargement">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: Cette opération vous permettra dans la suite d'éviter les paiments pour démarrer une nouvelle campagne</small>
+            <input type="number" class="form-control no-b bg-light" id="montant" (keyup)="handleIfValide()"
+              placeholder="Montant" min="10000"  placeholder="Montant supérieur ou égal à 20 000 FCA" required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
+              FCA</small>
+              
+               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="CloseRechargeAccountOperation()">Annuler</button>
+
+                 <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+
+
+          </div>
+          
+
+        </div>
+                 <div class="form-row text-center" *ngIf="isPlacementBudgetFromAccount">
+          <div class="col-md-12 mb-3 text-center">
+            
+            <small class="text-success"
+              style="font-size: 12px; margin-top: -5px;">NB: La valeur du budget doit être disponible dans votre compte et supérieur ou égale à 10 000 FCFA</small>
+            <input type="number" class="form-control no-b bg-light" id="montant" (keyup)="handleIfBudgetToPlaceFromAccountIsValid()"
+              placeholder="Montant" placeholder="Montant supérieur ou égal à 10 000 FCA"required>
+            <small class="text-danger" id="error_recharge"
+              style="font-size: 12px; display: none">La valeur du budget invalide</small>
+               <div class="d-flex justify-content-between align-items-center bg-grey shadow" *ngIf="budget_to_place!=0 && my_gain!=0">
+                                    <div><span class="text-white" style="font-size: 12px">Budget placé: {{budget_to_place}} CFA</span></div>
+                                    <div><span class="text-white" style="font-size: 12px">Frais de service: {{my_gain}} CFA</span></div>
+                                </div>
+                                <div class="text-center">
+                                
+                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
+                                  
+                                </div>
+               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)="defineBudgetFromAccount()">Placer mon budget</button>
+                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px"
+                (click)=" ClosePlaceBudgetFromAccountValue()">Annuler</button>
+
+
+
+          </div>
+          
+
+        </div>
+                    
+                    </div>
+                </div>
+              </div>
+
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b ">
+                      <div class="col-md-12 text-center" style="text-align: center">
+               <div class="text-center" style="display: inline-block">
+         
+          <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
+        <!--   <a class="btn btn-social teal darken-1 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
+            <i class="icon-payment text-white"></i> Placement depuis mon solde 
+          </a>
+            <a class="btn btn-social teal darken-1 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
+            <i class="icon-payment text-white"></i> Recharger mon compte d'abord
+          </a>
+          <a class="btn btn-social teal darken-1 text-white r-20"
+            style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
+            <i class="icon-pay-point text-white"></i> Placer directement un budget
+          </a> -->
+       <!--    <a class="btn btn-lg btn-block btn-social btn-warning text-white r-20 blink"
+            style="width: 250px; font-size: 12px" (click)="saveImage()" *ngIf="budget!=0" id="finalButtonPublier">
+            <i class="icon-pay-point text-white"></i>Je suis prêt, publier l'annonce
+          </a> -->
+        </div>
+          </div>
+       
+     
+  
+
+ 
+
+              
+
+
                 </div>
               </div>
             </div>
+          </div>
+             <div class="col-md-12">
+                      
           </div>
         </div>
 
@@ -446,46 +526,348 @@
               <!-- timeline time label -->
               <li class="time-label">
                 <span class="badge badge-danger r-3">
-                  10 Feb. 2014
+                  Liste de vos types de ciblage
                 </span>
               </li>
               <!-- /.timeline-label -->
               <!-- timeline item -->
               <li>
-                <i class="ion icon-envelope bg-primary"></i>
-                <div class="timeline-item card">
-                  <div class="card-header white"><a href="#">Support Team</a> sent you an email <span
-                      class="time float-right"><i class="ion icon-clock-o"></i> 12:05</span></div>
-                  <div class="card-body">
-                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                    weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                    jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                    quora plaxo ideeli hulu weebly balihoo...
-                  </div>
-                  <div class="card-footer">
-                    <a class="btn btn-primary btn-xs">Read more</a>
-                    <a class="btn btn-danger btn-xs">Delete</a>
+                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseZone" role="button" aria-expanded="false" aria-controls="collapseZone">
+
+                  <i class="ion icon-envelope"></i> Ciblage de zone
+                </a>
+                <div class="collapse" id="collapseZone">
+                        <div class="card no-b shadow timeline-item">
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h4 class="card-title">Liste des zones ciblées</h4>
+                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos zones ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                <span class="float-right"><i
+                          class="ion icon-clock-o"></i>Modifier le ciblage</span>
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr>
+                          <th>Zones ciblées</th>
+                          <th>Enchères</th>
+                          <th>Coût de l'enchère</th>
+                          <th>Supprimer le ciblage</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="zone==''" class="text-center">
+                            {{text_no_zone}}
+                        </tr>
+                        <ng-container >
+                          <tr *ngFor="let loc of zone">
+                            <td>{{loc.item_text}}</td>
+                            <td>0</td>
+                            <td>0 CFA</td>
+                           <td><i class="icon-delete text-danger"></i></td>
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-              </li>
-              <!-- END timeline item -->
-              <!-- timeline item -->
-              <li>
-                <i class="ion icon-user yellow"></i>
-
-                <div class="timeline-item  card">
-
-                  <div class="card-header white">
-                    <h6><a href="#">Sarah Young</a> accepted your friend request<span class="float-right"><i
-                          class="ion icon-clock-o"></i> 5 mins ago</span></h6>
+                <div class="card-footer white no-b text-center">
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone==''"><i
+                        class="icon-add_location"></i>Ajouter une zone</a>
+                   <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone!=''"><i
+                        class="icon-add_location"></i>Modifier le ciblage</a>
+                        <div class="card text-center no-b shadow" *ngIf="zone==''">
+                  
+                  <ul class="no-b">
+               
+                    <li class="list-group-item" *ngIf="isCiblage">
+                      <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
+                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
+                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
+                        (onDeSelectAll)="onDeSelectAllZone()">
+                      </ng-multiselect-dropdown>
+    
+                    </li>
+    
+                  </ul>
+    
+                  <div class="card-footer text-center white no-b">
+                   
+                    <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetZones()" *ngIf="isCiblage"><i
+                        class="icon-check"></i>Ajouter</a>
+                    <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddLocation()" *ngIf="isCiblage"><i
+                        class="icon-close"></i>Fermer</a>
+    
                   </div>
+                </div>
 
+          
+           
+
+                <div class="card mt-3 mb-3 text-center no-b" *ngIf="zone!=''">
+                  <ul class="no-b">
+                    <li class="list-group-item" *ngIf="isCiblage">
+                      <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
+                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
+                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
+                        (onDeSelectAll)="onDeSelectAllZone()">
+                      </ng-multiselect-dropdown>
+    
+                    </li>
+    
+                  </ul>
+    
+                  <div class="card-footer text-center white">
+                   
+                    <a class="btn-fab btn-fab-sm shadow btn-success" (click)="updateTargetZones()" *ngIf="isCiblage"><i
+                        class="icon-check"></i></a>
+                    <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddLocation()" *ngIf="isCiblage"><i
+                        class="icon-close"></i></a>
+    
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+              </li>
+<!-- 
+                  <li>
+                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
+
+                  <i class="ion icon-envelope"></i> Ciblage des âges
+                </a>
+                <div class="collapse" id="collapseAge">
+                        <div class="card no-b shadow timeline-item">
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h4 class="card-title">Liste des âges ciblés</h4>
+                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos tranches d'âges ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                <span class="float-right"><i
+                          class="ion icon-clock-o"></i>Modifier le ciblage</span>
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr>
+                          <th>Âges ciblés</th>
+                          <th>Enchères</th>
+                          <th>Coût de l'enchère</th>
+                          <th>Supprimer le ciblage</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="populations==''" class="text-center">
+                            Aucune tranche d'âge ciblée
+                        </tr>
+                        <ng-container >
+                          <tr *ngFor="let pop of populations">
+                            <td>{{pop.item_text}}</td>
+                            <td>0</td>
+                            <td>0 CFA</td>
+                           <td><i class="icon-delete text-danger"></i></td>
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer white no-b text-center">
+                     <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations==''"><i
+                        class="icon-add_location"></i>Ajouter une tranche d'âge</a>
+                   <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations!=''"><i
+                        class="icon-add_location"></i>Modifier le ciblage</a>
+                        
+                                 <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageAge">
+      
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Âges'"
+                      [data]="dropdownListAges" [settings]="dropdownSettingsAges" (onSelect)="onAgeSelect($event)"
+                      (onSelectAll)="onAgeSelectAll($event)" (onDeSelect)="onAgeDeSelect($event)"
+                      (onDeSelectAll)="onDeSelectAllAge()">
+                    </ng-multiselect-dropdown>
+
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetAge()" *ngIf="isCiblageAge"><i
+                      class="icon-check"></i> Ajouter</a>
+                  <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageAges()"
+                    *ngIf="isCiblageAge"><i class="icon-close"></i> Fermer</a>
 
                 </div>
+              </div>
+             
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+               <li>
+                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
+
+                  <i class="ion icon-envelope"></i> Ciblage des genres
+                </a>
+                <div class="collapse" id="collapseGenre">
+                        <div class="card no-b shadow timeline-item">
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h4 class="card-title">Liste des genres ciblés</h4>
+                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos genres ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                <span class="float-right"><i
+                          class="ion icon-clock-o"></i>Modifier le ciblage</span>
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr>
+                          <th>Genres ciblés</th>
+                          <th>Enchères</th>
+                          <th>Coût de l'enchère</th>
+                          <th>Supprimer le ciblage</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="genre==''" class="text-center">
+                            Aucun genre ciblé
+                        </tr>
+                        <ng-container >
+                          <tr *ngFor="let gen of genre">
+                            <td>{{gen.item_text}}</td>
+                            <td>0</td>
+                            <td>0 CFA</td>
+                           <td><i class="icon-delete text-danger"></i></td>
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                 <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageGenre()" *ngIf="!isCiblageGenre && genres ==''"><i
+                      class="icon-check"></i> Cibler un genre</a>
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageGenre()"
+                    *ngIf="!isCiblageGenre && genres!=''"><i class="icon-close"></i>Modifier le ciblage</a>
+                     <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageGenre">
+           
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Genres'"
+                      [data]="dropdownListSexes" [settings]="dropdownSettingsSexes" (onSelect)="onSexeSelect($event)"
+                      (onSelectAll)="onSexeSelectAll($event)" (onDeSelect)="onSexeDeSelect($event)"
+                      (onDeSelectAll)="onDeSelectAllSexe()">
+                    </ng-multiselect-dropdown>
+
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetGender()" *ngIf="isCiblageGenre"><i
+                      class="icon-check"></i> Ajouter</a>
+                  <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageGenre()"
+                    *ngIf="isCiblageGenre"><i class="icon-close"></i> Fermer</a>
+
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
               </li>
+             
+              <li>
+                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
+
+                  <i class="ion icon-envelope"></i> Ciblage d'appareils
+                </a>
+                <div class="collapse" id="collapseAppareil"> 
+                           <div class="card no-b shadow timeline-item">
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h4 class="card-title">Liste des appareils ciblés</h4>
+                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos appareils ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                <span class="float-right"><i
+                          class="ion icon-clock-o"></i>Modifier le ciblage</span>
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
+                      <thead class="bg-light">
+                        <tr>
+                          <th>Appareils</th>
+                          <th>Enchères</th>
+                          <th>Coût de l'enchère</th>
+                          <th>Supprimer le ciblage</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="appareils==''" class="text-center">
+                            Aucun appareil
+                        </tr>
+                        <ng-container>
+                          <tr *ngFor="let app of appareils">
+                            <td>{{app.item_text}}</td>
+                            <td>0</td>
+                            <td>0 CFA</td>
+                           <td><i class="icon-delete text-danger"></i></td>
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                            <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageDevices()" *ngIf="!isCiblageDevices && appareils ==''"><i
+                      class="icon-check"></i> Cibler un appareil</a>
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageDevices()"
+                    *ngIf="!isCiblageDevices && appareils!=''"><i class="icon-close"></i>Modifier le ciblage</a>
+                     <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageDevices">
+           
+                <ul class="no-b">
+                  <li class="list-group-item">
+                    <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Appareils'"
+                      [data]="dropdownListDevices" [settings]="dropdownSettingsDevices"
+                      (onSelect)="onDevicesSelect($event)" (onSelectAll)="onDevicesSelectAll($event)"
+                      (onDeSelect)="onDevicesDeSelect($event)" (onDeSelectAll)="onDeSelectAllDevices()">
+                    </ng-multiselect-dropdown>
+
+                  </li>
+
+                </ul>
+
+                <div class="card-footer text-center white no-b">
+
+                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20"  (click)="targetDevices()" *ngIf="isCiblageDevices"><i
+                      class="icon-check"></i> Ajouter</a>
+                  <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageDevices()"
+                    *ngIf="isCiblageDevices"><i class="icon-close"></i> Fermer</a>
+
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+                </div>
+              </li> -->
               <!-- END timeline item -->
               <!-- timeline item -->
-              <li>
+             <!--  <li>
                 <i class="ion icon-comments bg-danger"></i>
 
                 <div class="timeline-item  card">
@@ -505,16 +887,15 @@
                     <a class="btn btn-warning btn-flat btn-xs">View comment</a>
                   </div>
                 </div>
-              </li>
+              </li> -->
               <!-- END timeline item -->
               <!-- timeline time label -->
-              <li class="time-label">
+             <!--  <li class="time-label">
                 <span class="badge badge-success r-3">
                   3 Jan. 2014
                 </span>
               </li>
-              <!-- /.timeline-label -->
-              <!-- timeline item -->
+            
               <li>
                 <i class="ion icon-camera indigo"></i>
 
@@ -531,10 +912,10 @@
                     <img src="http://placehold.it/150x100" alt="..." class="margin">
                   </div>
                 </div>
-              </li>
+              </li> -->
               <!-- END timeline item -->
               <!-- timeline item -->
-              <li>
+              <!-- <li>
                 <i class="ion icon-video-camera bg-maroon"></i>
 
                 <div class="timeline-item  card">
@@ -553,10 +934,10 @@
                   </div>
                 </div>
               </li>
-              <!-- END timeline item -->
+            
               <li>
                 <i class="ion icon-clock-o bg-gray"></i>
-              </li>
+              </li> -->
             </ul>
           </div>
           <!-- /.col -->
@@ -610,15 +991,15 @@
           <h6 class="my-3">{{accountValue}} CFA dans le compte</h6>
           <h6 class="my-3">Budget de la campagne: {{budget}} CFA </h6>
           <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-          <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+          <a class="btn btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+            <a class="btn btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+          <a class="btn btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>
@@ -728,6 +1109,8 @@
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="CloseRechargeAccountOperation()">Annuler</button>
+
+                 <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 
 
 

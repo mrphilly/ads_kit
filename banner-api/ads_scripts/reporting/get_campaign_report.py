@@ -55,7 +55,7 @@ def main(client):
       include_zero_impressions=True)
 
   response = report.read().decode('utf-8')
-  s = response.splitlines()
+  s = response.splitlines(0)
   x = csv.reader(s)
   print(list(x))
   

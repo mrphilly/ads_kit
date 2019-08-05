@@ -194,10 +194,10 @@ export class NotesService implements OnInit {
       console.log(`location id from me ${location[0].item_id}`)
       console.log(`location id from firestore ${value[0].item_id}`)
       
-        
+      
         this.http.post('http://127.0.0.1:5000/updateLocation', {
           'campaign_id': campaign_id,
-          'previous_location': value[0].item_id,
+          'previous_location': value[0]['item_id'],
           'location_id': location[0].item_id
        
     })
@@ -239,6 +239,53 @@ export class NotesService implements OnInit {
    
   }
 
+
+  async targetAge(id: string, campaign_id: string, age: any, uid: any) {
+
+   return await this.getSingleCampaignWithId(uid, campaign_id).then(value => {
+  
+     console.log(`value:`)
+     console.log(value)
+     console.log(`age:`)
+     console.log(age)
+  
+  /*    var tab = _.differenceWith(value, genre, _.isEqual)
+     console.log(tab)
+     if (tab = []) {
+       console.log(`genre déjà ciblé`)
+     } else {
+        
+     }*/
+      
+        
+        this.http.post('http://127.0.0.1:5000/targetAgeLevelCampaign', {
+       'campaign_id': campaign_id,
+          'previous_ages': value['criterion_ages'],
+       'ages': age
+    })
+      .subscribe(
+        res => {
+          console.log(`res from location backend: ${res}`)
+          this.updateNote(id, {ages: age, criterion_ages: res})
+        },
+        err => {
+          Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+
+    })
+   
+  }
 
   getSingleCampaign(campaign_id: string, name: string) {
     
@@ -479,7 +526,11 @@ parseDate(str) {
        ages: [],
       sexes: [],
       devices: [],
-      placement: [],
+        placement: [],
+       criterion_ages: [],
+    criterion_sexes: [],
+    criterion_devices: [],
+    criterion_placement: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: userDoc.ref,
       owner: this.uid,  

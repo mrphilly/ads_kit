@@ -78,7 +78,8 @@ export class NotesListComponent implements AfterViewInit {
   constructor(private notesService: NotesService, private auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute) {
       var self = this
     
-       this.auth.user.forEach((value) => {
+    this.auth.user.forEach((value) => {
+        
          this.uid = value.uid
          this.email = value.email
          this.accountValue = value.account_value
@@ -105,6 +106,7 @@ export class NotesListComponent implements AfterViewInit {
   ngAfterViewInit() {
   //var init_note = new NotesService(this.uid)
   
+    this._showCampaignSettings_ = this.child._showCampaignSettings_
 
 
    
@@ -117,7 +119,7 @@ export class NotesListComponent implements AfterViewInit {
   ngOnInit() {
    var self = this
     this.route.params.subscribe(params => {
-      console.log(typeof (params['money']))
+  
       if (typeof (params['money']) != "undefined") {
         this.isCreating = true
         this.auth.user.forEach(data => {
@@ -250,21 +252,16 @@ export class NotesListComponent implements AfterViewInit {
   }
 
   toggleListCampaign() {
-    this.showList = false
-     //this.child._showCampaignSettings_=false
+  
     this._addCampaign_ = false
+    this.showList = false
+    this.child._showCampaignSettings_ = false
+  
+     //this.child._showCampaignSettings_=false
+
   /*   this.title = "Liste des campagnes" */
   }
-  toggleSignleCampaign(/* name: string, id: string, id_campagne: string */) {
-    this._showCampaignSettings_ = true
-    this.showList = false
-    this._addCampaign_ = false
-   /*  this.id = id
-    this.id_campagne = id_campagne
-    this.name = name */
-   
-    
-  }
+
   newCampaign() {
     this._addCampaign_ = true 
     this.title = "Ajouter une nouvelle campagne"

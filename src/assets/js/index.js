@@ -173,7 +173,6 @@ $(".paper-nav-toggle").on("click", () => {
 
 $(document).ready(() => {
 /*   var data = $('.ages').select2('data');
-  console.log(data) */
 
 /*   setInterval(isElementClicked, 2000); */
   const urlParams = new URLSearchParams(window.location.search);
@@ -319,4 +318,3 @@ var calculateAspectRatio = function (image, canvas) {
     AspectRatio.startY = yStart;
     return AspectRatio;
 }
-

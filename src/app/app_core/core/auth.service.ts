@@ -54,6 +54,8 @@ export class AuthService {
       // startWith(JSON.parse(localStorage.getItem('user')))
     );
 
+   
+
      this.notificationAccount = this.afAuth.authState.pipe(
       switchMap(amount => {
         if (amount) {

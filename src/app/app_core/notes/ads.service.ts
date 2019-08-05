@@ -121,11 +121,13 @@ private basePath = '/uploads';
 
   
   
-  async addAd(ad_id: any, ad_group_id: any, ad_name: any, image_url: any, finalUrls: any, finalAppUrls: any, finalMobileUrls: any) {
+  async addAd(ad_id: any, ad_group_id: any, ad_name: any, image_url: any, finalUrls: any, finalAppUrls: any, finalMobileUrls: any, size: any): Promise<any> {
    
   
   
-    return await this.annonceVerification(ad_name, ad_group_id).then(value => {
+    return await new Promise(resolve => {
+      alert(size[0]['width'].toString())
+      this.annonceVerification(ad_name, ad_group_id).then(value => {
       console.log(`promise result: ${value}`)
       
       if (`${value}` == '0') {
@@ -136,7 +138,11 @@ private basePath = '/uploads';
           'ad_name': ad_name,
           'finalUrls': finalUrls,
           'finalAppUrls': finalAppUrls,
-          'finalMobileUrls': finalMobileUrls
+          'finalMobileUrls': finalMobileUrls,
+          'width': size[0]['width'].toString(),
+          'height': size[0]['height'].toString(),
+          "size": size
+          
           
     })
       .subscribe(
@@ -168,7 +174,11 @@ private basePath = '/uploads';
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) {}
+              if (result.value) {
+                resolve('ok')
+              } else {
+                resolve('ok')
+              }
             })
          }) 
           
@@ -183,7 +193,11 @@ private basePath = '/uploads';
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
-            if (result.value){}
+          if (result.value) {
+              resolve('error')
+          } else {
+             resolve('error')
+            }
           })
         }
       );
@@ -198,17 +212,22 @@ private basePath = '/uploads';
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
-            if (result.value){}
+          if (result.value) {
+               resolve('error')
+          } else {
+            resolve('error')
+            }
           })
         
       }
+    })
     })
    
   }
 
 
 
-   async saveAdOnFirebase(ad_group_id: any, ad_name: any, uid: any, url_image: any, image_content: any, allUrls: any) {
+   async saveAdOnFirebase(ad_group_id: any, ad_name: any, uid: any, url_image: any, image_content: any, allUrls: any, size: any, ad_type: any) {
      var displayUrl = []
      var finalUrls = []
      var finalMobileUrls = []
@@ -232,7 +251,7 @@ private basePath = '/uploads';
       
       if (`${value}` == '0') {
         
-            this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid).then(res=>{
+            this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid, size, ad_type).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
               text: 'Annonce ajoutée avec succès',
@@ -308,7 +327,7 @@ private basePath = '/uploads';
     })
   }
 
-  prepareSaveAd(ad_id: any,ad_group_id: any, ad_name: any, status: any,  url_image: any, image_content: any, displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any): Annonces {
+  prepareSaveAd(ad_id: any,ad_group_id: any, ad_name: any, status: any,  url_image: any, image_content: any, displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any, size: any, ad_type: any): Annonces {
     const userDoc = this.afs.doc(`users/${uid}`);
     const newAd = {
       ad_id: ad_id,
@@ -323,6 +342,8 @@ private basePath = '/uploads';
       finalAppUrls: finalAppUrls,
       referenceId: referenceId,
       automated: automated,
+      size: size,
+      ad_type: ad_type,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: userDoc.ref,
       owner: uid,  
@@ -355,8 +376,8 @@ private basePath = '/uploads';
 
 
 
-  async createAd(ad_id: any, ad_group_id: any, ad_name: any, status: any, url_image: any, image_content: any,displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any) {
-    this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, status, url_image, image_content, displayUrl, finalUrls, finalMobileUrls, finalAppUrls, referenceId,  automated, uid);
+  async createAd(ad_id: any, ad_group_id: any, ad_name: any, status: any, url_image: any, image_content: any,displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any, size: any, ad_type: any) {
+    this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, status, url_image, image_content, displayUrl, finalUrls, finalMobileUrls, finalAppUrls, referenceId,  automated, uid, size, ad_type);
     const docRef = await this.afs.collection('ads').add(this.annonce_model);
   }
 
@@ -366,6 +387,15 @@ private basePath = '/uploads';
 
   deleteAd(id: string) {
     return this.getAd(id).delete();
+  }
+
+  deleteAdPromise(id: string):Promise<any> {
+    return new Promise(resolve => {
+      this.getAd(id).delete().then(()=>{
+        resolve('ok')
+      })
+
+    })
   }
   
 }
