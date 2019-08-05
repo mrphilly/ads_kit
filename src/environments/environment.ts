@@ -5,13 +5,13 @@
 
 export const environment = {
   production: false,
-  /* firebase: {
-     apiKey: "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
-    authDomain: "comparez.firebaseapp.com",
-    databaseURL: "https://comparez.firebaseio.com",
-    projectId: "comparez",
-    storageBucket: "gs://comparez.appspot.com/",
-    messagingSenderId: "975260713071",
-  },
-  googleMapsKey: 'AIzaSyCTDRoGnPwEHP_Iw1Vc68GLrmNQ7iwBkhA' */
+    /* firebase: {
+      apiKey: "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
+      authDomain: "comparez.firebaseapp.com",
+      databaseURL: "https://comparez.firebaseio.com",
+      projectId: "comparez",
+      storageBucket: "gs://comparez.appspot.com/",
+      messagingSenderId: "975260713071",
+    },
+    googleMapsKey: 'AIzaSyCTDRoGnPwEHP_Iw1Vc68GLrmNQ7iwBkhA' */
 };

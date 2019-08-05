@@ -369,7 +369,7 @@
                 <i class="icon-money-bag text-white"></i> {{accountValue}} CFA
               </a>
             </li>
-            <li class="dropdown custom-dropdown notifications-menu" *ngIf="!_init_campagne" style="margin-top: 5px">
+            <li class="dropdown custom-dropdown notifications-menu" style="margin-top: 5px">
               <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
                 <i class="icon-notifications_none text-white"></i>
                 <span class="badge badge-danger badge-mini rounded-circle">{{numberOfNotifications}}</span>
@@ -440,11 +440,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="_addCampaign_" style="position: relative">
-      <app-create-campaign></app-create-campaign>
-
-
-    </div>
+    
     <!--  
     <!--#navbar-->
       <header class="white pt-3 relative shadow bg-light" >
@@ -1396,7 +1392,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="genre==''" class="text-center">
+                        <tr *ngIf="genres==''" class="text-center">
                             Aucun genre ciblé
                         </tr>
                         <ng-container >
@@ -2518,7 +2514,7 @@
             <div class="form-row text-center">
               <div class="col-md-12 mb-3 text">
                 <h6 for="validationCustom01">Montant à recharger</h6>
-                <input type="number" class="form-control" id="montant" (onkeyup)="handleImpressionsCount()"
+                <input type="number" class="form-control" id="montant" (onkeyup)="handleSimulatedImpressionsCount()"
                   placeholder="Montant" min="10000" required>
                 <small class="text-success">Saisir un montant supérieur ou égal à 10000 FCA</small>
                 <div id="error_recharge" style="display: none">

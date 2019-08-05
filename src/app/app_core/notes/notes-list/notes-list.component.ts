@@ -75,7 +75,7 @@ export class NotesListComponent implements AfterViewInit {
   notificationAccountValue: any;
   numberOfNotifications = 0
 
-  constructor(private notesService: NotesService, private auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute) {
+  constructor(private notesService: NotesService, public auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute) {
       var self = this
     
     this.auth.user.forEach((value) => {

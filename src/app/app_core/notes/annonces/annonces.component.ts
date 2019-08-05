@@ -144,7 +144,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   public ALPHABET: string;
   public PATTERN: string;
   public COMMA: string;
-    notificationAccountValue: any;
+    notificationAccountValue = "";
   numberOfNotifications = 0
   url_errors = [];
   adForm: FormGroup;
@@ -202,8 +202,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   UpdatedEndDate = "";
   newStartDate = "";
   newEndDate = "";
-  accountValue: any;
-  montant: any;
+  accountValue = 0;
+  montant = 0;
   campagne_name: any;
   campagne_id: any;
   ad_group_id: any;
@@ -234,7 +234,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   nationals_websites = []
   internationals_websites = []
   ads_websites = []
-  currentAdStatus: any
+  currentAdStatus = ""
   currentAdSize: any
   currentAdType = ""
   apps = []
@@ -284,7 +284,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   };
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
-  constructor(private notesService: NotesService, private auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder) {
+  constructor(private notesService: NotesService, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder) {
 
   }
   dropdownListAges = [];
@@ -317,7 +317,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   text_option = "Paramètres du canvas"
   email_letter: any;
   iconEditor: any;
-  genres: any;
+  genres = "";
   populations: any;
   appareils: any;
   isCiblageGenre = false
@@ -3236,7 +3236,7 @@ if(tab[tab.length-1] == ''){
   }
   toggleCurrentUploadBlock() {
 
-    if (this.currentAdStatus.toString === '') {
+    if (this.currentAdStatus.toString() === '') {
       
       if ($("#blockUploadModified").css('display') === 'none') {
          
