@@ -29,7 +29,7 @@
                        aria-controls="v-pills-home" aria-selected="true" (click)="toggleListCampaign()"><i class="icon-inbox2"></i></a>
                     <a class="nav-link teal lighten-3" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
                        aria-controls="v-pills-profile" aria-selected="false" (click)="action_2()"><i class="icon-add"></i></a>
-                    <a class="nav-link blink skin_handle"  href="#"><i class="icon-lightbulb_outline"></i></a>
+                  <!--   <a class="nav-link blink skin_handle"  href="#"><i class="icon-lightbulb_outline"></i></a> -->
                     <!-- <a class="nav-link" id="v-pills-messages-tab" href="#"><i class="icon-message"></i></a>
                     <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="icon-settings"></i></a> -->
                     <a href="">
@@ -477,8 +477,8 @@
        <h4 class="my-3">Aucune Campagne trouvees</h4>
        <p>Vous devez creer une nouvelle campagne publicitaire pour commencer</p>
        <hr>
-        <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="max-width: 200 px !important">
-        <hr>
+        <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="max-width: 200px !important">
+        <br>
        <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20" (click)="addCampaign()" [disabled]="name?.length < 2 || name?.length > 15"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
    </div>
    

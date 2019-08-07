@@ -150,7 +150,7 @@ export class UserLoginComponent {
       .then(() => this.passReset = true);
   }
 
-  private afterSignIn() {
+  afterSignIn() {
     // Do after login stuff here, such router redirects, toast messages, etc.
     
     return this.router.navigate(['/']);

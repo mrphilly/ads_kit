@@ -3,11 +3,11 @@
        
        <i class="icon-note-important s-64 text-primary"></i>
        <h4 class="my-3" >Créer une nouvelle campagne publicitaire</h4>
-       <hr>
+       <br>
         <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="max-width: 200 px !important">
         <hr>
        <button href="#" class="btn teal darken-3 shadow btn-lg text-white" (click)="addCampaign()" [disabled]="name?.length < 2 || name?.length > 15"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
-       <hr>
+       <br>
        
    </div>
    <div *ngIf="isCreating">
