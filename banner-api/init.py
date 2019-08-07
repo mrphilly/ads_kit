@@ -64,6 +64,8 @@ firebase = pyrebase.initialize_app(config)
 app = Flask(__name__)
 CORS(app)
 URL_SERVER = "http://137.74.199.121:5009"
+FRONT_END_URL = "http://137.74.199.121/dist"
+#FRONT_END_URL = "http://localhost:4200"
 #URL_SERVER = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -183,9 +185,9 @@ def updateBudget(budgetId=None, amount=None, idC=None, dure=None, ad_name=None, 
     print(amount)
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     budget = UpdateBudget(adwords_client, budgetId, amount, dure)
-    #return redirect("http://localhost:4200/"+idC+"/"+amount+"/"+budget[0]['dailyBudget']+"/"+dure)
+    #return redirect(FRONT_END_URL+"/"+idC+"/"+amount+"/"+budget[0]['dailyBudget']+"/"+dure)
 
-    return redirect("http://localhost:4200/ads/"+ad_name+"/"+idC+"/"+idA+"/"+str(ad_group_id)+"/"+str(campagne_id)+"/"+str(amount)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure)+"/"+str(id_ad_firebase))
+    return redirect(FRONT_END_URL+"/ads/"+ad_name+"/"+idC+"/"+idA+"/"+str(ad_group_id)+"/"+str(campagne_id)+"/"+str(amount)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure)+"/"+str(id_ad_firebase))
 
 
 @app.route("/setBudgetFromAccount", methods=['POST', 'GET'])
@@ -197,7 +199,7 @@ def setBudgetFromAccount():
     amount = request.json['amount']
     dure = request.json['dure']
     budget = UpdateBudget(adwords_client, budgetId, amount, dure)
-    #return redirect("http://localhost:4200/"+idC+"/"+amount+"/"+budget[0]['dailyBudget']+"/"+dure)
+    #return redirect(FRONT_END_URL+"/"+idC+"/"+amount+"/"+budget[0]['dailyBudget']+"/"+dure)
 
     return jsonify(budget)
 
@@ -210,7 +212,7 @@ def updateBudgetA(idC=None, campagne_id=None, budgetId=None, total=None, budget_
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     budget = UpdateBudget(adwords_client, budgetId, budget_to_place, dure)
 
-    return redirect("http://localhost:4200/"+idC+"/"+str(campagne_id)+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure))
+    return redirect(FRONT_END_URL+"/"+idC+"/"+str(campagne_id)+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure))
 
 
 
@@ -875,7 +877,7 @@ def rechargeAmount(money=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "http://localhost:4200/"+money
+        success_url = FRONT_END_URL+"/"+money
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -928,7 +930,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "http://localhost:4200/"+money+"/"+idC
+        success_url = FRONT_END_URL+"/"+money+"/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -980,7 +982,7 @@ def rechargeAmountBeforeBudgetFromAd(ad_name=None, idC=None, idA=None, ad_group_
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "http://localhost:4200/ads"+ad_name+"/"+idC+"/"+idA+"/"+ad_group_id+"/"+campaign_id+"/"+money+"/"+id_ad_firebase
+        success_url = FRONT_END_URL+"/ads"+ad_name+"/"+idC+"/"+idA+"/"+ad_group_id+"/"+campaign_id+"/"+money+"/"+id_ad_firebase
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
