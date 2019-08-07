@@ -27,18 +27,52 @@
 </form>
 
 
-<form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
+
+
+
+	<div class="col-md-4 login-sec"  *ngIf="newUser">
+		    <h2 class="text-center">Inscription</h2>
+		    <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
+  <div class="form-group">
+    <label for="exampleInputEmail1" class="text-uppercase">Email</label>
+   <input type="email" placeholder="Email Address" formControlName="email" name="email" required autocomplete="new-password">
+    
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1" class="text-uppercase">Mot de passe</label>
+    <input type="text" placeholder="Password"  formControlName="password" name="password" required>
+  </div>
+  
+  
+    <div class="form-check">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input">
+      <small>Remember Me</small>
+    </label>
+    <button type="submit" class="btn btn-login float-right">Inscription</button>
+  </div>
+  
+</form>
+<div class="copy-text">Created with <i class="fa fa-heart"></i> by Grafreez</div>
+		</div>
+
+
+
+
+<!--<form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
       <div class="text-center">
           <h5>Inscription</h5>
       </div>
+      
       <div class="form-group has-icon">
           <i class="icon-envelope-o"></i>
-          <input type="email" class="form-control form-control-lg" placeholder="Email Address" formControlName="email" name="email" required autocomplete="new-password">
+          <input type="email" class="form-control" placeholder="Email Address" formControlName="email" name="email" required autocomplete="new-password">
       </div>
       <div class="form-group has-icon">
           <i class="icon-user-secret"></i>
-          <input type="text" class="form-control form-control-lg" placeholder="Password"  formControlName="password" name="password" required>
+          <input type="text" class="form-control" placeholder="Password"  formControlName="password" name="password" required>
       </div>
       <input type="submit" class="btn btn-primary btn-lg btn-block" value="Inscription">
       <a class="forget-pass" (click)="toggleForm()">Vous ete déjà enregistré?</a>
 </form>
+ -->

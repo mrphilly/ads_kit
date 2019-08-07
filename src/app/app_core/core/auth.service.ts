@@ -16,7 +16,9 @@ import { switchMap, startWith, tap, filter } from 'rxjs/operators';
 
 import { NotifyService } from './notify.service';
 
-import {map} from 'rxjs/operators'
+import { map } from 'rxjs/operators'
+
+import Swal from 'sweetalert2'
 
 interface User {
   uid: string;
@@ -91,14 +93,22 @@ export class AuthService {
     return this.oAuthLogin(provider);
   }
 
-  private oAuthLogin(provider: any) {
-    return this.afAuth.auth
+  private oAuthLogin(provider: any): Promise<any> {
+    return new Promise(resolve => {
+      this.afAuth.auth
       .signInWithPopup(provider)
       .then(credential => {
-        this.notify.update('Welcome to Firestarter!!!', 'success');
-        return this.updateUserData(credential.user);
+        
+        this.updateUserData(credential.user).then(res => {
+          if (res == "ok") {
+            resolve('ok')
+          } else {
+            resolve('error')
+          }
+        });
       })
       .catch(error => this.handleError(error));
+    })
   }
 
   //// Anonymous Auth ////
@@ -117,14 +127,22 @@ export class AuthService {
 
   //// Email/Password Auth ////
 
-  emailSignUp(email: string, password: string) {
-    return this.afAuth.auth
+  emailSignUp(email: string, password: string): Promise<any> {
+    return new Promise(resolve => {
+      this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(credential => {
         this.notify.update('Welcome new user!', 'success');
-        return this.updateUserData(credential.user); // if using firestore
+        return this.updateUserData(credential.user).then(res => {
+          if (res == "ok") {
+            resolve("ok")
+          } else {
+            resolve("error")
+          }
+        })
       })
       .catch(error => this.handleError(error));
+   })
   }
 
   emailLogin(email: string, password: string):Promise<User[]> {
@@ -132,7 +150,18 @@ export class AuthService {
     this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
-        this.notify.update('Welcome back!', 'success');
+        Swal.fire({
+        title: 'De retour '+ email,
+        text: 'Bienvenue',
+        type: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {}
+
+      })
         this.updateUserData(credential.user);
         response.push(credential.user)
         
@@ -153,19 +182,45 @@ export class AuthService {
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/login']);
     });
   }
 
   // If error, console log and notify user
   private handleError(error: Error) {
     console.error(error);
-    this.notify.update(error.message, 'error');
+    var error_to_show = ""
+    if (error.message == "There is no user record corresponding to this identifier. The user may have been deleted.") {
+      error_to_show = "Cet utilisateur n'éxiste pas"
+    } else if (error.message == "The password is invalid or the user does not have a password.") {
+      error_to_show = "Mot de passe ou addresse email invalide"
+    } else if (error.message == "The email address is badly formatted.") {
+      error_to_show = "Addresse Email invalide"
+    } else if (error.message == "Password should be at least 6 characters") {
+      error_to_show = "Le mot de passe doit contenir au moins 6 caractères"
+    } else if (error.message == "The email address is already in use by another account.") {
+      error_to_show = "Adresse email déjà utilisée"
+    } else {
+      error_to_show = "Une erreur s'est produite"
+    }
+     Swal.fire({
+        title: 'Authentification',
+        text: error_to_show,
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Rééssayer'
+      }).then((result) => {
+        if (result.value) {}
+
+      })
   }
 
   // Sets user data to firestore after succesful login
-  private updateUserData(user: User) {
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(
+  private updateUserData(user: User): Promise<any> {
+    return new Promise(resolve => {
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}` 
     );
     const notificationRef: AngularFirestoreDocument<User> = this.afs.doc(
@@ -173,7 +228,7 @@ export class AuthService {
     );
     const data_notification: NotificationAccountValue = {
       uid: user.uid,
-      notification: "Veuillez définir vos paramètres de facturation en cliquant ici"
+      notification: "Veuillez dÃ©finir vos paramÃ¨tres de facturation en cliquant ici"
     };
     notificationRef.set(data_notification)
     const data: User = {
@@ -183,7 +238,9 @@ export class AuthService {
       photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
       account_value: 0
     };
-    return userRef.set(data);
+      userRef.set(data);
+      resolve("ok")
+   })
   }
 
   getInfos(user_id: any) {

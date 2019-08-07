@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
@@ -16,7 +19,7 @@ import { SpinnerOverlayComponent } from './spinner-overlay-ui/spinner-overlay.co
 
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule],
   declarations: [
     UserLoginComponent,
     HomePageComponent,
@@ -26,6 +29,7 @@ import { SpinnerOverlayComponent } from './spinner-overlay-ui/spinner-overlay.co
     UserProfileComponent,
     UserFormComponent,
     SsrPageComponent,
+    
    
     SpinnerOverlayComponent
    
