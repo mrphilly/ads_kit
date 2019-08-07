@@ -63,7 +63,8 @@ firebase = pyrebase.initialize_app(config)
 
 app = Flask(__name__)
 CORS(app)
-
+URL_SERVER = "http://137.74.199.121:5009"
+#URL_SERVER = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -200,7 +201,7 @@ def setBudgetFromAccount():
 
     return jsonify(budget)
 
-#http://127.0.0.1:5000/updateBudgetA/hDxHvCnoc5sgwKZclltG/2078906359/6446768384/10000/8000/10
+    #URL_SERVER+/updateBudgetA/hDxHvCnoc5sgwKZclltG/2078906359/6446768384/10000/8000/10
 
 @app.route("/updateBudgetA/<idC>/<campagne_id>/<budgetId>/<total>/<budget_to_place>/<dure>", methods=['POST', 'GET'])
 def updateBudgetA(idC=None, campagne_id=None, budgetId=None, total=None, budget_to_place= None, dure=None):
@@ -726,7 +727,7 @@ def pay():
 
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "http://127.0.0.1:5000/ads"
+        success_url = URL_SERVER+"/ads"
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -775,7 +776,7 @@ def payBudget(money=None, budget_to_place=None, budgetId=None, idC=None, dure=No
        
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "http://127.0.0.1:5000/updateBudget/"+budgetId + "/" + budget_to_place+ "/"+idC+"/"+dure+"/"+ad_name+"/"+idA+"/"+ad_group_id+"/"+campagne_id+"/"+id_ad_firebase
+        success_url = URL_SERVER+"/updateBudget/"+budgetId + "/" + budget_to_place+ "/"+idC+"/"+dure+"/"+ad_name+"/"+idA+"/"+ad_group_id+"/"+campagne_id+"/"+id_ad_firebase
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -823,7 +824,7 @@ def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None
         
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "http://127.0.0.1:5000/updateBudgetA/"+idC+"/"+campagne_id+"/"+budgetId + "/" +money+"/"+ budget_to_place+"/"+dure
+        success_url = URL_SERVER+"/updateBudgetA/"+idC+"/"+campagne_id+"/"+budgetId + "/" +money+"/"+ budget_to_place+"/"+dure
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
