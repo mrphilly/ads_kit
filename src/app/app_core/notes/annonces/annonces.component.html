@@ -1092,7 +1092,7 @@
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Url de redirection"  [id]="idOfDisplayUrlNotPublishUpload" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()">
-                        <ng-container *ngIf="url_errors != ''">
+                        <ng-container *ngIf="url_errors != []">
                           <div class="text-danger" *ngFor="let error of url_errors">
                             {{error.url}} {{error.text}}
                           </div>

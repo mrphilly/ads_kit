@@ -31,7 +31,7 @@
     "auth0-js": "^9.3.2",
     "bootstrap": "^4.1.1",
     "buffer": "^5.2.1",
-    "cldr-data": "^35.1.0",
+    
     "core-js": "^2.4.1",
     "fabric": "^1.7.22",
     "firebase": "^6.2.0",
