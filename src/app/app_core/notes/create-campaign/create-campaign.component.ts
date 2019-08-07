@@ -24,12 +24,12 @@ export class CreateCampaignComponent implements OnInit {
   status: string;
   id_campagne: string;
   title: string;
-  message = "Creation de la campagne en cours"
+ 
   isCreating = false;
   isExist: boolean = false
   
   constructor(private router: Router, private notesService: NotesService, private auth: AuthService,) { 
-     this.title = "CrÃ©er une campagne"
+     this.title = "Cr�er une campagne"
        this.auth.user.forEach((value) => {
          this.uid = value.uid
          this.email = value.email
@@ -50,8 +50,12 @@ export class CreateCampaignComponent implements OnInit {
     this.isCreating = true
     var name = $("#campagne").val()
     this.notesService.addCampaign(this.email, this.uid, name).then(result => {
-      console.log(result)
-      this.isCreating = false
+      if (result != "error") {
+        this.isCreating = false
+        window.location.reload()
+      } else {
+        this.isCreating = false
+      }
     })
     
   }

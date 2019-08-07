@@ -298,12 +298,9 @@ export class NotesListComponent implements AfterViewInit {
       console.log(status)
       
       this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus, budgetId
-      );
-    this.name = '';
-    this.id_campagne = '';
-    this.isCreating = false
-    this._init_campagne = false
-    Swal.fire({
+      ).then(res => {
+        if (res == "ok") {
+           Swal.fire({
       title: 'Service Campagne!',
       text: 'Votre campagne a été ajouté avec succès.',
       type: 'success',
@@ -312,8 +309,22 @@ export class NotesListComponent implements AfterViewInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Ok'
     }).then((result) => {
-      if (result.value) {}
+      if (result.value) {
+          this.name = '';
+    this.id_campagne = '';
+    this.isCreating = false
+    this._init_campagne = false
+      } else {
+          this.name = '';
+    this.id_campagne = '';
+    this.isCreating = false
+    this._init_campagne = false
+      }
     })
+        }
+      })
+  
+   
   }
   addCampaign() {   
     
@@ -329,11 +340,29 @@ export class NotesListComponent implements AfterViewInit {
         res => {
           console.log(res)
           console.log(res['budgetId'])
-          this.id_campagne = res['id']
-          this.status = res['status_campaign']
-          this.ad_group_id = res['ad_group_id']
-          this.clickHandler(this.id_campagne, name, this.status, res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId'])
+          if (res['status'] == "ok") {
+            this.id_campagne = res['id']
+            this.status = res['status_campaign']
+            this.ad_group_id = res['ad_group_id']
+            this.clickHandler(this.id_campagne, name, this.status, res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId'])
+            
+          } else {
           
+            Swal.fire({
+              title: 'Service Campagne!',
+              text: 'Erreur.',
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) { }
+            })
+          
+          
+          }
+        
         },
         err => {
           Swal.fire({

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,8 +10,6 @@ import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { DndModule } from 'ng2-dnd';
 
 import { NgxPicaModule } from 'ngx-pica';
-
-import { ChartsModule, ThemeService } from 'ng2-charts';
 
 import { NouisliderModule } from 'ng2-nouislider';
 
@@ -68,14 +66,14 @@ const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
     FontPickerModule,
     LazyLoadImageModule,
     NgxFormatFieldModule,
-    ChartsModule
+    /* ChartsModule */
  
 
     
     
   ],
   declarations: [NotesListComponent, NoteDetailComponent, CampaignSettingsComponent, AnnoncesComponent, SettingsComponent, CreateCampaignComponent,AnnonceServiceComponentComponent, SpinnerOverlayComponent],
-  providers: [NotesService, AdGroupService, Ads, NgxImageCompressService, ThemeService, { provide: FONT_PICKER_CONFIG,
-      useValue: DEFAULT_FONT_PICKER_CONFIG}]
+  providers: [NotesService, AdGroupService, Ads, NgxImageCompressService,/*  ThemeService, { provide: FONT_PICKER_CONFIG,
+      useValue: DEFAULT_FONT_PICKER_CONFIG} */]
 })
 export class NotesModule { }

@@ -40,24 +40,23 @@
   <div class="container-fluid text-center">
     <div class="row p-t-b-10 ">
       <div class="col">
-        <div class="pb-3">
+        <div class="card r-3 teal lighten-3 no-b shadow" style="margin-top: 10px;">
+              <div class="p-4">
+                <div class="text-center">
+                  <!-- <span class="icon-award text-white s-48"></span> -->
+                  <img class="img-responsive" src="assets/img/images/campaign.png">
+                </div>
+                <div class="sc-counter mt-3 text-white text-center">Paramètre de la campagne</div>
+                <div class="counter-title text-white text-center">{{name}}</div>
+                <div class="text-center">
+                  <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i
+                        class="icon icon-circle mr-2" style="color: green"></i>Campagne active</span></span>
+                  <span class="badge badge-danger pink" *ngIf="status==='PAUSED'"><span class="blink"><i
+                        class="icon icon-circle mr-2"></i>Campagne en veille</span></span>
 
-          <div>
-            <h6 class="p-t-10" style="color: #009688">A propos de la campagne</h6>
-            <h6 style="color: #009688"><strong>{{name}}</strong></h6>
-            <!-- <div>
-  <div style="display: block">
-    <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType">
-    </canvas>
-  </div>
-</div> -->
-          </div>
-        </div>
+                </div>
+              </div>
+            </div>
       </div>
     </div>
 
@@ -70,10 +69,10 @@
           </a>
         </li>
             <li>
-                <a class="nav-link" id="v-pills-timeline-tab" style="color: #009688" data-toggle="pill" href="#v-pills-payments" role="tab" aria-controls="v-pills-payments" aria-selected="false"><i class="icon icon-cog"></i>Budget</a>
+                <a class="nav-link" id="v-pills-timeline-tab" style="color: #009688" data-toggle="pill" href="#v-pills-payments" role="tab" aria-controls="v-pills-payments" aria-selected="false"><i class="icon icon-budget"></i>Budget</a>
             </li>
           <li>
-                          <a class="nav-link" id="v-pills-payments-tab" style="color: #009688" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="icon icon-money-1"></i>Ciblage de zone</a>
+                          <a class="nav-link" id="v-pills-payments-tab" style="color: #009688" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="icon icon-location-arrow"></i>Ciblage de zone</a>
                       </li>
         <li>
           <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
@@ -95,10 +94,10 @@
 
               <ul class="list-group list-group-flush">
                 <!--     <li class="list-group-item grey lighten-2"><i class="icon-chevron-circle-right text-white" style="float: left"></i><strong class="s-12 text-white" style="float: left">Nom</strong> <span class="float-right s-12 text-white" style="font-weight: bold">{{name}}</span></li> -->
-                <li class="list-group-item text-center">
+                <!-- <li class="list-group-item text-center">
                   <img class="img-responsive" src="assets/img/images/campaign.png">
 
-                </li>
+                </li> -->
                 <li class="list-group-item" *ngIf="status=='PAUSED'">
                 
                   <i class="icon icon-mail text-success"
@@ -172,7 +171,7 @@
                  <!--  <button class="btn btn-sm btn-secondary bg-gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="float: right !important; width: 20px">
                     <i class="icon-edit"></i>
                   </button> -->
-                  <div class="card-header teal lighten-1 text-center no-b" *ngIf="number_ad_groups!='0'">
+                  <div class="card-header teal lighten-3 text-center no-b" *ngIf="number_ad_groups!='0'">
                     <i class="icon-clipboard-edit text-white"></i>
                     <h6 style="color: white">Groupes d'annonces </h6>
                     
@@ -182,7 +181,7 @@
                       <table class="table table-hover no-b">
                         <!-- Table heading -->
                         <tbody class="no-b">
-                          <tr class="no-b teal lighten-1 text-white text-center">
+                          <tr class="no-b teal lighten-3 text-white text-center">
                             <!--     <th>
                                         <input type="checkbox">
                                     </th> -->
@@ -191,14 +190,14 @@
                             <th>Action</th>
                           </tr>
 
-                          <tr *ngFor="let adgroup of adgroups | async" class="no-b" title="cliquez sur le nom du groupe pour créer des annonces">
+                          <tr *ngFor="let adgroup of adgroups | async" class="no-b white" title="cliquez sur le nom du groupe pour créer des annonces">
                             <!-- Check box -->
                             <!-- <td>
                                         <input type="checkbox">
                                     </td> -->
                             <!-- Page name -->
                             <td class="text-center no-b">
-                              <a (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" style="cursor: pointer">{{adgroup?.name}}</a>
+                              <strong><a (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" style="cursor: pointer; color: #80cbc4; font-size: 14px">{{adgroup?.name}}</a></strong>
                             </td>
                             <!-- Page size -->
                             <!-- Status -->
@@ -238,9 +237,9 @@
                       </table>
                     </div>
                   </div>
-                  <div class="card-body text-center no-b">
-                    <ng-template #noAdGroups>
-                      <div class="card white no-b">
+                  <ng-template #noAdGroups>
+                    <div class="card-body text-center no-b white" *ngIf="!isAdGroup">
+                      <div class="card white no-b" >
                         <div class="card-body white no-b text-center">
                           <a class="btn btn-md teal darken-1 shadow  text-white" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle"></i> Cliquer pour commencer</a><br>
                           <small>Cliquer pour créer un groupe d'annonce</small><br>
@@ -250,42 +249,21 @@
                         </div>
                       </div>
 
+                    </div>
                     </ng-template>
-                  </div>
                   <div class="card-footer white text-center no-b" *ngIf="number_ad_groups!=0">
-                    <a class="btn btn-md teal darken-1 shadow  text-white" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe d'annonces</a>
+                    <a class="btn btn-sm teal lighten-3 shadow  text-white r-20" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe d'annonces</a>
 
                     
                     <!--  <a href="#" class="btn btn-outline-danger btn-xs">Delete All</a> -->
                   </div>
                 </div>
-                <div class="col" style="text-align: center">
-                     <!--         <div class="card my-3 my-3 no-b shadow" style="display: inline-block">
-                    <div class="card-header teal lighten-3 text-white">
-                        Budget
-                    </div>
-                    <div class="card-body no-b">
-            
-                        <div class="text-center">
-                            <p class="my-3">La campagne dure: {{numberOfDays}} jours</p>
-                            <p class="my-3">Budget journalier: {{dailyBudget}} CFA/jour</p>
-                            <p class="my-3">Budget Général: {{budget}} CFA</p>
-                            <button class="btn teal lighten-3 text-white" data-toggle="modal" data-target="#modalDefineBudget" *ngIf="budget == 0"><i class="icon-budget yellow avatar cirlce"></i>
-                            Définir un bugdet</button>
-                           
-                        </div>
-                      
-
-                    </div>
-                </div> -->
-                </div>
+               
             
 
 
             </div>
-            <div class="row">
             
-            </div>
           
 
           </div>
@@ -297,7 +275,7 @@
        
           <div class="col-md-12">
             <div class="card no-b shadow">
-              <div class="card-header teal darken-1 b-0 p-3 text-center no-b">
+              <div class="card-header teal lighten-3 b-0 p-3 text-center no-b">
                 <h6 class="card-title text-white">Budget de la campagne</h6>
                <!--  <small class="card-subtitle mb-2 text-muted">Sélectionner parmis les options ci-dessous pour placer un budget</small> -->
               </div>
@@ -329,7 +307,7 @@
                   </div>
                        <div class="text-center" *ngIf="button_payments">
                          <div class="my-3">
-                           <a class="btn btn-social teal darken-1 text-white r-20"
+                           <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
@@ -337,7 +315,7 @@
                         </div>
                          <div class="my-3">
                            
-            <a class="btn btn-social teal darken-1 text-white r-20"
+            <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte
           </a>
@@ -345,7 +323,7 @@
                         </div>
                          <div class="my-3">
    
-          <a class="btn btn-social teal darken-1 text-white r-20"
+          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>
@@ -481,15 +459,15 @@
                <div class="text-center" style="display: inline-block">
          
           <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-        <!--   <a class="btn btn-social teal darken-1 text-white r-20"
+        <!--   <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-social teal darken-1 text-white r-20"
+            <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-social teal darken-1 text-white r-20"
+          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a> -->
@@ -532,9 +510,9 @@
               <!-- /.timeline-label -->
               <!-- timeline item -->
               <li>
-                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseZone" role="button" aria-expanded="false" aria-controls="collapseZone">
+                <a class="btn btn-sm btn-block teal lighten-3 text-white r-20 btn-social no-b"  data-toggle="collapse" href="#collapseZone" role="button" aria-expanded="false" aria-controls="collapseZone">
 
-                  <i class="ion icon-envelope"></i> Ciblage de zone
+                  <i class="icon icon-location-arrow"></i> Ciblage de zone
                 </a>
                 <div class="collapse" id="collapseZone">
                         <div class="card no-b shadow timeline-item">
@@ -549,11 +527,10 @@
                   <div class="table-responsive">
                     <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
                       <thead class="bg-light">
-                        <tr>
-                          <th>Zones ciblées</th>
-                          <th>Enchères</th>
-                          <th>Coût de l'enchère</th>
-                          <th>Supprimer le ciblage</th> 
+                        <tr class="text-center">
+                          <th><strong>Zones ciblées</strong></th>
+                         
+                          <!-- <th>Supprimer le ciblage</th>  -->
                         </tr>
                       </thead>
                       <tbody>
@@ -561,11 +538,10 @@
                             {{text_no_zone}}
                         </tr>
                         <ng-container >
-                          <tr *ngFor="let loc of zone">
+                          <tr *ngFor="let loc of zone" class="text-center">
                             <td>{{loc.item_text}}</td>
-                            <td>0</td>
-                            <td>0 CFA</td>
-                           <td><i class="icon-delete text-danger"></i></td>
+                            
+                           <!-- <td><i class="icon-delete text-danger"></i></td> -->
                           </tr>
 
                         </ng-container>
@@ -578,9 +554,9 @@
                         class="icon-add_location"></i>Ajouter une zone</a>
                    <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone!=''"><i
                         class="icon-add_location"></i>Modifier le ciblage</a>
-                        <div class="card text-center no-b shadow" *ngIf="zone==''">
+                        <div class="card text-center no-b" *ngIf="zone==''">
                   
-                  <ul class="no-b">
+                  <ul class="no-b shadow">
                
                     <li class="list-group-item" *ngIf="isCiblage">
                       <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
@@ -944,29 +920,42 @@
         </div>
       </div>
       <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        <form class="form-horizontal">
-          <div class="form-group m-0" style="display: none">
-            <label for="name" class="col-form-label s-12">Id de la campagne</label>
-            <input id="id" class="form-control r-0 light s-12 " type="text" value="{{id_campagne}}" readonly>
+        <div class="card no-b shadow">
+          <input id="id" class="form-control r-0 light s-12 " type="text" value="{{id_campagne}}" readonly style="display: none">
+          <div class="card-header teal lighten-3 text-white text-center">
+            <span>Informations</span>
           </div>
-          <div class="form-group m-0">
+          <div class="card-body no-b white">
+            <div class="text-center">
+              <strong>Nom:</strong> {{name}}
+              <br>
+              <span *ngIf="status==='PAUSED'"><strong>Etat de la campagne:</strong> En Veille</span>
+              <span *ngIf="status==='ENABLED'"><strong>Etat de la campagne:</strong> Active</span>
+            </div>
+            <form class="form-horizontal">
+        <!--   <div class="form-group m-0" style="display: none">
+            <label for="name" class="col-form-label s-12">Id de la campagne</label>
+            
+          </div> -->
+          <!-- <div class="form-row text-center">
             <label for="name" class="col-form-label s-12">Nom</label>
             <input id="name" placeholder="Nom de la campagne" class="form-control r-0 light s-12 " type="text"
-              value="{{name}}">
+              value="{{name}}" style="width: 200px">
           </div>
-          <hr>
-          <div class="form-group m-0">
-            <a (click)="updateCampaign()" class="btn btn-lg btn-block btn-primary r-20">
+          <hr> -->
+         
+        </form>
+          </div>
+          <div class="card-footer white no-b text-center">
+             <a (click)="updateCampaign()" class="btn btn-sm btn-social teal darken-1 r-20 text-white">
               <i class="icon-edit"></i> Modifier
             </a>
-          </div>
-          <hr>
-          <div class="form-group m-0">
-            <a (click)="deleteCampaign()" class="btn btn-lg btn-block btn-danger r-20">
+             <a (click)="deleteCampaign()" class="btn btn-sm btn-social btn-danger r-20 text-white">
               <i class="icon-edit"></i>Supprimer
             </a>
           </div>
-        </form>
+        </div>
+        
 
       </div>
     </div>
@@ -991,15 +980,15 @@
           <h6 class="my-3">{{accountValue}} CFA dans le compte</h6>
           <h6 class="my-3">Budget de la campagne: {{budget}} CFA </h6>
           <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-          <a class="btn btn-social teal darken-1 text-white r-20"
+          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-social teal darken-1 text-white r-20"
+            <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-social teal darken-1 text-white r-20"
+          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>

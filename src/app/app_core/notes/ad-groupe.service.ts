@@ -339,11 +339,12 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
   }
 
   
-  async addAdGroup(campaign_id: any, user_id: string, name: string) {
+  async addAdGroup(campaign_id: any, user_id: string, name: string): Promise<any> {
     console.log(`User id: ${user_id}`)
   
   
-    return await this.addGroupVerification(user_id, name, campaign_id).then(value => {
+    return await new Promise(resolve => {
+      this.addGroupVerification(user_id, name, campaign_id).then(value => {
       console.log(`promise result: ${value}`)
       
       if (`${value}` == '0') {
@@ -355,9 +356,8 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
       .subscribe(
         res => {
           console.log(`add group ${res}`)
-         
-        
-         this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res=>{
+          if (res['status'] == "ok") {
+           this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res=>{
             Swal.fire({
               title: 'Ajouter un nouveau groupe',
               text: 'Groupe ajouté avec succès',
@@ -367,9 +367,32 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) {}
+              if (result.value) {
+                resolve('ok')
+              } else {
+                resolve('ok')
+              }
             })
          })
+          } else {
+             Swal.fire({
+          title: 'Ajouter un nouveau groupe',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+              resolve('error')
+          } else {
+             resolve('error')
+            }
+          })
+         }
+        
+         
           
         },
         err => {
@@ -382,7 +405,11 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
-            if (result.value){}
+          if (result.value) {
+               resolve('error')
+          } else {
+             resolve('error')
+            }
           })
         }
       );
@@ -397,12 +424,17 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
-            if (result.value){}
+          if (result.value) {
+               resolve('error')
+          } else {
+             resolve('error')
+            }
           })
         
       }
     })
    
+    })
   }
 
 

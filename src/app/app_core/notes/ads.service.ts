@@ -248,8 +248,9 @@ private basePath = '/uploads';
   
     return await this.annonceVerification(ad_name, ad_group_id).then(value => {
       console.log(`promise result: ${value}`)
-      
+      var self = this
       if (`${value}` == '0') {
+          
         
             this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid, size, ad_type).then(res=>{
             Swal.fire({
@@ -261,7 +262,11 @@ private basePath = '/uploads';
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) {}
+              if (result.value) {
+                window.location.reload()
+              } else {
+                window.location.reload()
+              }
             })
          }) 
 

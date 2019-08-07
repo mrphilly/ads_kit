@@ -136,7 +136,7 @@ const MONTH = [{
   styleUrls: ['./annonces.component.css']
 })
   
-  
+
   
 export class AnnoncesComponent implements OnInit, AfterViewInit {
    public CURRENCY: string;
@@ -169,6 +169,24 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'maxlength': 'Url trop longue',
     },
   };
+  button_modify_image_upload = true
+  idOfDisplayUrlNotPublishUpload = "display_url_modify_not_publish_upload"
+  idOfAdNameNotPublishUpload = "ad_name_modify_not_publish_upload"
+  idOfDisplayUrlNotPublishCreatives = "display_url_modify_not_publish_creatives"
+  idOfAdNameNotPublishCreatives = "ad_name_modify_not_publish_creatives"
+  text_construire = "Construire son annonce"
+  currentIdInputName = ""
+  currentIdInputDisplay = ""
+  idOfAdNameCreateUpload = "ad_name_create_upload"
+  idOfDisplayUrlCreateUpload = "displayUrl_create_upload"
+  idOfAdNameCreateCreatives = "ad_name_create_creatives"
+  idOfDisplayUrlCreateCreatives = "displayUrl_create_creatives"
+  idOfAdNameModify = "ad_name_modifed"
+  idOfDisplayUrlModify = "displayUrl_modify"
+  idOfAdNameInitUpload = "ad_name_init_upload"
+  idOfDisplayUrlInitUpload = "display_url_init_upload"
+  idOfAdNameInitCreatives = "ad_name_init_creatives"
+  idOfDisplayUrlInitCreatives = "display_url_init_creatives"
   text_modify = "modifier"
   upload_modified = false
   init_choose_ad_size = false
@@ -659,6 +677,37 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     var image = document.querySelector('.img-check')
     this.isEditor = false
     this.isAdBlock = false
+
+    this.ads = this.adsService.getListAd(this.ad_group_id)
+    this.ads.forEach(child => {
+
+      if (child.length > 0) {
+        this.number_ads = child.length
+        this.isNull = true
+        
+        
+      } else {
+        this.list_ad = false
+        this._init_ad = true
+        this.number_ads = "0"
+        this.isNull = false
+       
+          
+      }
+
+      if (this.isNull === false) {
+        if (this.ad_type==="UPLOAD") {
+          this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
+          this.currentIdInputName = this.idOfAdNameCreateUpload
+        } else {
+            this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
+          this.currentIdInputName = this.idOfAdNameInitCreatives
+        }
+      }
+      
+
+    })
+    
      button.addEventListener("click", () => {
       
     $('#block').css("display", "none")
@@ -670,6 +719,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   
   }
   
+  toggleModifyUploadImage() {
+    this.button_modify_image_upload = false
+    $("#button_modify_image_upload").show()
+  }
+  
+  closeModifyUploadImage() {
+    $("#button_modify_image_upload").hide()
+     this.button_modify_image_upload = true
+  }
+
   checkAdType(img, width, height, url) {
     console.log('click on img')
     console.log(img)
@@ -726,21 +785,40 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   
    this.is_upload_way = true
    this.ad_type = "UPLOAD"
-   $("#block1").css("display", "block")
+   
+   if (this.isNull === true) {
+     
+     $("#block1").css("display", "block")
+     this.currentIdInputName = this.idOfAdNameCreateUpload
+   this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
+   } else {
+     $("#block").css("display", "block")
+     this.currentIdInputName = this.idOfAdNameInitUpload
+   this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
+   }
+
    setTimeout(() => {
-      this.isUpload = true
+     
+     
      
    }, 2000)
-    
-    document.getElementById('block').style.display = "block"
+
     
     
   }
   goBackFromUpload() {
     this.isUpload = false
     this.is_upload_way = false
-    this.ad_type=""
-    $('#block1').css("display", "none")
+    this.ad_type = ""
+     this.currentIdInputName = ""
+    this.currentIdInputDisplay = ""
+     if (this.isNull === true) {
+     
+     $("#block1").css("display", "none")
+   } else {
+     $("#block").css("display", "none")
+   }
+    
   this.chooseBlock = true
   }
 
@@ -748,12 +826,26 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   this.handleCreateCanvas = false
     this.chooseBlock = true
     this.ad_type = ""
+    this.currentIdInputName = ""
+   this.currentIdInputDisplay = ""
   }
   
   handleCreatives() {
     var self = this
     this.ad_type="CREATIVE"
     this.chooseBlock = false
+  
+    
+     if (this.isNull === true) {
+     
+    this.currentIdInputName = this.idOfAdNameCreateCreatives
+    this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
+   } else {
+  
+this.currentIdInputName = this.idOfAdNameInitCreatives
+    this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
+   }
+
       if (this.handleCreateCanvas == false) {
       
       this.handleCreateCanvas = true
@@ -796,7 +888,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
  
   }
   ngOnInit() {
-   
+  
    
      this.auth.notificationAccount.forEach((value) => {
       if(value.notification != ""){
@@ -1142,11 +1234,15 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       if (child.length > 0) {
         this.number_ads = child.length
         this.isNull = true
+      
+        
       } else {
         this.list_ad = false
         this._init_ad = true
         this.number_ads = "0"
         this.isNull = false
+       
+          
       }
 
     })
@@ -1295,6 +1391,7 @@ $('#popper').trigger('click')
     this.list_ad = true
     this.currentEditor = false
     this.isAdBlock = false
+   
      $("#blockUploadModified").css({'display': 'none'})
    
    /*  if (this.list_ad == true) {
@@ -1794,22 +1891,23 @@ $('#popper').trigger('click')
   
   handleImageModal() {
     console.log(this.canvas.toDataURL('png'))
-    this.getWebsites().then(res => { 
+    this.getWebsites(this.currentIdInputDisplay).then(res => { 
       if (res != 'error') {
       
        
         $('#button_modal_init').trigger('click')
         
         $('#ad_image').attr("src", this.canvas.toDataURL('png'))
-        this.ad_name = $("#ad_name").val()
+        //this.ad_name = $("#").val()
         
       } else{
 
       }
     })
   }
-   handleImageUploadModal() {
-    this.getWebsites().then(res => { 
+  handleImageUploadModal() {
+     
+    this.getWebsites(this.currentIdInputDisplay).then(res => { 
       if (res != 'error') {
        
         var image = document.querySelector('.dz-image').getElementsByTagName('img')
@@ -1835,7 +1933,7 @@ $('#popper').trigger('click')
         this.img_view_create_style['height']=this.selectedHeight+'px'
            $('#button_modal_init').trigger('click')
           $('#ad_image').attr("src", $('.dz-image').find('img').attr("src"))
-          this.ad_name = $("#ad_name").val()
+          this.ad_name = $("#"+this.currentIdInputName).val()
         }
         
       } else{
@@ -1849,21 +1947,29 @@ $('#popper').trigger('click')
    this.new_image_content = ""
      this.new_image_content = JSON.stringify(this.canvas)
     console.log(this.canvas.toDataURL('png'))
-    this.getWebsites().then(res => { 
+    this.getWebsites(this.currentIdInputDisplay).then(res => { 
       if (res != 'error') {
         $('#button_modal_modified').trigger('click')
         $('#ad_image_modified').attr("src", this.canvas.toDataURL('png'))
-        $("#modified_name").text($("#ad_name").val())
+        $("#modified_name").text($("#"+this.currentIdInputName).val())
         
       } else{
 
       }
     })
     } else {
-        this.getWebsites().then(res => { 
-      if (res != 'error') {
-       
-        var image = document.querySelector('.dz-image').getElementsByTagName('img')
+        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+          if (res != 'error') {
+        alert(this.button_modify_image_upload)
+            if (this.button_modify_image_upload === true) {
+              this.img_view_create_style['width']=this.selectedWidth+'px'
+              this.img_view_create_style['height']=this.selectedHeight+'px'
+              $('#button_modal_modified').trigger('click')
+              $('#ad_image_modified').attr("src", this.currentImageUrl)
+              $("#modified_name").text($("#"+this.currentIdInputName).val())
+            } else {
+
+              var image = document.querySelector('.dz-image').getElementsByTagName('img')
         console.log(image)
         if (image[0].naturalWidth != parseInt(this.currentAdSize[0]['width']) || image[0].naturalHeight != parseInt(this.currentAdSize[0]['height'])) {
           Swal.fire({
@@ -1886,8 +1992,11 @@ $('#popper').trigger('click')
         this.img_view_create_style['height']=this.selectedHeight+'px'
            $('#button_modal_modified').trigger('click')
           $('#ad_image_modified').attr("src", $('.dz-image').find('img').attr("src"))
-          $("#modified_name").text($("#ad_name").val())
+          $("#modified_name").text($("#"+this.currentIdInputName).val())
         }
+            }
+       
+        
         
       } else{
 
@@ -1904,29 +2013,29 @@ $('#popper').trigger('click')
 
   saveAdOnFirebase() {
     this.isRoller = true
+  
 
 
-
-    this.getWebsites().then(res => {
+    this.getWebsites(this.currentIdInputDisplay).then(res => {
       console.log(res)
       if (res != 'error') {
         var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
         
          var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
-    this.ad_name=$('#ad_name').val()
+   
     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
     var imagesRef = storageRef.child(imageRefStorage);
     var metadata = {
   contentType: 'image/png',
 };
-    
+
     if (!fabric.Canvas.supports('toDataURL')) {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
       var image_url = ""
       var self = this
-      this.ad_name = $("#ad_name").val()
+      //this.ad_name = $("#"+this.currentIdInputName).val()
       var image_name = this.ad_name +  new Date().getTime().toString()
       if (this.is_upload_way === true) {
         imagesRef.putString($("#ad_image").attr('src').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
@@ -1947,6 +2056,8 @@ $('#popper').trigger('click')
           console.log('success')
           console.log(res)
           self.isRoller = false
+          
+          $
         })
      })
        
@@ -1970,20 +2081,7 @@ $('#popper').trigger('click')
           console.log('success')
           console.log(res)
           self.isRoller = false
-           this.ads = this.adsService.getListAd(this.ad_group_id)
-    this.ads.forEach(child => {
-
-      if (child.length > 0) {
-        this.number_ads = child.length
-        this.isNull = true
-      } else {
-        this.list_ad = false
-        this._init_ad = true
-        this.number_ads = "0"
-        this.isNull = false
-      }
-
-    })
+          
         })
      })
        
@@ -2162,33 +2260,90 @@ defineBudgetFromAccount() {
      var finalUrls = []
      var finalMobileUrls = []
      var finalAppUrls = []
-
+     var name= $('#'+this.currentIdInputName).val()
+     var storage = firebase.app().storage("gs://comparez.appspot.com/");
+     var storageRef = storage.ref();
+     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
+     var imagesRef = storageRef.child(imageRefStorage);
+     var metadata = {
+   contentType: 'image/png',
+  };
+      var self = this
+      
+ 
    
      for (let i = 0; i <this.FINAL_ARRAY_TO_SEND.length; i++){
        if (this.FINAL_ARRAY_TO_SEND[i]['lib'] == 'finalUrls') {
          displayUrl.push(this.FINAL_ARRAY_TO_SEND[i]['content'])
        }
      }
-    var name= $('#ad_name').val()
-    this.getWebsites().then(res => {
+     
+      //ad_image_modified
+      if (this.currentAdType === 'UPLOAD') {
+                   imagesRef.putString($('#ad_image_modified').attr("src").replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+       console.log('ok')
+      
+       storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+   xhr.responseType = 'blob';
+   xhr.onload = function(event) {
+     var blob = xhr.response;
+   };
+   xhr.open('GET', url);
+         xhr.send();
+         self.currentImageUrl = url
+       
+        const image_content = JSON.stringify(self.canvas);
+        self.adsService.updateAd(self.id_ad_firebase, {
+     
+      ad_name: name,
+      url_image: url,
+      displayUrl: displayUrl[0],
+      finalUrls: displayUrl[0],
+      finalMobileUrls: finalMobileUrls,
+      finalAppUrls: finalAppUrls,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).then(res => {
+          console.log('success')
       console.log(res)
-      if (res != 'error') {
-         var storage = firebase.app().storage("gs://comparez.appspot.com/");
-    var storageRef = storage.ref();
-    this.ad_name=$('#ad_name').val()
-    var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
-    var imagesRef = storageRef.child(imageRefStorage);
-    var metadata = {
-  contentType: 'image/png',
-};
-    
-    if (!fabric.Canvas.supports('toDataURL')) {
+      Swal.fire({
+        title: 'Modification annonce',
+        text: 'Annonce modifiée avec succès',
+        type: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {
+          self.isRoller = false
+          document.getElementById("closeModalViewModified").click()
+          
+              }
+            })
+      
+        }).catch(err=>{
+           Swal.fire({
+              title: 'Modification annonce',
+              text: 'Erreur Service !',
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {}
+            })
+        
+        })
+     })
+       
+     });
+      } else {
+            if (!fabric.Canvas.supports('toDataURL')) {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
-      var image_url = ""
-      var self = this
-      this.ad_name = $("#ad_name").val()
-      var image_name = this.ad_name +  new Date().getTime().toString()
+    
       //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
       //console.log(this.canvas.toDataURL('png'))
       this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
@@ -2259,9 +2414,8 @@ defineBudgetFromAccount() {
      
     
     } 
-        
       }
-    })
+    
     } else {
 
 
@@ -2552,7 +2706,7 @@ defineBudgetFromAccount() {
     } else {
       var image_url = ""
       var self = this
-      this.ad_name = $("#ad_name").val()
+      //this.ad_name = $("#"+this.currentIdInputName).val()
       var image_name = this.ad_name +  new Date().getTime().toString()
       //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
       //console.log(this.canvas.toDataURL('png'))
@@ -2759,7 +2913,7 @@ defineBudgetFromAccount() {
       if (res != 'error') {
          var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
-    this.ad_name=$('#ad_name').val()
+    this.ad_name=$('#'+this.idOfAdName).val()
     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
     var imagesRef = storageRef.child(imageRefStorage);
     var metadata = {
@@ -2770,7 +2924,7 @@ defineBudgetFromAccount() {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
     
-      this.ad_name = $("#ad_name").val()
+      this.ad_name = $("#"+this.idOfAdName).val()
       var image_name = this.ad_name +  new Date().getTime().toString()
       $('#ad_image').attr("src", this.canvas.toDataURL('png'))
       console.log(this.canvas.toDataURL('png'))
@@ -2823,14 +2977,15 @@ defineBudgetFromAccount() {
     }
     return link;
 }
-  checkIfIsEmptyFinalUrls(): Promise<any> {
+  checkIfIsEmptyFinalUrls(item_id: string): Promise<any> {
     
     return new Promise(resolve => {
        var urls_destination = []
-      var urls = $('#finalUrls').val()
-      alert('urls')
-      if (urls !== '') {
-            if (urls.includes(',')) {
+      var urls = $('#'+item_id).val()
+  
+      if (urls.toString() != '') {
+    
+           /*  if (urls.includes(',')) {
       var tab = urls.toString().split(',')
       tab.pop()
     
@@ -2858,7 +3013,9 @@ defineBudgetFromAccount() {
         }
     }
     } else {
-              var check = this.validURL(urls)
+  
+    } */
+                    var check = this.validURL(urls)
              
       
       if (check === true) {
@@ -2878,8 +3035,8 @@ defineBudgetFromAccount() {
         console.log(urls + ' invalide, vérifier les urls renseignées')
         resolve('error')
       }
-    }
-      }else{
+      } else {
+        alert(urls)
          this.url_errors.push({
           "url": "",
           "text": "Url de destination ne peut être vide"
@@ -2901,41 +3058,7 @@ defineBudgetFromAccount() {
       var urls = $('#finalUrlsmodify').val()
       alert(urls)
       if (urls !== '') {
-            if (urls.includes(',')) {
-      var tab = urls.toString().split(',')
-      1003
-
-if(tab[tab.length-1] == ''){
- tab.pop()
-}
-    
-      for (let i = 0; i < tab.length; i++) {
-        
-        console.log(`urls ${tab}`)
-        console.log(`actuelle url ${tab[i]}`)
-     
-        if (this.validURL(tab[i]) == true) {
-          console.log(tab[i] + ' est valide')
-          var url = this.setHttp(tab[i])
-          urls_destination.push(url)
-          this.tabUpdatedCurrentFinalUrls.push(url)
-           this.newfinalUrls = urls_destination
-          this.FINAL_ARRAY_TO_SEND.push({
-          "lib": "finalUrls",
-          "content": urls_destination
-          })
-           resolve('ok')
-        } else {
-          this.url_errors.push({
-            "url": tab[i],
-            "text": "est une url invalide"
-          })
-          console.log(tab[i] + " est invalide")
-          resolve('error')
-        }
-    }
-    } else {
-              var check = this.validURL(urls)
+           var check = this.validURL(urls)
              
       
       if (check === true) {
@@ -2957,7 +3080,6 @@ if(tab[tab.length-1] == ''){
         console.log(urls + ' invalide, vérifier les urls renseignées')
         resolve('error')
       }
-    }
       }else{
          this.url_errors.push({
           "url": "",
@@ -2976,23 +3098,29 @@ if(tab[tab.length-1] == ''){
 
 
   
-  getWebsites(): Promise<any> {
+  getWebsites(item_id: string): Promise<any> {
     return new Promise(resolve => {
       
       this.FINAL_ARRAY_TO_SEND = []
+
+      if ($('#' + this.currentIdInputName).val() == "") {
+        alert("nom de l'annonce ne peut être vide")
+      } else {
+        this.ad_name = $('#'+this.currentIdInputName).val()
+        var mobile_apps = this.apps
+     this.checkIfIsEmptyFinalUrls(item_id).then(res => {
+              if (res != 'error') {
+         
+               
+                resolve(res)
+              }else{
+                
+                resolve('error')
+                
+              }
+              })
+      }
      
-      var mobile_apps = this.apps
-   this.checkIfIsEmptyFinalUrls().then(res => {
-            if (res != 'error') {
-       
-             
-              resolve(res)
-            }else{
-              
-              resolve('error')
-              
-            }
-            })
     })
   
     
@@ -3220,16 +3348,19 @@ if(tab[tab.length-1] == ''){
   
   oppendCurrentEditor():Promise <any>{
     return new Promise(resolve => {
-      if (this.currentEditor == true) {
+      if (this.currentEditor ===true) {
        
         this.currentEditor = false
-        this.iconEditor = "icon-chevron-down"
+        this.iconEditor = "icon-chevron-up"
+        this.text_modify = "annuler la modification"
       
       } else {
         
      
          this.currentEditor = true
-        this.iconEditor = "icon-chevron-up"
+        this.iconEditor = "icon-chevron-down"
+        this.text_modify = "modifier"
+
         resolve("ok")
       }
     })
@@ -3243,11 +3374,15 @@ if(tab[tab.length-1] == ''){
         $("#blockUploadModified").css({ 'display': 'block' })
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "Annuler la modification"
+        this.currentIdInputName = this.idOfAdNameNotPublishUpload
+        this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishUpload
         
       } else {
         $("#blockUploadModified").css({ 'display': 'none' })
         this.iconEditor = "icon-chevron-down"
         this.text_modify = "modifier"
+        this.currentIdInputName = ""
+        this.currentIdInputDisplay = ""
       }
     } else {
       if (this.modifyPublishAd===false) {
@@ -3273,13 +3408,16 @@ if(tab[tab.length-1] == ''){
        
         this.currentEditor = false
         this.iconEditor = "icon-chevron-down"
-      
+        this.text_modify = "modifier"
+        this.currentIdInputName = ""
+        this.currentIdInputDisplay = ""      
       } else {
         
     
          this.currentEditor = true
-     this.iconEditor = "icon-chevron-up"
-    
+        this.iconEditor = "icon-chevron-up"
+        this.text_modify = "annuler la modification"
+      
     
    
         if (this.canva_state == false) {
@@ -3293,6 +3431,8 @@ if(tab[tab.length-1] == ''){
         self.loadCanvasFromJSON()
         self.isCreating = false
         }, 2000);
+           this.currentIdInputName = this.idOfAdNameNotPublishCreatives
+        this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishCreatives
         } else {
           self.isCreating = true
           setTimeout(function () { 
@@ -3308,7 +3448,9 @@ if(tab[tab.length-1] == ''){
         
          self.loadCanvasFromJSON()
          self.isCreating  =false
-        }, 2000);
+       }, 2000);
+          this.currentIdInputName = this.idOfAdNameNotPublishCreatives
+        this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishCreatives
     }
      /*  this.isCreating = false */
        
@@ -4342,7 +4484,7 @@ if(tab[tab.length-1] == ''){
   }
 
   goAdSettings(id_ad_firebase: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, finalAppUrls: any, finalMobileUrls:any,  image_content: any, referenceId: any, size: any, ad_type: any) {
-
+    
     this.isAdBlock = true
     this.isEditor = false
     this.list_ad = false
@@ -4363,14 +4505,15 @@ if(tab[tab.length-1] == ''){
     this.currentAdSize = size
     this.currentAdType = ad_type
     
-   
+    this.currentIdInputName = this.idOfAdNameModify
+    this.currentIdInputDisplay = this.idOfDisplayUrlModify
     
     this.iconEditor = "icon-chevron-down"
     console.log(finalUrls.length)
     if (finalUrls.length == 0) {
       this.currentFinalUrls = ""
     } else if(finalUrls.length == 1) {
-      this.currentFinalUrls = finalUrls[0].toString() + ","
+      this.currentFinalUrls = finalUrls[0].toString()
       
     } else{
        for (let i = 0; i < finalUrls.length - 1; i++) {

@@ -57,9 +57,10 @@ export class NotesService implements OnInit {
 
   
   
-  async addCampaign(email: string, user_id: string, name: string) {
+  async addCampaign(email: string, user_id: string, name: string): Promise<any> {
  
-    return await this.campaignVerification(user_id, name).then(value => {
+    return await new Promise(resolve => {
+      this.campaignVerification(user_id, name).then(value => {
       console.log(`promise result: ${value}`)
 
       if (`${value}` == '0') {
@@ -70,11 +71,12 @@ export class NotesService implements OnInit {
     })
       .subscribe(
         res => {
-          console.log(res)
+        
          
-          var startDate = moment(res['startDate'], "YYYYMMDD").fromNow()
-          var endDate = moment(res['endDate'], "YYYYMMDD").fromNow()
-         this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res=>{
+         /*  var startDate = moment(res['startDate'], "YYYYMMDD").fromNow()
+          var endDate = moment(res['endDate'], "YYYYMMDD").fromNow() */
+          if (res['status'] == "ok") {
+              this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res=>{
             Swal.fire({
               title: 'Ajouter une nouvelle campagne',
               text: 'Campagne ajoutée avec succès',
@@ -84,9 +86,31 @@ export class NotesService implements OnInit {
               cancelButtonColor: '#d33',
               confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) {}
+              if (result.value) {
+                resolve('ok')
+              }else{
+                resolve('ok')
+              }
             })
          })
+          } else {
+             Swal.fire({
+          title: 'Ajouter une nouvelle campagne',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+              resolve('error')
+          } else {
+            resolve('error')
+            }
+          })
+          }
+       
           
         },
         err => {
@@ -99,7 +123,11 @@ export class NotesService implements OnInit {
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
-            if (result.value){}
+          if (result.value) {
+              resolve('error')
+          } else {
+            resolve('error')
+            }
           })
         }
       );
@@ -114,10 +142,15 @@ export class NotesService implements OnInit {
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
-            if (result.value){}
+          if (result.value) {
+              resolve('error')
+          } else {
+            resolve('error')
+            }
           })
         
       }
+    })
     })
    
   }
@@ -564,9 +597,12 @@ parseDate(str) {
       return this.getNote(id).update(data);
   }
 
-  async createCampaign(id_campagne: any, name: string, status: string, startDate: string,endDate: string, startDateFrench: string, endDateFrench: string, servingSatus: string, budgetId: any) {
-    this.note = this.prepareSaveCampaign(id_campagne, name, status, startDate, endDate, startDateFrench, endDateFrench, servingSatus, budgetId);
-    const docRef = await this.notesCollection.add(this.note);
+  async createCampaign(id_campagne: any, name: string, status: string, startDate: string,endDate: string, startDateFrench: string, endDateFrench: string, servingSatus: string, budgetId: any): Promise<any> {
+    return await new Promise(resolve => {
+      this.note = this.prepareSaveCampaign(id_campagne, name, status, startDate, endDate, startDateFrench, endDateFrench, servingSatus, budgetId);
+      const docRef = this.notesCollection.add(this.note);
+      resolve("ok")
+    })
   }
 
   updateNote(id: string, data: any) {

@@ -503,7 +503,12 @@ for (var i = 0; i < dateArr.length; i++) {
     this.dropdownListZones = [{
       item_id: 9070424,
       item_text: 'Dakar'
-    },];
+    },
+    {
+      item_id: 9070424,
+      item_text: 'Sénégal'
+    }
+    ];
     for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++){
       console.log(this.NATIONALS_WEBSITES[i][2])
       this.dropdownListNationalsWebsites.push({
@@ -1001,10 +1006,12 @@ for (var i = 0; i < dateArr.length; i++) {
   addAdGroup() {
     this.isCreating = true;
     var name = $('#adgroup').val()
-    console.log(this.id_campagne)
     this.adGroupService.addAdGroup(this.id_campagne, this.uid, name).then(res => {
-      this.isCreating = false
-      this.isAdGroup = false
+      if (res != "error") {
+        this.isCreating = false
+        this.isAdGroup = false
+        
+      }
     }).catch(err => {
       this.isCreating = false
       alert('Opération échouée')
@@ -2545,7 +2552,7 @@ if (this.endDate == date || this.startDate == date) {
     var self = this
    
       
-      $('#button_modal_define_budget').trigger('click')
+     /*  $('#button_modal_define_budget').trigger('click') */
       var self = this
     this.isCreating = true
     

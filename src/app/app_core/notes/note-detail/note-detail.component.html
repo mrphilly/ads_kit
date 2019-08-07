@@ -5,7 +5,7 @@
   <h5 style="color: #4db6ac">Liste des campagnes</h5>
   <br>
   <br>
-                    <div class="card no-b shadow teal lighten-2 text-white" >
+                    <div class="card no-b shadow teal lighten-3 text-white" >
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -18,22 +18,23 @@
                                                     </div>
                                         </td>
                                         <td>
-                                          <small class="text-white">Campagne</small>
-                                            <h6 style="font-weight: bold">{{ note?.name }}</h6>
+                                          <!--   -->
+                                                                          <span class="text-white" style="font-size: 12px"><strong>{{ note?.name }}</strong></span>
+                                           <!--  <h6 style="font-weight: bold">{{ note?.name }}</h6> -->
                                         </td>
                                         <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
-                                        <td *ngIf="note?.status=='ENABLED'" class="text-center"><div class="d-lg-block"><span class="badge badge-success">Activer</span>
+                                        <td *ngIf="note?.status=='ENABLED'" class="text-center"><div class="d-lg-block"><span class="badge badge-success" style="font-size: 14px">Activer</span>
                                         </div></td>
-                                         <td *ngIf="note?.status=='PAUSED'"><div class="d-lg-block"><span class="badge badge-danger">Désactiver</span>
+                                         <td *ngIf="note?.status=='PAUSED'"><div class="d-lg-block"><span class="badge badge-danger" style="font-size: 10px">DÃ©sactiver</span>
                                         </div></td>
                                         <td>
                                             <div class="d-none d-lg-block">
-                                            <span><i class="icon icon-data_usage"></i> Commence le {{ note?.startDateFrench }}</span><br>
-                                            <span><i class="icon icon-timer"></i> Se termine le {{ note?.endDateFrench }}</span>
+                                            <span style="font-size: 10px"><i class="icon icon-data_usage"></i> Commence le {{ note?.startDateFrench }}</span><br>
+                                            <span style="font-size: 14px"><i class="icon icon-timer"></i> Se termine le {{ note?.endDateFrench }}</span>
                                             </div>
                                         </td>
                                         <td>
-                                            <a class="btn btn-sm green accent-3 shadow text-white" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)" style="    margin-left: -40px;width: 100px;"><i class="icon-settings2"></i>Configurer</a>
+                                            <a class="btn btn-sm green accent-3 shadow text-white" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)" style="margin-left: -40px; font-size: 10px"><i class="icon-settings2"></i>Configurer</a>
                                         </td>
                                         <hr>
                                     </tr>
