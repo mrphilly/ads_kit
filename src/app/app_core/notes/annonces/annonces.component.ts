@@ -3,15 +3,15 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import {
-  HttpClient
-} from '@angular/common/http';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute
 } from '@angular/router';
+import {
+  HttpClient
+} from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -55,7 +55,8 @@ declare const pQuery: any
 declare const PayExpresse: any
 declare const require: any;
 
-const SERVER_URL = ""
+//const SERVER_URL = "http://127.0.0.1:5000"
+const SERVER_URL = "banner.comparez.co"
 const MONTH = [{
   "Jan": {
     "name": "January",
@@ -130,6 +131,8 @@ const MONTH = [{
     "days": '31'
   }
 }]
+
+const server_url = ""
 @Component({
   selector: 'app-annonces',
   templateUrl: './annonces.component.html',
@@ -2112,7 +2115,7 @@ defineBudgetFromAccount() {
       this.isRoller = true
       this.isPlacementBudgetFromAccount = false
       this.montant = montant
-         this.http.post('http://127.0.0.1:5000/setBudgetFromAccount', {
+         this.http.post(SERVER_URL+'/setBudgetFromAccount', {
       'budgetId': this.budgetId,
            'amount': this.budget_to_place,
       'dure': this.dure_campagne,
@@ -2179,7 +2182,7 @@ defineBudgetFromAccount() {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: 'http://127.0.0.1:5000/rechargeAmountBeforeBudgetFromAd/'+ self.ad_group_name+ "/"+self.idC+"/"+self.idA+"/"+self.ad_group_id+"/"+self.campagne_id+"/"+self.montant+"/"+self.id_ad_firebase,
+            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudgetFromAd/'+ self.ad_group_name+ "/"+self.idC+"/"+self.idA+"/"+self.ad_group_id+"/"+self.campagne_id+"/"+self.montant+"/"+self.id_ad_firebase,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -4342,7 +4345,7 @@ defineBudgetFromAccount() {
       if (result.value) {
         /*  */
         this.isCreating = true
-        this.http.post('http://127.0.0.1:5000/changeAdStatus', {
+        this.http.post(SERVER_URL+'/changeAdStatus', {
           'ad_group_id': adgroup_id,
           'ad_id': ad_id,
             'last_status': last_status
@@ -4418,7 +4421,7 @@ defineBudgetFromAccount() {
       if (result.value) {
         /*  */
         this.isCreating = true
-        this.http.post('http://127.0.0.1:5000/removeAd', {
+        this.http.post(SERVER_URL+'/removeAd', {
           'ad_group_id': adgroup_id,
           'ad_id': ad_id
 
@@ -4462,7 +4465,7 @@ defineBudgetFromAccount() {
 
   removeAdBeforeUpdate(id: string, adgroup_id: string, ad_id: string): Promise<any> {
     return new Promise(resolve => {
-      this.http.post('http://127.0.0.1:5000/removeAd', {
+      this.http.post(SERVER_URL+'/removeAd', {
         'ad_group_id': adgroup_id,
         'ad_id': ad_id
 
@@ -4568,7 +4571,7 @@ if (this.budget === 0) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: 'http://127.0.0.1:5000/rechargeAmount/'+ self.montant,
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -4650,7 +4653,7 @@ if (this.budget === 0) {
       $('#button_modal_define_budget').trigger('click')
       var self = this 
     this.isCreating = true
-    var url = 'http://127.0.0.1:5000/payBudget/' + self.montant + "/" + self.budget_to_place + "/" + self.budgetId + "/" + self.idC + "/" + self.dure_campagne + "/" + self.ad_group_name + "/" + self.idA + "/" + self.ad_group_id + "/" + self.campagne_id + "/" + self.id_ad_firebase
+    var url = SERVER_URL+'/payBudget/' + self.montant + "/" + self.budget_to_place + "/" + self.budgetId + "/" + self.idC + "/" + self.dure_campagne + "/" + self.ad_group_name + "/" + self.idA + "/" + self.ad_group_id + "/" + self.campagne_id + "/" + self.id_ad_firebase
     alert(url)
       setTimeout(function () {
     

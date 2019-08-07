@@ -20,7 +20,8 @@ import {AngularFireDatabase} from '@angular/fire/database'
 
 declare var require: any;
 var _ = require('lodash');
-
+//const SERVER_URL = "http://127.0.0.1:5000"
+const SERVER_URL = "banner.comparez.co"
 @Injectable()
 export class Ads {
   currentUser: any;
@@ -132,7 +133,7 @@ private basePath = '/uploads';
       
       if (`${value}` == '0') {
         
-        this.http.post('http://127.0.0.1:5000/addAd', {
+        this.http.post(SERVER_URL+'/addAd', {
        'ad_group_id': ad_group_id,
           'url_image': image_url,
           'ad_name': ad_name,
@@ -290,7 +291,7 @@ private basePath = '/uploads';
 
   UpdateAdModified(id_ad_firebase: any, ad_id: any, ad_group_id: any, data: any): Promise<any> {
     return new Promise(resolve => {
-       this.http.post('http://127.0.0.1:5000/UpdateAd', {
+       this.http.post(SERVER_URL+'/UpdateAd', {
           'ad_group_id': ad_group_id,
          'ad_id': ad_id,
           'data': data

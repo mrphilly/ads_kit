@@ -16,7 +16,8 @@ import * as moment from 'moment'
 //import '../../../../assets/js/payexpress/payExpress'
 declare const pQuery: any
 declare const PayExpresse: any
-
+//const SERVER_URL = "http://127.0.0.1:5000"
+const SERVER_URL = "banner.comparez.co"
 @Component({
   selector: 'notes-list',
   templateUrl: './notes-list.component.html',
@@ -332,7 +333,7 @@ export class NotesListComponent implements AfterViewInit {
     var name = $("#campagne").val()
     
 
-    this.http.post('http://127.0.0.1:5000/addCampaign', {
+    this.http.post(SERVER_URL+'/addCampaign', {
       'email': this.email,
       'campaign_name': name
     })
@@ -406,7 +407,7 @@ export class NotesListComponent implements AfterViewInit {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: 'http://127.0.0.1:5000/rechargeAmount/'+ self.montant,
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant,
             method: 'POST',
             headers: {
                 "Accept": "application/json"

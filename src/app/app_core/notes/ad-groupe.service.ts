@@ -18,7 +18,8 @@ import * as moment from 'moment'
 
 declare var require: any;
 var _ = require('lodash');
-
+//const SERVER_URL = "http://127.0.0.1:5000"
+const SERVER_URL = "banner.comparez.co"
 @Injectable()
 export class AdGroupService {
   currentUser: any;
@@ -133,7 +134,7 @@ export class AdGroupService {
      console.log(genre)
      console.log(`concat`)    
     
-        this.http.post('http://127.0.0.1:5000/targetGender', {
+        this.http.post(SERVER_URL+'/targetGender', {
        'ad_group_id': ad_group_id,
           'sexes': genre,
        'last_genre': value
@@ -163,7 +164,7 @@ export class AdGroupService {
 
   removePlacement(id: any, campaign_id: any, ad_group_id: any, criterion: any): Promise<any> {
     return new Promise(resolve => {
-      this.http.post('http://127.0.0.1:5000/removeSinglePlacement', {
+      this.http.post(SERVER_URL+'/removeSinglePlacement', {
          'ad_group_id': ad_group_id,
           'criterion': criterion,
       
@@ -208,7 +209,7 @@ export class AdGroupService {
    return await this.getAdGroupPlacement(campaign_id, ad_group_id).then(value => {
       
     
-        this.http.post('http://127.0.0.1:5000/setPlacement', {
+        this.http.post(SERVER_URL+'/setPlacement', {
        'ad_group_id': ad_group_id,
           'placement': placement,
        'last_placement': value
@@ -247,7 +248,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
      console.log(devices)
      console.log(`concat`)    
     
-        this.http.post('http://127.0.0.1:5000/targetDevices', {
+        this.http.post(SERVER_URL+'/targetDevices', {
        'ad_group_id': ad_group_id,
           'devices': devices,
        'last_devices': value
@@ -309,7 +310,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
      }*/
       
         
-        this.http.post('http://127.0.0.1:5000/targetAge', {
+        this.http.post(SERVER_URL+'/targetAge', {
        'ad_group_id': ad_group_id,
           'ages': age,
        'last_ages': value
@@ -349,7 +350,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
       
       if (`${value}` == '0') {
         
-        this.http.post('http://127.0.0.1:5000/addAdGroup', {
+        this.http.post(SERVER_URL+'/addAdGroup', {
        'ad_group_name': name,
        'campaign_id': campaign_id
     })

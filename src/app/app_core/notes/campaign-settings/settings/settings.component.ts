@@ -60,7 +60,8 @@ export interface JSONDATE {
   selectedDate: string;
 }
 
-
+//const SERVER_URL = "http://127.0.0.1:5000"
+const SERVER_URL = "banner.comparez.co"
 const MONTH = [{
   "Jan": {
     "name": "January",
@@ -1161,7 +1162,7 @@ for (var i = 0; i < dateArr.length; i++) {
           })
           $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/updateCampaign",
+            url: SERVER_URL+"/updateCampaign",
             datatype: "json",
             contentType: 'application/json',
             data: JSON.stringify(data),
@@ -1216,7 +1217,7 @@ for (var i = 0; i < dateArr.length; i++) {
           })
           $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/updateCampaign",
+            url: SERVER_URL+"/updateCampaign",
             datatype: "json",
             contentType: 'application/json',
             data: JSON.stringify(data),
@@ -1267,7 +1268,7 @@ for (var i = 0; i < dateArr.length; i++) {
           })
           $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/updateCampaign",
+            url: SERVER_URL+"/updateCampaign",
             datatype: "json",
             contentType: 'application/json',
             data: JSON.stringify(data),
@@ -1320,7 +1321,7 @@ for (var i = 0; i < dateArr.length; i++) {
           })
           $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/updateCampaign",
+            url: SERVER_URL+"/updateCampaign",
             datatype: "json",
             contentType: 'application/json',
             data: JSON.stringify(data),
@@ -1404,7 +1405,7 @@ for (var i = 0; i < dateArr.length; i++) {
       if (result.value) {
         /*  */
         this.isCreating = true
-        this.http.post('http://127.0.0.1:5000/updateAdGroupStatus', {
+        this.http.post(SERVER_URL+'/updateAdGroupStatus', {
             'adgroup_id': adgroup_id,
             'last_status': last_status
           })
@@ -1461,7 +1462,7 @@ for (var i = 0; i < dateArr.length; i++) {
       if (result.value) {
         /*  */
         this.isCreating = true
-        this.http.post('http://127.0.0.1:5000/deleteAdGroup', {
+        this.http.post(SERVER_URL+'/deleteAdGroup', {
             'adgroup_id': adgroup_id,
 
           })
@@ -1593,7 +1594,7 @@ for (var i = 0; i < dateArr.length; i++) {
         }
         $.ajax({
           type: "POST",
-          url: "http://127.0.0.1:5000/deleteCampaign",
+          url: SERVER_URL+"/deleteCampaign",
           datatype: "json",
           contentType: 'application/json',
           success: function (response) {
@@ -2563,7 +2564,7 @@ if (this.endDate == date || this.startDate == date) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: 'http://127.0.0.1:5000/Budget/'+self.id+"/"+self.id_campagne+"/"+self.budgetId+"/"+ self.montant+"/"+self.budget_to_place+"/"+self.dure_campagne,
+            requestTokenUrl: SERVER_URL+'/Budget/'+self.id+"/"+self.id_campagne+"/"+self.budgetId+"/"+ self.montant+"/"+self.budget_to_place+"/"+self.dure_campagne,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -2650,7 +2651,7 @@ if (this.endDate == date || this.startDate == date) {
       this.isRoller = true
       this.isPlacementBudgetFromAccount = false
       this.montant = montant
-         this.http.post('http://127.0.0.1:5000/setBudgetFromAccount', {
+         this.http.post(SERVER_URL+'/setBudgetFromAccount', {
       'budgetId': this.budgetId,
            'amount': this.budget_to_place,
       'dure': this.dure_campagne,
@@ -2715,7 +2716,7 @@ if (this.endDate == date || this.startDate == date) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: 'http://127.0.0.1:5000/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id,
+            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id,
             method: 'POST',
             headers: {
                 "Accept": "application/json"

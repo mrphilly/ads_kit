@@ -16,6 +16,8 @@ import * as moment from 'moment'
 
 import { AdGroupService } from './ad-groupe.service'
 import {Ads} from './ads.service'
+//const SERVER_URL = "http://127.0.0.1:5000"
+const SERVER_URL = "banner.comparez.co"
 
 
 @Injectable()
@@ -65,7 +67,7 @@ export class NotesService implements OnInit {
 
       if (`${value}` == '0') {
         
-        this.http.post('http://127.0.0.1:5000/addCampaign', {
+        this.http.post(SERVER_URL+'/addCampaign', {
        'email': email,
        'campaign_name': name
     })
@@ -161,7 +163,7 @@ export class NotesService implements OnInit {
 
       
         
-        this.http.post('http://127.0.0.1:5000/targetLocation', {
+        this.http.post(SERVER_URL+'/targetLocation', {
        'campaign_id': campaign_id,
        'location_id': location[0].item_id
     })
@@ -228,7 +230,7 @@ export class NotesService implements OnInit {
       console.log(`location id from firestore ${value[0].item_id}`)
       
       
-        this.http.post('http://127.0.0.1:5000/updateLocation', {
+        this.http.post(SERVER_URL+'/updateLocation', {
           'campaign_id': campaign_id,
           'previous_location': value[0]['item_id'],
           'location_id': location[0].item_id
@@ -291,7 +293,7 @@ export class NotesService implements OnInit {
      }*/
       
         
-        this.http.post('http://127.0.0.1:5000/targetAgeLevelCampaign', {
+        this.http.post(SERVER_URL+'/targetAgeLevelCampaign', {
        'campaign_id': campaign_id,
           'previous_ages': value['criterion_ages'],
        'ages': age
@@ -375,7 +377,7 @@ export class NotesService implements OnInit {
   
   updateStartDate(id: string, campaign_id: string, startDate: string, startDateFrench: string): Promise<any> {
     return new Promise(resolve => {
-      this.http.post('http://127.0.0.1:5000/upDateCampaignStartDate', {
+      this.http.post(SERVER_URL+'/upDateCampaignStartDate', {
         'campaign_id': campaign_id,
         'startDate': startDate
       })
@@ -420,7 +422,7 @@ export class NotesService implements OnInit {
   
     updateEndDate(id: string, campaign_id: string, endDate: string, endDateFrench: string): Promise<any> {
        return  new Promise(resolve=>{
-         this.http.post('http://127.0.0.1:5000/upDateCampaignEndDate', {
+         this.http.post(SERVER_URL+'/upDateCampaignEndDate', {
        'campaign_id': campaign_id,
        'endDate': endDate
     })
@@ -466,7 +468,7 @@ export class NotesService implements OnInit {
   updateDates(id: string, campaign_id: string, startDate: string, startDateFrench: string, endDate: string, endDateFrench: string): Promise<any> {
     return new Promise(resolve => {
       
-      this.http.post('http://127.0.0.1:5000/upDateCampaignDates', {
+      this.http.post(SERVER_URL+'/upDateCampaignDates', {
         'campaign_id': campaign_id,
         'startDate': startDate,
          'endDate': endDate
@@ -491,7 +493,7 @@ export class NotesService implements OnInit {
 
 
   getCampaignRealTimeData(id, campaign_id: string) {
-          return      this.http.post('http://127.0.0.1:5000/getCampaignData', {
+          return      this.http.post(SERVER_URL+'/getCampaignData', {
        'campaign_id': campaign_id,
     
     })
