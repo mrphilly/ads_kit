@@ -17,7 +17,7 @@ import * as moment from 'moment'
 declare const pQuery: any
 declare const PayExpresse: any
 //const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "banner.comparez.co"
+const SERVER_URL = "http://137.74.199.121:5009"
 @Component({
   selector: 'notes-list',
   templateUrl: './notes-list.component.html',

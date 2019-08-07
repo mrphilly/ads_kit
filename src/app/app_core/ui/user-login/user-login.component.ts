@@ -67,7 +67,7 @@ export class UserLoginComponent {
       if (res == "ok") {
          Swal.fire({
         title: 'Authentification',
-        text: 'Connexion avec succès',
+        text: 'Vous êtes maintenant connecté',
         type: 'success',
         showCancelButton: false,
         confirmButtonColor: '#26a69a',
@@ -92,7 +92,7 @@ export class UserLoginComponent {
         if (res == "ok") {
           Swal.fire({
             title: 'Authentification',
-            text: 'Connexion avec succès',
+            text: 'Vous êtes maintenant connecté',
             type: 'success',
             showCancelButton: false,
             confirmButtonColor: '#26a69a',
@@ -115,25 +115,52 @@ export class UserLoginComponent {
   signup() {
     this.isCreating = true;
     
-    this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password']);
-    this.afterSignIn()
-    this.isCreating = false
+    this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password']).then(res => {
+      if (res == "ok") {
+         Swal.fire({
+            title: 'Authentification',
+            text: 'Inscription terminée avec succès',
+            type: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#26a69a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok'
+          }).then((result) => {
+            if (result.value) {
+              this.afterSignIn();
+            } else {
+              this.afterSignIn();
+            }
+
+          })
+      }
+    });
+  
   }
 
   login() {
     this.isCreating = true
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']).then(res => {
    
-      if (res.length == 0) {
-        this.isCreating = false
-        this.Invalid = true
-        this.errors_credentials = 'Indentifiants incorrects'
+      if (res.length > 0) {
+        Swal.fire({
+            title: 'Authentification',
+            text: 'Vous êtes maintenant connecté',
+            type: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#26a69a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok'
+          }).then((result) => {
+            if (result.value) {
+              this.afterSignIn();
+            } else {
+              this.afterSignIn();
+            }
+
+          })
           
-      } else {
-        this.afterSignIn()
-           this.isCreating = false
-    
-      }
+      } 
    
       
     });
