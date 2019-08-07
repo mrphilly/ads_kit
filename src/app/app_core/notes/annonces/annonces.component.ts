@@ -3,7 +3,6 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute
@@ -12,6 +11,7 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -56,7 +56,7 @@ declare const PayExpresse: any
 declare const require: any;
 
 //const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "banner.comparez.co"
+const SERVER_URL = "http://137.74.199.121:5009"
 const MONTH = [{
   "Jan": {
     "name": "January",
