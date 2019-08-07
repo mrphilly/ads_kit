@@ -21,7 +21,7 @@ import {AngularFireDatabase} from '@angular/fire/database'
 declare var require: any;
 var _ = require('lodash');
 //const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "banner.comparez.co"
+const SERVER_URL = "http://137.74.199.121:5009"
 @Injectable()
 export class Ads {
   currentUser: any;
