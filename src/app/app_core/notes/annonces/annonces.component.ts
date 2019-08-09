@@ -42,6 +42,7 @@ import {
 import Swal from 'sweetalert2'
 import { Ads } from '../ads.service'
 import { AdGroupService } from '../ad-groupe.service'
+import {SERVER} from '../../../../environments/environment'
 /* 
 import Swal from 'sweetalert2'
 import { Ads } from '../ads.service'
@@ -55,8 +56,8 @@ declare const pQuery: any
 declare const PayExpresse: any
 declare const require: any;
 
-//const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "http://137.74.199.121:5009"
+const SERVER_URL = SERVER.url
+
 const MONTH = [{
   "Jan": {
     "name": "January",

@@ -51,6 +51,7 @@ import { Router } from '@angular/router'
 
 import {Ads} from '../../ads.service'
 import '../../../../../assets/js/payexpress/payExpress'
+import {SERVER} from '../../../../../environments/environment'
 
 declare var require: any;
 declare const pQuery: any
@@ -60,8 +61,8 @@ export interface JSONDATE {
   selectedDate: string;
 }
 
-//const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "http://137.74.199.121:5009"
+
+const SERVER_URL = SERVER.url
 const MONTH = [{
   "Jan": {
     "name": "January",
@@ -710,6 +711,8 @@ for (var i = 0; i < dateArr.length; i++) {
     }
   }
 
+ 
+  
   targetDevices() {
     console.log(this.devices)
     this.isCreating = true
@@ -988,6 +991,7 @@ for (var i = 0; i < dateArr.length; i++) {
     return Math.round((second-first)/(1000*60*60*24));
  }
   
+ 
 
   getData(): Observable < any[] > {
     // ['added', 'modified', 'removed']

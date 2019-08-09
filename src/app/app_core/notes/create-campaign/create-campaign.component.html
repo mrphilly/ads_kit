@@ -1,18 +1,28 @@
-    <div class="container-fluid pt-5 bg-white">
+
+
+ <div class="container-fluid pt-5 bg-white" >
    <div class="text-center p-5">
-       
-       <i class="icon-note-important s-64 text-primary"></i>
-       <h4 class="my-3" >Créer une nouvelle campagne publicitaire</h4>
+       <i class="icon-new_releases s-128 text-info"></i>
        <br>
-        <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="max-width: 200 px !important">
-        <hr>
-       <button href="#" class="btn teal darken-3 shadow btn-lg text-white" (click)="addCampaign()" [disabled]="name?.length < 2 || name?.length > 15"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
        <br>
-       
+       <small><strong>Créer sa campagne publicitaire</strong></small>
+       <br>
+       <br>
+       <div class="form-row text-center">
+           <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="display: inline-block">
+
+       </div>
+        <br>
+       <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20 btn-social text-center" (click)="addCampaign()" [disabled]="name?.length < 5 || name?.length > 15" style="display: inline-block; font-size: 14px"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
+       <br>
+       <br>
+           <a href="/" class="btn btn-warning text-white shadow btn-lg r-20 btn-social text-center" style="display: inline-block; font-size: 14px"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
+
+          
    </div>
-   <div *ngIf="isCreating">
+   
+  <div *ngIf="isCreating">
       <app-spinner-overlay [message]="message"></app-spinner-overlay>
 
    </div>
-  
 </div>

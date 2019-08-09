@@ -17,6 +17,7 @@ export class UserLoginComponent {
    isCreating = false
   Invalid = false
   errors_credentials: any;
+  accountValue = 0
   userForm: FormGroup;
   newUser = true; // to toggle login or signup form
   passReset = false; // set to true when password reset is triggered
@@ -52,10 +53,11 @@ export class UserLoginComponent {
     this.auth.user.forEach(value => {
       if (value) {
         this.email = value.email
-           
+        this.accountValue = value.account_value   
          }
       
     })
+    
   }
   
    toggleForm() {
@@ -75,9 +77,9 @@ export class UserLoginComponent {
         confirmButtonText: 'Ok'
       }).then((result) => {
         if (result.value) {
-          this.afterSignIn();
+          
         } else {
-          this.afterSignIn();
+          
         }
 
       })
@@ -100,9 +102,9 @@ export class UserLoginComponent {
             confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.value) {
-              this.afterSignIn();
+              
             } else {
-              this.afterSignIn();
+              
             }
 
           })
@@ -127,9 +129,9 @@ export class UserLoginComponent {
             confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.value) {
-              this.afterSignIn();
+              
             } else {
-              this.afterSignIn();
+              
             }
 
           })
@@ -141,8 +143,8 @@ export class UserLoginComponent {
   login() {
     this.isCreating = true
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']).then(res => {
-   
-      if (res.length > 0) {
+      
+      if (res.toString()!= "") {
         Swal.fire({
             title: 'Authentification',
             text: 'Vous êtes maintenant connecté',
@@ -153,9 +155,9 @@ export class UserLoginComponent {
             confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.value) {
-              this.afterSignIn();
+              
             } else {
-              this.afterSignIn();
+              
             }
 
           })
@@ -224,21 +226,21 @@ export class UserLoginComponent {
     }
   }
   async signInWithGithub() {
-    await this.auth.githubLogin();
-    return await this.afterSignIn();
+   return await this.auth.githubLogin();
+    
   }
 
 
   async signInWithTwitter() {
-    await this.auth.twitterLogin();
-    return await this.afterSignIn();
+    return await this.auth.twitterLogin();
+  
   }
 
   /// Anonymous Sign In
 
   async signInAnonymously() {
-    await this.auth.anonymousLogin();
-    return await this.afterSignIn();
+   return await this.auth.anonymousLogin();
+     
   }
 
   /// Shared

@@ -13,11 +13,11 @@ import { AdGroupService } from '../ad-groupe.service'
 import Swal from 'sweetalert2'
 import * as $ from 'jquery'
 import * as moment from 'moment'
-//import '../../../../assets/js/payexpress/payExpress'
+import {SERVER} from '../../../../environments/environment'
 declare const pQuery: any
 declare const PayExpresse: any
 //const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "http://137.74.199.121:5009"
+const SERVER_URL = SERVER.url
 @Component({
   selector: 'notes-list',
   templateUrl: './notes-list.component.html',
@@ -256,7 +256,7 @@ export class NotesListComponent implements AfterViewInit {
   
     this._addCampaign_ = false
     this.showList = false
-    this.child._showCampaignSettings_ = false
+    
   
      //this.child._showCampaignSettings_=false
 
@@ -284,6 +284,7 @@ export class NotesListComponent implements AfterViewInit {
     this._addCampaign_ = true
     this.showList = true
     this.child._showCampaignSettings_ = false
+    $(".button-open-nav").click()
    
     
   }

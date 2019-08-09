@@ -15,9 +15,10 @@ import {map} from 'rxjs/operators'
 import * as moment from 'moment'
 
 import { AdGroupService } from './ad-groupe.service'
-import {Ads} from './ads.service'
-//const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "http://137.74.199.121:5009"
+import { Ads } from './ads.service'
+import {SERVER} from '../../../environments/environment'
+
+const SERVER_URL = SERVER.url
 
 
 @Injectable()

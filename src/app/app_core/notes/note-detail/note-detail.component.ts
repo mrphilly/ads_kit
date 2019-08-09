@@ -116,11 +116,11 @@ export class NoteDetailComponent implements OnInit {
     this.numberOfDays = numberOfDays
     this._showCampaignSettings_ = true
   }
-  async loadScript(src){
+ /*  async loadScript(src){
     var script = document.createElement("script");
     script.type = "text/javascript";
     document.getElementsByTagName("body")[0].appendChild(script);
     script.src = src;
     $("body").css("background-image", "url('')")
-  }
+  } */
 }

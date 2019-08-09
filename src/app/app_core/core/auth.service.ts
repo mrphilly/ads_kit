@@ -159,17 +159,29 @@ export class AuthService {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ok'
       }).then((result) => {
-        if (result.value) {}
+        if (result.value) {
+              this.updateUserData(credential.user);
+          response.push(credential.user)
+          
+        } else {
+              this.updateUserData(credential.user);
+          response.push(credential.user)
+          
+        }
 
       })
-        this.updateUserData(credential.user);
-        response.push(credential.user)
+    
         
       })
       .catch(error => { this.handleError(error); });
     return Promise.resolve(response)
   }
 
+   afterSignIn() {
+    // Do after login stuff here, such router redirects, toast messages, etc.
+    
+    return this.router.navigate(['/']);
+  }
   // Sends email allowing user to reset password
   resetPassword(email: string) {
     const fbAuth = auth();

@@ -15,11 +15,12 @@ import * as $ from 'jquery'
 import { map } from 'rxjs/operators'
 import * as moment from 'moment'
 /* import { NoteDetailComponent } from './note-detail/note-detail.component' */
+import {SERVER} from '../../../environments/environment'
 
 declare var require: any;
 var _ = require('lodash');
-//const SERVER_URL = "http://127.0.0.1:5000"
-const SERVER_URL = "http://137.74.199.121:5009"
+
+const SERVER_URL = SERVER.url
 @Injectable()
 export class AdGroupService {
   currentUser: any;

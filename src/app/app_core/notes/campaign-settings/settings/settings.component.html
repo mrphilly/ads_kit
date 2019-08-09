@@ -104,6 +104,12 @@
                     style="float: left"></i><strong class="s-12" style="float: left">Status</strong> <span
                     class="float-right s-12 text-danger"
                     style="font-weight: bold">{{text_status_deactive_campaign}}</span></li>
+
+                
+                  <li class="list-group-item">
+                  <a class="btn btn-sm btn-block teal lighten-3 r-20 text-white btn-social" style="font-size: 12px" href="/"><i class="icon-view_list text-success"
+                    ></i> Liste des campagnes</a> 
+                 </li>
                 <li class="list-group-item" *ngIf="status=='ENABLED'"><i class="icon icon-mail text-success"
                     style="float: left"></i><strong class="s-12" style="float: left">Status</strong> <span
                     class="float-right s-12 text-success"
@@ -159,9 +165,9 @@
                       style="max-width: 200 px !important">
                     <div class="card-footer white text-center no-b">
 
-                      <a href="#" class="btn btn-md teal lighten-1 shadow btn-sm r-20 text-white" (click)="addAdGroup()"><i
+                      <a href="#" class="btn btn-social btn-md teal lighten-1 shadow btn-sm r-20 text-white" (click)="addAdGroup()"><i
                           class="icon-plus-circle mr-2 "></i>Ajouter</a>
-                      <button href="#" class="btn btn-danger shadow btn-sm r-20" (click)="closeAddAdGroup()"><i
+                      <button href="#" class="btn btn-danger shadow btn-sm r-20 btn-social" (click)="closeAddAdGroup()"><i
                           class="icon-close mr-2 "></i>Annuler</button>
                     </div>
                   </div>
@@ -241,7 +247,7 @@
                     <div class="card-body text-center no-b white" *ngIf="!isAdGroup">
                       <div class="card white no-b" >
                         <div class="card-body white no-b text-center">
-                          <a class="btn btn-md teal darken-1 shadow  text-white" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle"></i> Cliquer pour commencer</a><br>
+                          <a class="btn btn-md teal darken-1 text-white btn-social r-20" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle"></i> Cliquer pour commencer</a><br>
                           <small>Cliquer pour créer un groupe d'annonce</small><br>
                           <small>Un groupe d'annonce est un dossier qui contient des annonces</small><br>
                           <small>Lorsque la campagne commencera à diffuser se sont ces dossiers qui</small><br> 
@@ -517,10 +523,8 @@
                 <div class="collapse" id="collapseZone">
                         <div class="card no-b shadow timeline-item">
               <div class="card-header white b-0 p-3 text-center no-b">
-                <h4 class="card-title">Liste des zones ciblées</h4>
                 <small class="card-subtitle mb-2 text-muted">Visualiser ici vos zones ciblées et si nécessaire modifier les stratégies d'enchères.</small>
-                <span class="float-right"><i
-                          class="ion icon-clock-o"></i>Modifier le ciblage</span>
+               
               </div>
               <div class="collapse show" id="invoiceCard">
                 <div class="card-body p-0 no-b">
@@ -550,7 +554,7 @@
                   </div>
                 </div>
                 <div class="card-footer white no-b text-center">
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone==''"><i
+                  <a class="btn btn-social btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone==''"><i
                         class="icon-add_location"></i>Ajouter une zone</a>
                    <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone!=''"><i
                         class="icon-add_location"></i>Modifier le ciblage</a>
