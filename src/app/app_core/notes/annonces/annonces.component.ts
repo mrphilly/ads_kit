@@ -3,15 +3,15 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import { s } from '@angular/core/src/render3';
-import {
-  ActivatedRoute
-} from '@angular/router';
 import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { s } from '@angular/core/src/render3';
+import {
+  ActivatedRoute, Router
+} from '@angular/router';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -306,7 +306,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   };
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
-  constructor(private notesService: NotesService, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder) {
+  constructor(private notesService: NotesService, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder, private router: Router) {
 
   }
   dropdownListAges = [];
@@ -578,6 +578,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     public layers: any = [];
     canva_state = false
 
+
+  go() {
+    window.location.replace('/#')
+    window.location.reload()
+   /*  this.router.navigate(['/']) */
+  }
   
   handleCanvas(width: number, height: number) {
   

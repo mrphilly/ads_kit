@@ -1,28 +1,35 @@
 <ng-template #isConnected>
   <main>
-    <div id="primary" class="teal lighten-1 p-t-b-100 height-full responsive-phone">
-        <div class="container bg-dark" >
-            <div class="row bg-dark">
-                <div class="col-md-6">
-                    <img src="assets/img/adafri.png" alt="" style="width:35%">
-                </div>
-                <div class="col-md-6 ">
-            
-               <div class="card my-3 card-block d-flex shadow no-b teal lighten-3 text-white">
-                    <div class="card-body align-items-center d-flex justify-content-center">
-                        <div>
-                            <h5 class="card-title">Adafri votre plateforme de publicité</h5>
-                            <h5 class="card-text">{{email}}</h5>
-                             <h5 class="card-text">Porte-feuille: {{accountValue}} CFA</h5>
-                            
-                        </div>
-                    </div>
-                    <div>
-                    </div>
-                </div>
-                 <div class="form-row text-center justify-content-between " style="margin-top: 30px">
+    <div  class="height-full text-center " style="background:url(assets/img/images/homepage-header-960px.jpg) no-repeat left bottom; background-size:cover;">
+    <div class="row">
+      <div class="col-md-6">
 
-                    <a  class="btn btn-md btn-social facebook teal darken-1 text-white text-center r-20" href="/dist">
+      </div>
+      <div class="col-md-6"  style="float: right; border-radius: 20px;">
+        <div class="row">
+          <div class="col-md-12">
+
+            <img src="assets/img/adafri.png" alt="" style="width:35%;">
+               <div class="card my-3 card-block d-flex no-b text-white" style=" background: rgba(66, 122, 101, 0.5);">
+                          <div class="card-body align-items-center d-flex justify-content-center no-b">
+                              <div>
+                                  <h5 class="card-title">Adafri votre plateforme de publicité</h5>
+                                  <h5 class="card-text">{{email}}</h5>
+                                   <h5 class="card-text">Porte-feuille: {{accountValue}} CFA</h5>
+                                  
+                              </div>
+                          </div>
+                          <div>
+                          </div>
+                      </div>
+          </div>
+      
+        </div>
+        <div class="row">
+         <div class="col-md-12">
+           <div class="text-center justify-content-between">
+
+                    <a  class="btn btn-md btn-social facebook teal darken-1 text-white text-center r-20" (click)="go()">
                         <i class="icon-play"></i>
                         Démarrer
                     </a>
@@ -31,20 +38,16 @@
         Deconnexion
     </a>
   </div>
-  <br>
-  <br>
-  <br>
-         
-         
-                   
-                </div>
-            </div>
-                    <div class="row shadow bg-dark" style="margin-top: 30px">
-            <div class="col">
+         </div>
+              <!--  <div class="col-md-6">
+
+            
+                             <div class="row no-b" style="margin-top: 90px">
+            <div class="col-md-4">
                 <div class="card my-3 no-b">
 
-                    <div class="card-image text-warning">
-                        <img src="../../../../assets/img/images/etape1.jpg" alt="">
+                    <div class="card-image text-warning no-b">
+                        <img src="assets/img/images/etape1.jpg" alt="">
                     </div>
                 </div>
             </div>
@@ -66,7 +69,80 @@
             </div>
            
         </div>
+          </div> -->
         </div>
+    </div>
+    </div>
+    
+     
+
+     <!--    <div class="row ">
+           <div class="row no-b" >
+                <div class="col-md-6 no-b">
+                    <img src="assets/img/adafri.png" alt="" style="width:35%">
+                </div>
+                <div class="col-md-6 no-b" >
+            
+               <div class="card my-3 card-block d-flex no-b teal lighten-3 text-white">
+                    <div class="card-body align-items-center d-flex justify-content-center no-b">
+                        <div>
+                            <h5 class="card-title">Adafri votre plateforme de publicité</h5>
+                            <h5 class="card-text">{{email}}</h5>
+                             <h5 class="card-text">Porte-feuille: {{accountValue}} CFA</h5>
+                            
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+                 <div class="form-row text-center justify-content-between " style="margin-top: 30px">
+
+                    <a  class="btn btn-md btn-social facebook teal darken-1 text-white text-center r-20" (click)="go()">
+                        <i class="icon-play"></i>
+                        Démarrer
+                    </a>
+    <a  class="btn btn-md btn-social google red lighten-1 text-white text-center r-20" (click)="logout()">
+        <i class="icon-highlight_off"></i>
+        Deconnexion
+    </a>
+  </div>
+  <br>
+  <br>
+  <br>
+         
+         
+                   
+                </div>
+            </div>
+                    <div class="row no-b" style="margin-top: 90px">
+            <div class="col-md-4">
+                <div class="card my-3 no-b">
+
+                    <div class="card-image text-warning no-b">
+                        <img src="assets/img/images/etape1.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="card my-3 no-b">
+
+                    <div class="card-image text-info">
+                         <img src="assets/img/images/etape2.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="card my-3 no-b">
+
+                    <div class="card-image">
+                        <img src="assets/img/images/etape3.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        </div> -->
+        
     </div>
     <!-- #primary -->
 </main>
@@ -75,7 +151,7 @@
 
 <main *ngIf="!(auth.user | async); else isConnected">
 
-<section class="login-block height-full" style=" background:url(assets/img/images/homepage-header-960px.jpg) no-repeat left bottom; background-size:cover">
+<section class="login-block height-full" style="background:url(assets/img/images/homepage-header-960px.jpg) no-repeat left bottom; background-size:cover;">
     
 	
 
@@ -171,9 +247,9 @@
 </section>
 <section class="login-block1">
  <div class="card no-b shadow">
-    <div class="card-image">
+ 
       <img class="img-responsive" src="assets/img/images/Bloc N°4_prefooter.jpg">
-    </div>
+   
   
   </div>
 </section>
