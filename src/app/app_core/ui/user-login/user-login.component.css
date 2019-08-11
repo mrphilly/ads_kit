@@ -124,9 +124,43 @@
     border-radius: 3px;
 }
 
+<<<<<<< HEAD
 .banner-text p {
     color: #fff;
 }
+=======
+.page-header {
+  
+   
+    
+    display: flex;
+    align-items: center;
+}
+
+.header-filter:after, .header-filter:before {
+    
+    z-index: 1;
+   
+   
+
+    content: "";
+}
+
+.header-filter::before {
+    background: rgba(0,0,0,.5);
+     -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.header-filter .container {
+    z-index: 2;
+    position: relative;
+}
+
+
+
+
+>>>>>>> 2d483673e741377a96bc94229c1edf4228ac5f0b
 
 #carouselExampleIndicators {
     margin-top: 200px;

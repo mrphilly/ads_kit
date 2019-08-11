@@ -13,7 +13,8 @@ import { AdGroupService } from '../ad-groupe.service'
 import Swal from 'sweetalert2'
 import * as $ from 'jquery'
 import * as moment from 'moment'
-import {SERVER} from '../../../../environments/environment'
+import { SERVER } from '../../../../environments/environment'
+import { Router } from '@angular/router'
 declare const pQuery: any
 declare const PayExpresse: any
 //const SERVER_URL = "http://127.0.0.1:5000"
@@ -76,7 +77,7 @@ export class NotesListComponent implements AfterViewInit {
   notificationAccountValue: any;
   numberOfNotifications = 0
 
-  constructor(private notesService: NotesService, public auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute) {
+  constructor(private notesService: NotesService, public auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute, private router: Router) {
       var self = this
     
     this.auth.user.forEach((value) => {
@@ -137,7 +138,8 @@ export class NotesListComponent implements AfterViewInit {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  window.history.pushState("", "", "/")
+                  window.location.replace("/")
+          
                   this.isCreating = false
                 }
               })
@@ -167,7 +169,7 @@ export class NotesListComponent implements AfterViewInit {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  window.history.pushState("", "", "/")
+                  window.location.replace("/")
                   this.isCreating = false
                   document.getElementById(params['idC']).click()
                   setTimeout(() => {
@@ -199,7 +201,7 @@ export class NotesListComponent implements AfterViewInit {
                   confirmButtonText: 'Ok'
                 }).then((result) => {
                   if (result.value) {
-                    window.history.pushState("", "", "/")
+                    window.location.replace("/")
                     this.isCreating = false
                     document.getElementById(params['idC']).click()
                   }
@@ -245,6 +247,10 @@ export class NotesListComponent implements AfterViewInit {
 }); */
   }
 
+  go() {
+    
+  window.location.reload()
+}
 
   initCampagne() {
     this._init_campagne = true

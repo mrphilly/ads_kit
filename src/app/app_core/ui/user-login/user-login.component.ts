@@ -246,7 +246,9 @@ export class UserLoginComponent {
   /// Shared
 
 
-
+  go() {
+  this.router.navigate(['/'])
+}
   logout() {
     this.auth.signOut()
   }

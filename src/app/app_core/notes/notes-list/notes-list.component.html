@@ -100,7 +100,7 @@
             <div class="relative">
                 <div class="d-flex">
                     <div class="d-md-block">
-                         <a href="/">
+                         <a (click)="go()">
                         <figure class="avatar">
                             <img src="assets/img/adafri.png">
                             
@@ -208,7 +208,7 @@
 </div>
    
     <ng-container *ngIf="!showList">
-            <div class="text-center" *ngIf="!_showCampaignSettings_" >
+            <div class="text-center" >
                 <div class="card no-b">
                     <div class="card-body no-b text-center">
                         <a class="btn btn-md teal darken-1 text-white r-20 btn-social" (click)="action_2()"><i class="icon-add_to_queue"> Créer une campagne</i></a>

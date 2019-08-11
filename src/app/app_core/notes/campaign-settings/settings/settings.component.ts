@@ -642,6 +642,9 @@ for (var i = 0; i < dateArr.length; i++) {
    
     
    })  */
+  go() {
+  window.location.reload()
+}
   openAddCiblageGenre() {
     this.isCiblageGenre = true;
 
