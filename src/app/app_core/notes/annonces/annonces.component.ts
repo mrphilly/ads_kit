@@ -3,15 +3,15 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import {
-  HttpClient
-} from '@angular/common/http';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
 } from '@angular/router';
+import {
+  HttpClient
+} from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -42,7 +42,8 @@ import {
 import Swal from 'sweetalert2'
 import { Ads } from '../ads.service'
 import { AdGroupService } from '../ad-groupe.service'
-import {SERVER} from '../../../../environments/environment'
+import { SERVER } from '../../../../environments/environment'
+import * as chart from "chart.js/dist/Chart.min"
 /* 
 import Swal from 'sweetalert2'
 import { Ads } from '../ads.service'
@@ -55,9 +56,10 @@ declare const fabric: any
 declare const pQuery: any
 declare const PayExpresse: any
 declare const require: any;
+declare const Chart: any;
 
 const SERVER_URL = SERVER.url
-
+const REDIRECT_URL = SERVER.url_redirect
 const MONTH = [{
   "Jan": {
     "name": "January",
@@ -133,7 +135,7 @@ const MONTH = [{
   }
 }]
 
-const server_url = ""
+
 @Component({
   selector: 'app-annonces',
   templateUrl: './annonces.component.html',
@@ -580,8 +582,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
 
   go() {
-    window.location.replace('/#')
-    window.location.reload()
+    window.location.replace(REDIRECT_URL)
+   
    /*  this.router.navigate(['/']) */
   }
   
@@ -1034,7 +1036,35 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       }
     })
     
-    
+    var chartData = {
+  labels: ["S", "M", "T", "W", "T", "F", "S"],
+  datasets: [{
+    data: [589, 445, 483, 503, 689, 692, 634],
+  },
+  {
+    data: [639, 465, 493, 478, 589, 632, 674],
+  }]
+};
+
+    var chLine = document.getElementById("chLine");
+if (chLine) {
+  new Chart(chLine, {
+  type: 'line',
+  data: chartData,
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: false
+        }
+      }]
+    },
+    legend: {
+      display: false
+    }
+  }
+  });
+}
 
 
       // In a real app: dispatch action to load the details here.
@@ -2965,7 +2995,26 @@ defineBudgetFromAccount() {
   } */
 
   buildAd() {
-    this.isRoller = true
+
+    var self = this
+if (this.budget === 0) {
+       
+        Swal.fire({
+          title: "Service annonce",
+          text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#26a69a',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Définir mon budget '
+        }).then((result) => {
+          if (result.value) {
+            window.location.replace(REDIRECT_URL+"/"+0+"/"+self.idC)
+            $("#"+this.idC).trigger("click")
+          }
+        })
+} else {
+  this.isRoller = true
    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls, this.currentAdSize).then(res => {
         console.log('success')
      console.log(res)
@@ -2976,6 +3025,9 @@ defineBudgetFromAccount() {
        this.isRoller = false
      }
       })
+   
+}
+   
     
     
 /* 
@@ -4681,7 +4733,7 @@ if (this.budget === 0) {
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                  alert(success_url)
+                 
                 
                   //window.location.href = success_url; 
                 } else {

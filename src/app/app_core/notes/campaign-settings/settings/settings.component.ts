@@ -52,10 +52,16 @@ import { Router } from '@angular/router'
 import {Ads} from '../../ads.service'
 import '../../../../../assets/js/payexpress/payExpress'
 import {SERVER} from '../../../../../environments/environment'
+import * as FusionCharts from 'fusioncharts';
 
+/* const dataUrl =
+  SERVER.url+"/campaignReport/"+; */
+const schemaUrl =
+  'https://raw.githubusercontent.com/fusioncharts/dev_centre_docs/fusiontime-beta-release/charts-resources/fusiontime/online-sales-single-series/schema.json';
 declare var require: any;
 declare const pQuery: any
 declare const PayExpresse: any
+
 
 export interface JSONDATE {
   selectedDate: string;
@@ -146,7 +152,10 @@ const MONTH = [{
 export class SettingsComponent {
  
   private adGroupCollection: AngularFirestoreCollection < AdGroup > ;
-
+dataSource: any;
+  type: string;
+  width: string;
+  height: string;
   @Input() id_campagne: string;
   @Input() id: string;
   @Input() name: string;
@@ -249,6 +258,19 @@ export class SettingsComponent {
       console.log(this.id_campagne)
 
     })
+     this.type = 'timeseries';
+    this.width = '400';
+    this.height = '400';
+    this.dataSource = {
+      data: null,
+      yAxis: {
+        plot: [{ value: 'Sales' }]
+      },
+      caption: {
+        text: 'Online Sales of a SuperStore in the US'
+      }
+    };
+ 
   }
   dropdownListAges = [];
   dropdownListSexes = [];
@@ -341,6 +363,49 @@ export class SettingsComponent {
   [10,"App","Photo Lock App ","https://play.google.com/store/apps/details?id=vault.gallery.lock"  ]
 ]
 
+  fetchData() {
+    var self =this
+    let jsonify = res => res.json();
+    let dataFetch = fetch(SERVER.url+"/campaignReport/"+self.id_campagne).then(jsonify);
+    
+    let schemaFetch = fetch(SERVER.url+"/getSchemaReportCampaign").then(jsonify);
+    Promise.all([dataFetch, schemaFetch]).then(res => {
+      let data = res[0];
+      console.log(data)
+      let schema = res[1];
+      console.log(res[1])
+       var tableData = [];
+      $.each(data, function (key, value) {
+        console.log(key, value)
+        tableData.push(value);
+      })
+      console.log(tableData)
+      let fusionTable = new FusionCharts.DataStore().createDataTable(
+        tableData,
+        ["clicks", "cost", "impressions"]
+      ); // Instance of DataTable to be passed as data in dataSource
+      this.dataSource.data = fusionTable;
+    });
+  }
+  cryptMoney(money: string) {
+    var CryptoJS = require( 'crypto-js' );
+
+var secretMessage = money;
+    var secretKey = this.uid
+   
+
+var encryptedMessage = CryptoJS.AES.encrypt(secretMessage, CryptoJS.enc.Hex.parse(secretKey),
+                       { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding });
+
+    console.log('encryptedMessage: ' + encryptedMessage.ciphertext);
+    
+  return encryptedMessage.ciphertext
+
+  }
+
+  go1() {
+   window.location.reload()
+ }
 getDateArray(start, end) {
     var arr = new Array();
   var dt = new Date(start);
@@ -383,8 +448,8 @@ getDateArray(start, end) {
     ;
  
     this.auth.user.subscribe(data => {
-      this.notesService.getCampaignRealTimeData(data.uid, this.id_campagne)
-    this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
+      
+/*     this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
       res.forEach(data => {
             this.startDateFrench = data['startDateFrench']
         this.endDateFrench = data['endDateFrench'] 
@@ -409,7 +474,7 @@ for (var i = 0; i < dateArr.length; i++) {
 }
     
       })
-    })
+    }) */
     })
 
     this.adgroups = this.adGroupService.getListAdGroup(this.id_campagne)
@@ -635,7 +700,7 @@ for (var i = 0; i < dateArr.length; i++) {
       searchPlaceholderText: 'Rechercher',
 
     };
-
+   this.fetchData();
   }
 
   /*  this.adgroups = this.getData();
@@ -643,7 +708,7 @@ for (var i = 0; i < dateArr.length; i++) {
     
    })  */
   go() {
-  window.location.reload()
+  window.location.replace(SERVER.url_redirect)
 }
   openAddCiblageGenre() {
     this.isCiblageGenre = true;
@@ -2558,7 +2623,7 @@ if (this.endDate == date || this.startDate == date) {
   }
   defineBudget() {
     var self = this
-   
+    
       
      /*  $('#button_modal_define_budget').trigger('click') */
       var self = this
@@ -2583,7 +2648,7 @@ if (this.endDate == date || this.startDate == date) {
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                  alert(success_url)
+                 
                 
                   //window.location.href = success_url; 
                 } else {
@@ -2713,6 +2778,7 @@ if (this.endDate == date || this.startDate == date) {
       $('#error_recharge').show()
     } else {
       
+      var crypt = this.cryptMoney(this.montant.toString())
       $('#closeModalRecharge').trigger('click')
       var self = this
       this.isCreating = true
@@ -2723,7 +2789,7 @@ if (this.endDate == date || this.startDate == date) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id,
+            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id + "/"+crypt,
             method: 'POST',
             headers: {
                 "Accept": "application/json"

@@ -452,15 +452,15 @@
   <div class="container-fluid text-center">
     <div class="row p-t-b-10 ">
       <div class="col">
-        <div class="card r-3 teal lighten-3 no-b shadow" style="margin-top: 10px;">
+        <div class="card r-3 no-b shadow animated fadeIn slow" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%); margin-top: 10px;">
               <div class="p-4">
                 <div class="text-center">
                   <!-- <span class="icon-award text-white s-48"></span> -->
                   <img class="img-responsive" src="assets/img/images/groupe d'annonces.png">
                 </div>
-                <div class="sc-counter mt-3 text-white text-center">Paramètre groupe d'annonce</div>
-                <div class="counter-title text-white text-center">{{ad_group_name}}</div>
-                <div class="text-center">
+                <div class="sc-counter mt-3 font-weight-bold text-white text-center animated fadeInLeft">Paramètre groupe d'annonces</div>
+                <div class="counter-title font-weight-bold text-white text-center animated fadeInLeft">{{ad_group_name}}</div>
+                <div class="text-center animated zoomInUp slow">
                   <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i
                         class="icon icon-circle mr-2" style="color: green"></i>Groupe d'annonce actif</span></span>
                   <span class="badge badge-danger pink" *ngIf="status==='PAUSED'"><span class="blink"><i
@@ -503,7 +503,7 @@
       <div class="tab-pane fade show active" id="v-pills-tab1" role="tabpanel" aria-labelledby="v-pills-home-tab">
      
 
-          <ul class="sidebar-menu teal lighten-3 text-white shadow text-center" style="margin-top: 10px;">
+          <ul class="sidebar-menu teal darken-1 text-white shadow text-center" style="margin-top: 10px;">
 
               <li class="treeview text-center"><a (click)="toggleListAd()" style="cursor: pointer"
                   *ngIf="!list_ad && number_ads != 0"><i
@@ -524,12 +524,22 @@
             </ul>        
   <ng-container *ngIf="number_ads != 0 && list_ad;">
 
-
+<div class="">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chLine"></canvas>
+                </div>
+            </div>
+        </div>
+     </div>     
+</div>
             <div class="container-fluid text-center">
               <br>
               <h5 style="color: #4db6ac">Liste des annonces</h5>
               <br>
-              <div class="card no-b shadow teal lighten-2">
+              <div class="card no-b shadow animated fadeInLeft"  style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);">
                 <div class="card-body p-0">
                   <div class="table-responsive">
 
@@ -546,12 +556,17 @@
                             </td>
                             <td class="text-center">
                              <!--  <small class="text-white">Annonce display</small> -->
-                               <span class="text-white" style="font-size: 14px"><strong>{{ ad?.ad_name }}</strong></span>
+                               <span class="text-white font-weight-bold" style="font-size: 14px"><strong>{{ ad?.ad_name }}</strong></span>
                             </td>
                             <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
                             <td *ngIf="ad?.status=='ENABLED'" class="text-center">
                               <!-- <small class="text-white">Etat:</small> -->
                               <span class="text-white" style="font-size: 14px"><strong>Annonce activée</strong></span>
+
+                            </td>
+                             <td *ngIf="ad?.status==''" class="text-center">
+                              <!-- <small class="text-white">Etat:</small> -->
+                              <span class="text-white" style="font-size: 14px"><strong>Annonce en attente</strong></span>
 
                             </td>
                             <td *ngIf="ad?.status=='PAUSED'" class="text-center">
@@ -600,7 +615,7 @@
 
                             </td>
                             <td>
-                              <a class="btn btn-sm green accent-3 shadow text-white r-20" [id]="ad?.id"
+                              <a class="btn btn-sm teal darken-1 shadow text-white r-20" [id]="ad?.id"
                                 (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId, ad?.size, ad?.ad_type)"><i
                                   class="icon-settings2" ></i>Voir</a>
                             </td>
@@ -629,7 +644,7 @@
           </ng-container>
 
                 <ng-container *ngIf="init_choose_ad_size && number_ads==='0'">
-                      <div class="card no-b shadow" *ngIf="chooseAdSize">
+                      <div class="card no-b shadow animated fadeIn" *ngIf="chooseAdSize">
       <div class="card-header no-b white text-center">
         Type d'annonces
       </div>
@@ -647,7 +662,7 @@
       </div>
       <div class="card-footer text-center white no-b">
          <div class="card no-b shadow" style="display: inline-block" *ngIf="illustration">
-                          <div class="card-header teal lighten-3 text-white no-b">
+                          <div class="card-header teal darken-1 text-white no-b">
                             <h6 class="text-white">Format annonce</h6>
                           </div>
                           <div class="card-body white no-b">
@@ -656,7 +671,7 @@
                             </div>
                           </div>
                           <div class="card-footer white no-b text-center">
-                            <button class="btn shadow teal lighten-3 text-white r-20 btn-social" title="Ajouter un texte"
+                            <button class="btn shadow teal darken-1 text-white r-20 btn-social" title="Ajouter un texte"
                               (click)="chooseAdType()"><i class="icon-check"></i>choisir</button>
                            
                           </div>
@@ -668,15 +683,15 @@
 <div class="row text-center">
      <div class="col text-center">
 <div class="card no-b shadow" *ngIf="chooseBlock" style="display: inline-block">
-       <div class="card-header teal lighten-3 text-white no-b text-center">
+       <div class="card-header teal darken-1 text-white no-b text-center">
                             <h6 class="text-white">Format: {{selectedWidth}}x{{selectedHeight}}</h6>
                           </div>
                     <div class="card-body text-center no-b">
-                        <a class="btn btn-sm btn-social teal lighten-3 text-white r-20" (click)="handleUploadBanner()">
+                        <a class="btn btn-sm btn-social teal darken-1 text-white r-20" (click)="handleUploadBanner()">
                             <i class="icon-cloud_upload text-white"></i> Charger une bannière
                         </a>
                         <hr class="invisible">
-                        <a class="btn btn-sm btn-social teal lighten-3 text-white r-20" (click)="handleCreatives()">
+                        <a class="btn btn-sm btn-social teal darken-1 text-white r-20" (click)="handleCreatives()">
                             <i class="icon-creativity text-white"></i> Construire une bannière
                         </a>
                         
@@ -693,7 +708,7 @@
      <div class="container-fluid text-center" *ngIf="handleCreateCanvas && number_ads==='0'">
       
               <div class="card mb-3 shadow no-b r-0">
-                <div class="card-header teal lighten-3 text-center text-white no-b">
+                <div class="card-header teal darken-1 text-center text-white no-b">
                   <h6>Construire son annonce</h6>
                     <span style="float: right; font-size: 12px"><strong>Format: {{selectedWidth}}x{{selectedHeight}}</strong></span>
                 </div>
@@ -759,7 +774,7 @@
                     title="Ajouter une image"><i class="icon-image"></i></a>
                   <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
                     title="Ajouter un texte"><i class="icon-title"></i></a>
-                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-3 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                  <!--  <a class="btn-fab btn-fab-md shadow teal darken-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
                   <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
                       class="icon-circle-o"></i></a>
 
@@ -828,7 +843,7 @@
             <div class="container-fluid text-center" style="margin-top: 15px">
 
               <div class="card mb-3 shadow no-b r-0">
-                <div class="card-header teal lighten-3 text-center text-white no-b">
+                <div class="card-header teal darken-1 text-center text-white no-b">
                   <h6>Paramètre annonce</h6>
                 </div>
                 <div class="card-body text-center">
@@ -837,7 +852,7 @@
                     <div class="form-row text-center">
                       <div class="col-md-6 mb-3 text">
                         <small for="validationCustom01">Nom de l'annonce</small>
-                        <input type="text" class="form-control no-b teal lighten-3 text-white" [id]="idOfAdNameModify" placeholder="Nom" [value]="currentAdName"
+                        <input type="text" class="form-control no-b green lighten-4 text-white" [id]="idOfAdNameModify" placeholder="Nom" [value]="currentAdName"
                            readonly>
                         <div *ngIf="formErrors.name" class="help is-danger">
                           {{ formErrors.name }}
@@ -856,7 +871,7 @@
                       </div> -->
                       <div class="form-group col-md-6 mb-3">
                         <small for="pattern">Url de redirection</small>
-                        <input type="text" autocomplete="off" class="form-control no-b teal lighten-3 text-white" id="redirect"
+                        <input type="text" autocomplete="off" class="form-control no-b green lighten-4 text-white" id="redirect"
                           placeholder="Url de redirection"  [id]="idOfDisplayUrlModify" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()" readonly>
                         <ng-container *ngIf="url_errors != ''">
@@ -889,7 +904,7 @@
                     <div class="row text-center">
                       <div class="col text-center" style="text-align: center">
                         <div class="card no-b shadow" style="display: inline-block">
-                          <div class="card-header teal lighten-3 text-white no-b">
+                          <div class="card-header teal darken-1 text-white no-b">
                             <h6 class="text-white">Image</h6>
                           </div>
                           <div class="card-body white no-b">
@@ -898,15 +913,15 @@
                             </div>
                           </div>
                           <div class="card-footer white no-b text-center">
-                            <button class="btn shadow teal lighten-3 text-white r-20" title="modifier"
-                              (click)="toggleCurrentEditor()" *ngIf="currentAdType==='CREATIVE'"><i [class]="iconEditor"></i>{{text_modify}}</button>
-                              <button class="btn shadow teal lighten-3 text-white r-20" title="modifier"
+                            <button class="btn shadow teal darken-1 text-white r-20 btn-sm" title="modifier"
+                              (click)="toggleCurrentEditor()" *ngIf="currentAdType==='CREATIVE' && !isRoller"><i [class]="iconEditor"></i>{{text_modify}}</button>
+                              <button class="btn shadow teal darken-1 text-white r-20 btn-sm" title="modifier"
                               (click)="toggleCurrentUploadBlock()" *ngIf="currentAdType==='UPLOAD' && !isRoller"><i [class]="iconEditor" ></i>{{text_modify}}</button>
-                           <!--  <button class="btn shadow teal lighten-3 text-white r-20" (click)="publish()"
+                           <!--  <button class="btn shadow teal darken-1 text-white r-20" (click)="publish()"
                               title="Ajouter un texte" id="publish" *ngIf="currentAdStatus==''"><i class="icon-send"
                                 ></i>Publier</button> -->
                                <a class="btn btn-sm btn-social btn-warning blink text-white r-20"
-            style="font-size: 12px" (click)="buildAd()" *ngIf="currentAdStatus==''">
+            style="font-size: 12px" (click)="buildAd()" *ngIf="currentAdStatus=='' && !isRoller">
             <i class="icon-pay-point text-white"></i> Publier
           </a>
                           </div>
@@ -992,7 +1007,7 @@
                     title="Ajouter une image"><i class="icon-image"></i></a> 
                   <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="triggerText()"
                     title="Ajouter un texte"><i class="icon-title"></i></a>
-                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-3 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                  <!--  <a class="btn-fab btn-fab-md shadow teal darken-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
                   <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="addFigure('circle');"><i
                       class="icon-circle-o"></i></a>
 
@@ -1067,7 +1082,7 @@
             </div>
           </ng-container>
           <div class="card no-b shadow" style="display: none" id="blockUploadModified">
-            <div class="card-header no-b white teal lighten-3 text-center text-white">
+            <div class="card-header no-b white teal darken-1 text-center text-white">
                 <span>Modifier l'annonce</span>
             </div>
             <div class="card-body no-b white">
@@ -1126,7 +1141,7 @@
                     </div>
                     
                   </form>
-                  <div class="text-center" *ngIf="button_modify_image_upload"><a class="btn btn-sm teal lighten-3 text-white r-20" (click)="toggleModifyUploadImage()"><i class="icon-edit"></i> Modifier l'image</a></div>
+                  <div class="text-center" *ngIf="button_modify_image_upload"><a class="btn btn-sm teal darken-1 text-white r-20" (click)="toggleModifyUploadImage()"><i class="icon-edit"></i> Modifier l'image</a></div>
                   <div class="card no-b shadow" id="button_modify_image_upload" style="display: none">
                        
                           <div class="b-b"></div>
@@ -1157,7 +1172,7 @@
 <ng-container>
 
                <div class="card mb-3 shadow no-b r-0" *ngIf="modifyPublishAd">
-                <div class="card-header teal lighten-3 text-center text-white no-b">
+                <div class="card-header teal darken-1 text-center text-white no-b">
                   <h6>Modifier l'annonce</h6>
                 </div>
                 <div class="card-body text-center"  *ngIf="!isRoller">
@@ -1224,12 +1239,12 @@
                 </div>
                  <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 <div class="card-footer white no-b text-center">
-                  <a class="btn btn-sm btn-block btn-social teal lighten-3 text-white r-20 btn social" (click)="updateAdOnFirebase()"  *ngIf="!isRoller"><i class="icon-check text-white"></i> Enregistrer </a>
+                  <a class="btn btn-sm btn-block btn-social teal darken-1 text-white r-20 btn social" (click)="updateAdOnFirebase()"  *ngIf="!isRoller"><i class="icon-check text-white"></i> Enregistrer </a>
                 </div>
               </div>
   <div class="col-md-12 text-center" id="block" style="display: none">
               <div class="card mb-3 shadow no-b r-0">
-              <div class="card-header teal lighten-3 text-center text-white no-b">
+              <div class="card-header teal darken-1 text-center text-white no-b">
                 <h6>Construire son annonce</h6>
                   <span style="float: right; font-size: 12px"><strong>Format: {{selectedWidth}}x{{selectedHeight}}</strong></span>
               </div>
@@ -1315,7 +1330,7 @@
 </ng-container>
 </div>
 <div class="tab-pane fade" id="v-pills-placement" role="tabpanel" aria-labelledby="v-pills-add-ad-tab">
-<!--   <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+<!--   <ul class="sidebar-menu teal darken-1 text-white shadow" style="margin-top: 10px;">
 
               <li class="treeview"><a (click)="handleTogglePlacement()" style="cursor: pointer"
                   [attr.aria-expanded]="!isPlacement" aria-controls="collapsePlacement"><i
@@ -1337,7 +1352,7 @@
             </ul> -->
 
               <div class="card no-b white shadow" *ngIf="isPlacement">
-                  <div class="card-header no-b teal lighten-3 text-white text-center">
+                  <div class="card-header no-b teal darken-1 text-white text-center">
                     <span>Sites webs où les annonces de ce groupe seront affichées</span>
                   </div>
                   <div class="card-body no-b white">
@@ -1366,16 +1381,16 @@
                   </div>
                   </div>
                   <div class="card-footer white no-b text-center">
-                    <a class="btn btn-sm shadow teal lighten-3 text-white r-20" (click)="handleTogglePlacement()" *ngIf="placement==''" ><i
+                    <a class="btn btn-sm shadow teal darken-1 text-white r-20" (click)="handleTogglePlacement()" *ngIf="placement==''" ><i
                       class="icon-add_location"></i>Définir un emplacement</a>
-                  <a class="btn btn-sm shadow teal lighten-3 text-white r-20" (click)=" handleTogglePlacement()"
+                  <a class="btn btn-sm shadow teal darken-1 text-white r-20" (click)=" handleTogglePlacement()"
                    *ngIf="placement!=''"><i class="icon-edit_location" ></i>Modifier les emplacement</a>
                   </div>
               </div>
             
 
               <div class="card white no-b shadow" *ngIf="!isPlacement"> 
-                  <div class="card-header white no-b teal lighten-3 text-center">
+                  <div class="card-header white no-b teal darken-1 text-center">
                     <span class="text-white">Définissez ici les sites où les annonces de ce groupe seront affichées</span>
                   </div>
                   <div class="card-body no-b white">
@@ -1425,7 +1440,7 @@
               </ul>
                   </div>
               <div class="card-footer white no-b text-center">
-                <a class="btn btn-sm shadow teal lighten-3 text-white r-20 btn-social" (click)="targetPlacement()" ><i
+                <a class="btn btn-sm shadow teal darken-1 text-white r-20 btn-social" (click)="targetPlacement()" ><i
                       class="icon-check"></i>Cibler</a>
                   <a class="btn btn-sm btn-social shadow btn-danger text-white r-20" (click)="closeAddPlacement()"
                    ><i class="icon-close"></i>Annuler</a>
@@ -1447,7 +1462,7 @@
                 </span>
               </li>
           <li>
-                <a class="btn btn-sm btn-block btn-social teal lighten-3 text-white r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
+                <a class="btn btn-sm btn-block btn-social teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
 
                   <i class="ion icon-group"></i> Ciblage des âges
                 </a>
@@ -1520,7 +1535,7 @@
 
 
                <li>
-                <a class="btn btn-sm btn-block btn-social teal lighten-3 text-white r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
+                <a class="btn btn-sm btn-block btn-social teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
 
                   <i class="ion icon-intersex"></i> Ciblage des genres
                 </a>
@@ -1591,7 +1606,7 @@
               </li>
              
               <li>
-                <a class="btn btn-sm btn-block btn-social teal lighten-3 text-white r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
+                <a class="btn btn-sm btn-block btn-social teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
 
                   <i class="icon icon-devices_other"></i> Ciblage d'appareils
                 </a>
@@ -1693,7 +1708,7 @@
       </div>
       <div class="card-footer text-center white no-b">
          <div class="card no-b shadow" style="display: inline-block" *ngIf="illustration">
-                          <div class="card-header teal lighten-3 text-white no-b">
+                          <div class="card-header teal darken-1 text-white no-b">
                             <h6 class="text-white">Format annonce</h6>
                           </div>
                           <div class="card-body white no-b">
@@ -1702,7 +1717,7 @@
                             </div>
                           </div>
                           <div class="card-footer white no-b text-center">
-                            <button class="btn btn-sm shadow teal lighten-3 text-white r-20 btn-social" title="Ajouter un texte"
+                            <button class="btn btn-sm shadow teal darken-1 text-white r-20 btn-social" title="Ajouter un texte"
                               (click)="chooseAdType()"><i class="icon-check"></i>choisir</button>
                            
                           </div>
@@ -1714,15 +1729,15 @@
 <div class="row text-center">
      <div class="col text-center">
 <div class="card no-b shadow" *ngIf="chooseBlock" style="display: inline-block">
-       <div class="card-header teal lighten-3 text-white no-b text-center">
+       <div class="card-header teal darken-1 text-white no-b text-center">
                             <h6 class="text-white"><strong>Format: {{selectedWidth}}x{{selectedHeight}}</strong></h6>
                           </div>
                     <div class="card-body text-center no-b">
-                        <a class="btn btn-sm btn-social teal lighten-3 text-white r-20" (click)="handleUploadBanner()">
+                        <a class="btn btn-sm btn-social teal darken-1 text-white r-20" (click)="handleUploadBanner()">
                             <i class="icon-cloud_upload text-white"></i> Charger une bannière
                         </a>
                         <hr class="invisible">
-                        <a class="btn btn-sm btn-social teal lighten-3 text-white r-20" (click)="handleCreatives()">
+                        <a class="btn btn-sm btn-social teal darken-1 text-white r-20" (click)="handleCreatives()">
                             <i class="icon-creativity text-white"></i> Construire une bannière
                         </a>
                         
@@ -1743,7 +1758,7 @@
      <div class="container-fluid text-center" *ngIf="handleCreateCanvas">
       
               <div class="card mb-3 shadow no-b r-0">
-                <div class="card-header teal lighten-3 text-center text-white no-b">
+                <div class="card-header teal darken-1 text-center text-white no-b">
                   <h6>Construire son annonce</h6>
                   <span style="float: right; font-size: 12px"><strong>Format: {{selectedWidth}}x{{selectedHeight}}</strong></span>
                 </div>
@@ -1805,17 +1820,17 @@
               <div class="card no-b shadow">
 
                 <div class="card-header white text-center b-0"> <a
-                    class="btn-fab btn-fab-md shadow teal lighten-3 text-white" (click)="triggerImage()"
+                    class="btn-fab btn-fab-md shadow teal darken-1 text-white" (click)="triggerImage()"
                     title="Ajouter une image"><i class="icon-image"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="triggerText()"
+                  <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="triggerText()"
                     title="Ajouter un texte"><i class="icon-title"></i></a>
-                  <!--  <a class="btn-fab btn-fab-md shadow teal lighten-3 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="addFigure('circle');"><i
+                  <!--  <a class="btn-fab btn-fab-md shadow teal darken-1 text-white library" title="Backgrounds"><i class="icon-photo_library"></i></a> -->
+                  <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="addFigure('circle');"><i
                       class="icon-circle-o"></i></a>
 
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="addFigure('triangle');"><i
+                  <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="addFigure('triangle');"><i
                       class="icon-toggle-up"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="addFigure('rectangle');"><i
+                  <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="addFigure('rectangle');"><i
                       class="icon-border_horizontal"></i></a>
 
 
@@ -1851,9 +1866,9 @@
 
 
                 <div class="card-footer border-0 white text-center">
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="sendToBack();"
+                  <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="sendToBack();"
                     title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
-                  <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="bringToFront();"
+                  <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="bringToFront();"
                     title="Aller à l'élément suivant"><i class="icon-redo"></i></a>
 
                   <a class="btn-fab btn-fab-sm shadow btn-success" *ngIf="selected" (click)="clone();"><i
@@ -1861,7 +1876,7 @@
                   <a class="btn-fab btn-fab-sm shadow btn-danger" *ngIf="selected" (click)="removeSelected();"><i
                       class="icon-delete_forever"></i></a><br><br>
 
-                  <button class="btn btn-sm r-20 btn-social teal lighten-3 text-white"
+                  <button class="btn btn-sm r-20 btn-social teal darken-1 text-white"
                     (click)="handleImageModal()">
                     <i class="icon-paper-plane"></i> Visualiser l'annonce
                   </button>
@@ -1876,7 +1891,7 @@
              <div class="row" id="block1" style="display: none">
  <div class="col-md-12 text-center">
               <div class="card mb-3 shadow no-b r-0">
-              <div class="card-header teal lighten-3 text-center text-white no-b">
+              <div class="card-header teal darken-1 text-center text-white no-b">
                 <h6>{{text_construire}}</h6>
                   <span style="float: right; font-size: 12px"><strong>Format: {{selectedWidth}}x{{selectedHeight}}</strong></span>
               </div>
@@ -1947,7 +1962,7 @@
                          </div>
                          <div class="card-footer white text-center">
   
-                             <button class="btn btn-sm r-20 btn-social teal lighten-3 text-white"
+                             <button class="btn btn-sm r-20 btn-social teal darken-1 text-white"
                   (click)=" handleImageUploadModal()">
                   <i class="icon-paper-plane"></i> Visualiser l'annonce
                 </button>
@@ -1976,7 +1991,7 @@
             
 
 
-          <ul class="sidebar-menu teal lighten-3 text-white shadow" style="margin-top: 10px;">
+          <ul class="sidebar-menu teal darken-1 text-white shadow" style="margin-top: 10px;">
 
               <li class="treeview"><a (click)="toggleListAd()" style="cursor: pointer"><i
                     class="icon icon-inbox text-purple s-18"></i>Liste des annonces</a>
@@ -2064,7 +2079,7 @@
                 <span class="badge badge-danger text-white"><span class="blink"><i class="icon icon-circle mr-2"
                       style="color: green"></i>{{text_no_genre}}</span></span>
               </ng-container>
-              <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="openAddCiblageGenre()"><i
+              <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="openAddCiblageGenre()"><i
                   class="icon-edit"></i></a>
               <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageGenre">
                 <div class="card-header bg-white no-b">
@@ -2109,7 +2124,7 @@
                 <span class="badge badge-danger text-white"><span class="blink"><i class="icon icon-circle mr-2"
                       style="color: green"></i>{{text_no_age}}</span></span>
               </ng-container>
-              <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="openAddCiblageAge()"><i
+              <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="openAddCiblageAge()"><i
                   class="icon-edit"></i></a>
               <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageAge">
                 <div class="card-header bg-white no-b">
@@ -2159,7 +2174,7 @@
                 <span class="badge badge-danger text-white"><span class="blink"><i class="icon icon-circle mr-2"
                       style="color: green"></i>{{text_no_devices}}</span></span>
               </ng-container>
-              <a class="btn-fab btn-fab-sm shadow teal lighten-3 text-white" (click)="openAddCiblageDevices()"><i
+              <a class="btn-fab btn-fab-sm shadow teal darken-1 text-white" (click)="openAddCiblageDevices()"><i
                   class="icon-edit"></i></a>
               <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageDevices">
                 <div class="card-header bg-white no-b">
@@ -2241,7 +2256,7 @@
             <li class="list-inline-item r-20" *ngFor="let item of layers; let i = index" dnd-sortable
               [dragEnabled]="item.selectable" [sortableIndex]="layers.length - i - 1" (click)="selectLayer(item)"
               (onDropSuccess)="updateLayerSort()" [ngClass]="{'active': item.active}"><a
-                class="btn-fab btn-fab-sm shadow teal lighten-3 text-white"><i
+                class="btn-fab btn-fab-sm shadow teal darken-1 text-white"><i
                   class="text-white {{elementTypes[item.type].icon}}" [ngClass]="{'text-muted': !item.active}"></i></a>
             </li>
 
@@ -2429,7 +2444,7 @@
 
         <button type="button" class="btn btn-danger btn-sm text-white r-20 btn-social" id="closeModalViewModified"
           data-dismiss="modal" *ngIf="!isRoller"><i class="icon-arrow_back"></i>Revenir</button>
-        <button type="button" class="btn teal lighten-3 text-white btn-sm r-20 btn-social" (click)="updateAdOnFirebase()" *ngIf="!isRoller"><i class="icon-send"></i>Enregistrer</button>
+        <button type="button" class="btn teal darken-1 text-white btn-sm r-20 btn-social" (click)="updateAdOnFirebase()" *ngIf="!isRoller"><i class="icon-send"></i>Enregistrer</button>
          <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
     </div>
@@ -2458,7 +2473,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-danger text-white btn-sm r-20" id="closeModalViewModified"
           data-dismiss="modal">Close</button>
-        <button type="button" class="btn teal lighten-3 text-white" (click)="updateAdOnFirebase()">Enregistrer les
+        <button type="button" class="btn teal darken-1 text-white" (click)="updateAdOnFirebase()">Enregistrer les
           modification</button>
       </div>
     </div>
@@ -2486,15 +2501,15 @@
                <div class="text-center" style="display: inline-block">
           <h6 class="my-3">{{accountValue}} CFA dans le compte</h6>
           <h6 class="my-3">Budget de la campagne: {{budget}} CFA </h6>
-         <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+         <a class="btn btn-lg btn-block btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+            <a class="btn btn-lg btn-block btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-lg btn-block btn-social teal lighten-3 text-white r-20"
+          <a class="btn btn-lg btn-block btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>
@@ -2543,7 +2558,7 @@
                 </ejs-datepicker>
               </li>
               <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
-              <button type="button" class="btn btn-sm teal lighten-3 text-white btn-social r-20"
+              <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="updateCampaignDate()">Appliquer</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -2573,7 +2588,7 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal lighten-3 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineBudget()" id="budgetSet">Placer le budget</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -2597,7 +2612,7 @@
               style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
               FCA</small>
               
-               <button type="button" class="btn btn-sm teal lighten-3 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -2631,7 +2646,7 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button  *ngIf="!isRoller" type="button" class="btn btn-sm teal lighten-3 text-white btn-social r-20"
+               <button  *ngIf="!isRoller" type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineBudgetFromAccount()">Placer mon budget</button>
                 <button  *ngIf="!isRoller" type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -2690,7 +2705,7 @@
           </div>
 
           <div class="card-footer white no-b">
-            <button type="button" class="btn teal lighten-3 text-white" id="amountSet"
+            <button type="button" class="btn teal darken-1 text-white" id="amountSet"
               (click)=" defineAmountAccount()">Recharger mon compte</button>
           </div>
         </div>

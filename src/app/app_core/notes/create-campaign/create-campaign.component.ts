@@ -8,7 +8,8 @@ import { AuthService } from '../../core/auth.service';
 import Swal from 'sweetalert2'
 
 import { Router } from '@angular/router'
-
+import {SERVER} from '../../../../environments/environment'
+const REDIRECT_URL = SERVER.url_redirect
 @Component({
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
@@ -58,6 +59,17 @@ export class CreateCampaignComponent implements OnInit {
       }
     })
     
+  }
+
+  go1() {
+  window.location.replace(REDIRECT_URL)
+   window.location.reload()
+ }
+  
+  go() {
+    window.location.replace(REDIRECT_URL)
+   
+   /*  this.router.navigate(['/']) */
   }
 
 }

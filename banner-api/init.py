@@ -50,6 +50,7 @@ from ads_scripts.targeting.placement import SetPlacement
 
 from ads_scripts.targeting.target_age_level_campaign import TargetAgeLevelCampaign
 from ads_scripts.targeting.remove_single_placemnet import RemoveSinglePlacement
+from ads_scripts.reporting.download_criteria_report_with_awql import get_campaign_report_performance
 import pyrebase
 config = {
       "apiKey": "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
@@ -762,7 +763,23 @@ def pay():
 
 
         return jsonify(req)
+@app.route('/campaignReport/<idC>', methods=['POST', 'GET'])
 
+
+def campaignReport(idC=None):
+    adwords_client = adwords.AdWordsClient.LoadFromStorage("./googleads.yaml")
+    print(idC)
+    report = get_campaign_report_performance(adwords_client, str(idC))
+
+    return jsonify(report)
+
+
+@app.route('/getSchemaReportCampaign', methods=['POST', 'GET'])
+def getSchemaReportCampaign():
+  
+    report = {"clicks":"clicks" ,"impressions": "impressions", "coûts": "couts"}
+    
+    return jsonify(report)
 
 @app.route('/payBudget/<money>/<budget_to_place>/<budgetId>/<idC>/<dure>/<ad_name>/<idA>/<ad_group_id>/<campagne_id>/<id_ad_firebase>', methods=['POST'])
 
@@ -919,9 +936,9 @@ def rechargeAmount(money=None):
 
 @app.route('/rechargeAmountBeforeBudget',  methods=['POST'])
 
-@app.route('/rechargeAmountBeforeBudget/<money>/<idC>', methods=['POST'])
+@app.route('/rechargeAmountBeforeBudget/<money>/<idC>/<crypt>', methods=['POST'])
 
-def rechargeAmountBeforeBudget(money=None, idC=None):
+def rechargeAmountBeforeBudget(money=None, idC=None, crypt=None):
         """
         Get payexpress token
         """
@@ -930,7 +947,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = FRONT_END_URL+"/"+money+"/"+idC
+        success_url = FRONT_END_URL+"/"+crypt+"/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 

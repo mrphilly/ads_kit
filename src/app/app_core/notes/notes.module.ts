@@ -44,13 +44,19 @@ import { AnnonceServiceComponentComponent } from '../notes/annonces/annonce-serv
 
 import { SpinnerOverlayComponent } from './spinner-overlay-notes/spinner-overlay.component'
 
+import { FusionChartsModule } from 'angular-fusioncharts';
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
+
+
 const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
   // Google API Key
   apiKey: 'AIzaSyAN1VolxTqz1jn1Fzr5LdVneCjJ-FC6JT4'
 };
 
 
-
+FusionChartsModule.fcRoot(FusionCharts, Charts, TimeSeries);
 @NgModule({
   imports: [
     CommonModule,
@@ -66,6 +72,7 @@ const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
     FontPickerModule,
     LazyLoadImageModule,
     NgxFormatFieldModule,
+    FusionChartsModule
     /* ChartsModule */
  
 

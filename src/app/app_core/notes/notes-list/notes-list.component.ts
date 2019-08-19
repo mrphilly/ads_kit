@@ -17,8 +17,10 @@ import { SERVER } from '../../../../environments/environment'
 import { Router } from '@angular/router'
 declare const pQuery: any
 declare const PayExpresse: any
+declare var require: any;
 //const SERVER_URL = "http://127.0.0.1:5000"
 const SERVER_URL = SERVER.url
+const REDIRECT_URL = SERVER.url_redirect
 @Component({
   selector: 'notes-list',
   templateUrl: './notes-list.component.html',
@@ -118,43 +120,87 @@ export class NotesListComponent implements AfterViewInit {
    
   }
 
+  decryptMoney(encrypted: string, uid: string): Promise<any> {
+
+    return new Promise(resolve => {
+      var status = []
+      var CryptoJS = require( 'crypto-js' );
+    var cipherParams = CryptoJS.lib.CipherParams.create(
+               {ciphertext: CryptoJS.enc.Hex.parse(encrypted.toString())});
+localStorage.getItem("")
+var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
+            { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding });
+
+    console.log('Decrypted:' + bytes.toString(CryptoJS.enc.Utf8));
+   
+      status.push({
+        "status": "ok",
+        "content":  bytes.toString(CryptoJS.enc.Utf8)
+      })
+      resolve(status)
+   })
+  }
   ngOnInit() {
    var self = this
     this.route.params.subscribe(params => {
   
       if (typeof (params['money']) != "undefined") {
         this.isCreating = true
-        this.auth.user.forEach(data => {
-          this.auth.updateUser(data.uid, { account_value: params['money'] })
-          this.auth.getInfos(data.uid).subscribe(el => {
-            this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
-              Swal.fire({
-                title: 'Service Rechargement!',
-                text: 'Compte mis à jour avec succès.',
-                type: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-              }).then((result) => {
-                if (result.value) {
-                  window.location.replace("/")
-          
-                  this.isCreating = false
-                }
-              })
-            })
-      
    
-          })
+          this.auth.user.forEach(data => {
+            this.decryptMoney(params['money'], data.uid).then(res => {
+              if (res[0]['status'] == "ok") {
+                alert(res[0]['status'])
+                alert(res[0]['content'])
+                this.auth.updateUser(data.uid, { account_value: parseInt(res[0]['content']) })
+              this.auth.getInfos(data.uid).subscribe(el => {
+                this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+                  Swal.fire({
+                    title: 'Service Rechargement!',
+                    text: 'Compte mis à jour avec succès.',
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok'
+                  }).then((result) => {
+                    if (result.value) {
+                      window.location.replace(REDIRECT_URL)
+              
+                      this.isCreating = false
+                    }
+                  })
+                })
+          
+       
+              })
+              }
+            })
+          
         })
+        
+        
 
         // In a real app: dispatch action to load the details here.
       }
 
 
-       if (typeof (params['money']) != "undefined" && typeof(params['idC']) != "undefined") {
-        this.isCreating = true
+      if (typeof (params['money']) != "undefined" && typeof (params['idC']) != "undefined") {
+         
+         if (params['money'] == 0) {
+          
+            setTimeout(() => {
+                   
+                    document.getElementById(params['idC']).click()
+                  }, 2000)
+            setTimeout(() => {
+                   
+              document.getElementById("v-pills-timeline-tab").click()
+              this.isCreating = false
+              
+                  }, 2000)
+        }else{
+           this.isCreating = true
         this.auth.user.forEach(data => {
           this.auth.updateUser(data.uid, { account_value: params['money'] })
           this.auth.getInfos(data.uid).subscribe(el => {
@@ -169,12 +215,14 @@ export class NotesListComponent implements AfterViewInit {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  window.location.replace("/")
+                  window.location.replace(REDIRECT_URL)
                   this.isCreating = false
                   document.getElementById(params['idC']).click()
                   setTimeout(() => {
-                   $('#button_modal_define_budget').trigger('click')
-                  },2000)
+                   
+                     document.getElementById("v-pills-timeline-tab").click()
+                  }, 2000)
+            
                 }
               })
             })
@@ -182,6 +230,7 @@ export class NotesListComponent implements AfterViewInit {
    
           })
         })
+        }
 
         // In a real app: dispatch action to load the details here.
       }
@@ -201,7 +250,7 @@ export class NotesListComponent implements AfterViewInit {
                   confirmButtonText: 'Ok'
                 }).then((result) => {
                   if (result.value) {
-                    window.location.replace("/")
+                    window.location.replace(REDIRECT_URL)
                     this.isCreating = false
                     document.getElementById(params['idC']).click()
                   }
@@ -249,7 +298,7 @@ export class NotesListComponent implements AfterViewInit {
 
   go() {
     
-  window.location.reload()
+  window.location.replace(SERVER.url_redirect)
 }
 
   initCampagne() {
@@ -290,7 +339,7 @@ export class NotesListComponent implements AfterViewInit {
     this._addCampaign_ = true
     this.showList = true
     this.child._showCampaignSettings_ = false
-    $(".button-open-nav").click()
+   
    
     
   }

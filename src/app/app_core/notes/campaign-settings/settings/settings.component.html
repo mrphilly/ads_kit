@@ -36,19 +36,19 @@
                 </div>
             </div>
     </div> -->
-<header class="white pt-3 relative shadow bg-light" >
+<header class="white pt-3 relative shadow white" >
   <div class="container-fluid text-center">
     <div class="row p-t-b-10 ">
       <div class="col">
-        <div class="card r-3 teal lighten-3 no-b shadow" style="margin-top: 10px;">
+        <div class="card r-3 no-b shadow animated fadeIn slow" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%); margin-top: 10px;">
               <div class="p-4">
                 <div class="text-center">
                   <!-- <span class="icon-award text-white s-48"></span> -->
-                  <img class="img-responsive" src="assets/img/images/groupe d'annonces.png">
+                  <img class="img-responsive " src="assets/img/images/groupe d'annonces.png">
                 </div>
-                <div class="sc-counter mt-3 text-white text-center">Paramètre de la campagne</div>
-                <div class="counter-title text-white text-center">{{name}}</div>
-                <div class="text-center">
+                <div class="sc-counter mt-3 font-weight-bold text-white text-center animated fadeInLeft">Paramètre de la campagne</div>
+                <div class="counter-title font-weight-bold text-white text-center animated fadeInLeft">{{name}}</div>
+                <div class="text-center animated zoomInUp slow">
                   <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i
                         class="icon icon-circle mr-2" style="color: green"></i>Campagne active</span></span>
                   <span class="badge badge-danger pink" *ngIf="status==='PAUSED'"><span class="blink"><i
@@ -79,6 +79,11 @@
             aria-controls="v-pills-settings" aria-selected="false" style="color: #009688"><i class="icon icon-cog"
               style="color: #009688"></i>Modifier</a>
         </li>
+         <li>
+          <a class="nav-link" id="v-pills-statistiques-tab" data-toggle="pill" href="#v-pills-statistiques" role="tab"
+            aria-controls="v-pills-statistiques" aria-selected="false" style="color: #009688"><i class="icon icon-cog"
+              style="color: #009688"></i>Statistiques</a>
+        </li>
       </ul>
     </div>
 
@@ -90,7 +95,7 @@
       <div class="tab-pane fade show active" id="v-pills-tab1" role="tabpanel" aria-labelledby="v-pills-home-tab">
         <div class="row">
           <div class="col-md-3">
-            <div class="card no-b">
+            <div class="card no-b animated fadeInUp">
 
               <ul class="list-group list-group-flush">
                 <!--     <li class="list-group-item grey lighten-2"><i class="icon-chevron-circle-right text-white" style="float: left"></i><strong class="s-12 text-white" style="float: left">Nom</strong> <span class="float-right s-12 text-white" style="font-weight: bold">{{name}}</span></li> -->
@@ -107,7 +112,7 @@
 
                 
                   <li class="list-group-item">
-                  <a class="btn btn-sm btn-block teal lighten-3 r-20 text-white btn-social" style="font-size: 12px" (click)="go()"><i class="icon-view_list text-success"
+                  <a class="btn btn-sm btn-block teal darken-1  r-20 text-white btn-social" style="font-size: 12px" (click)="go1()" ><i class="icon-view_list text-success"
                     ></i> Liste des campagnes</a> 
                  </li>
                 <li class="list-group-item" *ngIf="status=='ENABLED'"><i class="icon icon-mail text-success"
@@ -156,16 +161,16 @@
             <div class="row my-3">
               <!-- bar charts group -->
               <div class="col-md-12">
-                <div class="card no-b shadow" *ngIf="isAdGroup">
-                  <div class="card-header teal lighten-1 text-center text-white no-b">
-                    <h6>Nouveau groupe d'annonce</h6>
+                <div class="card no-b shadow animated fadeIn slow" *ngIf="isAdGroup" >
+                  <div class="card-header teal darken-1 text-center text-white no-b">
+                    <h6 class="font-weight-bold">Nouveau groupe d'annonce</h6>
                   </div>
                   <div class="card-body no-b">
                     <input placeholder="Nom du groupe d'annonce" class="form-control" name="adgroup_name" id="adgroup"
                       style="max-width: 200 px !important">
                     <div class="card-footer white text-center no-b">
 
-                      <a href="#" class="btn btn-social btn-md teal lighten-1 shadow btn-sm r-20 text-white" (click)="addAdGroup()"><i
+                      <a href="#" class="btn btn-social btn-md teal darken-1 shadow btn-sm r-20 text-white" (click)="addAdGroup()"><i
                           class="icon-plus-circle mr-2 "></i>Ajouter</a>
                       <button href="#" class="btn btn-danger shadow btn-sm r-20 btn-social" (click)="closeAddAdGroup()"><i
                           class="icon-close mr-2 "></i>Annuler</button>
@@ -173,11 +178,11 @@
                   </div>
                 </div>
 
-                <div class="card my-3 my-3 no-b shadow no-b">
+                <div class="card my-3 my-3 no-b shadow no-b animated fadeInRight">
                  <!--  <button class="btn btn-sm btn-secondary bg-gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="float: right !important; width: 20px">
                     <i class="icon-edit"></i>
                   </button> -->
-                  <div class="card-header teal lighten-3 text-center no-b" *ngIf="number_ad_groups!='0'">
+                  <div class="card-header teal darken-1 text-center no-b" *ngIf="number_ad_groups!='0'">
                     <i class="icon-clipboard-edit text-white"></i>
                     <h6 style="color: white">Groupes d'annonces </h6>
                     
@@ -187,7 +192,7 @@
                       <table class="table table-hover no-b">
                         <!-- Table heading -->
                         <tbody class="no-b">
-                          <tr class="no-b teal lighten-3 text-white text-center">
+                          <tr class="no-b teal darken-1 text-white text-center">
                             <!--     <th>
                                         <input type="checkbox">
                                     </th> -->
@@ -203,7 +208,7 @@
                                     </td> -->
                             <!-- Page name -->
                             <td class="text-center no-b">
-                              <strong><a (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" style="cursor: pointer; color: #80cbc4; font-size: 14px">{{adgroup?.name}}</a></strong>
+                              <strong><a (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" style="cursor: pointer; color: #00897b; font-size: 14px">{{adgroup?.name}}</a></strong>
                             </td>
                             <!-- Page size -->
                             <!-- Status -->
@@ -258,7 +263,7 @@
                     </div>
                     </ng-template>
                   <div class="card-footer white text-center no-b" *ngIf="number_ad_groups!=0">
-                    <a class="btn btn-sm teal lighten-3 shadow  text-white r-20" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe d'annonces</a>
+                    <a class="btn btn-sm teal darken-1 btn-social shadow  text-white r-20" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe d'annonces</a>
 
                     
                     <!--  <a href="#" class="btn btn-outline-danger btn-xs">Delete All</a> -->
@@ -280,8 +285,8 @@
         <div class="row">
        
           <div class="col-md-12">
-            <div class="card no-b shadow">
-              <div class="card-header teal lighten-3 b-0 p-3 text-center no-b">
+            <div class="card no-b shadow animated fadeInLeftBig">
+              <div class="card-header teal darken-1 b-0 p-3 text-center no-b">
                 <h6 class="card-title text-white">Budget de la campagne</h6>
                <!--  <small class="card-subtitle mb-2 text-muted">Sélectionner parmis les options ci-dessous pour placer un budget</small> -->
               </div>
@@ -294,13 +299,13 @@
                     <div class="card-body pt-0 text-center no-b">
 
                     <div class="row">
-                      <div class="col text-center">
+                      <div class="col text-center animated fadeInUp delay-1s">
                         <p class="text-muted well well-sm shadow mt-3" >
                           {{accountValue}} CFA dans le compte<br>
                           Budget de la campagne: {{budget}} CFA 
                         </p>
                       </div>
-                       <div class="col text-center">
+                       <div class="col text-center animated fadeInDown delay-1s">
                          <a class="btn-fab btn-fab-sm teal darken-1 text-white" style="float: right" (click)="OpenModifyDateCampaign()"><i class="icon-edit"></i></a>
                          <p class="text-muted well well-sm shadow" >
                            
@@ -313,7 +318,7 @@
                   </div>
                        <div class="text-center" *ngIf="button_payments">
                          <div class="my-3">
-                           <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+                           <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
@@ -321,7 +326,7 @@
                         </div>
                          <div class="my-3">
                            
-            <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+            <a class="btn btn-sm btn-social teal darken-1 text-white r-20 animated fadeInLeft delay-2s"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte
           </a>
@@ -329,7 +334,7 @@
                         </div>
                          <div class="my-3">
    
-          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+          <a class="btn btn-sm btn-social teal darken-1 text-white r-20 animated fadeInRight delay-2s"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>
@@ -355,7 +360,7 @@
                 </ejs-datepicker>
               </li>
               <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
-              <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+              <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="updateCampaignDate()">Appliquer</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -370,7 +375,7 @@
             
             <small class="text-success"
               style="font-size: 12px; margin-top: -5px;">NB: Seul 80% du montant seront placés les 20% pour les frais de service</small>
-            <input type="number" class="form-control no-b bg-light" id="montant" (keyup)="handleSimulatedImpressionsCount()"
+            <input type="number" class="form-control bg-light" id="montant"  (keyup)="handleSimulatedImpressionsCount()"
               placeholder="Montant" min="10000" placeholder="Montant supérieur ou égal à 10000 FCA" required>
             <small class="text-danger" id="error_recharge"
               style="font-size: 12px; display: none; ">Saisir un montant supérieur ou égal à 10000
@@ -384,7 +389,7 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineBudget()">Placer le budget</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -402,13 +407,13 @@
             
             <small class="text-success"
               style="font-size: 12px; margin-top: -5px;">NB: Cette opération vous permettra dans la suite d'éviter les paiments pour démarrer une nouvelle campagne</small>
-            <input type="number" class="form-control no-b bg-light" id="montant" (keyup)="handleIfValide()"
+            <input type="number" class="form-control bg-light" id="montant" (keyup)="handleIfValide()"
               placeholder="Montant" min="10000"  placeholder="Montant supérieur ou égal à 20 000 FCA" required>
             <small class="text-danger" id="error_recharge"
               style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
               FCA</small>
               
-               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -428,7 +433,7 @@
             
             <small class="text-success"
               style="font-size: 12px; margin-top: -5px;">NB: La valeur du budget doit être disponible dans votre compte et supérieur ou égale à 10 000 FCFA</small>
-            <input type="number" class="form-control no-b bg-light" id="montant" (keyup)="handleIfBudgetToPlaceFromAccountIsValid()"
+            <input type="number" class="form-control bg-light" id="montant" (keyup)="handleIfBudgetToPlaceFromAccountIsValid()"
               placeholder="Montant" placeholder="Montant supérieur ou égal à 10 000 FCA"required>
             <small class="text-danger" id="error_recharge"
               style="font-size: 12px; display: none">La valeur du budget invalide</small>
@@ -441,7 +446,7 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineBudgetFromAccount()">Placer mon budget</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -465,15 +470,15 @@
                <div class="text-center" style="display: inline-block">
          
           <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-        <!--   <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+        <!--   <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+            <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+          <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a> -->
@@ -516,11 +521,11 @@
               <!-- /.timeline-label -->
               <!-- timeline item -->
               <li>
-                <a class="btn btn-sm btn-block teal lighten-3 text-white r-20 btn-social no-b"  data-toggle="collapse" href="#collapseZone" role="button" aria-expanded="false" aria-controls="collapseZone">
+                <a class="btn btn-sm btn-block teal darken-1 text-white r-20 btn-social no-b"  data-toggle="collapse" href="#collapseZone" role="button" aria-expanded="false" aria-controls="collapseZone">
 
                   <i class="icon icon-location-arrow"></i> Ciblage de zone
                 </a>
-                <div class="collapse" id="collapseZone">
+                <div class="collapse animated fadeInDown" id="collapseZone">
                         <div class="card no-b shadow timeline-item">
               <div class="card-header white b-0 p-3 text-center no-b">
                 <small class="card-subtitle mb-2 text-muted">Visualiser ici vos zones ciblées et si nécessaire modifier les stratégies d'enchères.</small>
@@ -923,10 +928,20 @@
           <!-- /.col -->
         </div>
       </div>
+      <div class="tab-pane fade" id="v-pills-statistiques" role="tabpanel" aria-labelledby="v-pills-statistiques-tab">
+        <div>
+  <fusioncharts
+    [type]="type"
+    [width]="width"
+    [height]="height"
+    [dataSource]="dataSource"
+  ></fusioncharts>
+</div>
+      </div>
       <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        <div class="card no-b shadow">
+        <div class="card no-b shadow animated fadeIn">
           <input id="id" class="form-control r-0 light s-12 " type="text" value="{{id_campagne}}" readonly style="display: none">
-          <div class="card-header teal lighten-3 text-white text-center">
+          <div class="card-header teal darken-1 text-white text-center">
             <span>Informations</span>
           </div>
           <div class="card-body no-b white">
@@ -984,15 +999,15 @@
           <h6 class="my-3">{{accountValue}} CFA dans le compte</h6>
           <h6 class="my-3">Budget de la campagne: {{budget}} CFA </h6>
           <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+          <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+            <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-sm btn-social teal lighten-3 text-white r-20"
+          <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
             style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>
@@ -1041,7 +1056,7 @@
                 </ejs-datepicker>
               </li>
               <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
-              <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+              <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="updateCampaignDate()">Appliquer</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -1071,7 +1086,7 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineBudget()">Placer le budget</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -1096,7 +1111,7 @@
               style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
               FCA</small>
               
-               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
@@ -1130,7 +1145,7 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal lighten-1 text-white btn-social r-20"
+               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px"
                 (click)="defineBudgetFromAccount()">Placer mon budget</button>
                 <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"

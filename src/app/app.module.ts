@@ -18,6 +18,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 import { NgxFormatFieldModule } from 'ngx-format-field';
 
+
 import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -31,10 +32,13 @@ import { UiModule } from './app_core/ui/ui.module';
 
 import { AngularFireDatabaseModule } from '@angular/fire/database'
 
+import { FusionChartsModule } from 'angular-fusioncharts';
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
 
 
-
-
+FusionChartsModule.fcRoot(FusionCharts, Charts, TimeSeries);
 
 const credentials = {
      apiKey: "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
@@ -76,6 +80,8 @@ firebase.initializeApp(credentials)
     AngularFireDatabaseModule,
     NgbModule.forRoot(),
     NgxFormatFieldModule,
+    FusionChartsModule
+    
 
 
    

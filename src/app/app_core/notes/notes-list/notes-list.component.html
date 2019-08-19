@@ -116,6 +116,9 @@
         <!-- Messages-->
        
         <!-- Notifications -->
+        <li  style="margin-top: 8px; cursor: pointer">
+             <a class="btn-fab btn-fab-md  text-white  btn-social" (click)="action_2()" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);  "><i class="icon-add_to_queue"></i></a>
+        </li>
          <li style="margin-top: 3px">
             <a class="nav-link text-white" title="Argent disponible dans votre compte" style="font-size: 12px">
                 <i class="icon-money-bag text-white"></i> {{accountValue}} CFA
@@ -208,13 +211,13 @@
 </div>
    
     <ng-container *ngIf="!showList">
-            <div class="text-center" >
+           <!--  <div class="text-center" >
                 <div class="card no-b">
                     <div class="card-body no-b text-center">
                         <a class="btn btn-md teal darken-1 text-white r-20 btn-social" (click)="action_2()"><i class="icon-add_to_queue"> Créer une campagne</i></a>
                     </div>
                 </div>
-            </div>
+            </div> -->
         
         <!-- <h5 style="margin-top: 20px; font-weight: bold">Toutes les camapgnes</h5> -->
         <note-detail></note-detail>

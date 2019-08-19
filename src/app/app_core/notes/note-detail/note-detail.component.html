@@ -2,10 +2,10 @@
 <div class="row d-flex bd-highlight no-gutters" *ngIf="!_showCampaignSettings_">
 <div class="col-md-12 text-center white">
   <br>
-  <h5 style="color: #4db6ac">Liste des campagnes</h5>
+  <h5 class="font-weight-bold" style="color: #00897b">Liste des campagnes</h5>
   <br>
   <br>
-                    <div class="card no-b shadow teal lighten-3 text-white" >
+                    <div class="card text-white shadow no-b" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);" >
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -19,7 +19,7 @@
                                         </td>
                                         <td>
                                           <!--   -->
-                                                                          <span class="text-white" style="font-size: 12px"><strong>{{ note?.name }}</strong></span>
+                                                                          <span class="font-weight-bold" style="font-size: 14px"><strong>{{ note?.name }}</strong></span>
                                            <!--  <h6 style="font-weight: bold">{{ note?.name }}</h6> -->
                                         </td>
                                         <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
@@ -29,12 +29,12 @@
                                         </div></td>
                                         <td>
                                             <div class="d-none d-lg-block">
-                                            <span style="font-size: 10px"><i class="icon icon-data_usage"></i> Commence le {{ note?.startDateFrench }}</span><br>
-                                            <span style="font-size: 14px"><i class="icon icon-timer"></i> Se termine le {{ note?.endDateFrench }}</span>
+                                            <span style="font-size: 12px" class="font-weight-bold"><i class="icon icon-data_usage"></i> Début: {{ note?.startDateFrench }}</span><br>
+                                            <span style="font-size: 14px" class="font-weight-bold"><i class="icon icon-timer"></i> Fin {{ note?.endDateFrench }}</span>
                                             </div>
                                         </td>
                                         <td>
-                                            <a class="btn btn-sm green accent-3 shadow text-white" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)" style="margin-left: -40px; font-size: 10px"><i class="icon-settings2"></i>Configurer</a>
+                                            <a class="btn btn-sm teal darken-1 shadow text-white btn-social" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)" style="margin-left: -40px; font-size: 10px"><i class="icon-settings2"></i>Configurer</a>
                                         </td>
                                         <hr>
                                     </tr>

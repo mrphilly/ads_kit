@@ -30,6 +30,7 @@ from googleads import adwords
 import csv
 import json
 from io import StringIO
+import pandas as pd
 
 
 def main(client):
@@ -43,7 +44,7 @@ def main(client):
                           'InteractionTypes', 'ServingStatus', 'TotalAmount')
                   .From('CAMPAIGN_PERFORMANCE_REPORT')
               
-                  .Where('CampaignId').In('2075578938')
+                  .Where('CampaignId').In('6445993347')
                   .During('LAST_7_DAYS')
                   .Build())
 
@@ -54,11 +55,17 @@ def main(client):
       skip_column_header=False, skip_report_summary=False,
       include_zero_impressions=True)
 
-  response = report.read().decode('utf-8')
+  """  response = report.read().decode('utf-8')
   s = response.splitlines(0)
   x = csv.reader(s)
-  print(list(x))
-  
+  print(list(x)) """
+  tab = []
+  result=report.read().decode('utf-8')
+  s = result.splitlines(0)
+  x = csv.reader(s)
+  data = pd.read_csv(report.read())
+
+  print(data.head())
   
   """  reader = csv.DictReader(report, fieldnames = ( "Budget","Avg. CPM","Cost","Clicks", "Impressions,Avg. Cost", "Interaction Types", "Campaign serving status", "Total Budget amount" ))
   out = json.dumps( [ row for row in reader ] )    """ 

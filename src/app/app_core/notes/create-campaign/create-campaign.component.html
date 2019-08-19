@@ -16,7 +16,7 @@
        <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20 btn-social text-center" (click)="addCampaign()" [disabled]="name?.length < 5 || name?.length > 15" style="display: inline-block; font-size: 14px"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
        <br>
        <br>
-           <a href="/" class="btn btn-warning text-white shadow btn-lg r-20 btn-social text-center" style="display: inline-block; font-size: 14px"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
+           <a (click)="go1()" class="btn btn-warning text-white shadow btn-lg r-20 btn-social text-center" style="display: inline-block; font-size: 14px"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
 
           
    </div>

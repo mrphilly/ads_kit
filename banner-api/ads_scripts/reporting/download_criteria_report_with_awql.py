@@ -25,40 +25,95 @@ section of our README.
 
 """
 
-import sys
+import sys, os
 from googleads import adwords
 import csv
 import json
+from flask import jsonify, Flask
 
 
-def main(client):
+
+def get_campaign_report_performance(client, CampaignId):
   # Initialize appropriate service.
   report_downloader = client.GetReportDownloader(version='v201809')
 
   # Create report query.
   report_query = (adwords.ReportQueryBuilder()
-                  .Select('CampaignId','AdGroupId', 'Id', 'Criteria',
-                          'CriteriaType', 'FinalUrls', 'Impressions', 'Clicks',
+                  .Select('Clicks', 'Impressions',
                           'Cost')
-                  .From('CRITERIA_PERFORMANCE_REPORT')
-                  .Where('Status').In('ENABLED', 'PAUSED')
-                  .Where('CampaignId').In('2075578938')
+                  .From('CAMPAIGN_PERFORMANCE_REPORT')
+                
+                  .Where('CampaignId').In(CampaignId)
                   .During('LAST_7_DAYS')
                   .Build())
 
   # You can provide a file object to write the output to. For this
   # demonstration we use sys.stdout to write the report to the screen.
-  report = report_downloader.DownloadReportWithAwql(
-      report_query, 'CSV', sys.stdout, skip_report_header=False,
+  filename = "../user__reporting/campaign_report/"+CampaignId+".csv"
+  dirname = os.path.dirname(filename)
+  if not os.path.exists(dirname):
+    os.makedirs(dirname)
+  report_downloader.DownloadReportWithAwql(
+      report_query, 'CSV',open(filename, "w"), skip_report_header=True,
       skip_column_header=False, skip_report_summary=False,
       include_zero_impressions=True)
-  #reader = csv.DictReader( report, fieldnames = ( "fieldname0","fieldname1","fieldname2","fieldname3" ))  
+
+  result= []
+  
+  input_file = csv.DictReader(open(filename))
+  for row in input_file:
+    result.append(row)
+
+
+  report = {
+    "clicks": result[0]['Clicks'],
+    "cost": result[0]['Cost'],
+    "impressions": result[0]['Impressions']
+  }
   print(report)
+  return report
+ 
 
 
+def get_adgroup_report_performance(client, CampaignId):
+  # Initialize appropriate service.
+  report_downloader = client.GetReportDownloader(version='v201809')
 
-if __name__ == '__main__':
+  # Create report query.
+  report_query = (adwords.ReportQueryBuilder()
+                  .Select('Clicks', 'Impressions',
+                          'Cost')
+                  .From('CAMPAIGN_PERFORMANCE_REPORT')
+                
+                  .Where('CampaignId').In(CampaignId)
+                  .During('LAST_7_DAYS')
+                  .Build())
+
+  # You can provide a file object to write the output to. For this
+  # demonstration we use sys.stdout to write the report to the screen.
+ 
+  report_downloader.DownloadReportWithAwql(
+      report_query, 'CSV',open("../user__reporting/campaign_report/"+CampaignId+".csv", "w"), skip_report_header=True,
+      skip_column_header=False, skip_report_summary=False,
+      include_zero_impressions=True)
+
+  result= []
+  
+  input_file = csv.DictReader(open("../user__reporting/campaign_report/"+CampaignId + ".csv"))
+  for row in input_file:
+    result.append(row)
+
+
+  report = {
+    "clicks": result[0]['Clicks'],
+    "cost": result[0]['Cost'],
+    "impressions": result[0]['Impressions']
+  }
+  return report
+
+
+""" if __name__ == '__main__':
   # Initialize client object.
   adwords_client = adwords.AdWordsClient.LoadFromStorage('../../googleads.yaml')
 
-  main(adwords_client)
+  get_campaign_report_performance(adwords_client, "6445993347") """
