@@ -15,6 +15,7 @@ import * as $ from 'jquery'
 import * as moment from 'moment'
 import { SERVER } from '../../../../environments/environment'
 import { Router } from '@angular/router'
+import * as CryptoJS from 'crypto-js'
 
 
 declare const particlesJS: any; 
@@ -25,6 +26,8 @@ declare var require: any;
 //const SERVER_URL = "http://127.0.0.1:5000"
 const SERVER_URL = SERVER.url
 const REDIRECT_URL = SERVER.url_redirect
+
+
 @Component({
   selector: 'notes-list',
   templateUrl: './notes-list.component.html',
@@ -267,13 +270,15 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
   
       if (typeof (params['money']) != "undefined") {
         this.isCreating = true
-   
-          this.auth.user.forEach(data => {
-            this.decryptMoney(params['money'], data.uid).then(res => {
-              if (res[0]['status'] == "ok") {
-                alert(res[0]['status'])
-                alert(res[0]['content'])
-                this.auth.updateUser(data.uid, { account_value: parseInt(res[0]['content']) })
+        
+        this.auth.user.forEach(data => {
+          alert(data.uid)
+          var mystr = this.decrypted(params['money'], data.uid)
+
+          alert(mystr)
+          
+                
+                this.auth.updateUser(data.uid, { account_value: parseInt(mystr) })
               this.auth.getInfos(data.uid).subscribe(el => {
                 this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
                   Swal.fire({
@@ -286,7 +291,8 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                     confirmButtonText: 'Ok'
                   }).then((result) => {
                     if (result.value) {
-                      window.location.replace(REDIRECT_URL)
+                      //window.location.replace(REDIRECT_URL)
+                      window.history.pushState("", "", REDIRECT_URL)
               
                       this.isCreating = false
                     }
@@ -295,8 +301,8 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
           
        
               })
-              }
-            })
+         
+           
           
         })
         
@@ -336,7 +342,8 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  window.location.replace(REDIRECT_URL)
+                  //window.location.replace(REDIRECT_URL)
+                  window.history.pushState("", "", REDIRECT_URL)
                   this.isCreating = false
                   document.getElementById(params['idC']).click()
                   setTimeout(() => {
@@ -371,7 +378,8 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                   confirmButtonText: 'Ok'
                 }).then((result) => {
                   if (result.value) {
-                    window.location.replace(REDIRECT_URL)
+                    //window.location.replace(REDIRECT_URL)
+                    window.history.pushState("", "", REDIRECT_URL)
                     this.isCreating = false
                     document.getElementById(params['idC']).click()
                   }
@@ -416,6 +424,28 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
   } 
 }); */
   }
+
+
+
+
+// INIT
+/*  */;
+
+
+// PROCESS
+encrypted(text, password){
+
+  return CryptoJS.AES.encrypt(text, password);
+}
+  decrypted(encrypted, password) {
+    
+    return CryptoJS.AES.decrypt(encrypted, password).toString(CryptoJS.enc.Utf8)
+    ;
+  }
+
+
+
+
   go1() {
     window.location.reload()
   }

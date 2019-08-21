@@ -617,7 +617,7 @@ parseDate(str) {
     return this.getNote(id).update(data);
   }
 
-  deleteNote(id: string, ad_groups_list_id: any, ads_list_id: any) {
+  /* deleteNote(id: string, ad_groups_list_id: any, ads_list_id: any) {
     //console.log(ad_groups_list_id.length)
     //console.log(ads_list_id.length)
 
@@ -667,6 +667,20 @@ parseDate(str) {
            })
       }
     } 
+  } */
+  deleteNote(id: string): Promise<any> {
+    return new Promise((resolve) => {
+      this.getNote(id).delete()
+      resolve('ok')
+    }
+   
+    )
+    //console.log(ad_groups_list_id.length)
+    //console.log(ads_list_id.length)
+
+    //console.log(ad_groups_list_id)
+    //console.log(ads_list_id)
+    
   }
 
   deleteAdList(ads_list_id: any): Promise<any> {

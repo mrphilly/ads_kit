@@ -40,6 +40,7 @@ import { Ads } from '../../ads.service'
 import {
   AdGroup
 } from '../../ad_group.models'
+import * as CryptoJS from 'crypto-js'
 /* const dataUrl =
   SERVER.url+"/campaignReport/"+; */
 const schemaUrl =
@@ -48,6 +49,7 @@ declare var require: any;
 declare const pQuery: any
 declare const PayExpresse: any
 declare const particlesJS: any; 
+
 
 
 export interface JSONDATE {
@@ -412,6 +414,8 @@ getDateArray(start, end) {
 }
 
 
+
+  
   getUser() {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -430,6 +434,7 @@ getDateArray(start, end) {
     });
   }
   ngOnInit() {
+    alert(this.id_campagne)
     /*        L10n.load({
           'fr': {
             'datepicker': {
@@ -1801,7 +1806,7 @@ xhr.send();
       
     })
   }
-
+/* 
   deleteCampaign() {
     
     
@@ -1870,7 +1875,7 @@ this.getListIdAd().then(res => {
       }
     })  
 
-  }
+  } */
 
   goAdGroups(ad_group_name: string, idA: string, ad_group_id: string) {
  
@@ -2933,6 +2938,12 @@ if (this.endDate == date || this.startDate == date) {
       );
     }
   }
+
+  encrypted(text, password){
+
+  return CryptoJS.AES.encrypt(text, password);
+}
+  
   
   defineAmountAccountBeforeBudget() {
 
@@ -2942,7 +2953,8 @@ if (this.endDate == date || this.startDate == date) {
       $('#error_recharge').show()
     } else {
       
-      var crypt = this.cryptMoney(this.montant.toString())
+      /* var crypt = this.cryptMoney(this.montant.toString()) */
+      var crypt = this.encrypted(this.montant.toString(), this.uid)
       $('#closeModalRecharge').trigger('click')
       var self = this
       this.isCreating = true
@@ -3021,7 +3033,7 @@ if (this.endDate == date || this.startDate == date) {
           alertDialogConfirmButtonTextColor: '#fff',
           
         });
-    }, 500)
+    }, 500) 
 
       
       

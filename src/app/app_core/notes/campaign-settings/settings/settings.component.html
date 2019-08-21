@@ -71,12 +71,12 @@
            <li>
                           <a class="nav-link" id="v-pills-payments-tab" style="color: #9e9e9e" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="icon icon-map-marker"></i>Zone et Budget</a>
                       </li>
-        <li>
+       <!--  <li>
           <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
             aria-controls="v-pills-settings" aria-selected="false" style="color: #9e9e9e"><i class="icon icon-edit"
               style="color: #9e9e9e"></i>Modifier</a>
         </li>
-      
+       -->
 
          <li>
           <a class="nav-link" style="color: #9e9e9e; cursor: pointer" (click)="listCampagne()"><i class="icon icon-view_list" 
@@ -245,23 +245,7 @@
                             <td class="text-center no-b">
                     <div class="d-inline-block">
                                 <div class="d-flex">
-                                       <div class="dropdown">
-    <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
-      <i class="icon-pause" *ngIf="adgroup?.status==='PAUSED'"></i> 
-       <i class="icon-circle text-success"  *ngIf="adgroup?.status==='ENABLED'"></i> 
-     
-    </button> {{adgroup?.name}}
-    <div class="dropdown-menu"  *ngIf="adgroup?.status==='PAUSED'">
-      <a class="dropdown-item"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-success"></i> Activer</a>
-      <a class="dropdown-item disabled" href="#"><i class="icon-pause"></i> Désactiver</a>
-      <a class="dropdown-item text-danger"  (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)"><i class="icon-delete"></i> Supprimmer</a>
-    </div>
-     <div class="dropdown-menu"  *ngIf="adgroup?.status==='ENABLED'">
-      <a class="dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
-      <a class="dropdown-item text-danger"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-pause"></i> Désactiver</a>
-      <a class="dropdown-item text-danger"  (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)"><i class="icon-delete"></i> Supprimmer</a>
-    </div>
-  </div>
+                                       
                               
                               </div>
                     </div>
@@ -1048,48 +1032,7 @@
           <!-- /.col -->
         </div>
       </div>
-      <div class="tab-pane fade" id="v-pills-statistiques" role="tabpanel" aria-labelledby="v-pills-statistiques-tab">
-        
-      </div>
-      <div class="tab-pane fade text-center" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        <div class="card no-b shadow animated fadeIn d-inline-block" style="width: 70%">
-          <input id="id" class="form-control r-0 light s-12 " type="text" value="{{id_campagne}}" readonly style="display: none">
-          <div class="card-header white text-black-50 adafri-police text-center no-b" style="font-size: 18px">
-            <span>Informations</span>
-          </div>
-          <div class="card-body no-b white">
-            <div class="text-center">
-              <strong class="text-black-50">Nom:</strong> {{name}}
-              <br>
-              <span *ngIf="status==='PAUSED'"><strong class="text-black-50">Etat de la campagne:</strong> En Veille</span>
-              <span *ngIf="status==='ENABLED'"><strong class="text-black-50">Etat de la campagne:</strong> Active</span>
-            </div>
-            <form class="form-horizontal">
-        <!--   <div class="form-group m-0" style="display: none">
-            <label for="name" class="col-form-label s-12">Id de la campagne</label>
-            
-          </div> -->
-          <!-- <div class="form-row text-center">
-            <label for="name" class="col-form-label s-12">Nom</label>
-            <input id="name" placeholder="Nom de la campagne" class="form-control r-0 light s-12 " type="text"
-              value="{{name}}" style="width: 200px">
-          </div>
-          <hr> -->
-         
-        </form>
-          </div>
-          <div class="card-footer white no-b text-center">
-             <a (click)="updateCampaign()" class="btn btn-sm btn-social white text-black-50 r-20" style="border: 1px solid grey">
-              <i class="icon-edit"></i> Modifier
-            </a>
-             <a (click)="deleteCampaign()" class="btn btn-sm btn-social white r-20 text-danger" style="border: 1px solid red">
-              <i class="icon-edit"></i>Supprimer
-            </a>
-          </div>
-        </div>
-        
 
-      </div>
     </div>
   </div>
 </div>

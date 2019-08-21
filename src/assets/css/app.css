@@ -1016,4 +1016,51 @@ list-group-item.active {
 
 .adafri-police{
     font-family: "merriweather", serif;
+    
 }
+
+.adafri-police-16{
+    font-family: "merriweather", serif !important;
+    font-size: 16px !important;
+}
+
+.adafri-police-12{
+    font-family: "merriweather", serif;
+    font-size: 12px 
+}
+
+.adafri-police-10{
+    font-family: "merriweather", serif !important;
+    font-size: 10px !important;
+}
+.adafri-police-18{
+    font-family: "merriweather", serif !important;
+    font-size: 14px !important;
+}
+.adafri-police-16{
+    font-family: "merriweather", serif !important;
+    font-size: 18px !important;
+}
+
+.adafri-police-22{
+    font-family: "merriweather", serif !important;
+    font-size: 22px !important;
+}
+.adafri-police-24{
+    font-family: "merriweather", serif !important;
+    font-size: 24px !important; 
+}
+
+
+.border-grey{
+    border: 1px solid grey !important;
+    border-radius: 20px
+
+}
+.border-red{
+    border: 1px solid red !important;
+}
+.border-green{
+    border: 1px solid green !important;
+}
+

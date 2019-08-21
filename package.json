@@ -39,6 +39,7 @@
     "chart.js": "^2.8.0",
     "cldr-data": "^35.1.0",
     "core-js": "^2.4.1",
+    "crypto": "^1.0.1",
     "crypto-js": "^3.1.9-1",
     "fabric": "^1.7.22",
     "firebase": "^6.2.0",
