@@ -98,7 +98,7 @@ export class AuthService {
       this.afAuth.auth
       .signInWithPopup(provider)
       .then(credential => {
-        
+      
         this.updateUserData(credential.user).then(res => {
           if (res == "ok") {
             resolve('ok')

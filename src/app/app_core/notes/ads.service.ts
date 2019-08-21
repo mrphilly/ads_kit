@@ -57,7 +57,7 @@ private basePath = '/uploads';
       },
       (error) => {
         // fail
-        console.log(error);
+        //console.log(error);
       },
       () => {
         // success
@@ -74,7 +74,7 @@ private basePath = '/uploads';
 
   
  getListAnnonces(ad_group_id: string) {
-   console.log(parseInt(ad_group_id))
+   //console.log(parseInt(ad_group_id))
    
    
  return this.afs.collection('adgroup', (ref) => ref.where('campaign_id','==',parseInt(`${ad_group_id}`))).snapshotChanges().pipe(
@@ -96,7 +96,7 @@ private basePath = '/uploads';
      return new Promise(resolve => {
       setTimeout(() => {
         this.afs.collection('ads', (ref) => ref.where('ad_group_id', '==', parseInt(`${ad_group_id}`)).where('ad_name', '==', `${ad_name}`)).snapshotChanges().subscribe(data => {
-          console.log(`data ${data}`)
+          //console.log(`data ${data}`)
           this.item = data
           resolve(data.length)
       })
@@ -105,7 +105,7 @@ private basePath = '/uploads';
   }
 
   getListAd(ad_group_id: string) {
-   console.log(parseInt(ad_group_id))
+   //console.log(parseInt(ad_group_id))
    var id = parseInt(ad_group_id)
    
  return this.afs.collection('ads', (ref) => ref.where('ad_group_id','==',`${id}`)).snapshotChanges().pipe(
@@ -130,7 +130,7 @@ private basePath = '/uploads';
     return await new Promise(resolve => {
       alert(size[0]['width'].toString())
       this.annonceVerification(ad_name, ad_group_id).then(value => {
-      console.log(`promise result: ${value}`)
+      //console.log(`promise result: ${value}`)
       
       if (`${value}` == '0') {
         
@@ -150,21 +150,21 @@ private basePath = '/uploads';
       .subscribe(
         res => {
           var response = res['ad'][0]
-          console.log(response)
+          //console.log(response)
           
          
-          console.log(response['displayUrl'])
-          console.log(response['ad_id'])
-          console.log(ad_group_id)
-          console.log(response['name'])
-          console.log(response['status'])
-          console.log(response['url_image'])
-          console.log(response['displayUrl'])
-          console.log(response['finalUrls'])
-          console.log(response['finalMobileUrls'])
-          console.log(response['finalAppUrls'])
-          console.log(response['referenceId'])
-          console.log(response['automated'])
+          //console.log(response['displayUrl'])
+          //console.log(response['ad_id'])
+          //console.log(ad_group_id)
+          //console.log(response['name'])
+          //console.log(response['status'])
+          //console.log(response['url_image'])
+          //console.log(response['displayUrl'])
+          //console.log(response['finalUrls'])
+          //console.log(response['finalMobileUrls'])
+          //console.log(response['finalAppUrls'])
+          //console.log(response['referenceId'])
+          //console.log(response['automated'])
 
          this.updateAd(ad_id, {ad_id:response['ad_id'], ad_group_id:  ad_group_id , ad_name: response['name'], status: response['status'], url_image: response['url_image'], displayUrl: response['displayUrl'], finalUrls:  response['finalUrls'],finalMobileUrls:response['finalMobileUrls'], finalAppUrls: response['finalAppUrls'], automated: response['automated'], referenceId: response['referenceId'] }).then(res=>{
             Swal.fire({
@@ -235,7 +235,7 @@ private basePath = '/uploads';
      var finalMobileUrls = []
      var finalAppUrls = []
 
-     console.log(allUrls)
+     //console.log(allUrls)
      for (let i = 0; i < allUrls.length; i++){
        if (allUrls[i]['lib'] == 'finalUrls') {
          displayUrl.push(allUrls[i]['content'])
@@ -249,7 +249,7 @@ private basePath = '/uploads';
   
   
     return await this.annonceVerification(ad_name, ad_group_id).then(value => {
-      console.log(`promise result: ${value}`)
+      //console.log(`promise result: ${value}`)
       var self = this
       if (`${value}` == '0') {
           
@@ -301,10 +301,10 @@ private basePath = '/uploads';
 
           .subscribe(
             res => {
-              console.log(res)
+              //console.log(res)
               if (res[0]['status'] == "ok") {
                 for (let i = 0; i < data.toString().length; i++){
-                  console.log(data[i])
+                  //console.log(data[i])
                   var field = data[i].fieldFirebase
                   var content = data[i].content
                  this.updateAd(id_ad_firebase, {field : content})

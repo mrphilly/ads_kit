@@ -34,6 +34,11 @@
     float: left;
     width: 100%;
     padding: 50px 0;
+    position: relative;
+}
+.login-sec:before{
+     opacity: 0.5;
+     position: absolute;
 }
 
 .banner-sec {
@@ -57,6 +62,8 @@
 }
 
 .login-sec {
+    width: 60%;
+    height: auto;
     padding: 50px 30px;
     position: relative;
 }
@@ -77,14 +84,14 @@
     color: #E36262;
 }
 
-.login-sec h2 {
+.login-sec h6 {
     margin-bottom: 30px;
     font-weight: 800;
-    font-size: 30px;
+    font-size: 20px;
     color: white;
 }
 
-.login-sec h2:after {
+.login-sec h6:after {
     content: " ";
     width: 100px;
     height: 5px;
@@ -100,6 +107,7 @@
     background: #26a69a;
     color: #fff;
     font-weight: 600;
+    font-size: 12px;
 }
 
 .banner-text {
@@ -124,11 +132,6 @@
     border-radius: 3px;
 }
 
-<<<<<<< HEAD
-.banner-text p {
-    color: #fff;
-}
-=======
 .page-header {
   
    
@@ -160,7 +163,6 @@
 
 
 
->>>>>>> 2d483673e741377a96bc94229c1edf4228ac5f0b
 
 #carouselExampleIndicators {
     margin-top: 200px;
@@ -173,4 +175,67 @@
 .login-block1 {
     float: left;
     width: 100%;
+}
+
+/* ---- reset ---- */
+
+
+.particles-js-canvas-el {
+    position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0
+ 
+  
+}
+
+/* ---- particles.js container ---- */
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+/*   background-color: #b61924;
+  background-image: url('../../../../assets/img/images/bureau.jpg'); */
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+}
+
+/* ---- stats.js ---- */
+
+.count-particles{
+  background: #000022;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 80px;
+  color: #13E8E9;
+  font-size: .8em;
+  text-align: left;
+  text-indent: 4px;
+  line-height: 14px;
+  padding-bottom: 2px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+}
+
+.js-count-particles{
+  font-size: 1.1em;
+}
+
+#stats,
+.count-particles{
+  -webkit-user-select: none;
+}
+
+#stats{
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+}
+
+.count-particles{
+  border-radius: 0 0 3px 3px;
 }

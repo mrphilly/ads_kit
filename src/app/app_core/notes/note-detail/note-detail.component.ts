@@ -37,6 +37,7 @@ export class NoteDetailComponent implements OnInit {
   budgetId: any;
   dailyBudget: any;
   numberOfDays: any;
+  display_visuel = true
 
   constructor(private notesService: NotesService, private router: Router, private adgroup_service: AdGroupService,private auth: AuthService) { 
     
@@ -47,8 +48,13 @@ export class NoteDetailComponent implements OnInit {
   ngOnInit() {
      this.auth.user.forEach(child=>{
        this.uid = child.uid
-       console.log(child.uid)
+       //console.log(child.uid)
        this.notes = this.notesService.getListCampaign(child.uid);
+       this.notes.forEach(data => {
+         if (data.length > 2) {
+           this.display_visuel = false
+         }
+       })
     })
   
 }
@@ -59,13 +65,8 @@ export class NoteDetailComponent implements OnInit {
       console.error('Note missing ID!');
     }
   }
-  toggleSignleCampaign(name: string, id: string, id_campagne: string) {
-   /*  this._showCampaignSettings_ = true
-    this.showList = false
-    this._addCampaign_ = false
-    this.id = id
-    this.id_campagne = id_campagne
-    this.name = name */
+  createCampaign() {
+  this.router.navigate(['createCampaign'])
    
     
   }
@@ -84,14 +85,14 @@ export class NoteDetailComponent implements OnInit {
                     datatype: "json",
                     contentType: 'application/json',
                   success: function (response) {
-                    console.log(response)
+                    //console.log(response)
                     if (response.status == "ok") {
-                     console.log(response.handler)
+                     //console.log(response.handler)
 
                     }
                   },
                   error: function(err) {
-                      console.log(err)
+                      //console.log(err)
                     },
 
                     data: JSON.stringify(data),
@@ -102,7 +103,7 @@ export class NoteDetailComponent implements OnInit {
   } */
 
   goCampaignSettings(id: string,id_campagne: string, name: string, status: string, ad_group_id: string, budget: any, budgetId: any, dailyBudget: any, numberOfDays: any) {
-    console.log(id + " " + id_campagne + " " + name + " " + status + " "+dailyBudget+" "+numberOfDays);
+    //console.log(id + " " + id_campagne + " " + name + " " + status + " "+dailyBudget+" "+numberOfDays);
     this.id_campagne = id_campagne;
     
     this.id = id;

@@ -15,6 +15,9 @@ export class Note {
     criterion_placement?: any;
     startDate?: any;
     endDate?: any;
+    impressions?: any;
+    clicks?: any;
+    costs?: any;
     startDateFrench?: any;
     endDateFrench?: any;
     originalStartDate?: any;

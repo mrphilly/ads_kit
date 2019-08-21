@@ -348,21 +348,10 @@
     <div class="sticky">
       <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
-      <div class="navbar navbar-expand d-flex justify-content-between bd-navbar teal darken-1 shadow"
+      <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white text-black-50 shadow"
         style="height: 60px">
-        <div class="relative">
-          <div class="d-flex">
-            <div class="d-md-block">
-                         <a (click)="go()">
-                        <figure class="avatar">
-                            <img src="assets/img/adafri.png">
-                            
-                        </figure>
-                    </a>
-                       
-                    </div>
-          </div>
-        </div>
+       <img class="d-none d-md-block" src="assets/img/adafri.png" style="width: 5%; float: left" (click)="go()">
+            <img class="d-md-none d-sm-block" src="assets/img/adafri.png" style="width: 15%; float: left" (click)="go()">
         <!--Top Menu Start -->
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
@@ -370,13 +359,13 @@
 
             <!-- Notifications -->
             <li style="margin-top: 3px">
-              <a class="nav-link text-white" title="Argent disponible dans votre compte" style="font-size: 12px">
-                <i class="icon-money-bag text-white"></i> {{accountValue}} CFA
+              <a class="nav-link" title="Argent disponible dans votre compte" style="font-size: 12px">
+                <i class="icon-money-bag"></i> {{accountValue}} CFA
               </a>
             </li>
             <li class="dropdown custom-dropdown notifications-menu" style="margin-top: 5px">
               <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
-                <i class="icon-notifications_none text-white"></i>
+                <i class="icon-notifications_none"></i>
                 <span class="badge badge-danger badge-mini rounded-circle">{{numberOfNotifications}}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
@@ -405,7 +394,7 @@
                         </li> -->
                   </ul>
                 </li>
-                <li class="footer p-2 text-center"><a href="#">View all</a></li>
+               
               </ul>
             </li>
 
@@ -415,7 +404,7 @@
 
             <!-- User Account-->
             <li class="dropdown custom-dropdown user user-menu ">
-              <a href="#" class="nav-link text-white" data-toggle="dropdown" style="font-size: 12px">
+              <a href="#" class="nav-link " data-toggle="dropdown" style="font-size: 12px">
 
                 <span style="font-size: 12px"
                   class="avatar-letter avatar-letter-{{email_letter | lowercase}} avatar-md circle"></span>
@@ -448,18 +437,18 @@
     
     <!--  
     <!--#navbar-->
-      <header class="white pt-3 relative shadow bg-light" >
+      <header class="white pt-3 relative white" >
   <div class="container-fluid text-center">
     <div class="row p-t-b-10 ">
       <div class="col">
-        <div class="card r-3 no-b shadow animated fadeIn slow" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%); margin-top: 10px;">
+        <div class="card r-3 no-b shadow1 animated fadeIn slow adafri-background" style="margin-top: 10px;" id="particles-js">
               <div class="p-4">
                 <div class="text-center">
                   <!-- <span class="icon-award text-white s-48"></span> -->
-                  <img class="img-responsive" src="assets/img/images/groupe d'annonces.png">
+                  <img class="img-responsive" src="assets/img/images/banniere.png">
                 </div>
-                <div class="sc-counter mt-3 font-weight-bold text-white text-center animated fadeInLeft">Paramètre groupe d'annonces</div>
-                <div class="counter-title font-weight-bold text-white text-center animated fadeInLeft">{{ad_group_name}}</div>
+                <div class="sc-counter mt-3 adafri-police text-center animated fadeInLeft text-white">Gérer vos annonces</div>
+                <div class="counter-title adafri-police text-center animated fadeInLeft text-white">{{ad_group_name}}</div>
                 <div class="text-center animated zoomInUp slow">
                   <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i
                         class="icon icon-circle mr-2" style="color: green"></i>Groupe d'annonce actif</span></span>
@@ -476,20 +465,20 @@
       <ul class="nav nav-material responsive-tab" id="v-pills-tab" role="tablist">
         <li>
           <a class="nav-link active"  id="v-pills-tab1-tab" data-toggle="pill" href="#v-pills-tab1" role="tab"
-            aria-controls="v-pills-tab1" style="color: #009688">
-            <i class="icon icon-view_list" style="color: #009688"></i>Liste des annonces 
+            aria-controls="v-pills-tab1" style="color: grey">
+            <i class="icon icon-view_list" style="color: grey"></i>Liste des annonces 
           </a>
         </li>
             <li>
-                <a class="nav-link" id="v-pills-placement-tab" style="color: #009688" data-toggle="pill" href="#v-pills-placement" role="tab" aria-controls="v-pills-placement" aria-selected="false"><i class="icon icon-placeholder"></i>Emplacement</a>
+                <a class="nav-link" id="v-pills-placement-tab" style="color: grey" data-toggle="pill" href="#v-pills-placement" role="tab" aria-controls="v-pills-placement" aria-selected="false"><i class="icon icon-placeholder"></i>Emplacement</a>
             </li>
           <li>
-                          <a class="nav-link" id="v-pills-ciblage-ads-tab" style="color: #009688" data-toggle="pill" href="#v-pills-ciblage-ads" role="tab" aria-controls="v-pills-ciblage-ads" aria-selected="false"><i class="icon icon-target"></i>Ciblage</a>
+                          <a class="nav-link" id="v-pills-ciblage-ads-tab" style="color: grey" data-toggle="pill" href="#v-pills-ciblage-ads" role="tab" aria-controls="v-pills-ciblage-ads" aria-selected="false"><i class="icon icon-target"></i>Ciblage</a>
                       </li>
         <li>
           <a class="nav-link" id="v-pills-add-ad-tab" data-toggle="pill" href="#v-pills-add-ad" role="tab"
-            aria-controls="v-pills-add-ad" aria-selected="false" style="color: #009688" *ngIf="number_ads!=='0'"><i class="icon icon-yelp"
-              style="color: #009688" ></i>Créer une annonce</a>
+            aria-controls="v-pills-add-ad" aria-selected="false" style="color: grey" *ngIf="number_ads!=='0'"><i class="icon icon-yelp"
+              style="color: grey" ></i>Créer un visuel</a>
         </li>
       </ul>
     </div>
@@ -501,49 +490,19 @@
   <div class="">
     <div class="tab-content" id="v-pills-tabContent">
       <div class="tab-pane fade show active" id="v-pills-tab1" role="tabpanel" aria-labelledby="v-pills-home-tab">
-     
-
-          <ul class="sidebar-menu teal darken-1 text-white shadow text-center" style="margin-top: 10px;">
-
-              <li class="treeview text-center"><a (click)="toggleListAd()" style="cursor: pointer"
-                  *ngIf="!list_ad && number_ads != 0"><i
-                    class="icon icon-send-o indigo-text s-18"></i>retour à la liste des annonces</a>
-              </li>
-              <!-- <li class="treeview"><a (click)="handleToggleGender()" style="cursor: pointer"
-                  [attr.aria-expanded]="!isGender" aria-controls="collapseGender"><i
-                    class="icon icon-inbox text-purple s-18"></i>Ciblage des genres</a>
-              </li>
-              <li class="treeview"><a style="cursor: pointer" (click)='handleToggleAge()' [attr.aria-expanded]="!isAge"
-                  aria-controls="collapseAge"><i class="icon icon-star-o lime-text s-18"></i>Ciblage des âges</a>
-              </li>
-              <li class="treeview"><a (click)="handleToggleDevice()" [attr.aria-expanded]="!isDevice"
-                  aria-controls="collapseDevice"><i class="icon icon-send-o indigo-text s-18"></i>Ciblage de
-                  terminaux</a>
-              </li> -->
-
-            </ul>        
+      
   <ng-container *ngIf="number_ads != 0 && list_ad;">
 
-<div class="">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="chLine"></canvas>
-                </div>
-            </div>
-        </div>
-     </div>     
-</div>
+
             <div class="container-fluid text-center">
               <br>
-              <h5 style="color: #4db6ac">Liste des annonces</h5>
+              <h5 class="adafri-police">Liste des visuels</h5>
               <br>
-              <div class="card no-b shadow animated fadeInLeft"  style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);">
+              <div class="card no-b shadow animated fadeInLeft white">
                 <div class="card-body p-0">
                   <div class="table-responsive">
 
-                    <table class="table table-hover text-center">
+                    <table class="table white text-center">
                       <tbody>
                         <ng-container *ngIf="ads.toString().length > 0; else noAds">
 
@@ -551,72 +510,49 @@
 
 
                             <td class="table-img">
-                              <img src="{{ad?.url_image}}" alt="">
+                              <img src="{{ad?.url_image}}" alt="{{ad?.ad_name}}">
 
                             </td>
                             <td class="text-center">
                              <!--  <small class="text-white">Annonce display</small> -->
-                               <span class="text-white font-weight-bold" style="font-size: 14px"><strong>{{ ad?.ad_name }}</strong></span>
-                            </td>
-                            <!-- <td><div class="d-none d-lg-block">$250</div></td> -->
-                            <td *ngIf="ad?.status=='ENABLED'" class="text-center">
-                              <!-- <small class="text-white">Etat:</small> -->
-                              <span class="text-white" style="font-size: 14px"><strong>Annonce activée</strong></span>
-
-                            </td>
-                             <td *ngIf="ad?.status==''" class="text-center">
-                              <!-- <small class="text-white">Etat:</small> -->
-                              <span class="text-white" style="font-size: 14px"><strong>Annonce en attente</strong></span>
-
-                            </td>
-                            <td *ngIf="ad?.status=='PAUSED'" class="text-center">
-                             <!--  <small class="text-white">Etat:</small> -->
-                             <span class="text-white" style="font-size: 14px"><strong>Annonce en veille</strong></span>
-
-                            </td>
-                            <!-- <td>
-                                                 <div class="d-none d-lg-block">
-                                                 <span><i class="icon icon-data_usage"></i> Commence le {{ note?.startDateFrench }}</span><br>
-                                                 <span><i class="icon icon-timer"></i> Se termine le {{ note?.endDateFrench }}</span>
-                                                 </div>
-                                             </td> -->
-                            <td class="text-center">
-                              <div class="row text-center d-none">
-                                <small class="text-white" *ngIf="ad?.status==='PAUSED'">Activer/Supprimer</small>
-                                <small class="text-white" *ngIf="ad?.status==='ENABLED'">Désactiver/Supprimer</small>
-
+                             <div class="d-inline-block">
+                                <div class="d-flex">
+                                       <div class="dropdown">
+    <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-pause" *ngIf="ad?.status==='PAUSED'"></i> 
+       <i class="icon-circle text-success"  *ngIf="ad?.status==='ENABLED'"></i> 
+       <i class="icon-phonelink_off text-success"  *ngIf="ad?.status===''"></i> 
+     
+    </button> {{ ad?.ad_name }}
+    <div class="dropdown-menu"  *ngIf="ad?.status==='PAUSED'">
+      <a class="dropdown-item"  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"><i class="icon-circle text-success"></i> Activer</a>
+      <a class="dropdown-item disabled" href="#"><i class="icon-pause"></i> Désactiver</a>
+      <a class="dropdown-item text-danger"  (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)"><i class="icon-delete"></i> Supprimmer</a>
+    </div>
+     <div class="dropdown-menu"  *ngIf="ad?.status==='ENABLED'">
+      <a class="dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
+      <a class="dropdown-item text-danger"  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"><i class="icon-pause"></i> Désactiver</a>
+      <a class="dropdown-item text-danger"  (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)"><i class="icon-delete"></i> Supprimmer</a>
+    </div>
+     <div class="dropdown-menu"  *ngIf="ad?.status===''">
+      <a class="dropdown-item disabled grey lighten-4" href="#"><i class="icon-circle text-success"></i> Activer</a>
+      <a class="dropdown-item text-danger grey lighten-4 disabled"><i class="icon-pause"></i> Désactiver</a>
+      <a class="dropdown-item text-danger" style="cursor: pointer" (click)="removeAdFirebase(ad?.id)"><i class="icon-delete"></i> Supprimmer</a>
+    </div>
+  </div>
+                              
                               </div>
-                              <div class="row">
-                                <a class="text-danger" style="cursor: pointer" title="désactiver"
-                                  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
-                                  *ngIf="ad?.status==='ENABLED'">
-                                  <i class="icon-stop text-danger"></i>
-                                </a>
-                                <a class="text-white" title="activer" style="cursor: pointer"
-                                  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"
-                                  *ngIf="ad?.status==='PAUSED'" title="">
-                                  <i class="icon-play text-white"></i>
-                                </a>
-                                <div style="cursor: pointer; margin-left: 5px" *ngIf="ad?.status!==''">
-                                  <a class="text-danger" style="cursor: pointer; float: right"
-                                    (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)">
-                                    <i class="icon-close2 text-danger"></i>
-                                  </a>
-
-                                </div>
-                                <div style="cursor: pointer; margin-left: 5px" *ngIf="ad?.status===''">
-                                  <a class="text-danger" style="cursor: pointer; float: right"
-                                    (click)="removeAdFirebase(ad?.id)">
-                                    <i class="icon-close2 text-danger"></i>
-                                  </a>
-
-                                </div>
-                              </div>
-
+                    </div>
+                         
                             </td>
+               
                             <td>
-                              <a class="btn btn-sm teal darken-1 shadow text-white r-20" [id]="ad?.id"
-                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId, ad?.size, ad?.ad_type)"><i
+                              <a class="btn btn-sm white shadow text-black-50 r-20" [id]="ad?.id"
+                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId, ad?.size, ad?.ad_type)" style="border: 1px solid grey" *ngIf="ad?.status===''"><i
+                                  class="icon-settings2" ></i>Terminer</a>
+
+                                   <a class="btn btn-sm white shadow text-black-50 r-20" [id]="ad?.id"
+                                (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId, ad?.size, ad?.ad_type)" style="border: 1px solid grey" *ngIf="ad?.status!==''"><i
                                   class="icon-settings2" ></i>Voir</a>
                             </td>
                             <hr>
@@ -635,10 +571,10 @@
             <div class="container-fluid">
               <div class="text-center p-5">
                 <i class="icon-note-important s-64 text-white"></i>
-                <h4 class="my-3">Aucune annonce trouvée</h4>
-                <p>Vous devez creer une nouvelle annonce pour commencer</p>
-                <button href="#" class="btn teal darken-1 text-white btn-sm btn-social r-20 shadow btn-sm r-20" (click)='initAdd()'><i
-                    class="icon-plus-circle mr-2 "></i>Créer une annonce</button>
+                <h4 class="my-3">Aucun visuel trouvé</h4>
+                <p>Vous devez créer ou charger un visuel pour commencer</p>
+                <button href="#" class="btn white text-black-50 btn-sm btn-social r-20 shadow btn-sm r-20" (click)='initAdd()' style="border: 1px solid grey"><i
+                    class="icon-plus-circle mr-2 "></i>Créer un visuel</button>
               </div>
             </div>
           </ng-container>
@@ -646,24 +582,24 @@
                 <ng-container *ngIf="init_choose_ad_size && number_ads==='0'">
                       <div class="card no-b shadow animated fadeIn" *ngIf="chooseAdSize">
       <div class="card-header no-b white text-center">
-        Type d'annonces
+        Choisir un format d'image
       </div>
       <div class="card-body no-b white">
         	<div class="row">	
 
-			<div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+			<div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer"> <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
     <div class="row">	
 
-		<div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+		<div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer"> <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
       </div>
       <div class="card-footer text-center white no-b">
          <div class="card no-b shadow" style="display: inline-block" *ngIf="illustration">
                           <div class="card-header teal darken-1 text-white no-b">
-                            <h6 class="text-white">Format annonce</h6>
+                            <h6 class="text-white">{{selectedAdType}}</h6>
                           </div>
                           <div class="card-body white no-b">
                             <div class="card-img no-b">
@@ -687,18 +623,18 @@
                             <h6 class="text-white">Format: {{selectedWidth}}x{{selectedHeight}}</h6>
                           </div>
                     <div class="card-body text-center no-b">
-                        <a class="btn btn-sm btn-social teal darken-1 text-white r-20" (click)="handleUploadBanner()">
+                        <a class="btn btn-sm btn-social white text-black-50 r-20" (click)="handleUploadBanner()" style="border: 1px solid grey">
                             <i class="icon-cloud_upload text-white"></i> Charger une bannière
                         </a>
                         <hr class="invisible">
-                        <a class="btn btn-sm btn-social teal darken-1 text-white r-20" (click)="handleCreatives()">
-                            <i class="icon-creativity text-white"></i> Construire une bannière
+                        <a class="btn btn-sm btn-social white text-black-50 r-20" (click)="handleCreatives()" style="border: 1px solid grey">
+                            <i class="icon-creativity"></i> Construire une bannière
                         </a>
                         
                     </div>
                     <div class="card-footer white no-b text-center">
-                      <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackSelectSize()"
-                              title="Ajouter un texte"><i class="icon-edit"
+                      <button class="btn white btn-sm text-red r-20" (click)="goBackSelectSize()"
+                              title="Ajouter un texte" style="border: 1px solid red"><i class="icon-edit"
                                 ></i>Changer le format</button>
                     </div>
                 </div>
@@ -716,7 +652,7 @@
                   <form [formGroup]="adForm">
                     <div class="form-row text-center">
                       <div class="col-md-6 mb-3 text">
-                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <small for="validationCustom01">Nom du visuel</small>
                         <input type="text" class="form-control" [id]="idOfAdNameInitCreatives" placeholder="Nom" formControlName="name"
                           required>
                         <div *ngIf="formErrors.name" class="help is-danger">
@@ -737,7 +673,7 @@
                       <div class="form-group col-md-6 mb-3">
                         <small for="pattern">Url de redirection</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
-                          placeholder="Url de redirection" [id]="idOfDisplayUrlInitCreatives" required (keyup)="handleErrorUrl()">
+                          placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlInitCreatives" required (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != ''">
                           <div class="text-danger" *ngFor="let error of url_errors">
                             {{error.url}} {{error.text}}
@@ -815,7 +751,7 @@
 
 
 
-                <div class="card-footer border-0 white text-center">
+                <div class="card-footer border-0 white text-center justify-content-between">
                   <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="sendToBack();"
                     title="Revenir à l'élément précédent"><i class="icon-undo2"></i></a>
                   <a class="btn-fab btn-fab-sm shadow teal lighten-1 text-white" (click)="bringToFront();"
@@ -828,7 +764,7 @@
 
                   <button class="btn btn-sm r-20 btn-social teal lighten-1 text-white"
                     (click)="handleImageModal()">
-                    <i class="icon-paper-plane"></i> Visualiser l'annonce
+                    <i class="icon-paper-plane"></i> Visualiser le visuel
                   </button>
                    <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackFromCreatives()"
                               title="Ajouter un texte"><i class="icon-edit"
@@ -842,99 +778,60 @@
                <ng-container *ngIf="isAdBlock">
             <div class="container-fluid text-center" style="margin-top: 15px">
 
-              <div class="card mb-3 shadow no-b r-0">
-                <div class="card-header teal darken-1 text-center text-white no-b">
-                  <h6>Paramètre annonce</h6>
-                </div>
+              <div class="card mb-3 no-b r-0 animated fadeIn">
+               
                 <div class="card-body text-center">
-                  <form>
-
-                    <div class="form-row text-center">
-                      <div class="col-md-6 mb-3 text">
-                        <small for="validationCustom01">Nom de l'annonce</small>
-                        <input type="text" class="form-control no-b green lighten-4 text-white" [id]="idOfAdNameModify" placeholder="Nom" [value]="currentAdName"
-                           readonly>
-                        <div *ngIf="formErrors.name" class="help is-danger">
-                          {{ formErrors.name }}
-                        </div>
-                      </div>
-                      <!-- <div class="col-md-4 mb-3 text">
-                        <small for="validationCustom01">Applications mobiles de destinations</small>
-                        <ng-multiselect-dropdown style="background-color: white" [placeholder]="'Applications'"
-                          [data]="dropdownListApps" [settings]="dropdownSettingsApps" (onSelect)="onAppsSelect($event)"
-                          (onSelectAll)="onAppsSelectAll($event)" (onDeSelect)="onAppsDeSelect($event)"
-                          (onDeSelectAll)="onAppsDeSelectAll()">
-                        </ng-multiselect-dropdown>
-                        <div class="valid-feedback">
-                          Looks good!
-                        </div>
-                      </div> -->
-                      <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
-                        <input type="text" autocomplete="off" class="form-control no-b green lighten-4 text-white" id="redirect"
-                          placeholder="Url de redirection"  [id]="idOfDisplayUrlModify" [value]="currentFinalUrls" required
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                       <div class="card no-b d-inline-block">
+                   
+                    <div class="card-body white text-center">
+                        <span class="adafri-police text-black">Url de redirection</span>
+                      <input type="text" autocomplete="off" class="form-control white no-b text-black adafri-police d-inline-block text-center" id="redirect"
+                           placeholder="Exemple: https://www.votresite.com"  [id]="idOfDisplayUrlModify" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()" readonly>
-                        <ng-container *ngIf="url_errors != ''">
-                          <div class="text-danger" *ngFor="let error of url_errors">
-                            {{error.url}} {{error.text}}
-                          </div>
-  
-                        </ng-container>
-                        <!--  </div>
-      <div class="form-group col-md-3">
-        <small>Actual Value</small>
-        <div>{{pattern.value}}</div>
-      </div>
-   -->
-  
-  
-  
-  
-  
-  
-                      </div>
-  
-  
-  
-  
-  
-  
-  
                     </div>
-                    <div class="row text-center">
-                      <div class="col text-center" style="text-align: center">
-                        <div class="card no-b shadow" style="display: inline-block">
-                          <div class="card-header teal darken-1 text-white no-b">
-                            <h6 class="text-white">Image</h6>
+                  </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                      <div class="card no-b shadow" style="display: inline-block;">
+                          <div class="card-header adafri-background text-white no-b text-center">
+                           <h6 class="adafri-police">Nom: <strong> {{currentAdName}}</strong></h6>
+                            <span style="float: right; font-size: 12px; margin-top: -5px"><strong>Format: {{currentAdSize[0].width}}x{{currentAdSize[0].height}}</strong></span>
                           </div>
                           <div class="card-body white no-b">
                             <div class="card-img no-b">
                               <img class="img-responsive" [src]="currentImageUrl">
                             </div>
                           </div>
-                          <div class="card-footer white no-b text-center">
-                            <button class="btn shadow teal darken-1 text-white r-20 btn-sm" title="modifier"
-                              (click)="toggleCurrentEditor()" *ngIf="currentAdType==='CREATIVE' && !isRoller"><i [class]="iconEditor"></i>{{text_modify}}</button>
-                              <button class="btn shadow teal darken-1 text-white r-20 btn-sm" title="modifier"
-                              (click)="toggleCurrentUploadBlock()" *ngIf="currentAdType==='UPLOAD' && !isRoller"><i [class]="iconEditor" ></i>{{text_modify}}</button>
-                           <!--  <button class="btn shadow teal darken-1 text-white r-20" (click)="publish()"
-                              title="Ajouter un texte" id="publish" *ngIf="currentAdStatus==''"><i class="icon-send"
-                                ></i>Publier</button> -->
-                               <a class="btn btn-sm btn-social btn-warning blink text-white r-20"
-            style="font-size: 12px" (click)="buildAd()" *ngIf="currentAdStatus=='' && !isRoller">
-            <i class="icon-pay-point text-white"></i> Publier
-          </a>
-                          </div>
+                          
                         </div>
-                      </div>
-  
                     </div>
-                  </form>
+                  </div>
+
+                 
+                        
+
+               
 
 
 
 
 
+                </div>
+                <div class="card-footer no-b white justify-content-between">
+                    <button class="btn shadow white text-black-50 r-20 btn-sm btn-social" style="border: solid 1px grey" title="modifier"
+                              (click)="toggleCurrentEditor()" *ngIf="currentAdType==='CREATIVE' && !isRoller "><i [class]="iconEditor"></i>{{text_modify}}</button>
+                              <button class="btn shadow white text-black-50 r-20 btn-sm btn-social" style="border: solid 1px grey" title="modifier"
+                              (click)="toggleCurrentUploadBlock()" *ngIf="currentAdType==='UPLOAD' && !isRoller"><i [class]="iconEditor" ></i>{{text_modify}}</button>
+                   <a class="btn btn-sm btn-social white text-warning blink r-20"
+            style="font-size: 12px; border: 1px solid orange" (click)="buildAd()" *ngIf="currentAdStatus=='' && !isRoller && !isUploadModified">
+            <i class="icon-send"></i> Diffuser sur google
+          </a>
+          <a class="btn btn-sm btn-social white text-danger r-20"
+            style="font-size: 12px" (click)="toggleListAd()" *ngIf="!isRoller && !isUploadModified" style="border: 1px solid red">
+            <i class="icon-close"></i> Fermer
+          </a>
                 </div>
               </div>
               <div class="card no-b shadow" *ngIf="currentEditor && currentAdStatus===''">
@@ -948,7 +845,7 @@
 
                     <div class="form-row text-center">
                       <div class="col-md-6 mb-3 text">
-                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <small for="validationCustom01">Nom du visuel</small>
                         <input type="text" class="form-control" [id]="idOfAdNameNotPublishCreatives" placeholder="Nom" [value]="currentAdName" required>
                         <div *ngIf="formErrors.name" class="help is-danger">
                           {{ formErrors.name }}
@@ -968,7 +865,7 @@
                       <div class="form-group col-md-6 mb-3">
                         <small for="pattern">Url de redirection</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
-                          placeholder="Url de redirection"  [id]="idOfDisplayUrlNotPublishCreatives" [value]="currentFinalUrls" required
+                           placeholder="Exemple: https://www.votresite.com"  [id]="idOfDisplayUrlNotPublishCreatives" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != ''">
                           <div class="text-danger" *ngFor="let error of url_errors">
@@ -1081,17 +978,17 @@
 
             </div>
           </ng-container>
-          <div class="card no-b shadow" style="display: none" id="blockUploadModified">
-            <div class="card-header no-b white teal darken-1 text-center text-white">
-                <span>Modifier l'annonce</span>
+          <div class="card no-b" style="display: none" id="blockUploadModified">
+            <div class="card-header no-b white text-center adafri-police text-black">
+                <span>Modifier le visuel</span>
             </div>
             <div class="card-body no-b white">
                  <form>
 
                     <div class="form-row text-center">
-                      <div class="col-md-6 mb-3 text">
-                        <small for="validationCustom01">Nom de l'annonce</small>
-                        <input type="text" class="form-control" [id]="idOfAdNameNotPublishUpload" placeholder="Nom" [value]="currentAdName" required>
+                      <div class="col-md-6 mb-3 text-center">
+                        <small for="validationCustom01" class="d-inline-block">Nouveau nom du visuel</small><br>
+                        <input type="text" class="form-control d-inline-block text-center" style="width: 70%" [id]="idOfAdNameNotPublishUpload" placeholder="Nom" [value]="currentAdName" required>
                         <div *ngIf="formErrors.name" class="help is-danger">
                           {{ formErrors.name }}
                         </div>
@@ -1107,11 +1004,11 @@
                           Looks good!
                         </div>
                       </div> -->
-                      <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
-                        <input type="text" autocomplete="off" class="form-control" id="redirect"
-                          placeholder="Url de redirection"  [id]="idOfDisplayUrlNotPublishUpload" [value]="currentFinalUrls" required
-                          (keyup)="handleErrorUrl()">
+                      <div class="col-md-6 mb-3 text-center">
+                        <small for="pattern">Nouvelle url de redirection</small><br>
+                        <input type="text" autocomplete="off" class="form-control d-inline-block text-center" id="redirect"
+                           placeholder="Exemple: https://www.votresite.com"  [id]="idOfDisplayUrlNotPublishUpload" [value]="currentFinalUrls" style="width: 70%" required
+                        >
                         <ng-container *ngIf="url_errors != []">
                           <div class="text-danger" *ngFor="let error of url_errors">
                             {{error.url}} {{error.text}}
@@ -1141,7 +1038,7 @@
                     </div>
                     
                   </form>
-                  <div class="text-center" *ngIf="button_modify_image_upload"><a class="btn btn-sm teal darken-1 text-white r-20" (click)="toggleModifyUploadImage()"><i class="icon-edit"></i> Modifier l'image</a></div>
+                  <div class="text-center" *ngIf="button_modify_image_upload"><a class="btn btn-sm white text-danger r-20 btn-social" style="border: 1px solid red" (click)="toggleModifyUploadImage()"><i class="icon-edit"></i> Modifier l'image</a></div>
                   <div class="card no-b shadow" id="button_modify_image_upload" style="display: none">
                        
                           <div class="b-b"></div>
@@ -1153,7 +1050,7 @@
                               </div>
                           </div>
                           <div class="card-footer white text-center">
-                            <a class="btn btn-sm btn-danger text-white" (click)="closeModifyUploadImage()"><i class="icon-close"></i> Ne pas modifier l'image</a>
+                            <a class="btn btn-sm white text-danger r-20 btn-social"  style="border: 1px solid red" (click)="closeModifyUploadImage()"><i class="icon-close"></i> Ne pas modifier l'image</a>
                           </div>
                          
       
@@ -1162,9 +1059,9 @@
             </div>
             <div class="card-footer white no-b text-center">
               
-                            <button class="btn btn-sm r-20 btn-social teal lighten-1 text-white r-20"
+                            <button class="btn btn-sm r-20 btn-social white text-black-50 r-20"  style="border: 1px solid grey"
                  (click)="handleModifiedImage()">
-                 <i class="icon-paper-plane"></i> Visualiser
+                 <i class="icon-paper-plane"></i> Visualiser la modification
                </button>
             </div>
                  
@@ -1180,7 +1077,7 @@
 
                     <div class="form-row text-center">
                       <div class="col-md-6 mb-3 text">
-                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <small for="validationCustom01">Nom du visuel</small>
                         <input type="text" class="form-control" id="ad_name_modify" placeholder="Nom" [value]="currentAdName" required>
                         <div *ngIf="formErrors.name" class="help is-danger">
                           {{ formErrors.name }}
@@ -1200,7 +1097,7 @@
                       <div class="form-group col-md-6 mb-3">
                         <small for="pattern">Url de redirection</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
-                          placeholder="Url de redirection"  id="finalUrlsmodify" [value]="currentFinalUrls" required
+                           placeholder="Exemple: https://www.votresite.com"  id="finalUrlsmodify" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != ''">
                           <div class="text-danger" *ngFor="let error of url_errors">
@@ -1252,7 +1149,7 @@
                 <form >
                   <div class="form-row text-center">
                     <div class="col-md-6 mb-3 text">
-                      <small for="validationCustom01">Nom de l'annonce</small>
+                      <small for="validationCustom01">Nom du visuel</small>
                       <input type="text" class="form-control" [id]="idOfAdNameInitUpload" placeholder="Nom" 
                         required>
                       <div *ngIf="formErrors.name" class="help is-danger">
@@ -1273,7 +1170,7 @@
                     <div class="form-group col-md-6 mb-3">
                       <small for="pattern">Url de redirection</small>
                       <input type="text" autocomplete="off" class="form-control" id="redirect"
-                        placeholder="Url de redirection" [id]="idOfDisplayUrlInitUpload" required (keyup)="handleErrorUrl()">
+                         placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlInitUpload" required (keyup)="handleErrorUrl()">
                       <ng-container *ngIf="url_errors != []">
                         <div class="text-danger" *ngFor="let error of url_errors">
                           {{error.url}} {{error.text}}
@@ -1697,12 +1594,12 @@
       <div class="card-body no-b white">
         	<div class="row">	
 
-			<div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+			<div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer"> <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
     <div class="row">	
 
-		<div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer"> <span class="badge badge-dark img-check"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span> <span> {{type.name}}</span></div>
+		<div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer"> <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
       </div>
@@ -1766,7 +1663,7 @@
                   <form [formGroup]="adForm">
                     <div class="form-row text-center">
                       <div class="col-md-6 mb-3 text">
-                        <small for="validationCustom01">Nom de l'annonce</small>
+                        <small for="validationCustom01">Nom du visuel</small>
                         <input type="text" class="form-control" [id]="idOfAdNameCreateCreatives" placeholder="Nom" formControlName="name"
                           required>
                         <div *ngIf="formErrors.name" class="help is-danger">
@@ -1787,7 +1684,7 @@
                       <div class="form-group col-md-6 mb-3">
                         <small for="pattern">Url de redirection</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
-                          placeholder="Url de redirection" [id]="idOfDisplayUrlCreateCreatives" required (keyup)="handleErrorUrl()">
+                          placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlCreateCreatives" required (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != ''">
                           <div class="text-danger" *ngFor="let error of url_errors">
                             {{error.url}} {{error.text}}
@@ -1878,7 +1775,7 @@
 
                   <button class="btn btn-sm r-20 btn-social teal darken-1 text-white"
                     (click)="handleImageModal()">
-                    <i class="icon-paper-plane"></i> Visualiser l'annonce
+                    <i class="icon-paper-plane"></i> Visualiser le visuel
                   </button>
                    <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackFromCreatives()"
                               title="Ajouter un texte"><i class="icon-edit"
@@ -1899,7 +1796,7 @@
                 <form >
                   <div class="form-row text-center">
                     <div class="col-md-6 mb-3 text">
-                      <small for="validationCustom01">Nom de l'annonce</small>
+                      <small for="validationCustom01">Nom du visuel</small>
                       <input type="text" class="form-control" [id]="idOfAdNameCreateUpload" placeholder="Nom" 
                         required>
                       <div *ngIf="formErrors.name" class="help is-danger">
@@ -1920,7 +1817,7 @@
                     <div class="form-group col-md-6 mb-3">
                       <small for="pattern">Url de redirection</small>
                       <input type="text" autocomplete="off" class="form-control" id="redirect"
-                        placeholder="Url de redirection" [id]="idOfDisplayUrlCreateUpload" required (keyup)="handleErrorUrl()">
+                        placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlCreateUpload" required (keyup)="handleErrorUrl()">
                       <ng-container *ngIf="url_errors != []">
                         <div class="text-danger" *ngFor="let error of url_errors">
                           {{error.url}} {{error.text}}
@@ -1964,7 +1861,7 @@
   
                              <button class="btn btn-sm r-20 btn-social teal darken-1 text-white"
                   (click)=" handleImageUploadModal()">
-                  <i class="icon-paper-plane"></i> Visualiser l'annonce
+                  <i class="icon-paper-plane"></i> Visualiser le visuel
                 </button>
                              <button class="btn btn-danger btn-sm text-white r-20" (click)="goBackFromUpload()"
                             title="Ajouter un texte"><i class="icon-edit"

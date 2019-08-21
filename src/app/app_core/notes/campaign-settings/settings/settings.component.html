@@ -36,18 +36,18 @@
                 </div>
             </div>
     </div> -->
-<header class="white pt-3 relative shadow white" >
+<header class="white pt-3 relative">
   <div class="container-fluid text-center">
     <div class="row p-t-b-10 ">
       <div class="col">
-        <div class="card r-3 no-b shadow animated fadeIn slow" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%); margin-top: 10px;">
+        <div class="card r-3 no-b shadow1 animated fadeIn slow adafri-background" style="margin-top: 10px;" id="particles-js">
               <div class="p-4">
                 <div class="text-center">
                   <!-- <span class="icon-award text-white s-48"></span> -->
-                  <img class="img-responsive " src="assets/img/images/groupe d'annonces.png">
+                  <img class="img-responsive " src="assets/img/images/groupe d'annonces.png" style="width: 10%">
                 </div>
-                <div class="sc-counter mt-3 font-weight-bold text-white text-center animated fadeInLeft">Paramètre de la campagne</div>
-                <div class="counter-title font-weight-bold text-white text-center animated fadeInLeft">{{name}}</div>
+                <div class="sc-counter mt-3 adafri-police text-center animated fadeInLeft text-white">Paramètrer la campagne</div>
+                <div class="counter-title adafri-police text-center animated fadeInLeft text-white">{{name}}</div>
                 <div class="text-center animated zoomInUp slow">
                   <span class="badge bg-white text-success" *ngIf="status==='ENABLED'"><span class="blink"><i
                         class="icon icon-circle mr-2" style="color: green"></i>Campagne active</span></span>
@@ -63,26 +63,24 @@
     <div class="row">
       <ul class="nav nav-material responsive-tab" id="v-pills-tab" role="tablist">
         <li>
-          <a class="nav-link active" style="" id="v-pills-tab1-tab" data-toggle="pill" href="#v-pills-tab1" role="tab"
-            aria-controls="v-pills-tab1" style="color: #009688">
-            <i class="icon icon-home2" style="color: #009688"></i>{{generale}}
+          <a class="nav-link active" id="v-pills-tab1-tab" data-toggle="pill" href="#v-pills-tab1" role="tab"
+            aria-controls="v-pills-tab1" style="color: #9e9e9e">
+            <i class="icon icon-home2" style="color: #9e9e9e"></i>{{generale}}
           </a>
         </li>
-            <li>
-                <a class="nav-link" id="v-pills-timeline-tab" style="color: #009688" data-toggle="pill" href="#v-pills-payments" role="tab" aria-controls="v-pills-payments" aria-selected="false"><i class="icon icon-budget"></i>Budget</a>
-            </li>
-          <li>
-                          <a class="nav-link" id="v-pills-payments-tab" style="color: #009688" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="icon icon-location-arrow"></i>Ciblage de zone</a>
+           <li>
+                          <a class="nav-link" id="v-pills-payments-tab" style="color: #9e9e9e" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="icon icon-map-marker"></i>Zone et Budget</a>
                       </li>
         <li>
           <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-            aria-controls="v-pills-settings" aria-selected="false" style="color: #009688"><i class="icon icon-cog"
-              style="color: #009688"></i>Modifier</a>
+            aria-controls="v-pills-settings" aria-selected="false" style="color: #9e9e9e"><i class="icon icon-edit"
+              style="color: #9e9e9e"></i>Modifier</a>
         </li>
+      
+
          <li>
-          <a class="nav-link" id="v-pills-statistiques-tab" data-toggle="pill" href="#v-pills-statistiques" role="tab"
-            aria-controls="v-pills-statistiques" aria-selected="false" style="color: #009688"><i class="icon icon-cog"
-              style="color: #009688"></i>Statistiques</a>
+          <a class="nav-link" style="color: #9e9e9e; cursor: pointer" (click)="listCampagne()"><i class="icon icon-view_list" 
+              style="color: #9e9e9e"></i>Afficher les campagnes</a>
         </li>
       </ul>
     </div>
@@ -95,25 +93,61 @@
       <div class="tab-pane fade show active" id="v-pills-tab1" role="tabpanel" aria-labelledby="v-pills-home-tab">
         <div class="row">
           <div class="col-md-3">
+
+                  <div class="card my-3 my-3 no-b shadow">
+                    <div class="card-header white no-b text-center adafri-police s-16 text-black-50">
+                        <strong> Statistiques </strong>
+                    </div>
+                    <div class="card-body no-b white">
+                        <ul class="social">
+                            <li>
+                                <a class="adafri-police s-16">
+                                    <img src="assets/img/images/clicks.png">
+                                </a> Clics
+                                <span class="float-right mt-2 font-weight-bold">{{clicks}}</span>
+                            </li>
+                            <li>
+                                <a  class="adafri-police s-16">
+                                    <img src="assets/img/images/impressions.png">
+                                </a>Affichages
+                                <span class="float-right mt-2 font-weight-bold">{{impressions}}</span>
+                            </li>
+                            <li>
+                                <a class="adafri-police s-16">
+                                   <img src="assets/img/images/cost.png">
+                                </a>Coût
+                                <span class="float-right mt-2 font-weight-bold">{{cost}}</span>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                    <div class="card-footer white no-b text-center">
+                      <a id="download_link" (click)="downloadFile()" style="text-decoration: underline; cursor: pointer" >Rapport Complet</a>
+                    </div>
+                </div>
             <div class="card no-b animated fadeInUp">
 
-              <ul class="list-group list-group-flush">
+              <ul class="list-group list-group-flush text-center">
                 <!--     <li class="list-group-item grey lighten-2"><i class="icon-chevron-circle-right text-white" style="float: left"></i><strong class="s-12 text-white" style="float: left">Nom</strong> <span class="float-right s-12 text-white" style="font-weight: bold">{{name}}</span></li> -->
                 <!-- <li class="list-group-item text-center">
                   <img class="img-responsive" src="assets/img/images/campaign.png">
 
                 </li> -->
-                <li class="list-group-item" *ngIf="status=='PAUSED'">
+               <!--  <li class="list-group-item" *ngIf="status=='PAUSED'">
                 
                   <i class="icon icon-mail text-success"
                     style="float: left"></i><strong class="s-12" style="float: left">Status</strong> <span
                     class="float-right s-12 text-danger"
-                    style="font-weight: bold">{{text_status_deactive_campaign}}</span></li>
+                    style="font-weight: bold">{{text_status_deactive_campaign}}</span></li> -->
 
                 
-                  <li class="list-group-item">
-                  <a class="btn btn-sm btn-block teal darken-1  r-20 text-white btn-social" style="font-size: 12px" (click)="go1()" ><i class="icon-view_list text-success"
-                    ></i> Liste des campagnes</a> 
+                  <!-- <li class="list-group-item d-inline-block">
+                  <a class="btn btn-sm btn-block white r-20 btn-social text-black-50" style="font-size: 12px; border: 1px solid grey" (click)="go1()" ><i class="icon-view_list"
+                    ></i> Affichez vos campagnes</a> 
+                 </li> -->
+                 <li class="list-group-item d-inline-block" style="margin-top: 20px">
+                   <img class="img-responsive" src="assets/img/images/creategroupe.jpg">
+
                  </li>
                 <li class="list-group-item" *ngIf="status=='ENABLED'"><i class="icon icon-mail text-success"
                     style="float: left"></i><strong class="s-12" style="float: left">Status</strong> <span
@@ -134,15 +168,15 @@
                 <li class="list-group-item" *ngIf="servingStatus=='ENDED'"><i class="icon-alarm_off text-danger"
                     style="float: left"></i><strong class="s-12 text-danger"
                     style="float: right">{{labelEnded}}</strong></li>
-               <!--  <li class="list-group-item"><i class="icon icon-hourglass-start text-info"
-                    style="float: left"></i><strong class="s-12 text-info"
-                    style="float: right">{{labelDateStart}}</strong> <strong class="s-12 text-info"
+               <!--  <li class="list-group-item"><i class="icon icon-hourglass-start adafri-police text-black-50 s-18"
+                    style="float: left"></i><strong class="s-12 adafri-police text-black-50 s-18"
+                    style="float: right">{{labelDateStart}}</strong> <strong class="s-12 adafri-police text-black-50 s-18"
                     style="float: left">{{startDate}}</strong>
                   <ejs-datepicker id='datepicker' (change)=" onDateStartChange($event)" [min]='minDate' [max]='maxDate'>
                   </ejs-datepicker>
                 </li> -->
-              <!--   <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong
-                    class="s-12 text-info" style="float: right">{{labelDateEnd}}</strong><strong class="s-12 text-info"
+              <!--   <li class="list-group-item"><i class="icon icon-hourglass-end adafri-police text-black-50 s-18" style="float: left"></i><strong
+                    class="s-12 adafri-police text-black-50 s-18" style="float: right">{{labelDateEnd}}</strong><strong class="s-12 adafri-police text-black-50 s-18"
                     style="float: left">{{endDate}}</strong>
                   <ejs-datepicker id='datepicker' (change)=" onEndDateChange($event)" [min]='minDate' [max]='maxDate'>
                   </ejs-datepicker>
@@ -161,30 +195,30 @@
             <div class="row my-3">
               <!-- bar charts group -->
               <div class="col-md-12">
-                <div class="card no-b shadow animated fadeIn slow" *ngIf="isAdGroup" >
-                  <div class="card-header teal darken-1 text-center text-white no-b">
-                    <h6 class="font-weight-bold">Nouveau groupe d'annonce</h6>
+                <div class="card no-b animated fadeIn slow" *ngIf="isAdGroup" >
+                  <div class="card-header text-center white no-b">
+                    <h6 class="adafri-police" style="font-size: 16px; color: grey">Donnez un nom à ce groupe de visuel</h6>
                   </div>
-                  <div class="card-body no-b">
-                    <input placeholder="Nom du groupe d'annonce" class="form-control" name="adgroup_name" id="adgroup"
-                      style="max-width: 200 px !important">
+                  <div class="card-body no-b text-center">
+                    <input  class="form-control d-inline-block" name="adgroup_name" id="adgroup"
+                      style="width: 70% !important; border: 1px solid grey" autofocus>
                     <div class="card-footer white text-center no-b">
 
-                      <a href="#" class="btn btn-social btn-md teal darken-1 shadow btn-sm r-20 text-white" (click)="addAdGroup()"><i
-                          class="icon-plus-circle mr-2 "></i>Ajouter</a>
-                      <button href="#" class="btn btn-danger shadow btn-sm r-20 btn-social" (click)="closeAddAdGroup()"><i
-                          class="icon-close mr-2 "></i>Annuler</button>
+                      <a href="#" class="btn btn-social btn-md white shadow btn-sm r-20 text-black-50" (click)="addAdGroup()" style="border: 1px solid grey"><i
+                          class="icon-plus-circle mr-2 " ></i>Ajouter</a>
+                      <button href="#" class="btn white shadow btn-sm r-20 btn-social text-red" (click)="closeAddAdGroup()" style="border: 1px solid red"><i
+                          class="icon-close mr-2"></i>Annuler</button>
                     </div>
                   </div>
                 </div>
 
-                <div class="card my-3 my-3 no-b shadow no-b animated fadeInRight">
+                <div class="card my-3 my-3 no-b no-b animated fadeInRight">
                  <!--  <button class="btn btn-sm btn-secondary bg-gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="float: right !important; width: 20px">
                     <i class="icon-edit"></i>
                   </button> -->
-                  <div class="card-header teal darken-1 text-center no-b" *ngIf="number_ad_groups!='0'">
-                    <i class="icon-clipboard-edit text-white"></i>
-                    <h6 style="color: white">Groupes d'annonces </h6>
+                  <div class="card-header adafri-background text-center no-b" *ngIf="number_ad_groups!='0'">
+                    <!-- <i class="icon-clipboard-edit text-white"></i> -->
+                    <h6 class="adafri-police" style="color: white; font-size: 16px">Groupes d'annonces </h6>
                     
                   </div>
                   <div class="card-body p-0 white slimScroll no-b" data-height="300" *ngIf="number_ad_groups!=0; else noAdGroups">
@@ -192,32 +226,54 @@
                       <table class="table table-hover no-b">
                         <!-- Table heading -->
                         <tbody class="no-b">
-                          <tr class="no-b teal darken-1 text-white text-center">
+                          <tr class="no-b adafri-background text-white text-center">
                             <!--     <th>
                                         <input type="checkbox">
                                     </th> -->
                             <th>Nom</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                           <!--  <th>Status</th> -->
+                           <!--  <th>Paramètres</th> -->
+                             <th>Action</th>
                           </tr>
 
-                          <tr *ngFor="let adgroup of adgroups | async" class="no-b white" title="cliquez sur le nom du groupe pour créer des annonces">
+                          <tr class="text-center" *ngFor="let adgroup of adgroups | async" class="no-b white" title="cliquez sur le nom du groupe pour créer des annonces">
                             <!-- Check box -->
                             <!-- <td>
                                         <input type="checkbox">
                                     </td> -->
                             <!-- Page name -->
                             <td class="text-center no-b">
-                              <strong><a (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" style="cursor: pointer; color: #00897b; font-size: 14px">{{adgroup?.name}}</a></strong>
+                    <div class="d-inline-block">
+                                <div class="d-flex">
+                                       <div class="dropdown">
+    <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-pause" *ngIf="adgroup?.status==='PAUSED'"></i> 
+       <i class="icon-circle text-success"  *ngIf="adgroup?.status==='ENABLED'"></i> 
+     
+    </button> {{adgroup?.name}}
+    <div class="dropdown-menu"  *ngIf="adgroup?.status==='PAUSED'">
+      <a class="dropdown-item"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-success"></i> Activer</a>
+      <a class="dropdown-item disabled" href="#"><i class="icon-pause"></i> Désactiver</a>
+      <a class="dropdown-item text-danger"  (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)"><i class="icon-delete"></i> Supprimmer</a>
+    </div>
+     <div class="dropdown-menu"  *ngIf="adgroup?.status==='ENABLED'">
+      <a class="dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
+      <a class="dropdown-item text-danger"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-pause"></i> Désactiver</a>
+      <a class="dropdown-item text-danger"  (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)"><i class="icon-delete"></i> Supprimmer</a>
+    </div>
+  </div>
+                              
+                              </div>
+                    </div>
                             </td>
                             <!-- Page size -->
                             <!-- Status -->
-                            <td *ngIf="adgroup?.status==='PAUSED'" class="text-center no-b">
+                           <!--  <td *ngIf="adgroup?.status==='PAUSED'" class="text-center no-b">
                               <span class="badge badge-danger r-5">Non actif</span>
                             </td>
                             <td *ngIf="adgroup?.status==='ENABLED'" class="text-center no-b">
                               <span class="badge badge-success r-5">Actif</span>
-                            </td>
+                            </td> -->
                             <!-- Sort -->
                             <!--   <td>
                                         <a href="#">
@@ -225,7 +281,7 @@
                                         </a>
                                     </td> -->
                             <!-- Actions -->
-                            <td class='no-b text-center'>
+                            <!-- <td class='no-b text-center'>
                             
                              
                               <a class="text-danger" style="cursor: pointer" title="désactiver"
@@ -242,6 +298,12 @@
                                 (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)">
                                 <i class="icon-close2 text-danger"></i>
                               </a>
+                            </td> -->
+                            <td  class="text-center no-b">
+                              <a class="btn btn-sm btn-social white r-20" style="border: 1px solid grey; font-size: 14px" (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)">
+                                <i class="icon-cloud-upload3"></i> Remonter vos images
+                              </a>
+                             
                             </td>
                           </tr>
                         </tbody>
@@ -250,20 +312,21 @@
                   </div>
                   <ng-template #noAdGroups>
                     <div class="card-body text-center no-b white" *ngIf="!isAdGroup">
-                      <div class="card white no-b" >
+                      <div class="card white no-b text-center" >
                         <div class="card-body white no-b text-center">
-                          <a class="btn btn-md teal darken-1 text-white btn-social r-20" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle"></i> Cliquer pour commencer</a><br>
-                          <small>Cliquer pour créer un groupe d'annonce</small><br>
-                          <small>Un groupe d'annonce est un dossier qui contient des annonces</small><br>
-                          <small>Lorsque la campagne commencera à diffuser se sont ces dossiers qui</small><br> 
-                          <small>seront placés dans les sites de detinations propres à chaque groupe définis par vous même</small>
+                     
+                          <small style="font-size: 16px">Un groupe de visuels regroupe plusieurs formats d'images avec <strong>un thème</strong> et <strong>une destination uniques</strong>.</small><br>
+                          <small style="font-size: 16px">Ces annonces (imagées) dirigeront <strong>toutes</strong> vers une seule page de votre site</small>
+                        </div>
+                        <div class="text-center" style="width: 100%"> 
+                          <a class="btn btn-sm grey text-white btn-social r-20 d-inline-block" (click)="toggleAddNewAdGroup()" style="width: 200px; display: inline-block"><i class="icon-add_circle" ></i> Cliquer pour commencer</a>
                         </div>
                       </div>
 
                     </div>
                     </ng-template>
                   <div class="card-footer white text-center no-b" *ngIf="number_ad_groups!=0">
-                    <a class="btn btn-sm teal darken-1 btn-social shadow  text-white r-20" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe d'annonces</a>
+                    <a class="btn btn-sm adafri-background btn-social shadow  text-white r-20" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe de visuel</a>
 
                     
                     <!--  <a href="#" class="btn btn-outline-danger btn-xs">Delete All</a> -->
@@ -286,10 +349,222 @@
        
           <div class="col-md-12">
             <div class="card no-b shadow animated fadeInLeftBig">
-              <div class="card-header teal darken-1 b-0 p-3 text-center no-b">
-                <h6 class="card-title text-white">Budget de la campagne</h6>
+              <div class="card-header white b-0 p-3 text-center no-b">
+                <h6 class="card-title adafri-police text-black-50" style="font-size: 18px">Budget de la campagne</h6>
                <!--  <small class="card-subtitle mb-2 text-muted">Sélectionner parmis les options ci-dessous pour placer un budget</small> -->
               </div>
+              
+  
+              
+             <div class="col-md-12">
+                      
+          </div>
+        </div>
+
+      </div>
+      </div>
+      </div>
+      <div class="tab-pane fade" id="v-pills-timeline" role="tabpanel" aria-labelledby="v-pills-timeline-tab">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+              <!-- timeline time label -->
+              <li class="time-label">
+                <a class="btn btn-sm btn-block adafri-background adafri-police r-20 text-white d-inline-block">
+                  Ciblage et budget
+                </a>
+              </li>
+              <!-- /.timeline-label -->
+              <!-- timeline item -->
+              <li>
+                <a class="btn btn-sm white text-black-50 adafri-police r-20 btn-social"  data-toggle="collapse" href="#collapseZone" role="button" aria-expanded="false" aria-controls="collapseZone" style="border: 1px solid grey">
+
+                  <i class="icon icon-location-arrow"></i> Zone
+                </a>
+
+                <a class="btn btn-sm white text-black-50 adafri-police r-20 btn-social"  data-toggle="collapse" href="#collapseBudget" role="button" aria-expanded="false" aria-controls="collapseBudget" style="border: 1px solid grey">
+
+                  <i class="icon icon-money-1"></i> Budget
+                </a>
+                <div class="collapse animated fadeInDown shadow" id="collapseZone" style="margin-top: 50px">
+                        <div class="card no-b shadow timeline-item">
+              <div class="card-header adafri-background adafri-police text-white s-15 b-0 p-3 text-center no-b">
+                <small>Visualiser ici vos zones ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+               
+              </div>
+              <div class="collapse show" id="invoiceCard">
+                <div class="card-body p-0 no-b">
+                  <div class="table-responsive">
+                    <table id="recent-orders" class="table mb-0 ps-container ps-theme-default">
+                      <thead class="white no-b">
+                        <tr class="text-center no-b">
+                          <th><strong class="adafri-police" style="font-size: 14px">Zones ciblées</strong></th>
+                         
+                          <!-- <th>Supprimer le ciblage</th>  -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="zone==''" class="text-center no-b">
+                            {{text_no_zone}}
+                        </tr>
+                        <ng-container >
+                          <tr *ngFor="let loc of zone" class="text-center no-b">
+                            <td>{{loc.item_text}}</td>
+                            
+                           <!-- <td><i class="icon-delete text-danger"></i></td> -->
+                          </tr>
+
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer white no-b text-center">
+           
+                          <div class="col-md-12 text-center"  *ngIf="zone=='' && isCiblage"  style="width: 100%">
+                            <div class="d-inline-block">
+                               <ng-multiselect-dropdown [placeholder]="'Zones à cibler'" [data]="dropdownListZones"
+                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
+                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
+                        (onDeSelectAll)="onDeSelectAllZone()">
+                      </ng-multiselect-dropdown>
+                            </div>
+                          </div>
+                  
+                  <!-- <ul class="no-b white ">
+               
+                    <li class="list-group-item" *ngIf="isCiblage">
+                     
+    
+                    </li>
+    
+                  </ul> -->
+    
+                  <div class="card-footer text-center white no-b" *ngIf="zone==''">
+                   
+                    <a class="btn btn-social  btn-sm white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="targetZones()" *ngIf="isCiblage"><i
+                        class="icon-check"></i>Ajouter</a>
+                    <a class="btn btn-social btn-sm white text-danger r-20 adafri-police" (click)="closeAddLocation()" *ngIf="isCiblage" style="border: 1px solid red"><i
+                        class="icon-close"></i>Fermer</a>
+    
+                  </div>
+                </div>
+
+                <div class="text-center no-b">
+                         <a class="btn btn-social btn-sm white text-black-50 adafri-police r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone==''" style="border: 1px solid grey"><i
+                        class="icon-add_location"></i>Ajouter une zone</a>
+                   <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="openAddLocation()" *ngIf="!isCiblage && zone!=''"><i
+                        class="icon-add_location"></i>Modifier le ciblage</a>
+                   
+
+          
+           
+
+                <div class="card mt-3 mb-3 text-center no-b" *ngIf="zone!=''">
+                  <div class="col-md-12 text-center"  *ngIf="isCiblage">
+                    <div class="d-inline-block">
+<ng-multiselect-dropdown [placeholder]="'Zones à cibler'" [data]="dropdownListZones"
+                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
+                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
+                        (onDeSelectAll)="onDeSelectAllZone()">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <!-- <ul class="no-b">
+                    <li class="list-group-item" *ngIf="isCiblage">
+                      
+    
+                    </li>
+    
+                  </ul> -->
+    
+                  <div class="card-footer text-center white no-b">
+                   
+                    <a class="btn btn-sm shadow white text-black-50 r-20" (click)="updateTargetZones()" *ngIf="isCiblage" style="border: 1px solid grey"><i
+                        class="icon-check"></i> modifier</a>
+                    <a class="btn btn-sm shadow white text-danger r-20" (click)="closeAddLocation()" *ngIf="isCiblage"  style="border: 1px solid red"><i
+                        class="icon-close"></i>annuler</a>
+    
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+           <div class="collapse animated fadeInDown shadow" id="collapseBudget" style="margin-top: 50px">
+                        <div class="card no-b shadow timeline-item">
+                           <div class="card no-b">
+                               
+                               <div class="collapse show" id="invoiceCard">
+                                   <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                           <table id="recent-orders"
+                                                  class="table  mb-0 ps-container ps-theme-default">
+                                               <thead class="adafri-background text-white adafri-police s-14">
+                                               <tr>
+                                                  
+                                                   <th>Début</th>
+                                                   <th>Fin</th>
+                                                
+                                                   <th>Budget</th>
+                                                   <th>Action</th>
+                                               </tr>
+                                               </thead>
+                                               <tbody>
+                                               <tr>
+                                                 
+                                                   <td>
+                                                    <div class="dropdown">
+                                                     <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">{{startDateFrench}}</button> 
+                                                     <div class="dropdown-menu" >
+                                                    <a class="dropdown-item white text-black-50 adafri-police"
+                                                          style="font-size: 12px; curdor: pointer" (click)="OpenModifyDateCampaign()">
+                                                          Modifier la date 
+                                                        </a>
+                                                    
+                                                  </div>
+                                                    </div> 
+                                                    
+                                                   </td>
+                                                   <td> <div class="dropdown">
+                                                     <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">{{endDateFrench}}</button> 
+                                                     <div class="dropdown-menu" >
+                                                    <a class="dropdown-item white text-black-50 adafri-police"
+                                                          style="font-size: 12px; cursor: pointer" (click)="OpenModifyDateCampaign()">
+                                                          Modifier la date 
+                                                        </a>
+                                                    
+                                                  </div>
+                                                    </div> </td>
+                                                  
+                                                   <td>XOF {{budget}}</td>
+                                                   <td><div class="dropdown">
+                                                     <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
+       Sélectionner
+     
+    </button> 
+    <div class="dropdown-menu" >
+       <a class="dropdown-item white text-black-50 adafri-police"
+            style="font-size: 12px;" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
+            <i class="icon-payment"></i> Placement depuis mon solde 
+          </a>
+       <a class="dropdown-item white text-black-50 adafri-police"
+            style="font-size: 12px;" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
+            <i class="icon-payment"></i> Recharger mon compte
+          </a>
+      <a class="dropdown-item white text-black-50 adafri-police"
+            style="font-size: 12px;" (click)="handleBudgetPlacement()" *ngIf="budget==0">
+            <i class="icon-pay-point"></i> Placer directement un budget
+          </a>
+    </div>
+                                                   </div></td>
+                                               </tr>
+                                          
+                                               </tbody>
+                                           </table>
+                                       </div>
+                                   </div>
 
               <div class="card-body no-b text-center">
                          <div class="card no-b" style="display: inline-block">
@@ -298,48 +573,7 @@
                     </div> -->
                     <div class="card-body pt-0 text-center no-b">
 
-                    <div class="row">
-                      <div class="col text-center animated fadeInUp delay-1s">
-                        <p class="text-muted well well-sm shadow mt-3" >
-                          {{accountValue}} CFA dans le compte<br>
-                          Budget de la campagne: {{budget}} CFA 
-                        </p>
-                      </div>
-                       <div class="col text-center animated fadeInDown delay-1s">
-                         <a class="btn-fab btn-fab-sm teal darken-1 text-white" style="float: right" (click)="OpenModifyDateCampaign()"><i class="icon-edit"></i></a>
-                         <p class="text-muted well well-sm shadow" >
-                           
-                           Date de début de campagne: {{startDateFrench}}<br>
-                           Date de fin de campagne: {{endDateFrench}}
-                         </p>
-                      </div>
-                      
-                     
-                  </div>
-                       <div class="text-center" *ngIf="button_payments">
-                         <div class="my-3">
-                           <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
-            <i class="icon-payment text-white"></i> Placement depuis mon solde 
-          </a>
-        
-                        </div>
-                         <div class="my-3">
-                           
-            <a class="btn btn-sm btn-social teal darken-1 text-white r-20 animated fadeInLeft delay-2s"
-            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
-            <i class="icon-payment text-white"></i> Recharger mon compte
-          </a>
-         
-                        </div>
-                         <div class="my-3">
-   
-          <a class="btn btn-sm btn-social teal darken-1 text-white r-20 animated fadeInRight delay-2s"
-            style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
-            <i class="icon-pay-point text-white"></i> Placer directement un budget
-          </a>
-                        </div>
-                       </div>
+                   
                             <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
         
         <div class="form-row text-center" *ngIf="modifyDate">
@@ -347,24 +581,24 @@
           <div style="display: inline-block; margin: auto">
             <ul class="list-group list-group-flush">
 
-              <li class="list-group-item"><i class="icon icon-hourglass-start text-info" style="float: left"></i><strong
-                  class="s-12 text-info" style="float: right">Date de début</strong> <strong class="s-12 text-info"
+              <li class="list-group-item"><i class="icon icon-hourglass-start adafri-police text-black-50 s-18" style="float: left"></i><strong
+                  class="s-12 adafri-police text-black-50 s-18" style="float: right">Date de début</strong> <strong class="s-12 adafri-police text-black-50 s-18"
                   style="float: left">{{startDateFrench}}</strong>
                 <ejs-datepicker id='datepicker' (change)="onStartDateChange($event)" [min]='minDate' [max]='maxDate'>
                 </ejs-datepicker>
               </li>
-              <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong
-                  class="s-12 text-info" style="float: right">Date de fin</strong><strong class="s-12 text-info"
+              <li class="list-group-item"><i class="icon icon-hourglass-end adafri-police text-black-50 s-18" style="float: left"></i><strong
+                  class="s-12 adafri-police text-black-50 s-18" style="float: right">Date de fin</strong><strong class="s-12 adafri-police text-black-50 s-18"
                   style="float: left">{{endDateFrench}}</strong>
                 <ejs-datepicker id='datepicker' (change)=" onEndDateChange($event)" [min]='minDate' [max]='maxDate'>
                 </ejs-datepicker>
               </li>
-              <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
-              <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+             
+              <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px;  margin-top: 30px; border: 1px solid grey"
                 (click)="updateCampaignDate()">Appliquer</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm white text-danger btn-social r-20"
+                style="height: 30px; margin-top: 30px; border: 1px solid red"
                 (click)="CloseUpdateCampaignDate()">Annuler</button>
             </ul>
           </div>
@@ -389,11 +623,11 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+               <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="defineBudget()">Placer le budget</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm white text-danger btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)="CloseBudgetOperation()">Annuler</button>
 
 
@@ -413,11 +647,11 @@
               style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
               FCA</small>
               
-               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+               <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm white text-danger btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)="CloseRechargeAccountOperation()">Annuler</button>
 
                  <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -446,11 +680,11 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+               <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="defineBudgetFromAccount()">Placer mon budget</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm bg-danger text-danger btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)=" ClosePlaceBudgetFromAccountValue()">Annuler</button>
 
 
@@ -470,20 +704,20 @@
                <div class="text-center" style="display: inline-block">
          
           <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-        <!--   <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
+        <!--   <a class="btn btn-sm btn-social white text-black-50 adafri-police r-20"
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
+            <a class="btn btn-sm btn-social white text-black-50 adafri-police r-20"
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
+          <a class="btn btn-sm btn-social white text-black-50 adafri-police r-20"
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a> -->
        <!--    <a class="btn btn-lg btn-block btn-social btn-warning text-white r-20 blink"
-            style="width: 250px; font-size: 12px" (click)="saveImage()" *ngIf="budget!=0" id="finalButtonPublier">
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="saveImage()" *ngIf="budget!=0" id="finalButtonPublier">
             <i class="icon-pay-point text-white"></i>Je suis prêt, publier l'annonce
           </a> -->
         </div>
@@ -501,126 +735,12 @@
               </div>
             </div>
           </div>
-             <div class="col-md-12">
-                      
-          </div>
-        </div>
-
-      </div>
-      <div class="tab-pane fade" id="v-pills-timeline" role="tabpanel" aria-labelledby="v-pills-timeline-tab">
-        <div class="row">
-          <div class="col-md-12">
-            <!-- The time line -->
-            <ul class="timeline">
-              <!-- timeline time label -->
-              <li class="time-label">
-                <span class="badge badge-danger r-3">
-                  Liste de vos types de ciblage
-                </span>
-              </li>
-              <!-- /.timeline-label -->
-              <!-- timeline item -->
-              <li>
-                <a class="btn btn-sm btn-block teal darken-1 text-white r-20 btn-social no-b"  data-toggle="collapse" href="#collapseZone" role="button" aria-expanded="false" aria-controls="collapseZone">
-
-                  <i class="icon icon-location-arrow"></i> Ciblage de zone
-                </a>
-                <div class="collapse animated fadeInDown" id="collapseZone">
-                        <div class="card no-b shadow timeline-item">
-              <div class="card-header white b-0 p-3 text-center no-b">
-                <small class="card-subtitle mb-2 text-muted">Visualiser ici vos zones ciblées et si nécessaire modifier les stratégies d'enchères.</small>
-               
-              </div>
-              <div class="collapse show" id="invoiceCard">
-                <div class="card-body p-0 no-b">
-                  <div class="table-responsive">
-                    <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
-                      <thead class="bg-light">
-                        <tr class="text-center">
-                          <th><strong>Zones ciblées</strong></th>
-                         
-                          <!-- <th>Supprimer le ciblage</th>  -->
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngIf="zone==''" class="text-center">
-                            {{text_no_zone}}
-                        </tr>
-                        <ng-container >
-                          <tr *ngFor="let loc of zone" class="text-center">
-                            <td>{{loc.item_text}}</td>
-                            
-                           <!-- <td><i class="icon-delete text-danger"></i></td> -->
-                          </tr>
-
-                        </ng-container>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="card-footer white no-b text-center">
-                  <a class="btn btn-social btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone==''"><i
-                        class="icon-add_location"></i>Ajouter une zone</a>
-                   <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddLocation()" *ngIf="!isCiblage && zone!=''"><i
-                        class="icon-add_location"></i>Modifier le ciblage</a>
-                        <div class="card text-center no-b" *ngIf="zone==''">
-                  
-                  <ul class="no-b shadow">
-               
-                    <li class="list-group-item" *ngIf="isCiblage">
-                      <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
-                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
-                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
-                        (onDeSelectAll)="onDeSelectAllZone()">
-                      </ng-multiselect-dropdown>
-    
-                    </li>
-    
-                  </ul>
-    
-                  <div class="card-footer text-center white no-b">
-                   
-                    <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetZones()" *ngIf="isCiblage"><i
-                        class="icon-check"></i>Ajouter</a>
-                    <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddLocation()" *ngIf="isCiblage"><i
-                        class="icon-close"></i>Fermer</a>
-    
-                  </div>
-                </div>
-
-          
-           
-
-                <div class="card mt-3 mb-3 text-center no-b" *ngIf="zone!=''">
-                  <ul class="no-b">
-                    <li class="list-group-item" *ngIf="isCiblage">
-                      <ng-multiselect-dropdown [placeholder]="'Zones'" [data]="dropdownListZones"
-                        [settings]="dropdownSettingsZones" (onSelect)="onZoneSelect($event)"
-                        (onSelectAll)="onZoneSelectAll($event)" (onDeSelect)="onZoneDeSelect($event)"
-                        (onDeSelectAll)="onDeSelectAllZone()">
-                      </ng-multiselect-dropdown>
-    
-                    </li>
-    
-                  </ul>
-    
-                  <div class="card-footer text-center white">
-                   
-                    <a class="btn-fab btn-fab-sm shadow btn-success" (click)="updateTargetZones()" *ngIf="isCiblage"><i
-                        class="icon-check"></i></a>
-                    <a class="btn-fab btn-fab-sm shadow btn-danger" (click)="closeAddLocation()" *ngIf="isCiblage"><i
-                        class="icon-close"></i></a>
-    
-                  </div>
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                          </div>
+                          </div>
               </li>
 <!-- 
                   <li>
-                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
+                <a class="btn btn-md white text-black-50 adafri-police r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
 
                   <i class="ion icon-envelope"></i> Ciblage des âges
                 </a>
@@ -662,9 +782,9 @@
                   </div>
                 </div>
                 <div class="card-footer white no-b text-center">
-                     <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations==''"><i
+                     <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations==''"><i
                         class="icon-add_location"></i>Ajouter une tranche d'âge</a>
-                   <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations!=''"><i
+                   <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="openAddCiblageAge()" *ngIf="!isCiblageAge && populations!=''"><i
                         class="icon-add_location"></i>Modifier le ciblage</a>
                         
                                  <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageAge">
@@ -683,7 +803,7 @@
 
                 <div class="card-footer text-center white no-b">
 
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetAge()" *ngIf="isCiblageAge"><i
+                  <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="targetAge()" *ngIf="isCiblageAge"><i
                       class="icon-check"></i> Ajouter</a>
                   <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageAges()"
                     *ngIf="isCiblageAge"><i class="icon-close"></i> Fermer</a>
@@ -698,7 +818,7 @@
 
 
                <li>
-                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
+                <a class="btn btn-md white text-black-50 adafri-police r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
 
                   <i class="ion icon-envelope"></i> Ciblage des genres
                 </a>
@@ -741,9 +861,9 @@
                 </div>
                  <div class="card-footer text-center white no-b">
 
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageGenre()" *ngIf="!isCiblageGenre && genres ==''"><i
+                  <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="openAddCiblageGenre()" *ngIf="!isCiblageGenre && genres ==''"><i
                       class="icon-check"></i> Cibler un genre</a>
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageGenre()"
+                  <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="openAddCiblageGenre()"
                     *ngIf="!isCiblageGenre && genres!=''"><i class="icon-close"></i>Modifier le ciblage</a>
                      <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageGenre">
            
@@ -761,7 +881,7 @@
 
                 <div class="card-footer text-center white no-b">
 
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="targetGender()" *ngIf="isCiblageGenre"><i
+                  <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="targetGender()" *ngIf="isCiblageGenre"><i
                       class="icon-check"></i> Ajouter</a>
                   <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageGenre()"
                     *ngIf="isCiblageGenre"><i class="icon-close"></i> Fermer</a>
@@ -775,7 +895,7 @@
               </li>
              
               <li>
-                <a class="btn btn-md teal darken-1 text-white r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
+                <a class="btn btn-md white text-black-50 adafri-police r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
 
                   <i class="ion icon-envelope"></i> Ciblage d'appareils
                 </a>
@@ -818,9 +938,9 @@
                 </div>
                             <div class="card-footer text-center white no-b">
 
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageDevices()" *ngIf="!isCiblageDevices && appareils ==''"><i
+                  <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="openAddCiblageDevices()" *ngIf="!isCiblageDevices && appareils ==''"><i
                       class="icon-check"></i> Cibler un appareil</a>
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20" (click)="openAddCiblageDevices()"
+                  <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey" (click)="openAddCiblageDevices()"
                     *ngIf="!isCiblageDevices && appareils!=''"><i class="icon-close"></i>Modifier le ciblage</a>
                      <div class="card mt-3 mb-3 text-center no-b" *ngIf="isCiblageDevices">
            
@@ -838,7 +958,7 @@
 
                 <div class="card-footer text-center white no-b">
 
-                  <a class="btn btn-social shadow btn-md teal darken-1 text-white r-20"  (click)="targetDevices()" *ngIf="isCiblageDevices"><i
+                  <a class="btn btn-social shadow btn-md white text-black-50 adafri-police r-20" style="border: 1px solid grey"  (click)="targetDevices()" *ngIf="isCiblageDevices"><i
                       class="icon-check"></i> Ajouter</a>
                   <a class="btn btn-social shadow btn-md btn-danger text-white r-20" (click)="closeAddCiblageDevices()"
                     *ngIf="isCiblageDevices"><i class="icon-close"></i> Fermer</a>
@@ -929,27 +1049,20 @@
         </div>
       </div>
       <div class="tab-pane fade" id="v-pills-statistiques" role="tabpanel" aria-labelledby="v-pills-statistiques-tab">
-        <div>
-  <fusioncharts
-    [type]="type"
-    [width]="width"
-    [height]="height"
-    [dataSource]="dataSource"
-  ></fusioncharts>
-</div>
+        
       </div>
-      <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-        <div class="card no-b shadow animated fadeIn">
+      <div class="tab-pane fade text-center" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+        <div class="card no-b shadow animated fadeIn d-inline-block" style="width: 70%">
           <input id="id" class="form-control r-0 light s-12 " type="text" value="{{id_campagne}}" readonly style="display: none">
-          <div class="card-header teal darken-1 text-white text-center">
+          <div class="card-header white text-black-50 adafri-police text-center no-b" style="font-size: 18px">
             <span>Informations</span>
           </div>
           <div class="card-body no-b white">
             <div class="text-center">
-              <strong>Nom:</strong> {{name}}
+              <strong class="text-black-50">Nom:</strong> {{name}}
               <br>
-              <span *ngIf="status==='PAUSED'"><strong>Etat de la campagne:</strong> En Veille</span>
-              <span *ngIf="status==='ENABLED'"><strong>Etat de la campagne:</strong> Active</span>
+              <span *ngIf="status==='PAUSED'"><strong class="text-black-50">Etat de la campagne:</strong> En Veille</span>
+              <span *ngIf="status==='ENABLED'"><strong class="text-black-50">Etat de la campagne:</strong> Active</span>
             </div>
             <form class="form-horizontal">
         <!--   <div class="form-group m-0" style="display: none">
@@ -966,10 +1079,10 @@
         </form>
           </div>
           <div class="card-footer white no-b text-center">
-             <a (click)="updateCampaign()" class="btn btn-sm btn-social teal darken-1 r-20 text-white">
+             <a (click)="updateCampaign()" class="btn btn-sm btn-social white text-black-50 r-20" style="border: 1px solid grey">
               <i class="icon-edit"></i> Modifier
             </a>
-             <a (click)="deleteCampaign()" class="btn btn-sm btn-social btn-danger r-20 text-white">
+             <a (click)="deleteCampaign()" class="btn btn-sm btn-social white r-20 text-danger" style="border: 1px solid red">
               <i class="icon-edit"></i>Supprimer
             </a>
           </div>
@@ -999,20 +1112,20 @@
           <h6 class="my-3">{{accountValue}} CFA dans le compte</h6>
           <h6 class="my-3">Budget de la campagne: {{budget}} CFA </h6>
           <!--   <i class="icon-angle-double-up yellow avatar cirlce"></i> -->
-          <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
+          <a class="btn btn-sm btn-social white text-black-50 adafri-police r-20"
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0">
             <i class="icon-payment text-white"></i> Placement depuis mon solde 
           </a>
-            <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
+            <a class="btn btn-sm btn-social white text-black-50 adafri-police r-20"
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment text-white"></i> Recharger mon compte d'abord
           </a>
-          <a class="btn btn-sm btn-social teal darken-1 text-white r-20"
-            style="width: 250px; font-size: 12px" (click)="handleBudgetPlacement()" *ngIf="budget==0">
+          <a class="btn btn-sm btn-social white text-black-50 adafri-police r-20"
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point text-white"></i> Placer directement un budget
           </a>
        <!--    <a class="btn btn-lg btn-block btn-social btn-warning text-white r-20 blink"
-            style="width: 250px; font-size: 12px" (click)="saveImage()" *ngIf="budget!=0" id="finalButtonPublier">
+            style="width: 250px; font-size: 12px; border: 1px solid grey" (click)="saveImage()" *ngIf="budget!=0" id="finalButtonPublier">
             <i class="icon-pay-point text-white"></i>Je suis prêt, publier l'annonce
           </a> -->
         </div>
@@ -1043,24 +1156,24 @@
           <div style="display: inline-block; margin: auto">
             <ul class="list-group list-group-flush">
 
-              <li class="list-group-item"><i class="icon icon-hourglass-start text-info" style="float: left"></i><strong
-                  class="s-12 text-info" style="float: right">Date de début</strong> <strong class="s-12 text-info"
+              <li class="list-group-item"><i class="icon icon-hourglass-start adafri-police text-black-50 s-18" style="float: left"></i><strong
+                  class="s-12 adafri-police text-black-50 s-18" style="float: right">Date de début</strong> <strong class="s-12 adafri-police text-black-50 s-18"
                   style="float: left">{{startDateFrench}}</strong>
                 <ejs-datepicker id='datepicker' (change)="onStartDateChange($event)" [min]='minDate' [max]='maxDate'>
                 </ejs-datepicker>
               </li>
-              <li class="list-group-item"><i class="icon icon-hourglass-end text-info" style="float: left"></i><strong
-                  class="s-12 text-info" style="float: right">Date de fin</strong><strong class="s-12 text-info"
+              <li class="list-group-item"><i class="icon icon-hourglass-end adafri-police text-black-50 s-18" style="float: left"></i><strong
+                  class="s-12 adafri-police text-black-50 s-18" style="float: right">Date de fin</strong><strong class="s-12 adafri-police text-black-50 s-18"
                   style="float: left">{{endDateFrench}}</strong>
                 <ejs-datepicker id='datepicker' (change)=" onEndDateChange($event)" [min]='minDate' [max]='maxDate'>
                 </ejs-datepicker>
               </li>
               <!--   <li class="list-group-item"><i class="icon icon-web text-danger"></i> <strong class="s-12">Website</strong> <span class="float-right s-12">pappertemplate.com</span></li> -->
-              <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+              <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="updateCampaignDate()">Appliquer</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm white text-danger btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)="CloseUpdateCampaignDate()">Annuler</button>
             </ul>
           </div>
@@ -1086,11 +1199,11 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+               <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="defineBudget()">Placer le budget</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm bg-danger text-danger btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)="CloseBudgetOperation()">Annuler</button>
 
 
@@ -1111,11 +1224,11 @@
               style="font-size: 12px; display: none">Saisir un montant supérieur ou égal à 20 000
               FCA</small>
               
-               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+               <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="defineAmountAccountBeforeBudget()">Recharger mon compte</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm bg-danger text-danger btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)="CloseRechargeAccountOperation()">Annuler</button>
 
                  <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -1145,11 +1258,11 @@
                                  <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Avec ce budget vos annonces contenues dans cette campagne peuvent être affichées jusqu'à <span class="text-success" style="font-size: 14px; font-weight: bold">{{number_of_impressions_simulated}}</span> fois</span>
                                   
                                 </div>
-               <button type="button" class="btn btn-sm teal darken-1 text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+               <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="defineBudgetFromAccount()">Placer mon budget</button>
-                <button type="button" class="btn btn-sm bg-danger text-white btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px"
+                <button type="button" class="btn btn-sm bg-danger text-danger btn-social r-20"
+                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)=" ClosePlaceBudgetFromAccountValue()">Annuler</button>
 
 

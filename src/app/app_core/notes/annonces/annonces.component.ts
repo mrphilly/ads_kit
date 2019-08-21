@@ -3,8 +3,6 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
 } from '@angular/router';
@@ -12,6 +10,8 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { s } from '@angular/core/src/render3';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -57,6 +57,7 @@ declare const pQuery: any
 declare const PayExpresse: any
 declare const require: any;
 declare const Chart: any;
+declare const particlesJS: any;
 
 const SERVER_URL = SERVER.url
 const REDIRECT_URL = SERVER.url_redirect
@@ -154,7 +155,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   numberOfNotifications = 0
   url_errors = [];
   adForm: FormGroup;
-  FINAL_ARRAY_TO_SEND: any;
+  FINAL_ARRAY_TO_SEND =  [];
  
   passReset = false; // set to true when password reset is triggered
   formErrors: FormErrors = {
@@ -163,7 +164,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   };
   validationMessages = {
     'name': {
-      'required': "Nom de l'annonce obligatoire",
+      'required': "Nom du visuel obligatoire",
       'name': 'Saisissez un nom valide',
     },
     
@@ -175,12 +176,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'maxlength': 'Url trop longue',
     },
   };
+  selectedAdType = ""
   button_modify_image_upload = true
   idOfDisplayUrlNotPublishUpload = "display_url_modify_not_publish_upload"
   idOfAdNameNotPublishUpload = "ad_name_modify_not_publish_upload"
   idOfDisplayUrlNotPublishCreatives = "display_url_modify_not_publish_creatives"
   idOfAdNameNotPublishCreatives = "ad_name_modify_not_publish_creatives"
-  text_construire = "Construire son annonce"
+  text_construire = "Construire son visuel"
   currentIdInputName = ""
   currentIdInputDisplay = ""
   idOfAdNameCreateUpload = "ad_name_create_upload"
@@ -193,10 +195,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   idOfDisplayUrlInitUpload = "display_url_init_upload"
   idOfAdNameInitCreatives = "ad_name_init_creatives"
   idOfDisplayUrlInitCreatives = "display_url_init_creatives"
-  text_modify = "modifier"
+  text_modify = "éditer"
   upload_modified = false
   init_choose_ad_size = false
-  modifyPublishAd=false
+  modifyPublishAd = false
+  isUploadModified = false
   ad_type=""
   is_upload_way = false
   is_creative_way = false
@@ -265,7 +268,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   ad_group_name: any;
   label_enabled = 'Actif'
   label_paused = "Non Actif"
-  text_create = "Annonce"
+  text_create = "Visuel"
   isEditor = false
   _init_ad = false
   list_ad = true
@@ -328,7 +331,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   dropdownSettingsInternationalsWebsites = {};
   dropdownSettingsAdsWebsites = {};
    dropdownSettingsApps = {};
-  text_visualise = "Visualiser votre annonce"
+  text_visualise = "Visuel"
   text_no_genre = "Aucun genre ciblé"
   text_no_age = "Aucune tranche d'âge ciblée"
   text_no_devices = "Aucun appareils ciblé"
@@ -360,19 +363,22 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   illustration = false
   illustrationUrl = ""
   AD_TYPES_1 = [
-    { "name": "Medium Rectangle", "width": "300", "height": "250", "id": "MediumRectangle", "img": "https://dummyimage.com/300x250/000/fff" },
-    { "name": "Large Rectangle", "width": "336", "height": "280", "id": "LargeRectangle", "img": "https://dummyimage.com/336x280/000/fff" },
-    { "name": "Leaderboard", "width": "728", "height": "90", "id": "Leaderboard", "img": "https://dummyimage.com/728x90/000/fff" },
-    { "name": "Large Skyscraper", "width": "300", "height": "600", "id": "LargeSkyscraper", "img": "https://dummyimage.com/300x600/000/fff" },
-    {"name": "Large Leaderboard", "width": "970", "height": "90", "id": "LargerLeaderboard", "img": "https://dummyimage.com/970x90/000/fff"},
+    { "name": "Rectangle", "width": "300", "height": "250", "id": "MediumRectangle", "img": "https://dummyimage.com/300x250/000/fff" },
+    { "name": "Rectangle Large", "width": "336", "height": "280", "id": "LargeRectangle", "img": "https://dummyimage.com/336x280/000/fff" },
+    { "name": "Horizontal Medium", "width": "728", "height": "90", "id": "Leaderboard", "img": "https://dummyimage.com/728x90/000/fff" },
+    { "name": "Demi page", "width": "300", "height": "600", "id": "LargeSkyscraper", "img": "https://dummyimage.com/300x600/000/fff" },
+    { "name": "Horizontal Large", "width": "970", "height": "90", "id": "LargerLeaderboard", "img": "https://dummyimage.com/970x90/000/fff" },
+    { "name": "Big Panneau", "width": "970", "height": "250", "id": "BigPanneau", "img": "https://dummyimage.com/970x250/000/fff" },
+    /* {"name": "Vertical", "width": "320", "height": "50", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"}, */
     
   ]
   AD_TYPES_2 = [
-    { "name": "Banner", "width": "468", "height": "60", "id": "Banner", "img": "https://dummyimage.com/468x60/000/fff" },
-    {"name": "Skyscraper", "width": "120", "height": "600", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"},
-    { "name": "Wideskyscraper", "width": "160", "height": "600", "id": "Wideskyscraper", "img": "https://dummyimage.com/160x600/000/fff" },
-    { "name": "Square", "width": "250", "height": "250", "id": "Square", "img": "https://dummyimage.com/250x250/000/fff" },
-    {"name": "Smallsquare", "width": "200", "height": "200", "id": "Smallsquare", "img": "https://dummyimage.com/200x100/000/fff"}  
+    { "name": "Horizontal", "width": "468", "height": "60", "id": "Banner", "img": "https://dummyimage.com/468x60/000/fff" },
+    { "name": "Vertical", "width": "120", "height": "600", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff" },
+    {"name": "Rectangle Vertical", "width": "240", "height": "400", "id": "RV", "img": "https://dummyimage.com/120x600/000/fff"},
+    { "name": "Vertical Medium", "width": "160", "height": "600", "id": "Wideskyscraper", "img": "https://dummyimage.com/160x600/000/fff" },
+    { "name": "Carré", "width": "250", "height": "250", "id": "Square", "img": "https://dummyimage.com/250x250/000/fff" },
+    {"name": "Petit carré", "width": "200", "height": "200", "id": "Smallsquare", "img": "https://dummyimage.com/200x100/000/fff"}  
   ]
   NATIONALS_WEBSITES = [
   [1,"infos","dakarbuzz.net","http://dakarbuzz.net"  ],
@@ -675,7 +681,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.canvas.setWidth(width);
     this.canvas.setHeight(height);
     this.canva_state = true
-    console.log('handled')
+    //console.log('handled')
     
   }
 
@@ -741,9 +747,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
      this.button_modify_image_upload = true
   }
 
-  checkAdType(img, width, height, url) {
-    console.log('click on img')
-    console.log(img)
+  checkAdType(img, width, height, url, name) {
+    //console.log('click on img')
+    //console.log(img)
     if (this.element_checked == "") {
       $("#" + img).toggleClass('check')
       this.element_checked = "#" + img
@@ -751,6 +757,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.selectedHeight = height
       this.illustration = true
       this.illustrationUrl = url
+      this.selectedAdType=name
       
     } else {
       this.illustration = false
@@ -761,6 +768,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.selectedHeight = height
       this.illustration = true
       this.illustrationUrl = url
+      this.selectedAdType=name
     }
   }
   public loadScript(src) {
@@ -909,12 +917,12 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       }
     })
       
-
+               
 
     // get references to the html canvas element & its context
     // this.canvas.on('mouse:down', (e) => {
     // let canvasElement: any = document.getElementById('canvas');
-    // console.log(canvasElement)
+    // //console.log(canvasElement)
     // });
 
     this.route.params.subscribe(params => {
@@ -933,7 +941,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       this.email_letter = data.email.charAt(0)
       this.accountValue = data.account_value
        this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
-      console.log(res)
+      //console.log(res)
       this.startDateFrench = res['startDateFrench']
          this.endDateFrench = res['endDateFrench']
          this.startDate = res['startDate']
@@ -944,7 +952,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
     })
     })
       } else {
-        console.log(params)
+        //console.log(params)
         this.id_ad_firebase = params['id_ad_firebase']
          this.ad_group_name = params['name']
       this.campagne_id = params['campaign_id']
@@ -976,7 +984,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
                     this.email_letter = data.email.charAt(0)
                     this.accountValue = data.account_value
                     this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
-                    console.log(res)
+                    //console.log(res)
                     this.startDateFrench = res['startDateFrench']
                       this.endDateFrench = res['endDateFrench']
                       this.startDate = res['startDate']
@@ -1075,9 +1083,9 @@ if (chLine) {
       this.populations = res['ages']
       this.appareils = res['devices']
       this.placement=res['placement']
-      console.log('populations')
-      /* console.log(this.genres) */
-      console.log(this.populations)
+      //console.log('populations')
+      /* //console.log(this.genres) */
+      //console.log(this.populations)
     })
 
     this.dropdownListAges = [{
@@ -1144,7 +1152,7 @@ if (chLine) {
       item_text: 'Dakar'
     },];
     for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++){
-      console.log(this.NATIONALS_WEBSITES[i][2])
+      //console.log(this.NATIONALS_WEBSITES[i][2])
       this.dropdownListNationalsWebsites.push({
          item_id: this.NATIONALS_WEBSITES[i][3],
          item_text: this.NATIONALS_WEBSITES[i][2]
@@ -1287,13 +1295,7 @@ if (chLine) {
 
     })
 
-    setTimeout(() => {
-      
-      $("#block1").css("display", "none")
-    }, 2000)
 
-
- 
 
   }
 
@@ -1504,7 +1506,7 @@ $('#popper').trigger('click')
 
   }
   targetGender() {
-    console.log(this.sexes)
+    //console.log(this.sexes)
     this.isCreating = true
     if (this.sexes.length == 0) {
       this.isCreating = false
@@ -1576,9 +1578,9 @@ $('#popper').trigger('click')
   targetPlacement() {
     var self = this
     var placement = []
-    console.log(this.ads_websites)
-    console.log(this.nationals_websites)
-    console.log(this.internationals_websites)
+    //console.log(this.ads_websites)
+    //console.log(this.nationals_websites)
+    //console.log(this.internationals_websites)
     this.isCreating = true
     if (this.nationals_websites.length == 0) {
       this.isCreating = false
@@ -1607,7 +1609,7 @@ $('#popper').trigger('click')
   }
 
   targetDevices() {
-    console.log(this.devices)
+    //console.log(this.devices)
     this.isCreating = true
     if (this.devices.length == 0) {
       this.isCreating = false
@@ -1655,7 +1657,7 @@ $('#popper').trigger('click')
 
   }
   targetAge() {
-    console.log(this.ages)
+    //console.log(this.ages)
     this.isCreating = true
     if (this.ages.length == 0) {
       this.isCreating = false
@@ -1688,68 +1690,68 @@ $('#popper').trigger('click')
 
   onAgeSelect(item: any) {
     this.ages.push(item)
-    console.log(this.ages)
+    //console.log(this.ages)
   }
   onAgeSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
     this.ages = []
     this.ages = items
   }
   onAgeDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.ages.length; i++) {
       if (this.ages[i]['item_id'] == item.item_id) {
         this.ages.splice(i, 1)
       }
     }
-    console.log(this.ages)
+    //console.log(this.ages)
 
   }
   onDeSelectAllAge() {
     this.ages = []
-    console.log(this.ages)
+    //console.log(this.ages)
   }
 
 
   onNationalsWebsitesSelect(item: any) {
     this.nationals_errors = ''
     this.nationals_websites.push(item)
-    console.log(this.nationals_websites)
+    //console.log(this.nationals_websites)
   }
   onNationalsWebsitesSelectAll(items: any) {
      this.nationals_errors = ''
     this.nationals_websites = []
     this.nationals_websites = items
-    console.log(this.nationals_websites);
+    //console.log(this.nationals_websites);
   }
   onNationalsWebsitesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.nationals_websites.length; i++) {
       if (this.nationals_websites[i]['item_id'] == item.item_id) {
         this.nationals_websites.splice(i, 1)
       }
     }
-    console.log(this.nationals_websites)
+    //console.log(this.nationals_websites)
 
   }
   onNationalsWebsitesDeSelectAll() {
     this.nationals_websites = []
-    console.log(this.nationals_websites)
+    //console.log(this.nationals_websites)
   }
 
 
    onInternationalsWebsitesSelect(item: any) {
     this.internationals_websites.push(item)
-    console.log(this.internationals_websites)
+    //console.log(this.internationals_websites)
   }
   onInternationalsWebsitesSelectAll(items: any) {
     
     this.internationals_websites = []
     this.internationals_websites = items
-    console.log(this.internationals_websites)
+    //console.log(this.internationals_websites)
   }
   onInternationalsWebsitesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.internationals_websites.length; i++) {
       if (this.internationals_websites[i]['item_id'] == item.item_id) {
         this.internationals_websites.splice(i, 1)
@@ -1765,123 +1767,123 @@ $('#popper').trigger('click')
 
    onAdsWebsitesSelect(item: any) {
     this.ads_websites.push(item)
-    console.log(this.ads_websites)
+    //console.log(this.ads_websites)
    }
   onAdsWebsitesSelectAll(items: any) {
     this.ads_websites = []
     this.ads_websites = items
-    console.log(this.ads_websites);
+    //console.log(this.ads_websites);
     
   }
   onAdsWebsitesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.ads_websites.length; i++) {
       if (this.ads_websites[i]['item_id'] == item.item_id) {
         this.ads_websites.splice(i, 1)
       }
     }
-    console.log(this.ads_websites)
+    //console.log(this.ads_websites)
 
   }
   onAdsWebsitesDeSelectAll() {
     this.ads_websites = []
-    console.log(this.ads_websites)
+    //console.log(this.ads_websites)
   }
 
    onAppsSelect(item: any) {
     this.apps.push(item)
-    console.log(this.apps)
+    //console.log(this.apps)
   }
   onAppsSelectAll(items: any) {
     this.apps = []
     this.apps = items
-    console.log(this.apps);
+    //console.log(this.apps);
   }
   onAppsDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.apps.length; i++) {
       if (this.apps[i]['item_id'] == item.item_id) {
         this.apps.splice(i, 1)
       }
     }
-    console.log(this.apps)
+    //console.log(this.apps)
 
   }
   onAppsDeSelectAll() {
     this.apps = []
-    console.log(this.apps)
+    //console.log(this.apps)
   }
 
 
 
   onDevicesSelect(item: any) {
     this.devices.push(item)
-    console.log(this.devices)
+    //console.log(this.devices)
   }
   onDevicesSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
     this.devices = []
     this.devices = items
   }
   onDevicesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.devices.length; i++) {
       if (this.devices[i]['item_id'] == item.item_id) {
         this.devices.splice(i, 1)
       }
     }
-    console.log(this.devices)
+    //console.log(this.devices)
 
   }
   onDeSelectAllDevices() {
     this.devices = []
-    console.log(this.devices)
+    //console.log(this.devices)
   }
 
   onSexeSelect(item: any) {
     this.sexes.push(item)
-    console.log(this.sexes)
+    //console.log(this.sexes)
   }
   onSexeSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
     this.sexes = []
     this.sexes = items
   }
   onSexeDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.sexes.length; i++) {
       if (this.sexes[i]['item_id'] == item.item_id) {
         this.sexes.splice(i, 1)
       }
     }
-    console.log(this.sexes)
+    //console.log(this.sexes)
 
   }
   onDeSelectAllSexe() {
     this.sexes = []
-    console.log(this.sexes)
+    //console.log(this.sexes)
   }
 
   onZoneSelect(item: any) {
     this.zones.push(item)
-    console.log(this.zones)
+    //console.log(this.zones)
   }
   onZoneSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
   }
   onZoneDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.zones.length; i++) {
       if (this.zones[i]['item_id'] == item.item_id) {
         this.zones.splice(i, 1)
       }
     }
-    console.log(this.zones)
+    //console.log(this.zones)
 
   }
   onDeSelectAllZone() {
     this.zones = []
-    console.log(this.zones)
+    //console.log(this.zones)
   }
 
 
@@ -1930,7 +1932,7 @@ $('#popper').trigger('click')
   }
   
   handleImageModal() {
-    console.log(this.canvas.toDataURL('png'))
+    //console.log(this.canvas.toDataURL('png'))
     this.getWebsites(this.currentIdInputDisplay).then(res => { 
       if (res != 'error') {
       
@@ -1951,7 +1953,7 @@ $('#popper').trigger('click')
       if (res != 'error') {
        
         var image = document.querySelector('.dz-image').getElementsByTagName('img')
-        console.log(image)
+        //console.log(image)
         if (image[0].naturalWidth != parseInt(this.selectedWidth) || image[0].naturalHeight != parseInt(this.selectedHeight)) {
           Swal.fire({
                  title: "Service Groupe d'annonce!",
@@ -1986,7 +1988,7 @@ $('#popper').trigger('click')
     if (this.currentAdType === 'CREATIVE') {
    this.new_image_content = ""
      this.new_image_content = JSON.stringify(this.canvas)
-    console.log(this.canvas.toDataURL('png'))
+    //console.log(this.canvas.toDataURL('png'))
     this.getWebsites(this.currentIdInputDisplay).then(res => { 
       if (res != 'error') {
         $('#button_modal_modified').trigger('click')
@@ -2010,7 +2012,7 @@ $('#popper').trigger('click')
             } else {
 
               var image = document.querySelector('.dz-image').getElementsByTagName('img')
-        console.log(image)
+        //console.log(image)
         if (image[0].naturalWidth != parseInt(this.currentAdSize[0]['width']) || image[0].naturalHeight != parseInt(this.currentAdSize[0]['height'])) {
           Swal.fire({
                  title: "Service Groupe d'annonce!",
@@ -2057,7 +2059,7 @@ $('#popper').trigger('click')
 
 
     this.getWebsites(this.currentIdInputDisplay).then(res => {
-      console.log(res)
+      //console.log(res)
       if (res != 'error') {
         var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
         
@@ -2079,7 +2081,7 @@ $('#popper').trigger('click')
       var image_name = this.ad_name +  new Date().getTime().toString()
       if (this.is_upload_way === true) {
         imagesRef.putString($("#ad_image").attr('src').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
-       console.log('ok')
+       //console.log('ok')
       
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
@@ -2091,10 +2093,10 @@ $('#popper').trigger('click')
          xhr.send();
        
          const image_content = "";
-         console.log(self.FINAL_ARRAY_TO_SEND)
+         //console.log(self.FINAL_ARRAY_TO_SEND)
         self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
-          console.log('success')
-          console.log(res)
+          //console.log('success')
+          //console.log(res)
           self.isRoller = false
           
           $
@@ -2104,7 +2106,7 @@ $('#popper').trigger('click')
      }); 
       } else {
         imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
-       console.log('ok')
+       //console.log('ok')
       
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
@@ -2116,10 +2118,10 @@ $('#popper').trigger('click')
          xhr.send();
        
          const image_content = JSON.stringify(self.canvas);
-         console.log(self.FINAL_ARRAY_TO_SEND)
+         //console.log(self.FINAL_ARRAY_TO_SEND)
         self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
-          console.log('success')
-          console.log(res)
+          //console.log('success')
+          //console.log(res)
           self.isRoller = false
           
         })
@@ -2159,7 +2161,7 @@ defineBudgetFromAccount() {
     })
       .subscribe(
         res => {
-          console.log(res)
+          //console.log(res)
            this.notesService.updateNote(this.idC, { budget: this.budget_to_place , dailyBudget: res[0]['dailyBudget']}).then(() => {
              this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
                
@@ -2240,14 +2242,14 @@ defineBudgetFromAccount() {
                 }
             },
             willGetToken: function () {
-                console.log("Je me prepare a obtenir un token");
+                //console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
@@ -2255,7 +2257,7 @@ defineBudgetFromAccount() {
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                console.log('non success response ', jsonResponse);
+                //console.log('non success response ', jsonResponse);
                 alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
@@ -2300,10 +2302,14 @@ defineBudgetFromAccount() {
      var finalUrls = []
      var finalMobileUrls = []
      var finalAppUrls = []
-     var name= $('#'+this.currentIdInputName).val()
+      var name = $('#' + this.currentIdInputName).val()
+      var image = $('#ad_image_modified').attr("src")
      var storage = firebase.app().storage("gs://comparez.appspot.com/");
-     var storageRef = storage.ref();
-     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
+      var storageRef = storage.ref();
+      //console.log(this.uid)
+      //console.log(this.ad_name)
+      var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString() + ".png"
+      //console.log(imageRefStorage)
      var imagesRef = storageRef.child(imageRefStorage);
      var metadata = {
    contentType: 'image/png',
@@ -2311,17 +2317,24 @@ defineBudgetFromAccount() {
       var self = this
       
  
-   
-     for (let i = 0; i <this.FINAL_ARRAY_TO_SEND.length; i++){
-       if (this.FINAL_ARRAY_TO_SEND[i]['lib'] == 'finalUrls') {
+      //console.log(this.FINAL_ARRAY_TO_SEND[0]['content'])
+      displayUrl.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
+    /*  for (let i = 0; i <this.FINAL_ARRAY_TO_SEND.length; i++){
+       if (this.FINAL_ARRAY_TO_SEND[i] == 'finalUrls') {
+         //console.log(this.FINAL_ARRAY_TO_SEND[i]['content'])
+         
          displayUrl.push(this.FINAL_ARRAY_TO_SEND[i]['content'])
+         //console.log(displayUrl)
        }
-     }
+     } */
      
       //ad_image_modified
       if (this.currentAdType === 'UPLOAD') {
-                   imagesRef.putString($('#ad_image_modified').attr("src").replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
-       console.log('ok')
+        //console.log('upload')
+        //console.log(image)
+        if (image.startsWith("https")==false) {
+                             imagesRef.putString(image.replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+       //console.log('ok')
       
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
@@ -2344,11 +2357,11 @@ defineBudgetFromAccount() {
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(res => {
-          console.log('success')
-      console.log(res)
+          //console.log('success')
+      //console.log(res)
       Swal.fire({
-        title: 'Modification annonce',
-        text: 'Annonce modifiée avec succès',
+        title: 'Modification du visuel',
+        text: 'Visuel modifié avec succès',
         type: 'success',
         showCancelButton: false,
         confirmButtonColor: '#26a69a',
@@ -2364,7 +2377,7 @@ defineBudgetFromAccount() {
       
         }).catch(err=>{
            Swal.fire({
-              title: 'Modification annonce',
+              title: 'Modification du visuel',
               text: 'Erreur Service !',
               type: 'error',
               showCancelButton: false,
@@ -2379,17 +2392,62 @@ defineBudgetFromAccount() {
      })
        
      });
+        } else {
+                self.adsService.updateAd(self.id_ad_firebase, {
+     
+      ad_name: name,
+      url_image: image,
+      displayUrl: displayUrl[0],
+      finalUrls: displayUrl[0],
+      finalMobileUrls: finalMobileUrls,
+      finalAppUrls: finalAppUrls,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).then(res => {
+          //console.log('success')
+      //console.log(res)
+      Swal.fire({
+        title: 'Modification du visuel',
+        text: 'Visuel modifié avec succès',
+        type: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {
+          self.isRoller = false
+          document.getElementById("closeModalViewModified").click()
+          
+              }
+            })
+      
+        }).catch(err=>{
+           Swal.fire({
+              title: 'Modification du visuel',
+              text: 'Erreur Service !',
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {}
+            })
+        
+        })
+        }
+
       } else {
             if (!fabric.Canvas.supports('toDataURL')) {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
     
       //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
-      //console.log(this.canvas.toDataURL('png'))
+      ////console.log(this.canvas.toDataURL('png'))
       this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
-      //console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
+      ////console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
       imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
-       console.log('ok')
+       //console.log('ok')
       
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
@@ -2413,11 +2471,11 @@ defineBudgetFromAccount() {
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(res => {
-          console.log('success')
-      console.log(res)
+          //console.log('success')
+      //console.log(res)
       Swal.fire({
-        title: 'Modification annonce',
-        text: 'Annonce modifiée avec succès',
+        title: 'Modification du visuel',
+        text: 'Visuel modifié avec succès',
         type: 'success',
         showCancelButton: false,
         confirmButtonColor: '#26a69a',
@@ -2433,7 +2491,7 @@ defineBudgetFromAccount() {
       
         }).catch(err=>{
            Swal.fire({
-              title: 'Modification annonce',
+              title: 'Modification du visuel',
               text: 'Erreur Service !',
               type: 'error',
               showCancelButton: false,
@@ -2463,12 +2521,12 @@ defineBudgetFromAccount() {
       var name = $('#ad_name_modify').val()
       var data_to_send = []
       this.getModifiedWebsites().then(res => {
-        console.log(res)
+        //console.log(res)
         if (res != "error") {
-          console.log(this.compareObjectsUrls(this.tabUpdatedCurrentFinalUrls, this.finalUrls))
+          //console.log(this.compareObjectsUrls(this.tabUpdatedCurrentFinalUrls, this.finalUrls))
           
-          console.log(this.tabUpdatedCurrentFinalUrls)
-          console.log(this.finalUrls)
+          //console.log(this.tabUpdatedCurrentFinalUrls)
+          //console.log(this.finalUrls)
           //var previous_content = JSON.parse(this.image_content)
       //var update_content = JSON.parse(this.new_image_content)
   
@@ -2476,7 +2534,7 @@ defineBudgetFromAccount() {
       var comparaison_url =  this.compareObjectsUrls(this.newfinalUrls, this.finalUrls)
           if (comparaison_url === true && name === this.ad_name) {
             Swal.fire({
-              title: 'Modification annonce',
+              title: 'Modification du visuel',
               text: "Aucun changement n'a été détecté",
               type: 'warning',
               showCancelButton: false,
@@ -2491,7 +2549,7 @@ defineBudgetFromAccount() {
             })
           } else if (comparaison_url === false && name === this.ad_name) {
             Swal.fire({
-              title: 'Modification annonce',
+              title: 'Modification du visuel',
               text: "Seul les urls de destination seront modifiées",
               type: 'warning',
               showCancelButton: true,
@@ -2519,8 +2577,8 @@ defineBudgetFromAccount() {
                     this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.currentAdName, this.currentImageUrl, this.tabUpdatedCurrentFinalUrls, [], [], this.currentAdSize).then(res => {
                            if (res != "error") {
                      Swal.fire({
-              title: 'Modification annonce',
-              text: "Annonce modifiée avec succès",
+              title: 'Modification du visuel',
+              text: "Visuel modifié avec succès",
               type: 'success',
               showCancelButton: false,
               confirmButtonColor: '#26a69a',
@@ -2538,7 +2596,7 @@ defineBudgetFromAccount() {
             })
                   } else {
                      Swal.fire({
-              title: 'Modification annonce',
+              title: 'Modification du visuel',
               text: "Erreur service",
               type: 'error',
               showCancelButton: false,
@@ -2569,8 +2627,8 @@ defineBudgetFromAccount() {
             })
           } else if (comparaison_url === true && name !== this.ad_name) {
             Swal.fire({
-              title: 'Modification annonce',
-              text: "Seul le nom de l'annonce sera modifié",
+              title: 'Modification du visuel',
+              text: "Seul le nom du visuel sera modifié",
               type: 'warning',
               showCancelButton: true,
               confirmButtonColor: '#26a69a',
@@ -2595,8 +2653,8 @@ defineBudgetFromAccount() {
                     this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, name, this.currentImageUrl, this.finalUrls, [], [], this.currentAdSize).then(res => {
                            if (res != "error") {
                      Swal.fire({
-              title: 'Modification annonce',
-              text: "Annonce modifiée avec succès",
+              title: 'Modification du visuel',
+              text: "Visuel modifié avec succès",
               type: 'success',
               showCancelButton: false,
               confirmButtonColor: '#26a69a',
@@ -2614,7 +2672,7 @@ defineBudgetFromAccount() {
             })
                   } else {
                      Swal.fire({
-              title: 'Modification annonce',
+              title: 'Modification du visuel',
               text: "Erreur service",
               type: 'error',
               showCancelButton: false,
@@ -2643,8 +2701,8 @@ defineBudgetFromAccount() {
             })
           } else{
          Swal.fire({
-              title: 'Modification annonce',
-              text: "Le nom ainsi que les urls de redirections de l'annonce seront modifés !",
+              title: 'Modification du visuel',
+              text: "Le nom ainsi que les urls de redirections du visuel seront modifés !",
               type: 'warning',
               showCancelButton: true,
               confirmButtonColor: '#26a69a',
@@ -2672,8 +2730,8 @@ defineBudgetFromAccount() {
                     this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, name, this.currentImageUrl, this.tabUpdatedCurrentFinalUrls, [], [], this.currentAdSize).then(res => {
                            if (res != "error") {
                      Swal.fire({
-              title: 'Modification annonce',
-              text: "Annonce modifiée avec succès",
+              title: 'Modification du visuel',
+              text: "Visuel modifié avec succès",
               type: 'success',
               showCancelButton: false,
               confirmButtonColor: '#26a69a',
@@ -2691,7 +2749,7 @@ defineBudgetFromAccount() {
             })
                   } else {
                      Swal.fire({
-              title: 'Modification annonce',
+              title: 'Modification du visuel',
               text: "Erreur service",
               type: 'error',
               showCancelButton: false,
@@ -2749,11 +2807,11 @@ defineBudgetFromAccount() {
       //this.ad_name = $("#"+this.currentIdInputName).val()
       var image_name = this.ad_name +  new Date().getTime().toString()
       //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
-      //console.log(this.canvas.toDataURL('png'))
+      ////console.log(this.canvas.toDataURL('png'))
       this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
-      //console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
+      ////console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
       imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
-        console.log('ok')
+        //console.log('ok')
       
         storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
@@ -2949,7 +3007,7 @@ defineBudgetFromAccount() {
     const image_content = JSON.stringify(this.canvas);
    
     this.getWebsites().then(res => {
-      console.log(res)
+      //console.log(res)
       if (res != 'error') {
          var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
@@ -2967,18 +3025,18 @@ defineBudgetFromAccount() {
       this.ad_name = $("#"+this.idOfAdName).val()
       var image_name = this.ad_name +  new Date().getTime().toString()
       $('#ad_image').attr("src", this.canvas.toDataURL('png'))
-      console.log(this.canvas.toDataURL('png'))
+      //console.log(this.canvas.toDataURL('png'))
       this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
-      console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
+      //console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
      imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function(snapshot) {
          
-       console.log('Uploaded a base64 string!');
+       //console.log('Uploaded a base64 string!');
        
      }); 
       
       this.adsService.addAd(this.ad_group_id, this.ad_name, this.uid, imageRefStorage, image_content, this.FINAL_ARRAY_TO_SEND).then(res => {
-        console.log('success')
-        console.log(res)
+        //console.log('success')
+        //console.log(res)
       })
        
      
@@ -3000,7 +3058,7 @@ defineBudgetFromAccount() {
 if (this.budget === 0) {
        
         Swal.fire({
-          title: "Service annonce",
+          title: "Service Visuel",
           text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
           type: 'warning',
           showCancelButton: true,
@@ -3016,8 +3074,8 @@ if (this.budget === 0) {
 } else {
   this.isRoller = true
    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls, this.currentAdSize).then(res => {
-        console.log('success')
-     console.log(res)
+        //console.log('success')
+     //console.log(res)
      if (res != "error") {
        this.isRoller = false
        
@@ -3053,11 +3111,11 @@ if (this.budget === 0) {
     
       for (let i = 0; i < tab.length; i++) {
         
-        console.log(`urls ${tab}`)
-        console.log(`actuelle url ${tab[i]}`)
+        //console.log(`urls ${tab}`)
+        //console.log(`actuelle url ${tab[i]}`)
      
         if (this.validURL(tab[i]) == true) {
-          console.log(tab[i] + ' est valide')
+          //console.log(tab[i] + ' est valide')
           var url = this.setHttp(tab[i])
           urls_destination.push(url)
           this.FINAL_ARRAY_TO_SEND.push({
@@ -3070,7 +3128,7 @@ if (this.budget === 0) {
             "url": tab[i],
             "text": "est une url invalide"
           })
-          console.log(tab[i] + " est invalide")
+          //console.log(tab[i] + " est invalide")
           resolve('error')
         }
     }
@@ -3081,7 +3139,7 @@ if (this.budget === 0) {
              
       
       if (check === true) {
-        console.log(urls + " valide")
+        //console.log(urls + " valide")
           var url = this.setHttp(urls)
           urls_destination.push(url)
          this.FINAL_ARRAY_TO_SEND.push({
@@ -3094,7 +3152,7 @@ if (this.budget === 0) {
           "url": urls,
           "text": "est une url invalide"
         })
-        console.log(urls + ' invalide, vérifier les urls renseignées')
+        //console.log(urls + ' invalide, vérifier les urls renseignées')
         resolve('error')
       }
       } else {
@@ -3124,7 +3182,7 @@ if (this.budget === 0) {
              
       
       if (check === true) {
-        console.log(urls + " valide")
+        //console.log(urls + " valide")
           var url = this.setHttp(urls)
         urls_destination.push(url)
         this.newfinalUrls = urls_destination
@@ -3139,7 +3197,7 @@ if (this.budget === 0) {
           "url": urls,
           "text": "est une url invalide"
         })
-        console.log(urls + ' invalide, vérifier les urls renseignées')
+        //console.log(urls + ' invalide, vérifier les urls renseignées')
         resolve('error')
       }
       }else{
@@ -3166,7 +3224,7 @@ if (this.budget === 0) {
       this.FINAL_ARRAY_TO_SEND = []
 
       if ($('#' + this.currentIdInputName).val() == "") {
-        alert("nom de l'annonce ne peut être vide")
+        alert("nom du visuel ne peut être vide")
       } else {
         this.ad_name = $('#'+this.currentIdInputName).val()
         var mobile_apps = this.apps
@@ -3434,6 +3492,7 @@ if (this.budget === 0) {
       if ($("#blockUploadModified").css('display') === 'none') {
          
         $("#blockUploadModified").css({ 'display': 'block' })
+        this.isUploadModified = true
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "Annuler la modification"
         this.currentIdInputName = this.idOfAdNameNotPublishUpload
@@ -3445,6 +3504,7 @@ if (this.budget === 0) {
         this.text_modify = "modifier"
         this.currentIdInputName = ""
         this.currentIdInputDisplay = ""
+        this.isUploadModified = false
       }
     } else {
       if (this.modifyPublishAd===false) {
@@ -3902,7 +3962,7 @@ if (this.budget === 0) {
     setId(): void {
         const val = this.props.id;
         const complete = this.canvas.getActiveObject().toObject();
-        // console.log(complete);
+        // //console.log(complete);
         this.canvas.getActiveObject().toObject = () => {
             complete.id = val;
             return complete;
@@ -4204,8 +4264,8 @@ if (this.budget === 0) {
  loadCanvasFromJSON(): void {
       
         const CANVAS = localStorage.getItem('ffFabricQuicksave');
-    console.log(typeof(CANVAS))
-    console.log(typeof(this.currentCanvasContent))
+    //console.log(typeof(CANVAS))
+    //console.log(typeof(this.currentCanvasContent))
         // and load everything from the same json
        
         this.canvas.loadFromJSON(this.currentCanvasContent, () => {
@@ -4214,7 +4274,7 @@ if (this.budget === 0) {
             this.canvas.renderAll();
 
             // TODO: Retrieve additional data and bind accordingly
-            console.log(this.canvas);
+            //console.log(this.canvas);
         });
 
     };
@@ -4393,8 +4453,8 @@ if (this.budget === 0) {
 
   changeAdStatus(id: string, adgroup_id: string, ad_id: string, last_status: string) {
     Swal.fire({
-      title: "Status annonce",
-      text: "Voulez vous modifier le status de votre annonce ?",
+      title: "Status du visuel",
+      text: "Voulez vous modifier le status de votre visuel ?",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#26a69a',
@@ -4412,14 +4472,14 @@ if (this.budget === 0) {
 
           .subscribe(
             res => {
-              console.log(res)
+              //console.log(res)
 
               this.adsService.updateAd(id, {
                 status: res[0]['status']
               }).then(res => {
                 Swal.fire(
                   'Modifier!',
-                  "Status de l'annonce modifié.",
+                  "Status du visuel modifié.",
                   'success'
                 ).then(res => {
                   this.isCreating = false
@@ -4430,7 +4490,7 @@ if (this.budget === 0) {
             err => {
               this.isCreating = false
               Swal.fire({
-                title: "Service annonce!",
+                title: "Service Visuel!",
                 text: 'Erreur.',
                 type: 'error',
                 showCancelButton: false,
@@ -4450,8 +4510,8 @@ if (this.budget === 0) {
 
   removeAdFirebase(id: string){
       Swal.fire({
-      title: "Service annonce",
-      text: "Voulez vous supprimer cette annonce ?",
+      title: "Service Visuel",
+      text: "Voulez vous supprimer ce visuel ?",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#26a69a',
@@ -4469,8 +4529,8 @@ if (this.budget === 0) {
 
   removeAd(id: string, adgroup_id: string, ad_id: string) {
     Swal.fire({
-      title: "Service annonce",
-      text: "Voulez vous supprimer cette annonce ?",
+      title: "Service Visuel",
+      text: "Voulez vous supprimer ce visuel ?",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#26a69a',
@@ -4488,12 +4548,12 @@ if (this.budget === 0) {
 
           .subscribe(
             res => {
-              console.log(res)
+              //console.log(res)
 
               this.adsService.deleteAd(id).then(res => {
                 Swal.fire(
                   'Supprimer!',
-                  "Annonce supprimée avec succès!",
+                  "Visuel supprimé avec succès!",
                   'success'
                 ).then(res => {
                   this.isCreating = false
@@ -4504,7 +4564,7 @@ if (this.budget === 0) {
             err => {
               this.isCreating = false
               Swal.fire({
-                title: "Service Annonce!",
+                title: "Service Visuel!",
                 text: 'Erreur.',
                 type: 'error',
                 showCancelButton: false,
@@ -4532,7 +4592,7 @@ if (this.budget === 0) {
 
         .subscribe(
           res => {
-            console.log(res)
+            //console.log(res)
             if (res[0]['status'] == "ok") {
               
               resolve('ok')
@@ -4571,7 +4631,7 @@ if (this.budget === 0) {
     this.currentIdInputDisplay = this.idOfDisplayUrlModify
     
     this.iconEditor = "icon-chevron-down"
-    console.log(finalUrls.length)
+    //console.log(finalUrls.length)
     if (finalUrls.length == 0) {
       this.currentFinalUrls = ""
     } else if(finalUrls.length == 1) {
@@ -4580,8 +4640,8 @@ if (this.budget === 0) {
     } else{
        for (let i = 0; i < finalUrls.length - 1; i++) {
          
-        console.log(finalUrls)
-        console.log(finalUrls[i])
+        //console.log(finalUrls)
+        //console.log(finalUrls[i])
         this.currentFinalUrls += finalUrls[i].toString() + ","
       
       }
@@ -4595,7 +4655,7 @@ if (this.budget === 0) {
 if (this.budget === 0) {
        
         Swal.fire({
-          title: "Service annonce",
+          title: "Service Visuel",
           text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
           type: 'warning',
           showCancelButton: true,
@@ -4651,14 +4711,14 @@ if (this.budget === 0) {
                 }
             },
             willGetToken: function () {
-                console.log("Je me prepare a obtenir un token");
+                //console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
@@ -4666,7 +4726,7 @@ if (this.budget === 0) {
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                console.log('non success response ', jsonResponse);
+                //console.log('non success response ', jsonResponse);
                 alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
@@ -4742,14 +4802,14 @@ if (this.budget === 0) {
                 }
             },
             willGetToken: function () {
-                console.log("Je me prepare a obtenir un token");
+                //console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
@@ -4758,7 +4818,7 @@ if (this.budget === 0) {
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                console.log('non success response ', jsonResponse);
+                //console.log('non success response ', jsonResponse);
                 alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
@@ -4798,7 +4858,7 @@ if (this.budget === 0) {
 
 
    handleIfValide() {
-    console.log('keyup')
+    //console.log('keyup')
     $('#error_recharge').hide()
     var montant = $("#montant").val()
     if (montant < 20000) {
@@ -4933,7 +4993,7 @@ if (this.budget === 0) {
     this.isAccountRechargement = false
   }
   onEndDateChange(args) {
-    console.log(args.value)
+    //console.log(args.value)
     if (args.value != undefined) {
       this.newEndDate = args.value.toString()
       
@@ -4944,10 +5004,10 @@ if (this.budget === 0) {
     }
   
   onStartDateChange(args) {
-    console.log(args.value)
+    //console.log(args.value)
     if (args.value != undefined) {
       this.newStartDate = args.value.toString()
-      console.log(this.newStartDate)
+      //console.log(this.newStartDate)
       
     } else {
       this.newStartDate = ""
@@ -4961,9 +5021,9 @@ if (this.budget === 0) {
     var tabEnd = this.endDateFrench.split("/")
     var frenchDateStart = tabStart[2] + "-" + tabStart[1] + "-" + tabStart[0]
     var frenchDateEnd = tabEnd[2] + "-" + tabEnd[1] + "-" + tabEnd[0]
-    console.log(date)
-    console.log(new Date(frenchDateStart))
-    console.log(new Date(frenchDateEnd))
+    //console.log(date)
+    //console.log(new Date(frenchDateStart))
+    //console.log(new Date(frenchDateEnd))
     var today_date = new Date().getDate()
     var today_day = new Date().getDay()
     var years = new Date().getFullYear()
@@ -5600,10 +5660,10 @@ if (this.budget === 0) {
     }
 
 
-    console.log(`startDate: ${this.startDate}, updatedStartDate: ${this.UpdatedStartDate}`)
-    console.log(`endDate: ${this.endDate}, updatedEndDate: ${this.UpdatedEndDate}`)
-    console.log(`startDateFrench: ${this.startDateFrench.replace("/", "-").replace("/", "-")}, endDateFrench: ${this.endDateFrench.replace("/", "-").replace("/", "-")}`)
-    console.log(this.today)
+    //console.log(`startDate: ${this.startDate}, updatedStartDate: ${this.UpdatedStartDate}`)
+    //console.log(`endDate: ${this.endDate}, updatedEndDate: ${this.UpdatedEndDate}`)
+    //console.log(`startDateFrench: ${this.startDateFrench.replace("/", "-").replace("/", "-")}, endDateFrench: ${this.endDateFrench.replace("/", "-").replace("/", "-")}`)
+    //console.log(this.today)
  */
   }
 
@@ -5625,13 +5685,13 @@ if (this.budget === 0) {
     var date = `${years}${month}${day}`
     this.isCreating = true
 if (this.startDate == date || this.endDate == date) {
-     /*    console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
-      console.log(`end date from me: ${date}`)  */
+     /*    //console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
+      //console.log(`end date from me: ${date}`)  */
        resolve('error')
         
       } else {
   this.notesService.updateStartDate(this.idC, this.campagne_id, date, this.UpdatedStartDate)
-  console.log(this.idC)
+  //console.log(this.idC)
           
         resolve('ok')
       }
@@ -5657,8 +5717,8 @@ if (this.startDate == date || this.endDate == date) {
     var date = `${years}${month}${day}`
     this.isCreating = true
 if (this.endDate == date || this.startDate == date) {
-     /*    console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
-      console.log(`end date from me: ${date}`)  */
+     /*    //console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
+      //console.log(`end date from me: ${date}`)  */
           resolve('error')
           
 
@@ -5677,7 +5737,7 @@ if (this.endDate == date || this.startDate == date) {
   }
  
   handleSimulatedImpressionsCount() {
-    console.log('keyup')
+    //console.log('keyup')
     $('#error_recharge').hide()
     this.isSimulation = true
     var montant = $("#montant").val()

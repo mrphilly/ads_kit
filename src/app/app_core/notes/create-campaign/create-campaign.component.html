@@ -1,25 +1,127 @@
+    
+ <div class="container-fluid pt-5" >
+     <div id="particles-js">
 
+     </div>
+    <div class="row">
+        <div class="col-md-6 text-center">
 
- <div class="container-fluid pt-5 bg-white" >
-   <div class="text-center p-5">
-       <i class="icon-new_releases s-128 text-info"></i>
+             <div class="text-center p-5 white shadow1 r-20 d-md-block d-none animated bounceIn delay-1s" style="position: absolute; width: 60%
+">
+       <img class="img-responsive" src="assets/img/init.png">
        <br>
        <br>
-       <small><strong>Créer sa campagne publicitaire</strong></small>
+       <small class="adafri-police text-black-50" style="font-size: 18px">Nouvelle campagne publicitaire</small>
        <br>
        <br>
        <div class="form-row text-center">
-           <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="display: inline-block">
+           <div class="col-md-12 text-center">
+
+               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%">
+           </div>
 
        </div>
         <br>
-       <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20 btn-social text-center" (click)="addCampaign()" [disabled]="name?.length < 5 || name?.length > 15" style="display: inline-block; font-size: 14px"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
+       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
        <br>
        <br>
-           <a (click)="go1()" class="btn btn-warning text-white shadow btn-lg r-20 btn-social text-center" style="display: inline-block; font-size: 14px"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
+        <a (click)="go()" class="btn white text-warning shadow btn-sm r-20 btn-social text-center" style="font-size: 14px; border: 1px solid orange"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
+   
+          
+       
 
           
    </div>
+   <div class="text-center p-5 white shadow1 r-20 d-md-none d-sm-block animated bounceIn delay-1s" style="position: absolute; width: 95%; margin-left: -5px">
+       <img class="img-responsive" src="assets/img/init.png">
+       <br>
+       <br>
+       <small class="adafri-police text-black-50" style="font-size: 18px">Nouvelle campagne publicitaire</small>
+       <br>
+       <br>
+       <div class="form-row text-center">
+           <div class="col-md-12 text-center">
+
+               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%; font-size: 12px">
+           </div>
+
+       </div>
+        <br>
+       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
+       <br>
+       <br>
+        <a (click)="go()" class="btn white text-warning shadow btn-sm r-20 btn-social text-center" style="font-size: 14px; border: 1px solid orange"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
+   
+          
+       
+
+          
+   </div>
+        </div>
+                    <div class="col-md-6  d-md-block d-none">
+                        <h1 class="adafri-police text-white" style="font-size: 24px">Créez votre campagne</h1>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6  " style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/vert.jpg">
+                        <!-- <div class="card no-b mb-3 shadow text-white">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-md-6 col-sm-6" style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/rose.jpg">
+                        <!-- <div class="card no-b mb-3 shadow">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6" style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/bleue.png">
+                        <!-- <div class="card no-b mb-3 shadow">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-md-6 col-sm-6" style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/degrade1.jpg">
+                        <!-- <div class="card no-b mb-3 shadow">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+                      <!--  <div class="col-md-6 d-md-none d-sm-block">
+                <div class="row">
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/vert.jpg">
+                      
+                    </div>
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateOut fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/rose.jpg">
+                     
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/bleue.png">
+                     
+                    </div>
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateOut fast infinite' style="border-radius: 400px;width: 25%" src="assets/img/images/degrade1.jpg">
+                       
+                    </div>
+                </div>
+            </div> -->
+     </div>
    
   <div *ngIf="isCreating">
       <app-spinner-overlay [message]="message"></app-spinner-overlay>

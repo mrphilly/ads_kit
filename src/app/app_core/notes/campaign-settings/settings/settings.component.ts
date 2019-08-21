@@ -21,39 +21,25 @@ import {
   database
 } from 'firebase';
 
+import * as FusionCharts from 'fusioncharts';
+
 import {
   NotesService
 } from '../../notes.service';
 import {
   AuthService
 } from '../../../core/auth.service';
-
-
-
-import * as $ from 'jquery'
-import {
-  Observable
-} from 'rxjs'
-import {
-  AdGroupService
-} from '../../ad-groupe.service'
+import {SERVER} from '../../../../../environments/environment'
 import Swal from 'sweetalert2'
+import * as $ from 'jquery'
+import { AdGroupService } from '../../ad-groupe.service'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { Router } from '@angular/router'
+import { Ads } from '../../ads.service'
 import {
   AdGroup
 } from '../../ad_group.models'
-import {
-  map
-} from 'rxjs/operators'
-
-
-import { Router } from '@angular/router'
-
-
-import {Ads} from '../../ads.service'
-import '../../../../../assets/js/payexpress/payExpress'
-import {SERVER} from '../../../../../environments/environment'
-import * as FusionCharts from 'fusioncharts';
-
 /* const dataUrl =
   SERVER.url+"/campaignReport/"+; */
 const schemaUrl =
@@ -61,6 +47,7 @@ const schemaUrl =
 declare var require: any;
 declare const pQuery: any
 declare const PayExpresse: any
+declare const particlesJS: any; 
 
 
 export interface JSONDATE {
@@ -166,6 +153,9 @@ dataSource: any;
   @Input() budgetId: any;
   @Input() dailyBudget: any;
   @Input() numberOfDays: any;
+  impressions = 0
+  clicks = 0
+  cost = 0
   button_payments = true
   ad_group_tab_content =  [];
   email: string;
@@ -254,8 +244,8 @@ dataSource: any;
 
   constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads) {
     this.getUser().then(res => {
-      console.log(res)
-      console.log(this.id_campagne)
+      //console.log(res)
+      //console.log(this.id_campagne)
 
     })
      this.type = 'timeseries';
@@ -371,20 +361,23 @@ dataSource: any;
     let schemaFetch = fetch(SERVER.url+"/getSchemaReportCampaign").then(jsonify);
     Promise.all([dataFetch, schemaFetch]).then(res => {
       let data = res[0];
-      console.log(data)
+      //console.log(data)
       let schema = res[1];
-      console.log(res[1])
+      //console.log(res[1])
        var tableData = [];
       $.each(data, function (key, value) {
-        console.log(key, value)
+        //console.log(key, value)
         tableData.push(value);
       })
-      console.log(tableData)
-      let fusionTable = new FusionCharts.DataStore().createDataTable(
-        tableData,
-        ["clicks", "cost", "impressions"]
-      ); // Instance of DataTable to be passed as data in dataSource
-      this.dataSource.data = fusionTable;
+      //console.log(tableData)
+   
+      //console.log(parseInt(data['clicks']))
+      //console.log(parseInt(data['impressions']))
+      //console.log(parseInt(data['cost']))
+      if (parseInt(data['clicks']) !== 0 && parseInt(data['impressions']) !== 0 && parseInt(data['cost']) !== 0) {
+        self.notesService.updateNote(self.id, {clicks:parseInt(data['clicks']), impressions: parseInt(data['impressions']), cost: parseInt(data['coûts']) })
+        
+      }
     });
   }
   cryptMoney(money: string) {
@@ -397,7 +390,7 @@ var secretMessage = money;
 var encryptedMessage = CryptoJS.AES.encrypt(secretMessage, CryptoJS.enc.Hex.parse(secretKey),
                        { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding });
 
-    console.log('encryptedMessage: ' + encryptedMessage.ciphertext);
+    //console.log('encryptedMessage: ' + encryptedMessage.ciphertext);
     
   return encryptedMessage.ciphertext
 
@@ -410,7 +403,7 @@ getDateArray(start, end) {
     var arr = new Array();
   var dt = new Date(start);
   var _end = new Date(end)
-  console.log(dt)
+  //console.log(dt)
     while (dt <= _end) {
         arr.push(new Date(dt).getDate()+"/"+(new Date(dt).getMonth()+1)+"/"+new Date(dt).getFullYear())
         dt.setDate(dt.getDate() + 1);
@@ -449,7 +442,7 @@ getDateArray(start, end) {
  
     this.auth.user.subscribe(data => {
       
-/*     this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
+    this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
       res.forEach(data => {
             this.startDateFrench = data['startDateFrench']
         this.endDateFrench = data['endDateFrench'] 
@@ -460,26 +453,29 @@ getDateArray(start, end) {
         this.appareils = data['devices']
         this.populations = data['ages']
         this.genres = data['sexes']
-        console.log(data['startDate'])
+        this.clicks = data['clicks']
+        this.impressions = data['impressions']
+        this.cost = data['cost']
+        //console.log(data['startDate'])
         var startDate = data['startDate'].slice(0,4)+"-"+ data['startDate'].slice(4,6)+"-"+ data['startDate'].slice(6,8)
         var endDate = data['endDate'].slice(0, 4) + "-" + data['endDate'].slice(4, 6) + "-" + data['endDate'].slice(6, 8)
-        console.log(startDate)
-        console.log(endDate)
+        //console.log(startDate)
+        //console.log(endDate)
         var dateArr = this.getDateArray(startDate, endDate);
-        console.log(dateArr)
+        //console.log(dateArr)
 // Output
 for (var i = 0; i < dateArr.length; i++) {
   this.barChartLabels.push(dateArr[i])
-  console.log(this.barChartLabels)
+  //console.log(this.barChartLabels)
 }
     
       })
-    }) */
+    }) 
     })
 
     this.adgroups = this.adGroupService.getListAdGroup(this.id_campagne)
     this.adgroups.forEach(child => {
-      console.log(child)
+      //console.log(child)
       if (child.length > 0) {
         this.number_ad_groups = child.length
       } else {
@@ -577,7 +573,7 @@ for (var i = 0; i < dateArr.length; i++) {
     }
     ];
     for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++){
-      console.log(this.NATIONALS_WEBSITES[i][2])
+      //console.log(this.NATIONALS_WEBSITES[i][2])
       this.dropdownListNationalsWebsites.push({
          item_id: this.NATIONALS_WEBSITES[i][3],
          item_text: this.NATIONALS_WEBSITES[i][2]
@@ -699,9 +695,167 @@ for (var i = 0; i < dateArr.length; i++) {
       allowSearchFilter: true,
       searchPlaceholderText: 'Rechercher',
 
-    };
-   this.fetchData();
+       };
+            
+             particlesJS("particles-js", {
+  "particles": {
+    "number": {
+      "value": 380,
+      "density": {
+        "enable": true,
+        "value_area": 1000
+      }
+    },
+    "color": {
+      "value": "#ffffff"
+    },
+    "shape": {
+      "type": "circle",
+      "stroke": {
+        "width": 0,
+        "color": "#ffffff"
+      },
+      "polygon": {
+        "nb_sides": 5
+      },
+      "image": {
+        "src": "../../../../assets/img/images/campaign.png",
+        "width": 1000,
+        "height": 1000
+      }
+    },
+    "opacity": {
+      "value": 1,
+      "random": true,
+      "anim": {
+        "enable": true,
+        "speed": 1,
+        "opacity_min": 0.1,
+        "sync": true
+      }
+    },
+    "size": {
+      "value": 3,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 40,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 150,
+      "color": "#ffffff",
+      "opacity": 0.4,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 6,
+      "direction": "none",
+      "random": false,
+      "straight": false,
+      "out_mode": "out",
+      "bounce": false,
+      "attract": {
+        "enable": false,
+        "rotateX": 600,
+        "rotateY": 1200
+      }
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": {
+        "enable": true,
+        "mode": "grab"
+      },
+      "onclick": {
+        "enable": true,
+        "mode": "push"
+      },
+      "resize": true
+    },
+    "modes": {
+      "grab": {
+        "distance": 140,
+        "line_linked": {
+          "opacity": 1
+        }
+      },
+      "bubble": {
+        "distance": 400,
+        "size": 40,
+        "duration": 2,
+        "opacity": 8,
+        "speed": 3
+      },
+      "repulse": {
+        "distance": 200,
+        "duration": 0.4
+      },
+      "push": {
+        "particles_nb": 4
+      },
+      "remove": {
+        "particles_nb": 2
+      }
+    }
+  },
+  "retina_detect": true
+}); 
+ 
+    
+    this.fetchData();
+   /*   var text = 'Some data I want to export';
+var data = new Blob([text], {type: 'text/plain'});
+
+var url = window.URL.createObjectURL(data);
+
+document.getElementById('download_link').setAttribute('href', url)  */
   }
+
+  downloadFile() {
+    this.isCreating = true
+    let download = require('../../../../../assets/js/download.js');
+    let file_name = this.id_campagne
+    
+    let url = `${SERVER.url}/uploads/${this.id_campagne}.csv`;
+    fetch(SERVER.url + "/campaignReport/" + this.id_campagne).then(res => {
+  
+      if (res['status'].toString() == "200") {
+        
+         /* fetch(url, {
+          method: 'OPTIONS',
+          headers: {
+            'Authorization': ''
+          }
+        }).then(function(resp) {
+          return resp.blob();
+        }).then(function(blob) {
+          download(blob);
+        }); */
+        var self = this
+        var xhr = new XMLHttpRequest();
+xhr.open('GET', url, true);
+xhr.responseType = 'blob';
+xhr.onload = function(e) {
+  if (this.status == 200) {
+    var myBlob = this.response;
+    //console.log(myBlob)
+    download(myBlob, "Reporting", "text/csv")
+
+    // myBlob is now the blob that the object URL pointed to.
+  }
+};
+xhr.send();
+      }
+      this.isCreating = false
+    });
+}
 
   /*  this.adgroups = this.getData();
    
@@ -719,7 +873,7 @@ for (var i = 0; i < dateArr.length; i++) {
 
   }
   targetGender() {
-    console.log(this.sexes)
+    //console.log(this.sexes)
     this.isCreating = true
     if (this.sexes.length == 0) {
       this.isCreating = false
@@ -749,9 +903,9 @@ for (var i = 0; i < dateArr.length; i++) {
   targetPlacement() {
     var self = this
     var placement = []
-    console.log(this.ads_websites)
-    console.log(this.nationals_websites)
-    console.log(this.internationals_websites)
+    //console.log(this.ads_websites)
+    //console.log(this.nationals_websites)
+    //console.log(this.internationals_websites)
     this.isCreating = true
     if (this.nationals_websites.length == 0) {
       this.isCreating = false
@@ -782,7 +936,7 @@ for (var i = 0; i < dateArr.length; i++) {
  
   
   targetDevices() {
-    console.log(this.devices)
+    //console.log(this.devices)
     this.isCreating = true
     if (this.devices.length == 0) {
       this.isCreating = false
@@ -824,7 +978,7 @@ for (var i = 0; i < dateArr.length; i++) {
 
   }
   targetAge() {
-    console.log(this.ages)
+    //console.log(this.ages)
     this.isCreating = true
     if (this.ages.length == 0) {
       this.isCreating = false
@@ -857,68 +1011,68 @@ for (var i = 0; i < dateArr.length; i++) {
 
   onAgeSelect(item: any) {
     this.ages.push(item)
-    console.log(this.ages)
+    //console.log(this.ages)
   }
   onAgeSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
     this.ages = []
     this.ages = items
   }
   onAgeDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.ages.length; i++) {
       if (this.ages[i]['item_id'] == item.item_id) {
         this.ages.splice(i, 1)
       }
     }
-    console.log(this.ages)
+    //console.log(this.ages)
 
   }
   onDeSelectAllAge() {
     this.ages = []
-    console.log(this.ages)
+    //console.log(this.ages)
   }
 
 
   onNationalsWebsitesSelect(item: any) {
     this.nationals_errors = ''
     this.nationals_websites.push(item)
-    console.log(this.nationals_websites)
+    //console.log(this.nationals_websites)
   }
   onNationalsWebsitesSelectAll(items: any) {
      this.nationals_errors = ''
     this.nationals_websites = []
     this.nationals_websites = items
-    console.log(this.nationals_websites);
+    //console.log(this.nationals_websites);
   }
   onNationalsWebsitesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.nationals_websites.length; i++) {
       if (this.nationals_websites[i]['item_id'] == item.item_id) {
         this.nationals_websites.splice(i, 1)
       }
     }
-    console.log(this.nationals_websites)
+    //console.log(this.nationals_websites)
 
   }
   onNationalsWebsitesDeSelectAll() {
     this.nationals_websites = []
-    console.log(this.nationals_websites)
+    //console.log(this.nationals_websites)
   }
 
 
    onInternationalsWebsitesSelect(item: any) {
     this.internationals_websites.push(item)
-    console.log(this.internationals_websites)
+    //console.log(this.internationals_websites)
   }
   onInternationalsWebsitesSelectAll(items: any) {
     
     this.internationals_websites = []
     this.internationals_websites = items
-    console.log(this.internationals_websites)
+    //console.log(this.internationals_websites)
   }
   onInternationalsWebsitesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.internationals_websites.length; i++) {
       if (this.internationals_websites[i]['item_id'] == item.item_id) {
         this.internationals_websites.splice(i, 1)
@@ -934,119 +1088,119 @@ for (var i = 0; i < dateArr.length; i++) {
 
    onAdsWebsitesSelect(item: any) {
     this.ads_websites.push(item)
-    console.log(this.ads_websites)
+    //console.log(this.ads_websites)
    }
   onAdsWebsitesSelectAll(items: any) {
     this.ads_websites = []
     this.ads_websites = items
-    console.log(this.ads_websites);
+    //console.log(this.ads_websites);
     
   }
   onAdsWebsitesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.ads_websites.length; i++) {
       if (this.ads_websites[i]['item_id'] == item.item_id) {
         this.ads_websites.splice(i, 1)
       }
     }
-    console.log(this.ads_websites)
+    //console.log(this.ads_websites)
 
   }
   onAdsWebsitesDeSelectAll() {
     this.ads_websites = []
-    console.log(this.ads_websites)
+    //console.log(this.ads_websites)
   }
 
    onAppsSelect(item: any) {
     this.apps.push(item)
-    console.log(this.apps)
+    //console.log(this.apps)
   }
   onAppsSelectAll(items: any) {
     this.apps = []
     this.apps = items
-    console.log(this.apps);
+    //console.log(this.apps);
   }
   onAppsDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.apps.length; i++) {
       if (this.apps[i]['item_id'] == item.item_id) {
         this.apps.splice(i, 1)
       }
     }
-    console.log(this.apps)
+    //console.log(this.apps)
 
   }
   onAppsDeSelectAll() {
     this.apps = []
-    console.log(this.apps)
+    //console.log(this.apps)
   }
 
 
 
   onDevicesSelect(item: any) {
     this.devices.push(item)
-    console.log(this.devices)
+    //console.log(this.devices)
   }
   onDevicesSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
     this.devices = []
     this.devices = items
   }
   onDevicesDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.devices.length; i++) {
       if (this.devices[i]['item_id'] == item.item_id) {
         this.devices.splice(i, 1)
       }
     }
-    console.log(this.devices)
+    //console.log(this.devices)
 
   }
   onDeSelectAllDevices() {
     this.devices = []
-    console.log(this.devices)
+    //console.log(this.devices)
   }
 
   onSexeSelect(item: any) {
     this.sexes.push(item)
-    console.log(this.sexes)
+    //console.log(this.sexes)
   }
   onSexeSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
     this.sexes = []
     this.sexes = items
   }
   onSexeDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     for (var i = 0; i < this.sexes.length; i++) {
       if (this.sexes[i]['item_id'] == item.item_id) {
         this.sexes.splice(i, 1)
       }
     }
-    console.log(this.sexes)
+    //console.log(this.sexes)
 
   }
   onDeSelectAllSexe() {
     this.sexes = []
-    console.log(this.sexes)
+    //console.log(this.sexes)
   }
   onZoneSelect(item: any) {
     this.selectedZones = []
     this.selectedZones.push(item)
-    console.log(this.selectedZones)
+    //console.log(this.selectedZones)
   }
 /*   onZoneSelectAll(items: any) {
-    console.log(items);
+    //console.log(items);
   } */
   onZoneDeSelect(item: any) {
-    console.log(item)
+    //console.log(item)
     this.selectedZones = []
-    console.log(this.selectedZones)
+    //console.log(this.selectedZones)
 
   }
 /*   onDeSelectAllZone() {
     this.zones = []
-    console.log(this.zones)
+    //console.log(this.zones)
   } */
   parseDate(str) {
     var mdy = str.split('/');
@@ -1093,7 +1247,7 @@ for (var i = 0; i < dateArr.length; i++) {
 
   onDateStartChange(args) {
     var DATE = args.value.toString().split(' ')
-    console.log(DATE)
+    //console.log(DATE)
     var parsed = JSON.parse(JSON.stringify(MONTH))
     var DATE_ELEMENT = parsed[0][DATE[1]]
     var day = DATE[2]
@@ -1182,8 +1336,8 @@ for (var i = 0; i < dateArr.length; i++) {
   
   updateCampaign() {
 
-    console.log(this.id_campagne)
-    console.log(this.name)
+    //console.log(this.id_campagne)
+    //console.log(this.name)
     Swal.fire({
       title: '',
       type: 'info',
@@ -1239,7 +1393,7 @@ for (var i = 0; i < dateArr.length; i++) {
             contentType: 'application/json',
             data: JSON.stringify(data),
           }).then((response) => {
-            console.log(response)
+            //console.log(response)
             if (response[0].status != "error") {
               this.notesService.updateNote(this.id, {
                 status: response[0].status
@@ -1294,7 +1448,7 @@ for (var i = 0; i < dateArr.length; i++) {
             contentType: 'application/json',
             data: JSON.stringify(data),
           }).then((response) => {
-            console.log(response)
+            //console.log(response)
             if (response[0].status != "error") {
               this.notesService.updateNote(this.id, {
                 name: response[0].name
@@ -1345,7 +1499,7 @@ for (var i = 0; i < dateArr.length; i++) {
             contentType: 'application/json',
             data: JSON.stringify(data),
           }).then((response) => {
-            console.log(response)
+            //console.log(response)
             if (response[0].status != "error") {
 
               this.notesService.updateNote(this.id, {
@@ -1398,7 +1552,7 @@ for (var i = 0; i < dateArr.length; i++) {
             contentType: 'application/json',
             data: JSON.stringify(data),
           }).then((response) => {
-            console.log(response)
+            //console.log(response)
             if (response[0].status != "error") {
               this.notesService.updateNote(this.id, {
                 name: response[0].name
@@ -1484,7 +1638,7 @@ for (var i = 0; i < dateArr.length; i++) {
 
           .subscribe(
             res => {
-              console.log(res)
+              //console.log(res)
 
               this.adGroupService.updateAdgroup(id, {
                 status: res['status_adgroup']
@@ -1541,7 +1695,7 @@ for (var i = 0; i < dateArr.length; i++) {
 
           .subscribe(
             res => {
-              console.log(res)
+              //console.log(res)
 
               this.adGroupService.deleteAdGroup(id).then(res => {
                 Swal.fire(
@@ -1577,20 +1731,20 @@ for (var i = 0; i < dateArr.length; i++) {
     return new Promise(resolve => {
       
       this.adGroupService.getListAdGroup(this.id_campagne).forEach(child => {
-        console.log(child)
+        //console.log(child)
         if (child.length == 0) {
-          console.log("aucun groupe d'annonce")
+          //console.log("aucun groupe d'annonce")
           this.ad_groups_list_id = []
           this.ad_group_tab_content = []
         } else if (child.length == 1) {
-          console.log("un seul groupe")
+          //console.log("un seul groupe")
           this.ad_groups_list_id.push(child[0]['id'])
           this.ad_group_tab_content.push(child[0]["ad_group_id"])
         } else {
           
-          console.log('plusieurs groupes')
+          //console.log('plusieurs groupes')
           for (let i = 0; i < child.length; i++){
-            console.log(`child i ${child[i]}`)
+            //console.log(`child i ${child[i]}`)
             this.ad_groups_list_id.push(child[i]['id'])
             this.ad_group_tab_content.push(child[i]["ad_group_id"])
           }
@@ -1600,9 +1754,9 @@ for (var i = 0; i < dateArr.length; i++) {
                 this.ad_groups_list_id.push(child[i]['id']) */
             
             /* if (child.length > 0) {
-              console.log(child)
+              //console.log(child)
               child.forEach(element => {
-                console.log(element['id'])
+                //console.log(element['id'])
                
               })
               
@@ -1620,16 +1774,16 @@ for (var i = 0; i < dateArr.length; i++) {
         for (let i = 0; i < this.ad_group_tab_content.length; i++){
           this.adsService.getListAd(this.ad_group_tab_content[i]).forEach(child => {
             if (child.length == 0) {
-          console.log("aucune annonce")
+          //console.log("aucune annonce")
           this.ads_list_id = []
           //this.ad_group_tab_content = []
         } else if (child.length == 1) {
-          console.log("une seule annonce")
+          //console.log("une seule annonce")
           this.ads_list_id.push(child[0]['id'])
          
         } else {
           
-          console.log('plusieurs annonces')
+          //console.log('plusieurs annonces')
           for (let i = 0; i < child.length; i++){
             this.ads_list_id.push(child[i]['id'])
            
@@ -1670,20 +1824,20 @@ for (var i = 0; i < dateArr.length; i++) {
           datatype: "json",
           contentType: 'application/json',
           success: function (response) {
-            console.log(response)
+            //console.log(response)
             if (response.status == "ok") {
-              console.log(response.handler)
+              //console.log(response.handler)
 
             }
           },
           error: function (err) {
-            console.log(err)
+            //console.log(err)
           },
 
           data: JSON.stringify(data),
         }).then((res) => {
 this.getListIdAd().then(res => {
-      console.log(this.ad_groups_list_id)
+      //console.log(this.ad_groups_list_id)
     
       
    this.notesService.deleteNote(this.id, this.ad_groups_list_id, this.ads_list_id); 
@@ -1756,7 +1910,7 @@ this.getListIdAd().then(res => {
      this.button_payments = true
   }
   onEndDateChange(args) {
-    console.log(args.value)
+    //console.log(args.value)
     if (args.value != undefined) {
       this.newEndDate = args.value.toString()
       
@@ -1767,10 +1921,10 @@ this.getListIdAd().then(res => {
     }
   
   onStartDateChange(args) {
-    console.log(args.value)
+    //console.log(args.value)
     if (args.value != undefined) {
       this.newStartDate = args.value.toString()
-      console.log(this.newStartDate)
+      //console.log(this.newStartDate)
       
     } else {
       this.newStartDate = ""
@@ -1784,9 +1938,9 @@ this.getListIdAd().then(res => {
     var tabEnd = this.endDateFrench.split("/")
     var frenchDateStart = tabStart[2] + "-" + tabStart[1] + "-" + tabStart[0]
     var frenchDateEnd = tabEnd[2] + "-" + tabEnd[1] + "-" + tabEnd[0]
-    console.log(date)
-    console.log(new Date(frenchDateStart))
-    console.log(new Date(frenchDateEnd))
+    //console.log(date)
+    //console.log(new Date(frenchDateStart))
+    //console.log(new Date(frenchDateEnd))
     var today_date = new Date().getDate()
     var today_day = new Date().getDay()
     var years = new Date().getFullYear()
@@ -2423,14 +2577,24 @@ this.getListIdAd().then(res => {
     }
 
 
-    console.log(`startDate: ${this.startDate}, updatedStartDate: ${this.UpdatedStartDate}`)
-    console.log(`endDate: ${this.endDate}, updatedEndDate: ${this.UpdatedEndDate}`)
-    console.log(`startDateFrench: ${this.startDateFrench.replace("/", "-").replace("/", "-")}, endDateFrench: ${this.endDateFrench.replace("/", "-").replace("/", "-")}`)
-    console.log(this.today)
+    //console.log(`startDate: ${this.startDate}, updatedStartDate: ${this.UpdatedStartDate}`)
+    //console.log(`endDate: ${this.endDate}, updatedEndDate: ${this.UpdatedEndDate}`)
+    //console.log(`startDateFrench: ${this.startDateFrench.replace("/", "-").replace("/", "-")}, endDateFrench: ${this.endDateFrench.replace("/", "-").replace("/", "-")}`)
+    //console.log(this.today)
  */
   }
 
 
+
+  listCampagne() {
+    this.router.navigate(['CampaignList']).then((value) => {
+      if (value === true) {
+        window.location.replace(SERVER.url_redirect)
+        
+      }
+    })
+    
+  }
   
   setStartDate(): Promise<any> {
     return new Promise(resolve => {
@@ -2448,13 +2612,13 @@ this.getListIdAd().then(res => {
     var date = `${years}${month}${day}`
     this.isCreating = true
 if (this.startDate == date || this.endDate == date) {
-     /*    console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
-      console.log(`end date from me: ${date}`)  */
+     /*    //console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
+      //console.log(`end date from me: ${date}`)  */
        resolve('error')
         
       } else {
   this.notesService.updateStartDate(this.id, this.id_campagne, date, this.UpdatedStartDate)
-  console.log(this.id)
+  //console.log(this.id)
           
         resolve('ok')
       }
@@ -2480,8 +2644,8 @@ if (this.startDate == date || this.endDate == date) {
     var date = `${years}${month}${day}`
     this.isCreating = true
 if (this.endDate == date || this.startDate == date) {
-     /*    console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
-      console.log(`end date from me: ${date}`)  */
+     /*    //console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
+      //console.log(`end date from me: ${date}`)  */
           resolve('error')
           
 
@@ -2494,7 +2658,7 @@ if (this.endDate == date || this.startDate == date) {
   
  
   handleSimulatedImpressionsCount() {
-    console.log('keyup')
+    //console.log('keyup')
     $('#error_recharge').hide()
     this.isSimulation = true
     var montant = $("#montant").val()
@@ -2520,7 +2684,7 @@ if (this.endDate == date || this.startDate == date) {
   }
 
    handleIfValide() {
-    console.log('keyup')
+    //console.log('keyup')
     $('#error_recharge').hide()
     var montant = $("#montant").val()
     if (montant < 20000) {
@@ -2657,14 +2821,14 @@ if (this.endDate == date || this.startDate == date) {
                 }
             },
             willGetToken: function () {
-                console.log("Je me prepare a obtenir un token");
+                //console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
@@ -2672,7 +2836,7 @@ if (this.endDate == date || this.startDate == date) {
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                console.log('non success response ', jsonResponse);
+                //console.log('non success response ', jsonResponse);
                 alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
@@ -2730,7 +2894,7 @@ if (this.endDate == date || this.startDate == date) {
     })
       .subscribe(
         res => {
-          console.log(res)
+          //console.log(res)
            this.notesService.updateNote(this.id, { budget: this.budget_to_place , dailyBudget: res[0]['dailyBudget']}).then(() => {
              this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
                
@@ -2810,14 +2974,14 @@ if (this.endDate == date || this.startDate == date) {
                 }
             },
             willGetToken: function () {
-                console.log("Je me prepare a obtenir un token");
+                //console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
@@ -2826,7 +2990,7 @@ if (this.endDate == date || this.startDate == date) {
               self.isCreating = false
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                console.log('non success response ', jsonResponse);
+                //console.log('non success response ', jsonResponse);
                 alert(jsonResponse.errors);
               selector.prop('disabled', false);
               self.isCreating = false

@@ -1,6 +1,7 @@
 <ng-template #isConnected>
   <main>
-    <div  class="height-full text-center " style="background:url(assets/img/images/homepage-header-960px.jpg) no-repeat left bottom; background-size:cover;">
+       <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
+    <div  class="height-full text-center " style="background:url(assets/img/images/bureau.jpg) no-repeat left bottom; background-size:cover;">
     <div class="row">
       <div class="col-md-6">
 
@@ -9,173 +10,47 @@
         <div class="row">
           <div class="col-md-12">
 
-            <img src="assets/img/adafri.png" alt="" style="width:35%;">
-               <div class="card my-3 card-block d-flex no-b text-white" style=" background: rgba(66, 122, 101, 0.5);">
-                          <div class="card-body align-items-center d-flex justify-content-center no-b">
-                              <div>
-                                  <h5 class="card-title">Adafri votre plateforme de publicité</h5>
-                                  <h5 class="card-text">{{email}}</h5>
-                                   <h5 class="card-text">Porte-feuille: {{accountValue}} CFA</h5>
+            <img [src]="photoUrl" alt="" style="width:35%;">
+              <!-- <h5 class="adafri-police text-white" style="margin-top: 60px">Bienvenue</h5>
+                                  <h5 class="adafri-police text-white" style="margin-top: 20px">{{email}}</h5> -->
+                <h5 class="adafri-police text-white" style="margin-top: 20px;">Bienvenue {{email}}</h5>
+                <div class="row">
+                    <div class="col">
+                    <h5 class="adafri-police text-white" style="margin-top: 10px">Votre solde est de: {{accountValue}} CFA</h5>
+                    </div>
+                    
+                </div>
+
+                    
+                                 
                                   
-                              </div>
-                          </div>
-                          <div>
-                          </div>
-                      </div>
           </div>
       
         </div>
+        <br>
+        <br>
         <div class="row">
          <div class="col-md-12">
            <div class="text-center justify-content-between">
-
-                    <a  class="btn btn-md btn-social facebook teal darken-1 text-white text-center r-20" (click)="go()">
+             
+<img class='img-responsive animated pulse fast infinite' style="border-radius: 400px" src="assets/img/images/play.png" (click)="go()">
+                  <!--   <a  class="btn btn-md btn-social facebook adafri-background animated pulse infinite text-white text-center r-20" (click)="go()">
                         <i class="icon-play"></i>
                         Démarrer
-                    </a>
-    <a  class="btn btn-md btn-social google red lighten-1 text-white text-center r-20" (click)="logout()">
+                    </a> -->
+   <!--  <a  class="btn btn-md btn-social google red lighten-1 text-white text-center r-20" (click)="logout()">
         <i class="icon-highlight_off"></i>
         Deconnexion
-    </a>
+    </a> -->
   </div>
          </div>
-              <!--  <div class="col-md-6">
-
-            
-                             <div class="row no-b" style="margin-top: 90px">
-            <div class="col-md-4">
-                <div class="card my-3 no-b">
-
-                    <div class="card-image text-warning no-b">
-                        <img src="assets/img/images/etape1.jpg" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="card my-3 no-b">
-
-                    <div class="card-image text-info">
-                         <img src="assets/img/images/etape2.jpg" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="card my-3 no-b">
-
-                    <div class="card-image">
-                        <img src="assets/img/images/etape3.jpg" alt="">
-                    </div>
-                </div>
-            </div>
-           
-        </div>
-          </div> -->
+         
         </div>
     </div>
     </div>
     
      
 
-     <!--    <div class="row ">
-           <div class="row no-b" >
-                <div class="col-md-6 no-b">
-                    <img src="assets/img/adafri.png" alt="" style="width:35%">
-                </div>
-                <div class="col-md-6 no-b" >
-            
-               <div class="card my-3 card-block d-flex no-b teal lighten-3 text-white">
-                    <div class="card-body align-items-center d-flex justify-content-center no-b">
-                        <div>
-                            <h5 class="card-title">Adafri votre plateforme de publicité</h5>
-                            <h5 class="card-text">{{email}}</h5>
-                             <h5 class="card-text">Porte-feuille: {{accountValue}} CFA</h5>
-                            
-                        </div>
-                    </div>
-                    <div class="col-md-6 ">
-
-                        <div class="card my-3 card-block d-flex shadow no-b teal lighten-3 text-white">
-                            <div class="card-body align-items-center d-flex justify-content-center">
-                                <div>
-                                    <h5 class="card-title">Adafri votre plateforme de publicité</h5>
-                                    <h5 class="card-text">{{email}}</h5>
-                                    <h5 class="card-text">Porte-feuille: {{accountValue}} CFA</h5>
-
-                                </div>
-                            </div>
-                            <div>
-                            </div>
-                        </div>
-                        <div class="form-row text-center justify-content-between " style="margin-top: 30px">
-
-                            <a class="btn btn-md btn-social facebook teal darken-1 text-white text-center r-20" href="/dist">
-                                <i class="icon-play"></i> Démarrer
-                            </a>
-                            <a class="btn btn-md btn-social google red lighten-1 text-white text-center r-20" (click)="logout()">
-                                <i class="icon-highlight_off"></i> Deconnexion
-                            </a>
-                        </div>
-                        <br>
-                        <br>
-                        <br>
-
-
-                    <a  class="btn btn-md btn-social facebook teal darken-1 text-white text-center r-20" (click)="go()">
-                        <i class="icon-play"></i>
-                        Démarrer
-                    </a>
-    <a  class="btn btn-md btn-social google red lighten-1 text-white text-center r-20" (click)="logout()">
-        <i class="icon-highlight_off"></i>
-        Deconnexion
-    </a>
-  </div>
-  <br>
-  <br>
-  <br>
-         
-         
-                   
-                </div>
-            </div>
-                    <div class="row no-b" style="margin-top: 90px">
-            <div class="col-md-4">
-                <div class="card my-3 no-b">
-
-                    <div class="card-image text-warning no-b">
-                        <img src="assets/img/images/etape1.jpg" alt="">
-                    </div>
-                </div>
-                <div class="row shadow bg-dark" style="margin-top: 30px">
-                    <div class="col">
-                        <div class="card my-3 no-b">
-
-                            <div class="card-image text-warning">
-                                <img src="../../../../assets/img/images/etape1.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 ">
-                        <div class="card my-3 no-b">
-
-                            <div class="card-image text-info">
-                                <img src="assets/img/images/etape2.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 ">
-                        <div class="card my-3 no-b">
-
-                            <div class="card-image">
-                                <img src="assets/img/images/etape3.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-           
-        </div>
-        </div> -->
         
     </div>
     <!-- #primary -->
@@ -184,107 +59,279 @@
 </ng-template>
 
 <main *ngIf="!(auth.user | async); else isConnected">
-
-<section class="login-block height-full" style="background:url(assets/img/images/homepage-header-960px.jpg) no-repeat left bottom; background-size:cover;">
+ <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
+<section class="login-block height-full"  style="background:url(assets/img/images/fond-sombre.png) no-repeat left bottom; background-size: cover
+">
     
 	
 
      
-<!-- 		<div class="col-md-8 banner-sec">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="margin-top: 0px !important">
-                 <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                  </ol>
-            <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="img-responsive d-block" src="assets/img/images/Bloc NÃ‚Â°4_prefooter.jpg" alt="First slide" style="height: 500px; ">
- 
-    </div>
-    <div class="carousel-item">
-      <img class="img-responsive d-block img-fluid" src="assets/img/images/etape2.jpg" alt="First slide" style="height: 500px; ">
-  
-    </div>
-    <div class="carousel-item">
-      <img class="img-responsive d-block img-fluid" src="assets/img/images/etape3.jpg" alt="First slide" style="height: 500px; ">
 
-  </div>
-            </div>	   
-		    
-		</div>
-  </div> -->
-  <div class="col-md-4 login-sec teal darken-4"  *ngIf="!newUser" style="float: right; opacity: 0.5; border-radius: 20px;">
-		    <h2 class="text-center">Inscription</h2>
-		    <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
-  <div class="form-group">
-    <label for="exampleInputEmail1" class="text-uppercase text-white">Email</label>
-    <input type="text" class="form-control" placeholder="Adresse email"  formControlName="email" required>
-    
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1" class="text-uppercase text-white">Mot de passe</label>
-    <input type="password" class="form-control" placeholder="mot de passe"  formControlName="password" required>
-  </div>
-  
-  
-    <div class="form-check">
-    <label class="form-check-label">
-     <!--  <input type="checkbox" class="form-check-input"> -->
-    <small class="text-white"> Vous Ãªtes membre ? <a class="forget-pass" (click)="toggleForm()"> Connexion</a></small>
-    </label>
-                    <button type="submit" class="btn btn-login float-right" style="font-size: 12px">S'inscrire</button>
-                </div>
+  <div class="row">
+       
+    <div class="col-md-6" >
+          <div id="particles-js"></div> 
+        <div class=" d-none d-md-inline d-sm-none" >
 
-            </form>
-            <div class="copy-text"><span class="text-white">Make with</span> <i class="fa fa-heart"></i> <span class="text-white">your own banner</span></div>
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 300px; height: 10px">
+                                    
+                                 </div>
+                                 <div  style="margin-top: -5px;">
+                                     <h5 class="text-white font-weight-bold" style="font-family: 'soleil', sans-serif ">
+                                         People. Products. Software</h5>
+                                    
+                                 </div>
+                             </div>
         </div>
+    </div>
+            <div class="col-md-6 text-center"  *ngIf="!newUser">
+            <div class="row" style=" margin-top: -50px !important">
+                <div class="col-md-12 text-center">
+                    <img src="assets/img/adafri.png" class="img-responsive d-inline-block" alt="" style="width:25%;">
 
-        <div class="col-md-4 login-sec teal darken-4" *ngIf="newUser" style="float:right; opacity: 0.5; border-radius: 20px;">
-            <h2 class="text-center">Connexion</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                 <div class="col-md-12 text-center">
+         <div class="login-sec adafri-background d-inline-block" style="border-radius: 40px; margin-top: -15px;">
+            <h6 class="text-center text-white font-weight-bold">Inscription</h6>
+            <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
+
+                </div>
+                <br>
+            
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
+                </div>
+
+
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+     <!-- <div class="d-flex justify-content-between">
+                            <div>
+                             
+                              
+                
+                            <img src="assets/img/images/facebook.png"  (click)="signInWithFacebook()" class="img-responsive btn-social" alt="facebook" style="width: 50%">
+                            
+                    
+                            </div>
+                            <div>
+                               
+                                
+                            <img src="assets/img/images/gmail.png"  (click)="signInWithGoogle()" class="img-responsive btn-social" alt="gmail" style="width: 50%">
+                            
+                       
+                            </div>
+                        </div> -->
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Inscription</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" (click)="toggleForm()">Vous avez déjà un compte ?</a><p style="color: #E36262; text-decoration: underline; font-size: 14px" class="font-weight-bold ">Connexion</p></small>
+
+                        </div>
+   </div>
+    </div>
+ </div>
+     
+
+  
+  
+</form>
+
+            </div>
+   </div>
+            </div>
+    <div class="row">
+     
+    
+        <div class="text-center" style="margin-top: 50px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                    
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
+                                         People. Products. Software</h5>
+                                    
+                                 </div>
+                             </div>
+        </div>
+        </div>
+    </div>
+
+</div>
+
+       
+        
+        <div class="col-md-6 text-center"  *ngIf="newUser">
+            <div class="row" style=" margin-top: -50px !important">
+                <div class="col-md-12 text-center">
+                    <img src="assets/img/adafri.png" class="img-responsive d-inline-block" alt="" style="width:25%;">
+
+                </div>
+            </div>
+            
+            <div class="row">
+                 <div class="col-md-12 text-center">
+         <div class="login-sec adafri-background d-inline-block" style="border-radius: 40px; margin-top: -15px;">
+            <h6 class="text-center text-white font-weight-bold">Connexion</h6>
             <form class="login-form" [formGroup]="userForm" (ngSubmit)="login()">
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-uppercase text-white">Email</label>
-                    <input type="text" class="form-control" placeholder="Adresse email" formControlName="email" required>
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
 
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1" class="text-uppercase text-white">Mot de passe</label>
-                    <input type="password" class="form-control" placeholder="mot de passe" formControlName="password" required>
+                <br>
+            
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
                 </div>
 
 
-                <div class="form-check">
-                    <label class="form-check-label">
-     <!--  <input type="checkbox" class="form-check-input"> -->
-    <small class="text-white"><a class="forget-pass" (click)="toggleForm()">Vous n'avez pas un compte ? Inscription</a></small>
-    </label>
-    <button type="submit" class="btn btn-login float-right" style="font-size: 12px">Connexion</button>
-  </div>
-  <div class="form-row text-center" style="margin-top: 30px">
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+     <div class="d-flex justify-content-between">
+                            <div>
+                             
+                              
+                
+                            <img src="assets/img/images/facebook.png"  (click)="signInWithFacebook()" class="img-responsive btn-social" alt="facebook" style="width: 50%">
+                            
+                    
+                            </div>
+                            <div>
+                               
+                                
+                            <img src="assets/img/images/gmail.png"  (click)="signInWithGoogle()" class="img-responsive btn-social" alt="gmail" style="width: 50%">
+                            
+                       
+                            </div>
+                        </div>
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Connexion</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" (click)="toggleForm()">Vous n'avez pas un compte ?</a><p style="color: #E36262; text-decoration: underline; font-size: 14px" class="font-weight-bold ">Inscription</p></small>
 
-    <a (click)="signInWithGoogle()" class="btn btn-md btn-block btn-social google red lighten-1 text-white text-center" style="font-size: 12px">
+                        </div>
+   </div>
+    </div>
+ </div>
+     
+  <!--   <a (click)="signInWithGoogle()" class="btn btn-md btn-block btn-social google red lighten-1 text-white text-center" style="font-size: 12px">
         <i class="icon-google"></i>
         Connexion avec Gmail
     </a>
     <a (click)="signInWithFacebook()" class="btn btn-md btn-block btn-social facebook indigo lighten-1 text-white text-center" style="font-size: 12px">
         <i class="icon-facebook"></i>
         Connexion avec Facebook
-    </a>
-  </div>
+    </a> -->
+  
   
 </form>
-<div class="copy-text"><span class="text-white">Make with</span> <i class="fa fa-heart"></i> <span class="text-white">your own banner</span></div>
-   
+
+            </div>
+   </div>
+            </div>
+    <div class="row">
+     
+    
+        <div class="text-center" style="margin-top: 50px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                    
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
+                                         People. Products. Software</h5>
+                                    
+                                 </div>
+                             </div>
+        </div>
+        </div>
+    </div>
 
 </div>
+  </div>
+
+
 </section>
 <section class="login-block1">
- <div class="card no-b shadow">
+
+     <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="text-center">
+                <div class="card my-3 card-block d-inline-block no-b animated jello" style="width: 70%" >
+                    <div class="card-body align-items-center d-flex justify-content-center">
+                        <div>
+                            <h2 class="card-title">Ad’Afri est simple d’utilisation !</h2>
+                            <p class="card-text adafri-police" style="font-size: 18px">Les régies digitales restent beaucoup trop compliquées avec leur mécanisme d’enchères en temps réél.
+
+Notre plateforme automatise vos campagnes digitales après votre règlement.
+
+Nous optimisons vos emplacements et vos enchères en fonction de la demande journalière et garantissons une diffusion de vos publicités.</p>
+                            <p class="card-text adafri-police" style="font-size: 18px">Charger les paramètres de votre campagne depuis votre canapé et laissez notre algorythme vous réferencer.</p>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+   <!--  <div class="card no-b white shadow" style="margin-top: 20px">
+        <div class="card-header white no-b text-center">
+<h2 class="text-wrap"></h2>
+        </div>
+        <div class="card-body text-center">
+            <span class="adafri-police text-wrap" style="font-size: 16px">Ad’Afri est simple d’utilisation. 
+
+</span>
+        </div>
+    </div> -->
+ <div class="card no-b"  style="margin-top: 20px">
  
-      <img class="img-responsive" src="assets/img/images/Bloc N°4_prefooter.jpg">
+      <div class="row">
+        <div class="col-md-3">
+            <img class="img-responsive" src="assets/img/images/etape1.jpg">
+        </div>
+         <div class="col-md-3">
+            <img class="img-responsive" src="assets/img/images/etape2.jpg">
+        </div>
+         <div class="col-md-3">
+            <img class="img-responsive" src="assets/img/images/etape3.jpg">
+        </div>
+         <div class="col-md-3">
+            <img class="img-responsive" src="assets/img/images/etape4.jpg">
+        </div>
+      </div>
    
   
+  </div>
+
+
+
+  <div class="card no-b">
+    <img class="img-responsive" src="assets/img/images/3raisons.jpg">
   </div>
 </section>
  

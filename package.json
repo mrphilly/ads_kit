@@ -66,6 +66,7 @@
     "ngx-image-compress": "^8.0.3",
     "ngx-pica": "^1.1.4",
     "nouislider": "^10.1.0",
+    "particles.js": "^2.0.0",
     "popper.js": "^1.15.0",
     "rxjs": "6.5.2",
     "rxjs-compat": "6.5.2",

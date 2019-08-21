@@ -43,7 +43,7 @@ export class AdGroupService {
   }
   
  getListAdGroup(campaign_id: string) {
-   console.log(parseInt(campaign_id))
+  // console.log(parseInt(campaign_id))
    
    
  return this.afs.collection('adgroup', (ref) => ref.where('campaign_id','==',parseInt(`${campaign_id}`))).snapshotChanges().pipe(
@@ -62,11 +62,11 @@ export class AdGroupService {
 
 
   addGroupVerification(user_id: string, name: string, id_campaign: string) {
-    console.log(`owner: ${user_id}, name: ${name}, campaign_id: ${id_campaign}`)
+   // console.log(`owner: ${user_id}, name: ${name}, campaign_id: ${id_campaign}`)
      return new Promise(resolve => {
       setTimeout(() => {
         this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${id_campaign}`)).where('name', '==', `${name}`).where('owner', '==', `${user_id}`)).snapshotChanges().subscribe(data => {
-          console.log(`data ${data}`)
+         // console.log(`data ${data}`)
           this.item = data
           resolve(data.length)
       })
@@ -74,12 +74,12 @@ export class AdGroupService {
     });
   }
   getAdGroupGenre(campaign_id: string, ad_group_id: any) {
-     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    // console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
     return new Promise(resolve => {
         setTimeout(() => {
        
           this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
-            console.log(el)
+           // console.log(el)
           resolve(el[0]['sexes'])
         })
       }, 2000);
@@ -87,12 +87,12 @@ export class AdGroupService {
   }
 
  getAdGroupPlacement(campaign_id: string, ad_group_id: any): Promise<any> {
-     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    // console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
     return new Promise(resolve => {
         setTimeout(() => {
        
           this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
-            console.log(el)
+           // console.log(el)
           resolve(el[0]['criterion_placement'])
         })
       }, 2000);
@@ -101,12 +101,12 @@ export class AdGroupService {
 
   
   getAdGroupAge(campaign_id: string, ad_group_id: any) {
-     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    // console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
     return new Promise(resolve => {
         setTimeout(() => {
        
           this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
-            console.log(el)
+           // console.log(el)
           resolve(el[0]['ages'])
         })
       }, 2000);
@@ -114,12 +114,12 @@ export class AdGroupService {
   }
 
    getAdGroupDevices(campaign_id: string, ad_group_id: any) {
-     console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    // console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
     return new Promise(resolve => {
         setTimeout(() => {
        
           this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
-            console.log(el)
+           // console.log(el)
           resolve(el[0]['devices'])
         })
       }, 2000);
@@ -129,11 +129,11 @@ export class AdGroupService {
    var genre_legnth = genre.length;
    return await this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
   
-     console.log(`value:`)
-     console.log(value)
-     console.log(`gender:`)
-     console.log(genre)
-     console.log(`concat`)    
+    // console.log(`value:`)
+    // console.log(value)
+    // console.log(`gender:`)
+    // console.log(genre)
+    // console.log(`concat`)    
     
         this.http.post(SERVER_URL+'/targetGender', {
        'ad_group_id': ad_group_id,
@@ -142,7 +142,7 @@ export class AdGroupService {
     })
       .subscribe(
         res => {
-          console.log(`res from location backend: ${res}`)
+         // console.log(`res from location backend: ${res}`)
           this.updateAdgroup(id, {sexes: genre })
         },
         err => {
@@ -217,8 +217,8 @@ export class AdGroupService {
     })
       .subscribe(
         res => {
-          console.log(`res from location backend: ${res}`)
-          console.log(res)
+         // console.log(`res from location backend: ${res}`)
+         // console.log(res)
           this.updateAdgroup(id, {placement: res, criterion_placement: res })
         },
         err => {
@@ -243,11 +243,11 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
    
    return await this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
   
-     console.log(`value:`)
-     console.log(value)
-     console.log(`devices:`)
-     console.log(devices)
-     console.log(`concat`)    
+    // console.log(`value:`)
+    // console.log(value)
+    // console.log(`devices:`)
+    // console.log(devices)
+    // console.log(`concat`)    
     
         this.http.post(SERVER_URL+'/targetDevices', {
        'ad_group_id': ad_group_id,
@@ -256,7 +256,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
     })
       .subscribe(
         res => {
-          console.log(`res from location backend: ${res}`)
+         // console.log(`res from location backend: ${res}`)
           this.updateAdgroup(id, {devices: devices })
         },
         err => {
@@ -297,15 +297,15 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
 
    return await this.getAdGroupAge(campaign_id, ad_group_id).then(value => {
   
-     console.log(`value:`)
-     console.log(value)
-     console.log(`age:`)
-     console.log(age)
+    // console.log(`value:`)
+    // console.log(value)
+    // console.log(`age:`)
+    // console.log(age)
   
   /*    var tab = _.differenceWith(value, genre, _.isEqual)
-     console.log(tab)
+    // console.log(tab)
      if (tab = []) {
-       console.log(`genre déjà ciblé`)
+      // console.log(`genre déjà ciblé`)
      } else {
         
      }*/
@@ -318,7 +318,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
     })
       .subscribe(
         res => {
-          console.log(`res from location backend: ${res}`)
+         // console.log(`res from location backend: ${res}`)
           this.updateAdgroup(id, {ages: age })
         },
         err => {
@@ -342,12 +342,12 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
 
   
   async addAdGroup(campaign_id: any, user_id: string, name: string): Promise<any> {
-    console.log(`User id: ${user_id}`)
+   // console.log(`User id: ${user_id}`)
   
   
     return await new Promise(resolve => {
       this.addGroupVerification(user_id, name, campaign_id).then(value => {
-      console.log(`promise result: ${value}`)
+     // console.log(`promise result: ${value}`)
       
       if (`${value}` == '0') {
         
@@ -357,7 +357,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
     })
       .subscribe(
         res => {
-          console.log(`add group ${res}`)
+         // console.log(`add group ${res}`)
           if (res['status'] == "ok") {
            this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res=>{
             Swal.fire({

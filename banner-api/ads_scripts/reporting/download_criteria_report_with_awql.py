@@ -49,20 +49,28 @@ def get_campaign_report_performance(client, CampaignId):
 
   # You can provide a file object to write the output to. For this
   # demonstration we use sys.stdout to write the report to the screen.
-  filename = "../user__reporting/campaign_report/"+CampaignId+".csv"
-  dirname = os.path.dirname(filename)
-  if not os.path.exists(dirname):
-    os.makedirs(dirname)
+  dirname = os.path.dirname(__file__)
+  print(dirname)
+
+  filename = CampaignId + ".csv"
+  path = os.path.join(dirname, "../../uploads/"+filename)
+
+  #dirname = os.path.dirname(filename) 
+  #print(os.path.exists(dirname))
+  #if not os.path.exists(dirname):
+  #  print('creating')
+  #  os.makedirs(dirname)
   report_downloader.DownloadReportWithAwql(
-      report_query, 'CSV',open(filename, "w"), skip_report_header=True,
+      report_query, 'CSV',open(path, "w"), skip_report_header=True,
       skip_column_header=False, skip_report_summary=False,
       include_zero_impressions=True)
 
   result= []
   
-  input_file = csv.DictReader(open(filename))
+  input_file = csv.DictReader(open(path))
   for row in input_file:
     result.append(row)
+  print(result)
 
 
   report = {

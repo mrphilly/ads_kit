@@ -1005,3 +1005,15 @@ list-group-item.active {
 .image-checkbox-checked .fa {
   display: block !important;
 }
+
+.adafri{
+    color: #4cb5b1 !important
+}
+
+.adafri-background{
+    background-color: #4cb5b1 !important;
+}
+
+.adafri-police{
+    font-family: "merriweather", serif;
+}

@@ -96,20 +96,9 @@
     <div class="sticky">
         <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
-             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar teal darken-1 shadow" style="height: 60px">
-            <div class="relative">
-                <div class="d-flex">
-                    <div class="d-md-block">
-                         <a (click)="go()">
-                        <figure class="avatar">
-                            <img src="assets/img/adafri.png">
-                            
-                        </figure>
-                    </a>
-                       
-                    </div>
-                </div>
-            </div>
+             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow" style="height: 60px">
+            <img class="d-none d-md-block" src="assets/img/adafri.png" style="width: 5%; float: left" (click)="go1()">
+            <img class="d-md-none d-sm-block" src="assets/img/adafri.png" style="width: 15%; float: left" (click)="go1()">
             <!--Top Menu Start -->
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
@@ -117,16 +106,16 @@
        
         <!-- Notifications -->
         <li  style="margin-top: 8px; cursor: pointer">
-             <a class="btn-fab btn-fab-md  text-white  btn-social" (click)="action_2()" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);  "><i class="icon-add_to_queue"></i></a>
+            
         </li>
          <li style="margin-top: 3px">
-            <a class="nav-link text-white" title="Argent disponible dans votre compte" style="font-size: 12px">
-                <i class="icon-money-bag text-white"></i> {{accountValue}} CFA
+            <a class="nav-link text-black-50" title="Argent disponible dans votre compte" style="font-size: 12px">
+                <i class="icon-money-bag"></i> {{accountValue}} CFA
             </a>
         </li>
          <li class="dropdown custom-dropdown notifications-menu" *ngIf="!_init_campagne" style="margin-top: 5px">
             <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
-                <i class="icon-notifications_none text-white"></i>
+                <i class="icon-notifications_none text-black-50"></i>
                 <span class="badge badge-danger badge-mini rounded-circle">{{numberOfNotifications}}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
@@ -156,7 +145,7 @@
         <!-- User Account-->
         <li class="dropdown custom-dropdown user user-menu ">
             <a href="#" class="nav-link text-white" data-toggle="dropdown" style="font-size: 12px">
-                <p class="text-white d-none" style="font-size: 12px">{{email}}</p>
+          <!--       <p class="text-white d-none" style="font-size: 12px">{{email}}</p> -->
                
                                                         <span  style="font-size: 12px" class="avatar-letter avatar-letter-{{email_letter | lowercase}} avatar-md circle"></span>
                                                         <i class="icon-more_vert"></i>
@@ -191,22 +180,131 @@
     </div>
     
     <!--#navbar-->
-    <div class="container-fluid" *ngIf="_init_campagne">
-   <div class="text-center p-5">
-       <i class="icon-warning3 s-128 text-warning"></i>
+
+   
+
+    <div class="container-fluid pt-5" *ngIf="_init_campagne">
+         <div id="particles-js">
+
+     </div>
+
+     <div class="row">
+        <div class="col-md-6">
+             <div class="text-center p-5 white shadow1 r-20 d-md-block d-none animated bounceIn delay-1s" style="position: absolute; width: 60%
+">
+       <img class="img-responsive" src="assets/img/init.png">
        <br>
        <br>
-       <small><strong>Vous devez creer une nouvelle campagne publicitaire pour commencer</strong></small>
+       <small class="adafri-police text-black-50" style="font-size: 18px">Vous devez creer une nouvelle campagne publicitaire pour commencer</small>
        <br>
        <br>
        <div class="form-row text-center">
-           <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control" name="note" id="campagne" style="display: inline-block">
+           <div class="col-md-12 text-center">
+
+               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%">
+           </div>
 
        </div>
         <br>
-       <button href="#" class="btn teal darken3 text-white shadow btn-lg r-20 btn-social text-center" (click)="addCampaign()" [disabled]="name?.length < 5 || name?.length > 15" style="display: inline-block; font-size: 14px"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</button>
-   </div>
+       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
+       <br>
    
+          
+       
+
+          
+   </div>
+   <div class="text-center p-5 white shadow1 r-20 d-md-none d-sm-block animated bounceIn delay-1s" style="position: absolute; width: 95%; margin-left: -5px">
+       <img class="img-responsive" src="assets/img/init.png">
+       <br>
+       <br>
+       <small class="adafri-police text-black-50" style="font-size: 18px">Vous devez creer une nouvelle campagne publicitaire pour commencer</small>
+       <br>
+       <br>
+       <div class="form-row text-center">
+           <div class="col-md-12 text-center">
+
+               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%; font-size: 12px">
+           </div>
+
+       </div>
+        <br>
+       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
+       <br>
+   
+          
+       
+
+          
+   </div>
+        </div>
+                    <div class="col-md-6  d-md-block d-none">
+                        <h1 class="adafri-police text-white" style="font-size: 24px">Créez vite votre première campagne</h1>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6  " style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/vert.jpg">
+                        <!-- <div class="card no-b mb-3 shadow text-white">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-md-6 col-sm-6" style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/rose.jpg">
+                        <!-- <div class="card no-b mb-3 shadow">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6" style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/bleue.png">
+                        <!-- <div class="card no-b mb-3 shadow">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-md-6 col-sm-6" style="opacity: 0.5">
+                        <img class='img-responsive animated fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/degrade1.jpg">
+                        <!-- <div class="card no-b mb-3 shadow">
+                            <div class="card-body no-b">
+
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+                      <!--  <div class="col-md-6 d-md-none d-sm-block">
+                <div class="row">
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/vert.jpg">
+                      
+                    </div>
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateOut fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/rose.jpg">
+                     
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/bleue.png">
+                     
+                    </div>
+                    <div class="col" style="opacity: 0.5">
+                        <img class='img-responsive animated rotateOut fast infinite' style="border-radius: 400px;width: 25%" src="assets/img/images/degrade1.jpg">
+                       
+                    </div>
+                </div>
+            </div> -->
+     </div>
+   
+   
+
   
 </div>
    
@@ -285,5 +383,8 @@
     </div>
   </div>
 </div>
+
+<a class="btn-fab btn-fab-md fab-right fab-right-bottom-fixed shadow text-black-50  btn-social" *ngIf="!_init_campagne" (click)="action_2()" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);  "><img src="assets/img/images/groupe d'annonces.png"></a>
+
 <div class="control-sidebar-bg shadow white fixed"></div>
 
