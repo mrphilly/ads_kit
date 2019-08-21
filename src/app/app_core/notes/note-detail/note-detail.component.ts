@@ -505,9 +505,9 @@ export class NoteDetailComponent implements OnInit {
     //console.log(id + " " + id_campagne + " " + name + " " + status + " "+dailyBudget+" "+numberOfDays);
     id_campagne = id_campagne;
     
-    id = id;
-    name = name;
-    status = status;
+    this.id = id;
+    this.name = name;
+    this.status = status;
     this.ad_group_id = ad_group_id
     this.id_campagne = id_campagne
     this.budget = budget

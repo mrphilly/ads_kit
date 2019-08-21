@@ -310,7 +310,27 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
 
         // In a real app: dispatch action to load the details here.
       }
-
+      if (window.location.href.includes('defineBudget')) {
+         setTimeout(() => {
+                   
+                    document.getElementById(params['idC']).click()
+         }, 2000)
+       
+            setTimeout(() => {
+                   
+              document.getElementById("v-pills-payments-tab").click()
+              this.isCreating = false
+              
+            }, 2000)
+         setTimeout(() => {
+                   
+              document.getElementById("button_define_budget").click()
+           this.isCreating = false
+           
+           window.history.pushState("","",REDIRECT_URL)
+              
+                  }, 2000)
+      }
 
       if (typeof (params['money']) != "undefined" && typeof (params['idC']) != "undefined") {
          

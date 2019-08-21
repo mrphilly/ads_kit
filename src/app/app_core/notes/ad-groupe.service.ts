@@ -359,6 +359,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
         res => {
          // console.log(`add group ${res}`)
           if (res['status'] == "ok") {
+            var id= res['id']
            this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res=>{
             Swal.fire({
               title: 'Ajouter un nouveau groupe',
@@ -370,9 +371,10 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
               confirmButtonText: 'Ok'
             }).then((result) => {
               if (result.value) {
-                resolve('ok')
+               
+                resolve(id)
               } else {
-                resolve('ok')
+                resolve(id)
               }
             })
          })

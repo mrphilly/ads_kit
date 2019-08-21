@@ -3,15 +3,15 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
 } from '@angular/router';
 import {
   HttpClient
 } from '@angular/common/http';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { s } from '@angular/core/src/render3';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -748,6 +748,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   }
 
   checkAdType(img, width, height, url, name) {
+    
     //console.log('click on img')
     //console.log(img)
     if (this.element_checked == "") {
@@ -755,6 +756,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.element_checked = "#" + img
       this.selectedWidth = width
       this.selectedHeight = height
+     
       this.illustration = true
       this.illustrationUrl = url
       this.selectedAdType=name
@@ -851,6 +853,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   }
   
   handleCreatives() {
+    
     var self = this
     this.ad_type="CREATIVE"
     this.chooseBlock = false
@@ -3067,7 +3070,7 @@ if (this.budget === 0) {
           confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
-            window.location.replace(REDIRECT_URL+"/"+0+"/"+self.idC)
+            window.location.replace(REDIRECT_URL+"/defineBudget/"+0+"/"+self.idC)
             $("#"+this.idC).trigger("click")
           }
         })

@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'CampaignList', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'createCampaign', component: CreateCampaignComponent, canActivate: [AuthGuard]},
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
+  { path: 'defineBudget/:number/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
  
     { path: ':money/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: ':idC/:campagne_id/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent, canActivate: [AuthGuard] },

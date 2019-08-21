@@ -434,7 +434,7 @@ getDateArray(start, end) {
     });
   }
   ngOnInit() {
-    alert(this.id_campagne)
+   
     /*        L10n.load({
           'fr': {
             'datepicker': {
@@ -1237,11 +1237,19 @@ xhr.send();
   }
   addAdGroup() {
     this.isCreating = true;
+    var self = this
     var name = $('#adgroup').val()
     this.adGroupService.addAdGroup(this.id_campagne, this.uid, name).then(res => {
+      console.log(res)
       if (res != "error") {
+        
         this.isCreating = false
         this.isAdGroup = false
+        setTimeout(() => {
+          document.getElementById(res).click()
+          
+        }, 1500)
+       
         
       }
     }).catch(err => {
@@ -1375,9 +1383,11 @@ xhr.send();
             title: 'Modification!',
             text: 'Aucune modification détectée',
             type: 'warning',
-            showCancelButton: false,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+              buttonsStyling: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
             confirmButtonText: 'Ok'
           })
           this.isCreating = false
@@ -1584,8 +1594,8 @@ xhr.send();
                 text: "Erreur serveur, Réssayer",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               })
 
@@ -1597,9 +1607,11 @@ xhr.send();
             title: 'Modification!',
             text: 'Aucune Modification détectée',
             type: 'warning',
-            showCancelButton: false,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+              buttonsStyling: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
             confirmButtonText: 'Ok'
           })
 
@@ -1610,9 +1622,11 @@ xhr.send();
             title: 'Errur!',
             text: 'Données invalides',
             type: 'error',
-            showCancelButton: false,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+              buttonsStyling: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
             confirmButtonText: 'Ok'
           })
         }
@@ -1686,8 +1700,8 @@ xhr.send();
       text: "Voulez vous supprimer votre groupe d'annonce!",
       type: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
       confirmButtonText: 'Oui, supprimer!'
     }).then((result) => {
       if (result.value) {
@@ -1851,9 +1865,11 @@ this.getListIdAd().then(res => {
             title: 'Supprimer!',
             text: 'Votre campagne a été supprimée avec succès.',
             type: 'success',
-            showCancelButton: false,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+              buttonsStyling: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
             confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.value) {
@@ -1878,7 +1894,7 @@ this.getListIdAd().then(res => {
   } */
 
   goAdGroups(ad_group_name: string, idA: string, ad_group_id: string) {
- 
+    
      this.router.navigate(['ads', ad_group_name, this.id, idA, ad_group_id, this.id_campagne])
    
   }

@@ -238,18 +238,27 @@
 
                           <tr class="text-center" *ngFor="let adgroup of adgroups | async" class="no-b white" title="cliquez sur le nom du groupe pour créer des annonces">
                             <!-- Check box -->
-                            <!-- <td>
-                                        <input type="checkbox">
-                                    </td> -->
+                             <td class="text-center">
+                                        <div class="dropdown d-inline-block" style="margin-top: 10px" *ngIf="!isRoller">
+    <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-pause" *ngIf="adgroup?.status==='PAUSED'"></i> 
+       <i class="icon-circle text-success"  *ngIf="adgroup?.status==='ENABLED'"></i> 
+     
+    </button> {{adgroup?.name}}
+    <div class="dropdown-menu">
+      <a class="dropdown-item" *ngIf="adgroup?.status==='PAUSED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-success"></i> Activer</a>
+       <a class="dropdown-item" *ngIf="adgroup?.status==='ENABLED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-danger"></i> Désactiver</a>
+      <a class="dropdown-item text-danger" (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)" ><i class="icon-delete"></i> Supprimmer</a>
+    </div>
+     <!-- <div class="dropdown-menu"  *ngIf="adgroup?.status==='ENABLED'">
+       <a class="dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
+      <a class="dropdown-item text-danger"  (click)="updateCampaign(adgroup?.id, adgroup?.id_campagne, adgroup?.name, adgroup?.status)"><i class="icon-pause"></i> Désactiver</a>
+      <a class="dropdown-item text-danger"  (click)="deleteCampaign(adgroup?.id, adgroup?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
+    </div> -->
+  </div>
+                                    </td>
                             <!-- Page name -->
-                            <td class="text-center no-b">
-                    <div class="d-inline-block">
-                                <div class="d-flex">
-                                       
-                              
-                              </div>
-                    </div>
-                            </td>
+                           
                             <!-- Page size -->
                             <!-- Status -->
                            <!--  <td *ngIf="adgroup?.status==='PAUSED'" class="text-center no-b">
@@ -284,7 +293,7 @@
                               </a>
                             </td> -->
                             <td  class="text-center no-b">
-                              <a class="btn btn-sm btn-social white r-20" style="border: 1px solid grey; font-size: 14px" (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)">
+                              <a class="btn btn-sm btn-social white r-20" style="border: 1px solid grey; font-size: 14px" (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" [id]="adgroup?.ad_group_id">
                                 <i class="icon-cloud-upload3"></i> Remonter vos images
                               </a>
                              
@@ -367,7 +376,7 @@
                   <i class="icon icon-location-arrow"></i> Zone
                 </a>
 
-                <a class="btn btn-sm white text-black-50 adafri-police r-20 btn-social"  data-toggle="collapse" href="#collapseBudget" role="button" aria-expanded="false" aria-controls="collapseBudget" style="border: 1px solid grey">
+                <a class="btn btn-sm white text-black-50 adafri-police r-20 btn-social"  data-toggle="collapse" href="#collapseBudget" role="button" aria-expanded="false" aria-controls="collapseBudget" style="border: 1px solid grey" id="button_define_budget">
 
                   <i class="icon icon-money-1"></i> Budget
                 </a>
