@@ -179,7 +179,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   photoURL = ""
   selectedAdType = ""
   button_modify_image_upload = true
-  idOfphotoURLNotPublishUpload = "display_url_modify_not_publish_upload"
+  idOfDisplayUrlNotPublishUpload = "display_url_modify_not_publish_upload"
   idOfAdNameNotPublishUpload = "ad_name_modify_not_publish_upload"
   idOfphotoURLNotPublishCreatives = "display_url_modify_not_publish_creatives"
   idOfAdNameNotPublishCreatives = "ad_name_modify_not_publish_creatives"
@@ -3551,7 +3551,7 @@ if (this.budget === 0) {
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "Annuler la modification"
         this.currentIdInputName = this.idOfAdNameNotPublishUpload
-        this.currentIdInputDisplay = this.idOfphotoURLNotPublishUpload
+        this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishUpload
         
       } else {
         $("#blockUploadModified").css({ 'display': 'none' })
