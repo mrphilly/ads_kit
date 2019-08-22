@@ -9,6 +9,7 @@ import { UserLoginComponent } from './app_core/ui/user-login/user-login.componen
 import { CampaignSettingsComponent } from './app_core/notes/campaign-settings/campaign-settings.component'
 import { AnnoncesComponent } from './app_core/notes/annonces/annonces.component'
 import { CreateCampaignComponent } from './app_core/notes/create-campaign/create-campaign.component'
+import { UserProfileComponent} from './app_core/ui/user-profile/user-profile.component'
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: '', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'CampaignList', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'createCampaign', component: CreateCampaignComponent, canActivate: [AuthGuard]},
+  { path: 'UserProfile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'defineBudget/:number/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
  

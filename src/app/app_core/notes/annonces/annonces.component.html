@@ -406,22 +406,22 @@
             <li class="dropdown custom-dropdown user user-menu ">
               <a href="#" class="nav-link " data-toggle="dropdown" style="font-size: 12px">
 
-                <span style="font-size: 12px"
-                  class="avatar-letter avatar-letter-{{email_letter | lowercase}} avatar-md circle"></span>
-                <i class="icon-more_vert"></i>
+                <figure class="avatar">
+                  <img [src]='photoURL'>
+                </figure>
 
 
               </a>
               <div class="dropdown-menu p-4 dropdown-menu-right">
                 <div class="row box justify-content-between my-4">
-                  <p>{{email}}</p>
+                  
                   <div class="col">
                     <a (click)="auth.signOut()">
                       <i class="icon-apps purple lighten-2 avatar  r-5"></i>
                       <div class="pt-1">Déconnexion</div>
                     </a>
                   </div>
-                  <div class="col"><a href="#">
+                  <div class="col"><a (click)="goProfile()">
                       <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
                       <div class="pt-1">Profile</div>
                     </a></div>
@@ -1359,7 +1359,7 @@
                 </span>
               </li>
           <li>
-                <a class="btn btn-sm btn-block btn-social adafri-background adafri-police-16 text-white r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
+                <a class="btn btn-sm btn-social white border-grey adafri-police-16 text-black-50 r-20"  data-toggle="collapse" href="#collapseAge" role="button" aria-expanded="false" aria-controls="collapseAge">
 
                   <i class="ion icon-group"></i> Ciblage des âges
                 </a>
@@ -1432,7 +1432,7 @@
 
 
                <li>
-                <a class="btn btn-sm btn-block btn-social adafri-background adafri-police-16 text-white r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
+                <a class="btn btn-sm btn-social white border-grey adafri-police-16 text-black-50 r-20"  data-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false" aria-controls="collapseGenre">
 
                   <i class="ion icon-intersex"></i> Ciblage des genres
                 </a>
@@ -1503,7 +1503,7 @@
               </li>
              
               <li>
-                <a class="btn btn-sm btn-block btn-social adafri-background adafri-police-16 text-white r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
+                <a class="btn btn-sm btn-social white border-grey adafri-police-16 text-black-50 r-20"  data-toggle="collapse" href="#collapseAppareil" role="button" aria-expanded="false" aria-controls="collapseAppareil">
 
                   <i class="icon icon-devices_other"></i> Ciblage d'appareils
                 </a>

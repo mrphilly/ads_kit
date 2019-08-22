@@ -59,13 +59,13 @@ export class UserFormComponent implements OnInit {
     await this.afterSignIn();
   }
 
-  signup() {
+  /* signup() {
     this.isCreating = true;
     
     this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password']);
     this.afterSignIn()
     this.isCreating = false
-  }
+  } */
 
   login() {
     this.isCreating = true

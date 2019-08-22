@@ -64,8 +64,8 @@ firebase = pyrebase.initialize_app(config)
 
 app = Flask(__name__)
 CORS(app)
-URL_SERVER = "http://137.74.199.121:5009"
-FRONT_END_URL = "http://137.74.199.121/dist/#"
+URL_SERVER = "https://adafri.comparez.co"
+FRONT_END_URL = "https://adafri.com"
 #FRONT_END_URL = "http://localhost:4200/#"
 #URL_SERVER = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = 'uploads/'

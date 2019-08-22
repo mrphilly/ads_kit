@@ -1,58 +1,62 @@
 <ng-template #isConnected>
+    
   <main>
        <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
-    <div  class="height-full text-center " style="background:url(assets/img/images/bureau.jpg) no-repeat left bottom; background-size:cover;">
-    <div class="row">
-      <div class="col-md-6">
-
-      </div>
-      <div class="col-md-6"  style="float: right; border-radius: 20px;">
-        <div class="row">
-          <div class="col-md-12">
-
-            <img [src]="photoUrl" alt="" style="width:35%;">
-              <!-- <h5 class="adafri-police text-white" style="margin-top: 60px">Bienvenue</h5>
-                                  <h5 class="adafri-police text-white" style="margin-top: 20px">{{email}}</h5> -->
-                <h5 class="adafri-police text-white" style="margin-top: 20px;">Bienvenue {{email}}</h5>
-                <div class="row">
-                    <div class="col">
-                    <h5 class="adafri-police text-white" style="margin-top: 10px">Votre solde est de: {{accountValue}} CFA</h5>
-                    </div>
-                    
-                </div>
-
-                    
-                                 
-                                  
-          </div>
-      
-        </div>
-        <br>
-        <br>
-        <div class="row">
-         <div class="col-md-12">
-           <div class="text-center justify-content-between">
+       <div id="particles-js">
+           <div  class="height-full text-center " style="background:url(assets/img/images/bureau.jpg) no-repeat left bottom; background-size:cover;">
+           <div class="row">
+             <div class="col-md-6 text-center d-none d-md-block">
+                <h1 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h1>
+                <br>
+                <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
+             </div>
+             <div class="col-md-6 text-center d-md-none d-sm-block">
+                <h4 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h4>
+                <br>
+                <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
+             </div>
+             <div class="col-md-6"  style="float: right; border-radius: 20px;">
+               <div class="row">
+                 <div class="col-md-12">
+       
+                   <img [src]="photoUrl" alt="" style="width:35%; border-radius: 200px" id="photoProfile" (click)="triggerUpload()">
+                   
+                   
+                     <!-- <h5 class="adafri-police text-white" style="margin-top: 60px">Bienvenue</h5>
+                                         <h5 class="adafri-police text-white" style="margin-top: 20px">{{email}}</h5> -->
+                      
+       
+                           
+                                        
+                                         
+                 </div>
              
-<img class='img-responsive animated pulse fast infinite' style="border-radius: 400px" src="assets/img/images/play.png" (click)="go()">
-                  <!--   <a  class="btn btn-md btn-social facebook adafri-background animated pulse infinite text-white text-center r-20" (click)="go()">
-                        <i class="icon-play"></i>
-                        Démarrer
-                    </a> -->
-   <!--  <a  class="btn btn-md btn-social google red lighten-1 text-white text-center r-20" (click)="logout()">
-        <i class="icon-highlight_off"></i>
-        Deconnexion
-    </a> -->
-  </div>
-         </div>
-         
-        </div>
-    </div>
-    </div>
-    
-     
-
+               </div>
+               <br>
+               <br>
+               <div class="row">
+                <div class="col-md-12">
+                  <div class="text-center justify-content-between">
+                        
+       
+                            <img class='img-responsive animated pulse fast infinite d-none d-md-block' style="border-radius: 400px;  position: absolute; left: -100px" src="assets/img/images/play.png" (click)="go()">
+                             <img class='img-responsive animated pulse fast infinite d-md-none d-sm-block' style="border-radius: 400px;" src="assets/img/images/play.png" (click)="go()">
+          
+                    
         
-    </div>
+         </div>
+                </div>
+                
+               </div>
+           </div>
+           </div>
+           
+            
+       
+               
+           </div>
+
+       </div>
     <!-- #primary -->
 </main>
 
@@ -100,11 +104,16 @@
             <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
                 <div class="form-group text-center">
                   
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Username" formControlName="username" required style="width: 70%">
+
+                </div>
+                <br>
+            <div class="form-group text-center">
+                  
                     <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
 
                 </div>
                 <br>
-            
                 
                 <div class="form-group text-center">
                    
@@ -137,7 +146,7 @@
                         <div class="text-center " style="margin-top: 10px">
                              <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Inscription</button>
                              <br>
-                             <small class="adafri-plice"><a class="forget-pass text-white" (click)="toggleForm()">Vous avez déjà un compte ?</a><p style="color: #E36262; text-decoration: underline; font-size: 14px" class="font-weight-bold ">Connexion</p></small>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous avez déjà un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Connexion</p></small>
 
                         </div>
    </div>
@@ -228,7 +237,7 @@
                         <div class="text-center " style="margin-top: 10px">
                              <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Connexion</button>
                              <br>
-                             <small class="adafri-plice"><a class="forget-pass text-white" (click)="toggleForm()">Vous n'avez pas un compte ?</a><p style="color: #E36262; text-decoration: underline; font-size: 14px" class="font-weight-bold ">Inscription</p></small>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous n'avez pas un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Inscription</p></small>
 
                         </div>
    </div>
@@ -283,7 +292,7 @@
                 <div class="card my-3 card-block d-inline-block no-b animated jello" style="width: 70%" >
                     <div class="card-body align-items-center d-flex justify-content-center">
                         <div>
-                            <h2 class="card-title">Ad’Afri est simple d’utilisation !</h2>
+                            <h2 class="card-title">Vos publicités google et Facebook payables par mobile money !</h2>
                             <p class="card-text adafri-police" style="font-size: 18px">Les régies digitales restent beaucoup trop compliquées avec leur mécanisme d’enchères en temps réél.
 
 Notre plateforme automatise vos campagnes digitales après votre règlement.
@@ -360,8 +369,12 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
         </div>
       </div>
     </div>  -->
+   
 </main>
+<div *ngIf="isCreating">
+  <app-spinner-overlay [message]="message"></app-spinner-overlay>
 
+</div>
 
-
+<input type="file" (change)="upload($event)" accept=".png,.jpg" class="d-none" id="file">
 <div class="control-sidebar-bg shadow white fixed"></div>

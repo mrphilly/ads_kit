@@ -99,7 +99,7 @@ export class AuthService {
       .signInWithPopup(provider)
       .then(credential => {
       
-        this.updateUserData(credential.user).then(res => {
+        this.updateUserData(credential.user, credential.user.displayName).then(res => {
           if (res == "ok") {
             resolve('ok')
           } else {
@@ -113,7 +113,7 @@ export class AuthService {
 
   //// Anonymous Auth ////
 
-  anonymousLogin() {
+ /*  anonymousLogin() {
     return this.afAuth.auth
       .signInAnonymously()
       .then(credential => {
@@ -123,17 +123,17 @@ export class AuthService {
       .catch(error => {
         this.handleError(error);
       });
-  }
+  } */
 
   //// Email/Password Auth ////
 
-  emailSignUp(email: string, password: string): Promise<any> {
+  emailSignUp(username: string, email: string, password: string): Promise<any> {
     return new Promise(resolve => {
       this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(credential => {
         this.notify.update('Welcome new user!', 'success');
-        return this.updateUserData(credential.user).then(res => {
+        return this.updateUserData(credential.user, username).then(res => {
           if (res == "ok") {
             resolve("ok")
           } else {
@@ -160,11 +160,11 @@ export class AuthService {
         confirmButtonText: 'Ok'
       }).then((result) => {
         if (result.value) {
-              this.updateUserData(credential.user);
+              this.updateUserData(credential.user, "nameless");
           response.push(credential.user)
           
         } else {
-              this.updateUserData(credential.user);
+              this.updateUserData(credential.user, "nameless");
           response.push(credential.user)
           
         }
@@ -230,7 +230,7 @@ export class AuthService {
   }
 
   // Sets user data to firestore after succesful login
-  private updateUserData(user: User): Promise<any> {
+  private updateUserData(user: User, username): Promise<any> {
     return new Promise(resolve => {
       const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}` 
@@ -240,14 +240,14 @@ export class AuthService {
     );
     const data_notification: NotificationAccountValue = {
       uid: user.uid,
-      notification: "Veuillez dÃ©finir vos paramÃ¨tres de facturation en cliquant ici"
+      notification: "Veuillez définir vos paramètres de facturation en cliquant ici"
     };
     notificationRef.set(data_notification)
     const data: User = {
       uid: user.uid,
       email: user.email || null,
-      displayName: user.displayName || 'nameless user',
-      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+      displayName: user.displayName || username,
+      photoURL: user.photoURL || 'https://pecb.com/conferences/wp-content/uploads/2017/10/no-profile-picture.jpg',
       account_value: 0
     };
       userRef.set(data);
@@ -271,8 +271,15 @@ getUser(id: string) {
     return this.afs.doc<any>(`users/${id}`);
   }
 
-   updateUser(id: string, data: any) {
-    return this.getUser(id).update(data);
+   updateUser(id: string, data: any) :Promise<any>{
+     return new Promise(resolve => {
+       this.getUser(id).update(data).then((onFull) => {
+         resolve('ok')
+         
+       }).catch(err => {
+         resolve('error')
+       })
+    })
   }
 
   getNotification(id: string) {

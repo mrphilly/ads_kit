@@ -3,8 +3,6 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
@@ -12,6 +10,8 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -45,7 +45,7 @@ import { AdGroupService } from '../ad-groupe.service'
 import { SERVER } from '../../../../environments/environment'
 import * as chart from "chart.js/dist/Chart.min"
 /* 
-import Swal from 'sweetalert2'
+import Swal from 'sweet//alert2'
 import { Ads } from '../ads.service'
 import {AdGroupService} from '../ad-groupe.service' */
 
@@ -176,25 +176,26 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'maxlength': 'Url trop longue',
     },
   };
+  photoURL = ""
   selectedAdType = ""
   button_modify_image_upload = true
-  idOfDisplayUrlNotPublishUpload = "display_url_modify_not_publish_upload"
+  idOfphotoURLNotPublishUpload = "display_url_modify_not_publish_upload"
   idOfAdNameNotPublishUpload = "ad_name_modify_not_publish_upload"
-  idOfDisplayUrlNotPublishCreatives = "display_url_modify_not_publish_creatives"
+  idOfphotoURLNotPublishCreatives = "display_url_modify_not_publish_creatives"
   idOfAdNameNotPublishCreatives = "ad_name_modify_not_publish_creatives"
   text_construire = "Construire son visuel"
   currentIdInputName = ""
   currentIdInputDisplay = ""
   idOfAdNameCreateUpload = "ad_name_create_upload"
-  idOfDisplayUrlCreateUpload = "displayUrl_create_upload"
+  idOfphotoURLCreateUpload = "photoURL_create_upload"
   idOfAdNameCreateCreatives = "ad_name_create_creatives"
-  idOfDisplayUrlCreateCreatives = "displayUrl_create_creatives"
+  idOfphotoURLCreateCreatives = "photoURL_create_creatives"
   idOfAdNameModify = "ad_name_modifed"
-  idOfDisplayUrlModify = "displayUrl_modify"
+  idOfphotoURLModify = "photoURL_modify"
   idOfAdNameInitUpload = "ad_name_init_upload"
-  idOfDisplayUrlInitUpload = "display_url_init_upload"
+  idOfphotoURLInitUpload = "display_url_init_upload"
   idOfAdNameInitCreatives = "ad_name_init_creatives"
-  idOfDisplayUrlInitCreatives = "display_url_init_creatives"
+  idOfphotoURLInitCreatives = "display_url_init_creatives"
   text_modify = "éditer"
   upload_modified = false
   init_choose_ad_size = false
@@ -314,6 +315,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   constructor(private notesService: NotesService, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder, private router: Router) {
 
   }
+  isDone = false
   dropdownListAges = [];
   dropdownListSexes = [];
   dropdownListZones = [];
@@ -715,10 +717,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
       if (this.isNull === false) {
         if (this.ad_type==="UPLOAD") {
-          this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
+          this.currentIdInputDisplay = this.idOfphotoURLInitUpload
           this.currentIdInputName = this.idOfAdNameCreateUpload
         } else {
-            this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
+            this.currentIdInputDisplay = this.idOfphotoURLInitCreatives
           this.currentIdInputName = this.idOfAdNameInitCreatives
         }
       }
@@ -812,11 +814,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
      
      $("#block1").css("display", "block")
      this.currentIdInputName = this.idOfAdNameCreateUpload
-   this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
+   this.currentIdInputDisplay = this.idOfphotoURLCreateUpload
    } else {
      $("#block").css("display", "block")
      this.currentIdInputName = this.idOfAdNameInitUpload
-   this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
+   this.currentIdInputDisplay = this.idOfphotoURLInitUpload
    }
 
    setTimeout(() => {
@@ -862,11 +864,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
      if (this.isNull === true) {
      
     this.currentIdInputName = this.idOfAdNameCreateCreatives
-    this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
+    this.currentIdInputDisplay = this.idOfphotoURLCreateCreatives
    } else {
   
 this.currentIdInputName = this.idOfAdNameInitCreatives
-    this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
+    this.currentIdInputDisplay = this.idOfphotoURLInitCreatives
    }
 
       if (this.handleCreateCanvas == false) {
@@ -929,7 +931,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
     // });
 
     this.route.params.subscribe(params => {
-     
+     //alert('ok')
   
       if (typeof(params['budget']) =="undefined") {
   
@@ -950,8 +952,39 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
          this.startDate = res['startDate']
          this.endDate = res['endDate']
          this.budget = res['budget']
+         //alert(this.budget)
          this.budgetId = res['budgetId']
          this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
+
+           this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
+      this.status = res['status']
+      this.genres = res['sexes']
+      this.populations = res['ages']
+      this.appareils = res['devices']
+      this.placement = res['placement']
+      
+      
+           })
+         this.auth.user.forEach(data=>{
+           this.photoURL = data.photoURL
+           //alert(this.photoURL)
+         })
+         if (this.isNull == true) {
+        //alert(this.placement.toString().length )
+      if ( this.placement.toString().length ==0 || this.genres.toString().length ==0 || this.populations.toString().length ==0  || this.appareils.toString().length == 0) {
+        
+        if (this.budget > 0) {
+
+          //alert('ok budget')
+      
+           document.getElementById("v-pills-placement-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', "text-success")
+             document.getElementById("v-pills-ciblage-ads-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', 'text-success')
+        }
+      } else {
+        document.getElementById("v-pills-placement-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold')
+             document.getElementById("v-pills-ciblage-ads-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold')
+      }
+    }
     })
     })
       } else {
@@ -993,6 +1026,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
                       this.startDate = res['startDate']
                       this.endDate = res['endDate']
                       this.budget = res['budget']
+                    
                       this.budgetId = res['budgetId']
                       this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
                   })
@@ -1011,6 +1045,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
                 
               })
       }
+     
 
       if (typeof (params['money']) != "undefined" && typeof (params['id_ad_firebase']) != "undefined") {
         this.isCreating = true
@@ -1085,7 +1120,8 @@ if (chLine) {
       this.genres = res['sexes']
       this.populations = res['ages']
       this.appareils = res['devices']
-      this.placement=res['placement']
+      this.placement = res['placement']
+      
       //console.log('populations')
       /* //console.log(this.genres) */
       //console.log(this.populations)
@@ -1298,6 +1334,9 @@ if (chLine) {
 
     })
 
+     
+
+   
 
 
   }
@@ -1687,6 +1726,10 @@ $('#popper').trigger('click')
     }
   }
 
+  goProfile() {
+    this.router.navigate(['UserProfile'])
+  }
+
   closeAddCiblageAges() {
     this.isCiblageAge = false
   }
@@ -2005,7 +2048,7 @@ $('#popper').trigger('click')
     } else {
         this.getWebsites(this.currentIdInputDisplay).then(res => { 
           if (res != 'error') {
-        alert(this.button_modify_image_upload)
+        //alert(this.button_modify_image_upload)
             if (this.button_modify_image_upload === true) {
               this.img_view_create_style['width']=this.selectedWidth+'px'
               this.img_view_create_style['height']=this.selectedHeight+'px'
@@ -2057,6 +2100,7 @@ $('#popper').trigger('click')
 
 
   saveAdOnFirebase() {
+    
     this.isRoller = true
   
 
@@ -2076,7 +2120,7 @@ $('#popper').trigger('click')
 };
 
     if (!fabric.Canvas.supports('toDataURL')) {
-      alert('This browser doesn\'t provide means to serialize canvas to an image');
+      //alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
       var image_url = ""
       var self = this
@@ -2102,7 +2146,7 @@ $('#popper').trigger('click')
           //console.log(res)
           self.isRoller = false
           
-          $
+          
         })
      })
        
@@ -2125,7 +2169,13 @@ $('#popper').trigger('click')
         self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
           //console.log('success')
           //console.log(res)
-          self.isRoller = false
+          if (res != "error") {
+            
+            self.isRoller = false
+          } else {
+            self.isRoller = false
+          }
+           
           
         })
      })
@@ -2236,7 +2286,7 @@ defineBudgetFromAccount() {
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                  alert(success_url)
+                  //alert(success_url)
                 
                   //window.location.href = success_url; 
                 } else {
@@ -2256,12 +2306,12 @@ defineBudgetFromAccount() {
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-                alert('erreur inconnu');
+                //alert('erreur inconnu');
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
                 //console.log('non success response ', jsonResponse);
-                alert(jsonResponse.errors);
+                //alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
         }).send({
@@ -2285,9 +2335,9 @@ defineBudgetFromAccount() {
             totalIconBackgroundRadianStart: '#0178bc',
             totalIconBackgroundRadianEnd: '#00bdda',
             formLabelTextColor: '#292b2c',
-            alertDialogTextColor: '#333',
-            alertDialogConfirmButtonBackgroundColor: '#0178bc',
-          alertDialogConfirmButtonTextColor: '#fff',
+            //alertDialogTextColor: '#333',
+            //alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          //alertDialogConfirmButtonTextColor: '#fff',
           
         });
     }, 500)
@@ -2301,7 +2351,7 @@ defineBudgetFromAccount() {
 
     if (this.currentAdStatus == "") {
       this.isRoller = true
-      var displayUrl = []
+      var photoURL = []
      var finalUrls = []
      var finalMobileUrls = []
      var finalAppUrls = []
@@ -2321,13 +2371,13 @@ defineBudgetFromAccount() {
       
  
       //console.log(this.FINAL_ARRAY_TO_SEND[0]['content'])
-      displayUrl.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
+      photoURL.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
     /*  for (let i = 0; i <this.FINAL_ARRAY_TO_SEND.length; i++){
        if (this.FINAL_ARRAY_TO_SEND[i] == 'finalUrls') {
          //console.log(this.FINAL_ARRAY_TO_SEND[i]['content'])
          
-         displayUrl.push(this.FINAL_ARRAY_TO_SEND[i]['content'])
-         //console.log(displayUrl)
+         photoURL.push(this.FINAL_ARRAY_TO_SEND[i]['content'])
+         //console.log(photoURL)
        }
      } */
      
@@ -2354,8 +2404,8 @@ defineBudgetFromAccount() {
      
       ad_name: name,
       url_image: url,
-      displayUrl: displayUrl[0],
-      finalUrls: displayUrl[0],
+      photoURL: photoURL[0],
+      finalUrls: photoURL[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2400,8 +2450,8 @@ defineBudgetFromAccount() {
      
       ad_name: name,
       url_image: image,
-      displayUrl: displayUrl[0],
-      finalUrls: displayUrl[0],
+      photoURL: photoURL[0],
+      finalUrls: photoURL[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2442,7 +2492,7 @@ defineBudgetFromAccount() {
 
       } else {
             if (!fabric.Canvas.supports('toDataURL')) {
-      alert('This browser doesn\'t provide means to serialize canvas to an image');
+      //alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
     
       //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
@@ -2468,8 +2518,8 @@ defineBudgetFromAccount() {
       ad_name: name,
       url_image: url,
       image_content: image_content,
-      displayUrl: displayUrl[0],
-      finalUrls: displayUrl[0],
+      photoURL: photoURL[0],
+      finalUrls: photoURL[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2802,7 +2852,7 @@ defineBudgetFromAccount() {
 };
     
     if (!fabric.Canvas.supports('toDataURL')) {
-      alert('This browser doesn\'t provide means to serialize canvas to an image');
+      //alert('This browser doesn\'t provide means to serialize canvas to an image');
       resolve('error')
     } else {
       var image_url = ""
@@ -3022,7 +3072,7 @@ defineBudgetFromAccount() {
 };
     
     if (!fabric.Canvas.supports('toDataURL')) {
-      alert('This browser doesn\'t provide means to serialize canvas to an image');
+      //alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
     
       this.ad_name = $("#"+this.idOfAdName).val()
@@ -3075,15 +3125,17 @@ if (this.budget === 0) {
           }
         })
 } else {
-  this.isRoller = true
+  this.isCreating = true
    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls, this.currentAdSize).then(res => {
         //console.log('success')
      //console.log(res)
      if (res != "error") {
-       this.isRoller = false
-       
+       this.isCreating = false
+       window.location.reload()
+          
      } else {
-       this.isRoller = false
+       this.isCreating = false
+       
      }
       })
    
@@ -3159,7 +3211,7 @@ if (this.budget === 0) {
         resolve('error')
       }
       } else {
-        alert(urls)
+        //alert(urls)
          this.url_errors.push({
           "url": "",
           "text": "Url de destination ne peut être vide"
@@ -3179,7 +3231,7 @@ if (this.budget === 0) {
     return new Promise(resolve => {
        var urls_destination = []
       var urls = $('#finalUrlsmodify').val()
-      alert(urls)
+      //alert(urls)
       if (urls !== '') {
            var check = this.validURL(urls)
              
@@ -3227,7 +3279,7 @@ if (this.budget === 0) {
       this.FINAL_ARRAY_TO_SEND = []
 
       if ($('#' + this.currentIdInputName).val() == "") {
-        alert("nom du visuel ne peut être vide")
+        //alert("nom du visuel ne peut être vide")
       } else {
         this.ad_name = $('#'+this.currentIdInputName).val()
         var mobile_apps = this.apps
@@ -3309,7 +3361,7 @@ if (this.budget === 0) {
    
   } */
   public onSubmitCustomer() {
-    alert('Your information has been submitted successfully. :-)\n\n' + JSON.stringify(this.model))
+    //alert('Your information has been submitted successfully. :-)\n\n' + JSON.stringify(this.model))
   }
   
 
@@ -3499,7 +3551,7 @@ if (this.budget === 0) {
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "Annuler la modification"
         this.currentIdInputName = this.idOfAdNameNotPublishUpload
-        this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishUpload
+        this.currentIdInputDisplay = this.idOfphotoURLNotPublishUpload
         
       } else {
         $("#blockUploadModified").css({ 'display': 'none' })
@@ -3557,7 +3609,7 @@ if (this.budget === 0) {
         self.isCreating = false
         }, 2000);
            this.currentIdInputName = this.idOfAdNameNotPublishCreatives
-        this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishCreatives
+        this.currentIdInputDisplay = this.idOfphotoURLNotPublishCreatives
         } else {
           self.isCreating = true
           setTimeout(function () { 
@@ -3575,7 +3627,7 @@ if (this.budget === 0) {
          self.isCreating  =false
        }, 2000);
           this.currentIdInputName = this.idOfAdNameNotPublishCreatives
-        this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishCreatives
+        this.currentIdInputDisplay = this.idOfphotoURLNotPublishCreatives
     }
      /*  this.isCreating = false */
        
@@ -4228,7 +4280,7 @@ if (this.budget === 0) {
      */
     rasterize(): void {
         if (!fabric.Canvas.supports('toDataURL')) {
-            alert('Votre navigateur ne supporte pas cette opération.');
+            //alert('Votre navigateur ne supporte pas cette opération.');
         } else {
             // chrome workaround: https://stackoverflow.com/a/45700813
             const _w = window.open();
@@ -4631,7 +4683,7 @@ if (this.budget === 0) {
     this.currentAdType = ad_type
     
     this.currentIdInputName = this.idOfAdNameModify
-    this.currentIdInputDisplay = this.idOfDisplayUrlModify
+    this.currentIdInputDisplay = this.idOfphotoURLModify
     
     this.iconEditor = "icon-chevron-down"
     //console.log(finalUrls.length)
@@ -4705,7 +4757,7 @@ if (this.budget === 0) {
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                  alert(success_url)
+                  //alert(success_url)
                 
                   //window.location.href = success_url; 
                 } else {
@@ -4725,12 +4777,12 @@ if (this.budget === 0) {
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-                alert('erreur inconnu');
+                //alert('erreur inconnu');
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
                 //console.log('non success response ', jsonResponse);
-                alert(jsonResponse.errors);
+                //alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
         }).send({
@@ -4754,9 +4806,9 @@ if (this.budget === 0) {
             totalIconBackgroundRadianStart: '#0178bc',
             totalIconBackgroundRadianEnd: '#00bdda',
             formLabelTextColor: '#292b2c',
-            alertDialogTextColor: '#333',
-            alertDialogConfirmButtonBackgroundColor: '#0178bc',
-          alertDialogConfirmButtonTextColor: '#fff',
+            //alertDialogTextColor: '#333',
+            //alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          //alertDialogConfirmButtonTextColor: '#fff',
           
         });
     }, 500)
@@ -4776,7 +4828,7 @@ if (this.budget === 0) {
       var self = this 
     this.isCreating = true
     var url = SERVER_URL+'/payBudget/' + self.montant + "/" + self.budget_to_place + "/" + self.budgetId + "/" + self.idC + "/" + self.dure_campagne + "/" + self.ad_group_name + "/" + self.idA + "/" + self.ad_group_id + "/" + self.campagne_id + "/" + self.id_ad_firebase
-    alert(url)
+    //alert(url)
       setTimeout(function () {
     
         var btn = document.getElementById("budgetSet");
@@ -4816,13 +4868,13 @@ if (this.budget === 0) {
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-              alert('erreur inconnu');
+              //alert('erreur inconnu');
               self.isCreating = false
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
                 //console.log('non success response ', jsonResponse);
-                alert(jsonResponse.errors);
+                //alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
         }).send({
@@ -4846,9 +4898,9 @@ if (this.budget === 0) {
             totalIconBackgroundRadianStart: '#0178bc',
             totalIconBackgroundRadianEnd: '#00bdda',
             formLabelTextColor: '#292b2c',
-            alertDialogTextColor: '#333',
-            alertDialogConfirmButtonBackgroundColor: '#0178bc',
-          alertDialogConfirmButtonTextColor: '#fff',
+            //alertDialogTextColor: '#333',
+            //alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          //alertDialogConfirmButtonTextColor: '#fff',
           
         });
     }, 500)
@@ -5206,7 +5258,7 @@ if (this.budget === 0) {
                 }
               })
             } else {
-               alert(date_start_check+" "+ this.today)
+               //alert(date_start_check+" "+ this.today)
               Swal.fire({
                 title: 'Service Campagne',
                 text: "Date de début"+new Date(date_start_check)+" ne peut être définie dans le passé",

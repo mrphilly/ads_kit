@@ -150,22 +150,7 @@ private basePath = '/uploads';
       .subscribe(
         res => {
           var response = res['ad'][0]
-          //console.log(response)
-          
          
-          //console.log(response['displayUrl'])
-          //console.log(response['ad_id'])
-          //console.log(ad_group_id)
-          //console.log(response['name'])
-          //console.log(response['status'])
-          //console.log(response['url_image'])
-          //console.log(response['displayUrl'])
-          //console.log(response['finalUrls'])
-          //console.log(response['finalMobileUrls'])
-          //console.log(response['finalAppUrls'])
-          //console.log(response['referenceId'])
-          //console.log(response['automated'])
-
          this.updateAd(ad_id, {ad_id:response['ad_id'], ad_group_id:  ad_group_id , ad_name: response['name'], status: response['status'], url_image: response['url_image'], displayUrl: response['displayUrl'], finalUrls:  response['finalUrls'],finalMobileUrls:response['finalMobileUrls'], finalAppUrls: response['finalAppUrls'], automated: response['automated'], referenceId: response['referenceId'] }).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
@@ -229,8 +214,11 @@ private basePath = '/uploads';
 
 
 
-   async saveAdOnFirebase(ad_group_id: any, ad_name: any, uid: any, url_image: any, image_content: any, allUrls: any, size: any, ad_type: any) {
-     var displayUrl = []
+   async saveAdOnFirebase(ad_group_id: any, ad_name: any, uid: any, url_image: any, image_content: any, allUrls: any, size: any, ad_type: any): Promise<any> {
+    
+  
+     return new Promise(resolve => {
+        var displayUrl = []
      var finalUrls = []
      var finalMobileUrls = []
      var finalAppUrls = []
@@ -247,15 +235,15 @@ private basePath = '/uploads';
        } */
      }
   
-  
-    return await this.annonceVerification(ad_name, ad_group_id).then(value => {
+       this.annonceVerification(ad_name, ad_group_id).then(value => {
       //console.log(`promise result: ${value}`)
       var self = this
       if (`${value}` == '0') {
           
         
             this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid, size, ad_type).then(res=>{
-            Swal.fire({
+              if (res == "ok") {
+                    Swal.fire({
               title: 'Ajouter une annonce',
               text: 'Annonce ajoutée avec succès',
               type: 'success',
@@ -265,11 +253,13 @@ private basePath = '/uploads';
               confirmButtonText: 'Ok'
             }).then((result) => {
               if (result.value) {
-                window.location.reload()
+                resolve("ok")
               } else {
-                window.location.reload()
+                resolve("ok")
+               
               }
             })
+              }
          }) 
 
       } else{
@@ -282,11 +272,17 @@ private basePath = '/uploads';
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ok'
         }).then((result) => {
-            if (result.value){}
+          if (result.value) {
+            resolve('error')
+            
+          } else {
+            resolve('error')
+            }
           })
         
       }
     }) 
+    })
    
   }
 
@@ -383,9 +379,12 @@ private basePath = '/uploads';
 
 
 
-  async createAd(ad_id: any, ad_group_id: any, ad_name: any, status: any, url_image: any, image_content: any,displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any, size: any, ad_type: any) {
-    this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, status, url_image, image_content, displayUrl, finalUrls, finalMobileUrls, finalAppUrls, referenceId,  automated, uid, size, ad_type);
-    const docRef = await this.afs.collection('ads').add(this.annonce_model);
+  async createAd(ad_id: any, ad_group_id: any, ad_name: any, status: any, url_image: any, image_content: any, displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any, size: any, ad_type: any):Promise<any> {
+    return new Promise(resolve => {
+      this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, status, url_image, image_content, displayUrl, finalUrls, finalMobileUrls, finalAppUrls, referenceId,  automated, uid, size, ad_type);
+      const docRef = this.afs.collection('ads').add(this.annonce_model);
+      resolve('ok')
+    })
   }
 
   updateAd(id: string, data: any) {

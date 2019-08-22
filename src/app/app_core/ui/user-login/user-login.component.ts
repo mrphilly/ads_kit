@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+
+import * as firebase from 'firebase';
+import { database } from 'firebase';
 
 import { AuthService } from '../../core/auth.service';
-import * as particles from '../../../../assets/js/particles'
-import * as $ from 'jquery'
-
 import Swal from 'sweetalert2'
+import * as $ from 'jquery'
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage'
 
 declare const particlesJS: any
-type UserFields = 'email' | 'password';
+type UserFields = 'email' | 'password' | 'username';
 type FormErrors = { [u in UserFields]: string };
 @Component({
   selector: 'user-login',
@@ -17,22 +20,34 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./user-login.component.css'],
 })
 export class UserLoginComponent {
-  photoUrl = ""
+  fileToUpload: File = null;
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  uploadProgress: any
+  downloadURL: any
+  usernameOk = false
+  photoUrl: any;
    isCreating = false
   Invalid = false
   errors_credentials: any;
+  uid: string;
   accountValue = 0
   userForm: FormGroup;
   newUser = true; // to toggle login or signup form
   passReset = false; // set to true when password reset is triggered
   formErrors: FormErrors = {
     'email': '',
+    'username': '',
     'password': '',
   };
   validationMessages = {
     'email': {
       'required': 'Adresse email requise.',
       'email': 'Saisissez une adresse email valide',
+    },
+    'username': {
+      'required': "Nom d'utilisateur obligatoire ",
+      'email': "",
     },
     
 
@@ -44,9 +59,13 @@ export class UserLoginComponent {
     },
   };
 
-    email: any
+  email: any
+  userList = []
   constructor(private fb: FormBuilder,public auth: AuthService,
-    private router: Router) { 
+    private router: Router, private afs: AngularFirestore, private afStorage: AngularFireStorage) { 
+    this.afs.collection('users').valueChanges().forEach(data => {
+       this.userList = data
+     })
    
               }
 
@@ -61,6 +80,7 @@ export class UserLoginComponent {
         this.email = value.displayName
         this.accountValue = value.account_value 
         this.photoUrl = value.photoURL
+        this.uid = value.uid
 
         
       }
@@ -72,7 +92,7 @@ export class UserLoginComponent {
       
     })
 
-        setTimeout(() => {
+    /*     setTimeout(() => {
              particlesJS("particles-js", {
   "particles": {
     "number": {
@@ -101,7 +121,7 @@ export class UserLoginComponent {
       }
     },
     "opacity": {
-      "value": 1,
+      "value": 0.1,
       "random": true,
       "anim": {
         "enable": true,
@@ -124,7 +144,7 @@ export class UserLoginComponent {
       "enable": true,
       "distance": 150,
       "color": "#ffffff",
-      "opacity": 0.4,
+      "opacity": 0.1,
       "width": 1
     },
     "move": {
@@ -183,13 +203,87 @@ export class UserLoginComponent {
   },
   "retina_detect": true
 }); 
-        }, 2000)
+        }, 2000) */
 
 
 /* ---- stats.js config ---- */
     
   }
   
+  async upload(event) {
+    this.isCreating = true
+   var storage = firebase.app().storage("gs://comparez.appspot.com/");
+    var storageRef = storage.ref();
+   var sef = this
+    var imageRefStorage ="/profile/" +this.email
+    var imagesRef = storageRef.child(imageRefStorage);
+  const randomId = Math.random().toString(36).substring(2);
+  this.ref = this.afStorage.ref("/profile/"+this.email);
+  this.task =this.ref.put(event.target.files[0]);
+    this.uploadProgress = this.task.percentageChanges();
+    this.task.then(() => {
+      storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+   xhr.responseType = 'blob';
+   xhr.onload = function(event) {
+     var blob = xhr.response;
+   };
+   xhr.open('GET', url);
+        xhr.send();
+        console.log(url)
+
+        this.auth.updateUser(this.uid, { photoURL: url }).then(res => {
+
+          if (res != "error") {
+            this.isCreating = false
+                  Swal.fire({
+        title: 'Profile',
+        text: 'Photo de profile modifiée avec succès !',
+        type: 'success',
+                    showCancelButton: false,
+                    buttonsStyling: true,
+                    confirmButtonClass: 'white border-grey adafri-police-14 r-20 text-black-50',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {
+          
+        } else {
+          
+        }
+
+      })
+          } else {
+            this.isCreating = false
+                  Swal.fire({
+        title: 'Profile',
+        text: 'Error Network !',
+        type: 'error',
+                    showCancelButton: false,
+                    buttonsStyling: true,
+                    confirmButtonClass: 'white border-red text-danger adafri-police-14 r-20',
+        confirmButtonText: 'réessayer'
+      }).then((result) => {
+        if (result.value) {
+          
+        } else {
+          
+        }
+
+      })
+          }
+        })
+       
+         
+          
+          
+        })
+     })
+     }
+    
+  
+  
+
+
    toggleForm() {
     this.newUser = !this.newUser;
   }
@@ -217,6 +311,13 @@ export class UserLoginComponent {
     })
     
   }
+
+   
+  triggerUpload() {
+    document.getElementById('file').click()
+  }
+
+
 
   async signInWithFacebook() {
     await this.auth.facebookLogin().then(res => {
@@ -246,27 +347,71 @@ export class UserLoginComponent {
 
   signup() {
     this.isCreating = true;
-    
-    this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password']).then(res => {
-      if (res == "ok") {
-         Swal.fire({
-            title: 'Authentification',
-            text: 'Inscription terminée avec succès',
-            type: 'success',
-            showCancelButton: false,
-            confirmButtonColor: '#26a69a',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ok'
-          }).then((result) => {
-            if (result.value) {
-              
-            } else {
-              
-            }
-
-          })
+    if (this.userList.length == 0) {
+      if (this.userForm.value['username'] == "") {
+        this.usernameOk = false
+      } else {
+        this.usernameOk = true
+        
       }
-    });
+    } else {
+
+      if (this.userForm.value['username'] == "") {
+        this.usernameOk = false
+      } else {
+         this.userList.forEach(data => {
+        if (data['displayName'] == this.userForm.value['username']) {
+          this.usernameOk = false
+        } else {
+          this.usernameOk = true
+        }
+      })
+        
+      }
+     
+      
+    }
+    if (this.usernameOk === true) {
+        
+      this.auth.emailSignUp(this.userForm.value['username'], this.userForm.value['email'], this.userForm.value['password']).then(res => {
+        if (res == "ok") {
+           Swal.fire({
+              title: 'Authentification',
+              text: 'Inscription terminée avec succès',
+              type: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {
+                
+              } else {
+                
+              }
+  
+            })
+        }
+      });
+    } else {
+       Swal.fire({
+              title: 'Authentification',
+              text: "Nom d'utilisateur indisponible ou vide",
+              type: 'error',
+              showCancelButton: false,
+              confirmButtonColor: '#26a69a',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Réessayer'
+            }).then((result) => {
+              if (result.value) {
+                
+              } else {
+                
+              }
+  
+            })
+      }
+    
   
   }
 
@@ -317,6 +462,10 @@ export class UserLoginComponent {
 
   buildForm() {
     this.userForm = this.fb.group({
+      'username': ['', [
+        Validators.required,
+        Validators.nullValidator,
+      ]],
       'email': ['', [
         Validators.required,
         Validators.email,
@@ -338,7 +487,7 @@ export class UserLoginComponent {
     if (!this.userForm) { return; }
     const form = this.userForm;
     for (const field in this.formErrors) {
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password')) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'password')) {
         // clear previous error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
@@ -368,10 +517,10 @@ export class UserLoginComponent {
 
   /// Anonymous Sign In
 
-  async signInAnonymously() {
+ /*  async signInAnonymously() {
    return await this.auth.anonymousLogin();
      
-  }
+  } */
 
   /// Shared
 
