@@ -187,13 +187,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   currentIdInputName = ""
   currentIdInputDisplay = ""
   idOfAdNameCreateUpload = "ad_name_create_upload"
-  idOfphotoURLCreateUpload = "photoURL_create_upload"
+  idOfDisplayUrlCreateUpload = "photoURL_create_upload"
   idOfAdNameCreateCreatives = "ad_name_create_creatives"
-  idOfphotoURLCreateCreatives = "photoURL_create_creatives"
+  idOfDisplayUrlCreateCreatives = "photoURL_create_creatives"
   idOfAdNameModify = "ad_name_modifed"
-  idOfphotoURLModify = "photoURL_modify"
+  idOfDisplayModify = "photoURL_modify"
   idOfAdNameInitUpload = "ad_name_init_upload"
-  idOfphotoURLInitUpload = "display_url_init_upload"
+  idOfDisplayUrlInitUpload = "display_url_init_upload"
   idOfAdNameInitCreatives = "ad_name_init_creatives"
   idOfphotoURLInitCreatives = "display_url_init_creatives"
   text_modify = "éditer"
@@ -717,7 +717,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
       if (this.isNull === false) {
         if (this.ad_type==="UPLOAD") {
-          this.currentIdInputDisplay = this.idOfphotoURLInitUpload
+          this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
           this.currentIdInputName = this.idOfAdNameCreateUpload
         } else {
             this.currentIdInputDisplay = this.idOfphotoURLInitCreatives
@@ -814,11 +814,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
      
      $("#block1").css("display", "block")
      this.currentIdInputName = this.idOfAdNameCreateUpload
-   this.currentIdInputDisplay = this.idOfphotoURLCreateUpload
+   this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
    } else {
      $("#block").css("display", "block")
      this.currentIdInputName = this.idOfAdNameInitUpload
-   this.currentIdInputDisplay = this.idOfphotoURLInitUpload
+   this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
    }
 
    setTimeout(() => {
@@ -864,7 +864,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
      if (this.isNull === true) {
      
     this.currentIdInputName = this.idOfAdNameCreateCreatives
-    this.currentIdInputDisplay = this.idOfphotoURLCreateCreatives
+    this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
    } else {
   
 this.currentIdInputName = this.idOfAdNameInitCreatives
@@ -4683,7 +4683,7 @@ if (this.budget === 0) {
     this.currentAdType = ad_type
     
     this.currentIdInputName = this.idOfAdNameModify
-    this.currentIdInputDisplay = this.idOfphotoURLModify
+    this.currentIdInputDisplay = this.idOfDisplayModify
     
     this.iconEditor = "icon-chevron-down"
     //console.log(finalUrls.length)
