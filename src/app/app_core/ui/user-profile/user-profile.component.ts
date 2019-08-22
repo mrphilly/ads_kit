@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
+import {
+  ActivatedRoute, Router
+} from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import {SERVER} from '../../../../environments/environment'
+
 
 @Component({
   selector: 'user-profile',
@@ -10,13 +14,13 @@ import { AuthService } from '../../core/auth.service';
 export class UserProfileComponent {
   photoURL = ""
   numberOfNotifications = 0
-  notificationAccountValue = 0
+  notificationAccountValue = ""
   accountValue = 0
   username = ""
   email = ""
   uid = ""
 
-  constructor(public auth: AuthService) {
+  constructor(public auth: AuthService, private router: Router) {
     this.auth.user.forEach(data => {
       this.photoURL = data.photoURL
       this.accountValue = data.account_value
@@ -37,4 +41,14 @@ export class UserProfileComponent {
       }
     })
   }
+    goProfile() {
+    this.router.navigate(['UserProfile'])
+  }
+  
+  go() {
+    window.location.replace(SERVER.url_redirect)
+   
+   /*  this.router.navigate(['/']) */
+  }
+  
 }

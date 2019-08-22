@@ -210,6 +210,10 @@ export class UserLoginComponent {
     
   }
   
+   goProfile() {
+    this.router.navigate(['UserProfile'])
+  }
+  
   async upload(event) {
     this.isCreating = true
    var storage = firebase.app().storage("gs://comparez.appspot.com/");
