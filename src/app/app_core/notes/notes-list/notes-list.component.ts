@@ -293,10 +293,10 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         this.isCreating = true
         
         this.auth.user.forEach(data => {
-          alert(data.uid)
+
           var mystr = this.decrypted(params['money'], data.uid)
 
-          alert(mystr)
+       
           
                 
                 this.auth.updateUser(data.uid, { account_value: parseInt(mystr) })
