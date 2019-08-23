@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { AuthService } from './app_core/core/auth.service';
+import {SERVER} from "./../environments/environment"
 import * as $ from 'jquery'
 declare var require: any;
 declare const particlesJS: any;
+
+
 
 @Component({
   selector: 'app-root',
@@ -12,7 +15,7 @@ declare const particlesJS: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
+  policy_url = encodeURI(SERVER.confidentialite)
   constructor( sanitizer: DomSanitizer, private auth: AuthService) {
     
   }

@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'CampaignList', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'createCampaign', component: CreateCampaignComponent, canActivate: [AuthGuard]},
   { path: 'UserProfile', component: UserProfileComponent, canActivate: [AuthGuard] },
+  { path: 'confidentialite', component: SsrPageComponent },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'defineBudget/:number/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
  
@@ -31,7 +32,6 @@ const routes: Routes = [
   { path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id', component: AnnoncesComponent },
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id/:money/:id_ad_firebase', component: AnnoncesComponent},
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id/:budget/:dailyBudget/:numberOfDays/:id_ad_firebase', component: AnnoncesComponent},
-  { path: 'ssr', component: SsrPageComponent },
   { path: 'campaign/:id', component: CampaignSettingsComponent, canActivate: [AuthGuard] },
 ];
  

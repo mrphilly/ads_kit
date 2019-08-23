@@ -20,6 +20,7 @@ export const SERVER = {
   url: "http://127.0.0.1:5000",
   //url: "https://adafri.comparez.co",
   //url_redirect: "/dist/#",
-  url_redirect: "/#"
+  url_redirect: "/#",
+  confidentialite: "http://localhost:4200/#/confidentialite"
 
 }

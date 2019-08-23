@@ -6,5 +6,6 @@ export const SERVER = {
 
   url: "https://adafri.comparez.co",
   url_redirect: "/",
+  confidentialite: "https://adafri.comparez.co/#/confidentialite"
 
 }

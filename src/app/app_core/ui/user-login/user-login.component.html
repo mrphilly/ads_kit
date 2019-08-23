@@ -99,7 +99,7 @@
             
             <div class="row">
                  <div class="col-md-12 text-center">
-         <div class="login-sec adafri-background d-inline-block" style="border-radius: 40px; margin-top: -15px;">
+         <div class="login-sec adafri-background d-none d-md-inline-block" style="border-radius: 40px; margin-top: -15px;">
             <h6 class="text-center text-white font-weight-bold">Inscription</h6>
             <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
                 <div class="form-group text-center">
@@ -126,23 +126,58 @@
  <div class="row">
     <div class="col-md-12 text-center">
           <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
-     <!-- <div class="d-flex justify-content-between">
-                            <div>
+  
                              
                               
                 
-                            <img src="assets/img/images/facebook.png"  (click)="signInWithFacebook()" class="img-responsive btn-social" alt="facebook" style="width: 50%">
-                            
-                    
-                            </div>
-                            <div>
-                               
-                                
-                            <img src="assets/img/images/gmail.png"  (click)="signInWithGoogle()" class="img-responsive btn-social" alt="gmail" style="width: 50%">
-                            
-                       
-                            </div>
-                        </div> -->
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Inscription</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous avez déjà un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Connexion</p></small>
+
+                        </div>
+   </div>
+    </div>
+ </div>
+     
+
+  
+  
+</form>
+
+            </div>
+
+                     <div class="login-sec adafri-background d-md-none d-sm-inline-block" style="border-radius: 40px; margin-top: -15px; width: 90% !important; position: absolute !important; margin-left: 5px">
+            <h6 class="text-center text-white font-weight-bold">Inscription</h6>
+            <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Username" formControlName="username" required style="width: 70%">
+
+                </div>
+                <br>
+            <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
+
+                </div>
+                <br>
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
+                </div>
+
+
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+  
+                             
+                              
+                
                         <div class="text-center " style="margin-top: 10px">
                              <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Inscription</button>
                              <br>
@@ -164,7 +199,22 @@
     <div class="row">
      
     
-        <div class="text-center" style="margin-top: 50px">
+        <div class="text-center d-none d-md-block" style="margin-top: 50px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                    
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
+                                         People. Products. Software</h5>
+                                    
+                                 </div>
+                             </div>
+        </div>
+        </div>
+        <div class="text-center d-md-none d-sm-block" style="margin-top: 500px">
              <div class="d-md-none d-sm-inline d-inline-block" >
 
             <div class="d-flex justify-content-between">
@@ -195,7 +245,7 @@
             
             <div class="row">
                  <div class="col-md-12 text-center">
-         <div class="login-sec adafri-background d-inline-block" style="border-radius: 40px; margin-top: -15px;">
+         <div class="login-sec adafri-background d-none d-md-inline-block" style="border-radius: 40px; margin-top: -15px;">
             <h6 class="text-center text-white font-weight-bold">Connexion</h6>
             <form class="login-form" [formGroup]="userForm" (ngSubmit)="login()">
                 <div class="form-group text-center">
@@ -243,15 +293,61 @@
    </div>
     </div>
  </div>
-     
-  <!--   <a (click)="signInWithGoogle()" class="btn btn-md btn-block btn-social google red lighten-1 text-white text-center" style="font-size: 12px">
-        <i class="icon-google"></i>
-        Connexion avec Gmail
-    </a>
-    <a (click)="signInWithFacebook()" class="btn btn-md btn-block btn-social facebook indigo lighten-1 text-white text-center" style="font-size: 12px">
-        <i class="icon-facebook"></i>
-        Connexion avec Facebook
-    </a> -->
+
+  
+  
+</form>
+
+            </div>
+                     <div class="login-sec adafri-background d-md-none d-sm-inline-block" style="border-radius: 40px; margin-top: -15px; width: 90% !important; position: absolute !important; margin-left: 5px">
+            <h6 class="text-center text-white font-weight-bold">Connexion</h6>
+            <form class="login-form" [formGroup]="userForm" (ngSubmit)="login()">
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
+
+                </div>
+                <br>
+            
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
+                </div>
+
+
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+     <div class="d-flex justify-content-between">
+                            <div>
+                             
+                              
+                
+                            <img src="assets/img/images/facebook.png"  (click)="signInWithFacebook()" class="img-responsive btn-social" alt="facebook" style="width: 50%">
+                            
+                    
+                            </div>
+                            <div>
+                               
+                                
+                            <img src="assets/img/images/gmail.png"  (click)="signInWithGoogle()" class="img-responsive btn-social" alt="gmail" style="width: 50%">
+                            
+                       
+                            </div>
+                        </div>
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Connexion</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous n'avez pas un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Inscription</p></small>
+
+                        </div>
+   </div>
+    </div>
+ </div>
+
   
   
 </form>
@@ -262,7 +358,22 @@
     <div class="row">
      
     
-        <div class="text-center" style="margin-top: 50px">
+        <div class="text-center d-none d-md-block" style="margin-top: 50px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                    
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
+                                         People. Products. Software</h5>
+                                    
+                                 </div>
+                             </div>
+        </div>
+        </div>
+        <div class="text-center d-md-none d-sm-block" style="margin-top: 500px">
              <div class="d-md-none d-sm-inline d-inline-block" >
 
             <div class="d-flex justify-content-between">
