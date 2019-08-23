@@ -475,7 +475,7 @@
                         <small for="pattern">Url de redirection</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlInitCreatives" required (keyup)="handleErrorUrl()">
-                        <ng-container *ngIf="url_errors != ''">
+                        <ng-container *ngIf="url_errors != []">
                           <div class="text-danger" *ngFor="let error of url_errors">
                             {{error.url}} {{error.text}}
                           </div>
@@ -1287,7 +1287,7 @@
                         <small for="pattern">Url de redirection</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlInitUpload" required (keyup)="handleErrorUrl()">
-                        <ng-container *ngIf="url_errors != ''">
+                        <ng-container *ngIf="url_errors != []">
                           <div class="text-danger" *ngFor="let error of url_errors">
                             {{error.url}} {{error.text}}
                           </div>
