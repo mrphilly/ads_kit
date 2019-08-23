@@ -365,22 +365,26 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   illustration = false
   illustrationUrl = ""
   AD_TYPES_1 = [
-    { "name": "Rectangle", "width": "300", "height": "250", "id": "MediumRectangle", "img": "https://dummyimage.com/300x250/000/fff" },
-    { "name": "Rectangle Large", "width": "336", "height": "280", "id": "LargeRectangle", "img": "https://dummyimage.com/336x280/000/fff" },
-    { "name": "Horizontal Medium", "width": "728", "height": "90", "id": "Leaderboard", "img": "https://dummyimage.com/728x90/000/fff" },
-    { "name": "Demi page", "width": "300", "height": "600", "id": "LargeSkyscraper", "img": "https://dummyimage.com/300x600/000/fff" },
-    { "name": "Horizontal Large", "width": "970", "height": "90", "id": "LargerLeaderboard", "img": "https://dummyimage.com/970x90/000/fff" },
-    { "name": "Big Panneau", "width": "970", "height": "250", "id": "BigPanneau", "img": "https://dummyimage.com/970x250/000/fff" },
+    { "name": "Rectangle", "width": "300", "height": "250", "id": "MediumRectangle", "isSpecial": true, "img": "https://dummyimage.com/300x250/000/fff" },
+    { "name": "Rectangle Large", "width": "336", "height": "280", "id": "LargeRectangle", "isSpecial": true, "img": "https://dummyimage.com/336x280/000/fff" },
+    { "name": "Horizontal Medium", "width": "728", "height": "90", "id": "Leaderboard", "isSpecial": true, "img": "https://dummyimage.com/728x90/000/fff" },
+     { "name": "Vertical Medium", "width": "160", "height": "600", "id": "Wideskyscraper", "isSpecial": true, "img": "https://dummyimage.com/160x600/000/fff" },
+    { "name": "Carré", "width": "250", "height": "250", "id": "Square", "isSpecial": true, "img": "https://dummyimage.com/250x250/000/fff" },
+     { "name": "Demi page", "width": "300", "height": "600", "id": "LargeSkyscraper", "isSpecial": true, "img": "https://dummyimage.com/300x600/000/fff" },
+
+    
     /* {"name": "Vertical", "width": "320", "height": "50", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"}, */
     
   ]
   AD_TYPES_2 = [
-    { "name": "Horizontal", "width": "468", "height": "60", "id": "Banner", "img": "https://dummyimage.com/468x60/000/fff" },
-    { "name": "Vertical", "width": "120", "height": "600", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff" },
-    {"name": "Rectangle Vertical", "width": "240", "height": "400", "id": "RV", "img": "https://dummyimage.com/120x600/000/fff"},
-    { "name": "Vertical Medium", "width": "160", "height": "600", "id": "Wideskyscraper", "img": "https://dummyimage.com/160x600/000/fff" },
-    { "name": "Carré", "width": "250", "height": "250", "id": "Square", "img": "https://dummyimage.com/250x250/000/fff" },
-    {"name": "Petit carré", "width": "200", "height": "200", "id": "Smallsquare", "img": "https://dummyimage.com/200x100/000/fff"}  
+    { "name": "Horizontal", "width": "468", "height": "60", "id": "Banner", "isSpecial": false,  "img": "https://dummyimage.com/468x60/000/fff" },
+    { "name": "Vertical", "width": "120", "height": "600", "id": "Skyscraper", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
+    { "name": "Rectangle Vertical", "width": "240", "height": "400", "id": "RV", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
+   
+    { "name": "Horizontal Large", "width": "970", "height": "90", "id": "LargerLeaderboard", "isSpecial": false, "img": "https://dummyimage.com/970x90/000/fff" },
+    { "name": "Big Panneau", "width": "970", "height": "250", "id": "BigPanneau", "isSpecial": false, "img": "https://dummyimage.com/970x250/000/fff" },
+        {"name": "Petit carré", "width": "200", "height": "200", "id": "Smallsquare", "isSpecial": false, "img": "https://dummyimage.com/200x100/000/fff"}  
+   
   ]
   NATIONALS_WEBSITES = [
   [1,"infos","dakarbuzz.net","http://dakarbuzz.net"  ],
