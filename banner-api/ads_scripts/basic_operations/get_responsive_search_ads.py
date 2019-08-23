@@ -30,7 +30,7 @@ from googleads import adwords
 
 
 PAGE_SIZE = 500
-AD_GROUP_ID = '74775025089'
+AD_GROUP_ID = '78127159860'
 
 
 def main(client, ad_group_id):
@@ -40,8 +40,7 @@ def main(client, ad_group_id):
   # Construct selector and get all ads for a given ad group.
   offset = 0
   selector = {
-      'fields': ['Id', 'Status', 'ShortHeadline',
-                 'LongHeadline'],
+      'fields': ['Id', 'Status', 'CombinedApprovalStatus'],
       'predicates': [
           {
               'field': 'AdGroupId',
@@ -51,7 +50,7 @@ def main(client, ad_group_id):
           {
               'field': 'AdType',
               'operator': 'EQUALS',
-              'values': ['RESPONSIVE_DISPLAY_AD']
+              'values': ['IMAGE_AD']
           }
       ],
       'paging': {

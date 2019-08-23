@@ -195,7 +195,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   idOfAdNameInitUpload = "ad_name_init_upload"
   idOfDisplayUrlInitUpload = "display_url_init_upload"
   idOfAdNameInitCreatives = "ad_name_init_creatives"
-  idOfphotoURLInitCreatives = "display_url_init_creatives"
+  idOfDisplayUrlInitCreatives = "display_url_init_creatives"
   text_modify = "éditer"
   upload_modified = false
   init_choose_ad_size = false
@@ -205,7 +205,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   is_upload_way = false
   is_creative_way = false
   img_view_create_style: Object = { 'width': '100px', 'height': '100px' }
-  canvas_style: Object = {'width': '', 'height': '', 'border-color': 'rgb(233, 216, 216); width: 300px !important; height: 250px !important; display: inline-block'}
+  canvas_style: Object = {'width': '', 'height': '', 'border-color': 'rgb(233, 216, 216);'}
   chooseBlock = false
   chooseAdSize = true
   selectedWidth: any
@@ -720,7 +720,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
           this.currentIdInputName = this.idOfAdNameCreateUpload
         } else {
-            this.currentIdInputDisplay = this.idOfphotoURLInitCreatives
+            this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
           this.currentIdInputName = this.idOfAdNameInitCreatives
         }
       }
@@ -804,15 +804,15 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    
   }
  async handleUploadBanner(){
-   this.chooseBlock = false
-   this.chooseAdSize = false
+   //this.chooseBlock = false
+   //this.chooseAdSize = false
   
    this.is_upload_way = true
    this.ad_type = "UPLOAD"
    
    if (this.isNull === true) {
      
-     $("#block1").css("display", "block")
+     //$("#block1").css("display", "block")
      this.currentIdInputName = this.idOfAdNameCreateUpload
    this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
    } else {
@@ -847,18 +847,20 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   }
 
   goBackFromCreatives() {
-  this.handleCreateCanvas = false
+/*   this.handleCreateCanvas = false
     this.chooseBlock = true
-    this.ad_type = ""
+    this.ad_type = "" */
     this.currentIdInputName = ""
-   this.currentIdInputDisplay = ""
+    this.currentIdInputDisplay = ""
+    document.getElementById('dismissInit').click()
   }
   
   handleCreatives() {
+    this.isCreating = true
     
     var self = this
     this.ad_type="CREATIVE"
-    this.chooseBlock = false
+    //this.chooseBlock = false
   
     
      if (this.isNull === true) {
@@ -868,10 +870,20 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    } else {
   
 this.currentIdInputName = this.idOfAdNameInitCreatives
-    this.currentIdInputDisplay = this.idOfphotoURLInitCreatives
-   }
+    this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
+     }
+        setTimeout(function(){ 
+         
+         self.buildForm()
+        }, 2000);
+      setTimeout(function(){ 
+         
+          self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
+          self.isCreating = false
+         
+        }, 2000);
 
-      if (this.handleCreateCanvas == false) {
+/*       if (this.handleCreateCanvas == false) {
       
       this.handleCreateCanvas = true
       if (this.canva_state == false) {
@@ -903,7 +915,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       
     } else {
       this.handleCreateCanvas = false
-      }
+      } */
   }
 
   chooseAdType() {
@@ -1979,36 +1991,17 @@ $('#popper').trigger('click')
   
   handleImageModal() {
     //console.log(this.canvas.toDataURL('png'))
-    this.getWebsites(this.currentIdInputDisplay).then(res => { 
-      if (res != 'error') {
-      
-       
-        $('#button_modal_init').trigger('click')
-        
-        $('#ad_image').attr("src", this.canvas.toDataURL('png'))
-        //this.ad_name = $("#").val()
-        
-      } else{
-
-      }
-    })
-  }
-  handleImageUploadModal() {
-     
-    this.getWebsites(this.currentIdInputDisplay).then(res => { 
-      if (res != 'error') {
-       
-        var image = document.querySelector('.dz-image').getElementsByTagName('img')
-        //console.log(image)
-        if (image[0].naturalWidth != parseInt(this.selectedWidth) || image[0].naturalHeight != parseInt(this.selectedHeight)) {
-          Swal.fire({
+    var name = $("#" + this.currentIdInputName).val()
+    var url = $("#" + this.currentIdInputDisplay).val()
+    if (name == "") {
+       Swal.fire({
                  title: "Service Groupe d'annonce!",
-                 text: 'Image invalide',
+                 text: "nom de l'annonce ne peut être vide ",
                  type: 'error',
                  showCancelButton: false,
                  confirmButtonColor: '#3085d6',
                  cancelButtonColor: '#d33',
-                 confirmButtonText: 'Ok'
+                 confirmButtonText: 'réessayer'
                }).then((result) => {
                  if (result.value) {
                  
@@ -2016,18 +2009,132 @@ $('#popper').trigger('click')
                  
                  }
                })
-        } else {
-        this.img_view_create_style['width']=this.selectedWidth+'px'
-        this.img_view_create_style['height']=this.selectedHeight+'px'
-           $('#button_modal_init').trigger('click')
-          $('#ad_image').attr("src", $('.dz-image').find('img').attr("src"))
-          this.ad_name = $("#"+this.currentIdInputName).val()
-        }
+    } else if (url == "") {
+       Swal.fire({
+                 title: "Service Groupe d'annonce!",
+                 text: "Url de redirection de l'annonce ne peut être vide ",
+                 type: 'error',
+                 showCancelButton: false,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'réessayer'
+               }).then((result) => {
+                 if (result.value) {
+                 
+                 }else{
+                 
+                 }
+               })
+    } else {
+      
+      this.getWebsites(this.currentIdInputDisplay).then(res => { 
+        if (res != 'error') {
         
-      } else{
+         
+          $('#button_modal_init').trigger('click')
+          
+          $('#ad_image').attr("src", this.canvas.toDataURL('png'))
+          //this.ad_name = $("#").val()
+          
+        } else{
+  
+        }
+      })
+    }
+  }
+  handleImageUploadModal() {
 
-      }
-    })
+     var name = $("#" + this.currentIdInputName).val()
+    var url = $("#" + this.currentIdInputDisplay).val()
+      console.log(document.querySelector('.dz-preview'))
+     if(document.querySelector('.dz-preview')===null){
+        Swal.fire({
+                    title: "Service Groupe d'annonce!",
+                    text: "Aucune image chargée",
+                    type: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'réessayer'
+                  }).then((result) => {
+                    if (result.value) {
+                    
+                    }else{
+                    
+                    }
+                  })
+     } else {
+       
+       if (name == "") {
+          Swal.fire({
+                    title: "Service Groupe d'annonce!",
+                    text: "nom de l'annonce ne peut être vide ",
+                    type: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'réessayer'
+                  }).then((result) => {
+                    if (result.value) {
+                    
+                    }else{
+                    
+                    }
+                  })
+       } else if (url == "") {
+          Swal.fire({
+                    title: "Service Groupe d'annonce!",
+                    text: "Url de redirection de l'annonce ne peut être vide ",
+                    type: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'réessayer'
+                  }).then((result) => {
+                    if (result.value) {
+                    
+                    }else{
+                    
+                    }
+                  })
+       } else{
+         
+         
+        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+          if (res != 'error') {
+           
+            var image = document.querySelector('.dz-image').getElementsByTagName('img')
+            //console.log(image)
+            if (image[0].naturalWidth != parseInt(this.selectedWidth) || image[0].naturalHeight != parseInt(this.selectedHeight)) {
+              Swal.fire({
+                     title: "Service Groupe d'annonce!",
+                     text: 'Image invalide',
+                     type: 'error',
+                     showCancelButton: false,
+                     confirmButtonColor: '#3085d6',
+                     cancelButtonColor: '#d33',
+                     confirmButtonText: 'Ok'
+                   }).then((result) => {
+                     if (result.value) {
+                     
+                     }else{
+                     
+                     }
+                   })
+            } else {
+            this.img_view_create_style['width']=this.selectedWidth+'px'
+            this.img_view_create_style['height']=this.selectedHeight+'px'
+               $('#button_modal_init').trigger('click')
+              $('#ad_image').attr("src", $('.dz-image').find('img').attr("src"))
+              this.ad_name = $("#"+this.currentIdInputName).val()
+            }
+            
+          } else{
+    
+          }
+        })
+       }
+     }
   }
 
   handleModifiedImage() {
@@ -2039,7 +2146,9 @@ $('#popper').trigger('click')
       if (res != 'error') {
         $('#button_modal_modified').trigger('click')
         $('#ad_image_modified').attr("src", this.canvas.toDataURL('png'))
-        $("#modified_name").text($("#"+this.currentIdInputName).val())
+        $("#modified_name").text($("#" + this.currentIdInputName).val())
+         this.img_view_create_style['width']=this.size["width"]+'px'
+              this.img_view_create_style['height']=this.size["height"]+'px'
         
       } else{
 
@@ -2049,7 +2158,7 @@ $('#popper').trigger('click')
         this.getWebsites(this.currentIdInputDisplay).then(res => { 
           if (res != 'error') {
         //alert(this.button_modify_image_upload)
-            if (this.button_modify_image_upload === true) {
+            if (this.button_modify_image_upload === true && (document.querySelector('.dz-preview')) === null) {
               this.img_view_create_style['width']=this.selectedWidth+'px'
               this.img_view_create_style['height']=this.selectedHeight+'px'
               $('#button_modal_modified').trigger('click')
@@ -2145,7 +2254,7 @@ $('#popper').trigger('click')
           //console.log('success')
           //console.log(res)
           self.isRoller = false
-          
+          window.location.reload()
           
         })
      })
@@ -2172,6 +2281,7 @@ $('#popper').trigger('click')
           if (res != "error") {
             
             self.isRoller = false
+              window.location.reload()
           } else {
             self.isRoller = false
           }
@@ -2351,7 +2461,7 @@ defineBudgetFromAccount() {
 
     if (this.currentAdStatus == "") {
       this.isRoller = true
-      var photoURL = []
+      var displayUrl = []
      var finalUrls = []
      var finalMobileUrls = []
      var finalAppUrls = []
@@ -2359,8 +2469,7 @@ defineBudgetFromAccount() {
       var image = $('#ad_image_modified').attr("src")
      var storage = firebase.app().storage("gs://comparez.appspot.com/");
       var storageRef = storage.ref();
-      //console.log(this.uid)
-      //console.log(this.ad_name)
+   
       var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString() + ".png"
       //console.log(imageRefStorage)
      var imagesRef = storageRef.child(imageRefStorage);
@@ -2368,20 +2477,8 @@ defineBudgetFromAccount() {
    contentType: 'image/png',
   };
       var self = this
-      
- 
-      //console.log(this.FINAL_ARRAY_TO_SEND[0]['content'])
-      photoURL.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
-    /*  for (let i = 0; i <this.FINAL_ARRAY_TO_SEND.length; i++){
-       if (this.FINAL_ARRAY_TO_SEND[i] == 'finalUrls') {
-         //console.log(this.FINAL_ARRAY_TO_SEND[i]['content'])
-         
-         photoURL.push(this.FINAL_ARRAY_TO_SEND[i]['content'])
-         //console.log(photoURL)
-       }
-     } */
-     
-      //ad_image_modified
+      displayUrl.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
+
       if (this.currentAdType === 'UPLOAD') {
         //console.log('upload')
         //console.log(image)
@@ -2404,15 +2501,17 @@ defineBudgetFromAccount() {
      
       ad_name: name,
       url_image: url,
-      photoURL: photoURL[0],
-      finalUrls: photoURL[0],
+      photoURL: displayUrl[0],
+      finalUrls: displayUrl[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(res => {
           //console.log('success')
-      //console.log(res)
-      Swal.fire({
+          //console.log(res)
+          self.isRoller = false
+      if(res=="ok"){
+         Swal.fire({
         title: 'Modification du visuel',
         text: 'Visuel modifié avec succès',
         type: 'success',
@@ -2422,11 +2521,13 @@ defineBudgetFromAccount() {
         confirmButtonText: 'Ok'
       }).then((result) => {
         if (result.value) {
-          self.isRoller = false
-          document.getElementById("closeModalViewModified").click()
+          setTimeout(()=>{
+            document.getElementById("closeModalViewModified").click()
+          }, 1000)
           
               }
             })
+      }
       
         }).catch(err=>{
            Swal.fire({
@@ -2450,15 +2551,17 @@ defineBudgetFromAccount() {
      
       ad_name: name,
       url_image: image,
-      photoURL: photoURL[0],
-      finalUrls: photoURL[0],
+      photoURL: displayUrl[0],
+      finalUrls: displayUrl[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(res => {
           //console.log('success')
       //console.log(res)
-      Swal.fire({
+      self.isRoller = false
+      if(res=="ok"){
+         Swal.fire({
         title: 'Modification du visuel',
         text: 'Visuel modifié avec succès',
         type: 'success',
@@ -2468,13 +2571,16 @@ defineBudgetFromAccount() {
         confirmButtonText: 'Ok'
       }).then((result) => {
         if (result.value) {
-          self.isRoller = false
-          document.getElementById("closeModalViewModified").click()
+          setTimeout(()=>{
+            document.getElementById("closeModalViewModified").click()
+          }, 1000)
           
               }
             })
+      }
       
-        }).catch(err=>{
+    }).catch(err => {
+          self.isRoller = false
            Swal.fire({
               title: 'Modification du visuel',
               text: 'Erreur Service !',
@@ -2518,15 +2624,17 @@ defineBudgetFromAccount() {
       ad_name: name,
       url_image: url,
       image_content: image_content,
-      photoURL: photoURL[0],
-      finalUrls: photoURL[0],
+      photoURL: displayUrl[0],
+      finalUrls: displayUrl[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(res => {
           //console.log('success')
-      //console.log(res)
-      Swal.fire({
+          //console.log(res)
+        self.isRoller = false
+      if(res=="ok"){
+         Swal.fire({
         title: 'Modification du visuel',
         text: 'Visuel modifié avec succès',
         type: 'success',
@@ -2536,13 +2644,16 @@ defineBudgetFromAccount() {
         confirmButtonText: 'Ok'
       }).then((result) => {
         if (result.value) {
-          self.isRoller = false
-          document.getElementById("closeModalViewModified").click()
+          setTimeout(()=>{
+            document.getElementById("closeModalViewModified").click()
+          }, 1000)
           
               }
             })
+      }
       
-        }).catch(err=>{
+    }).catch(err => {
+          self.isRoller = false
            Swal.fire({
               title: 'Modification du visuel',
               text: 'Erreur Service !',
@@ -2629,6 +2740,7 @@ defineBudgetFromAccount() {
                     
                     this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.currentAdName, this.currentImageUrl, this.tabUpdatedCurrentFinalUrls, [], [], this.currentAdSize).then(res => {
                            if (res != "error") {
+                             this.isRoller = false
                      Swal.fire({
               title: 'Modification du visuel',
               text: "Visuel modifié avec succès",
@@ -2639,12 +2751,16 @@ defineBudgetFromAccount() {
               confirmButtonText: 'Ok'
             }).then((result) => {
                 if (result.value) {
-                this.isRoller = false
-         
+         setTimeout(()=>{
+          document.getElementById("closeModalViewModified").click()
+         }, 1000)
              
                 
                 } else {
                   this.isRoller = false
+                  setTimeout(()=>{
+                    document.getElementById("closeModalViewModified").click()
+                  }, 1000)
               }
             })
                   } else {
@@ -3120,7 +3236,7 @@ if (this.budget === 0) {
           confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
-            window.location.replace(REDIRECT_URL+"/defineBudget/"+0+"/"+self.idC)
+            window.location.replace(REDIRECT_URL+"defineBudget/"+0+"/"+self.idC)
             $("#"+this.idC).trigger("click")
           }
         })

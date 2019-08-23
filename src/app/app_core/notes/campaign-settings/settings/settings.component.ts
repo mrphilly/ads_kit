@@ -49,6 +49,8 @@ declare var require: any;
 declare const pQuery: any
 declare const PayExpresse: any
 declare const particlesJS: any; 
+const MAX_BUDGET_VALUE = 10000001
+const MIN_BUDGET_VALUE = 9999
 
 
 
@@ -188,7 +190,7 @@ dataSource: any;
   dk = 'Dakar'
   generale='Général'
   zone: any;
-
+error_recharge = ""
   ages = []
   sexes = [];
   zones = [];
@@ -2683,20 +2685,29 @@ if (this.endDate == date || this.startDate == date) {
     $('#error_recharge').hide()
     this.isSimulation = true
     var montant = $("#montant").val()
-    if (montant < 10000) {
+    if (montant == "" ) {
+    
       this.number_of_impressions_simulated = 0
       this.my_gain = 0
       this.budget_to_place = 0
-      $('#error_recharge').show()
-    } else if(montant==""){
-      this.number_of_impressions_simulated = 0
-      this.my_gain = 0
-      this.budget_to_place = 0
+      this.error_recharge = "Saisir un budget"
        $('#error_recharge').show()
+    } else if (montant < MIN_BUDGET_VALUE) {
+        this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      this.error_recharge = "Budget doit être supérieur ou égal à 10 000 FCFA"
+      $('#error_recharge').show()
+    } else if (montant > MAX_BUDGET_VALUE) {
+         this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      this.error_recharge = "Budget indisponible"
+      $('#error_recharge').show()
     } else{
       this.my_gain = (20 * montant) / 100
       this.budget_to_place = montant - this.my_gain
-      this.number_of_impressions_simulated = (this.budget_to_place *1000) / 33.3
+      this.number_of_impressions_simulated = parseInt(((this.budget_to_place *1000) / 33.3).toString())
       this.montant = montant
       //var budget_to_place_in_dollar = budget_to_place * 550
       
@@ -2748,7 +2759,7 @@ if (this.endDate == date || this.startDate == date) {
     }else{
      this.my_gain = (20 * montant) / 100
       this.budget_to_place = montant - this.my_gain
-      this.number_of_impressions_simulated = (this.budget_to_place *1000) / 33.3
+      this.number_of_impressions_simulated = parseInt(((this.budget_to_place *1000) / 33.3).toString())
       this.montant = montant
       
       

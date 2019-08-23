@@ -154,7 +154,7 @@ private basePath = '/uploads';
          this.updateAd(ad_id, {ad_id:response['ad_id'], ad_group_id:  ad_group_id , ad_name: response['name'], status: response['status'], url_image: response['url_image'], displayUrl: response['displayUrl'], finalUrls:  response['finalUrls'],finalMobileUrls:response['finalMobileUrls'], finalAppUrls: response['finalAppUrls'], automated: response['automated'], referenceId: response['referenceId'] }).then(res=>{
             Swal.fire({
               title: 'Ajouter une annonce',
-              text: 'Annonce ajoutée avec succès',
+              text: 'Visuel publié avec succès',
               type: 'success',
               showCancelButton: false,
               confirmButtonColor: '#3085d6',
@@ -387,8 +387,11 @@ private basePath = '/uploads';
     })
   }
 
-  updateAd(id: string, data: any) {
-    return this.getAd(id).update(data);
+  updateAd(id: string, data: any):Promise<any> {
+    return new Promise(resolve => {
+      this.getAd(id).update(data)
+      resolve("ok")
+    })
   }
 
   deleteAd(id: string) {
