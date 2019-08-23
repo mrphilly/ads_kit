@@ -41,7 +41,6 @@ def main(client, ad_group_id):
   query = (adwords.ServiceQueryBuilder()
            .Select('Id', 'CombinedApprovalStatus')
            .Where('Id').EqualTo(ad_group_id)
-           .OrderBy('Name')
            .Limit(0, PAGE_SIZE)
            .Build())
 
