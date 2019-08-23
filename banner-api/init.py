@@ -64,8 +64,8 @@ firebase = pyrebase.initialize_app(config)
 
 app = Flask(__name__)
 CORS(app)
-URL_SERVER = "https://137.74.199.121:5009"
-FRONT_END_URL = "www.adafri.com"
+URL_SERVER = "https://adafri.comparez.co"
+FRONT_END_URL = "https://www.adafri.com"
 #FRONT_END_URL = "http://localhost:4200"
 #URL_SERVER = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = 'uploads/'
@@ -1045,6 +1045,6 @@ def uploaded_file(filename):
                                filename)
 if __name__ == "__main__":
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-    app.run(debug=True, ssl_context='adhoc')
+    app.run(debug=True)
     
     

@@ -34,3 +34,7 @@ export class Note {
     
   
 }
+/* 
+/etc/letsencrypt/live/adafri.com-0001/cert.pem
+    / etc / letsencrypt / live / adafri.com - 0001 / chain.pem 
+ /etc/letsencrypt/live/adafri.com-0001/privkey.pem */
