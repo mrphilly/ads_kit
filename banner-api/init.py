@@ -65,8 +65,8 @@ firebase = pyrebase.initialize_app(config)
 app = Flask(__name__)
 CORS(app)
 URL_SERVER = "https://adafri.comparez.co"
-#FRONT_END_URL = "https://www.adafri.com"
-FRONT_END_URL = "http://localhost:4200"
+FRONT_END_URL = "https://www.adafri.com"
+#FRONT_END_URL = "http://localhost:4200"
 #URL_SERVER = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -749,8 +749,8 @@ def pay():
 
         headers = {
             'content-type': 'application/x-www-form-urlencoded',
-            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
-            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
         }
 
         req = requests.post(url, data=infos, headers=headers)
@@ -816,8 +816,8 @@ def payBudget(money=None, budget_to_place=None, budgetId=None, idC=None, dure=No
 
         headers = {
             'content-type': 'application/x-www-form-urlencoded',
-            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
-            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
         }
         req = requests.post(url, data=infos, headers=headers)
 
@@ -864,8 +864,8 @@ def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None
 
         headers = {
             'content-type': 'application/x-www-form-urlencoded',
-            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
-            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
         }
 
         req = requests.post(url, data=infos, headers=headers)
@@ -915,8 +915,8 @@ def rechargeAmount(money=None):
 
         headers = {
             'content-type': 'application/x-www-form-urlencoded',
-            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
-            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
         }
 
         req = requests.post(url, data=infos, headers=headers)
@@ -968,8 +968,8 @@ def rechargeAmountBeforeBudget(money=None, idC=None, crypt=None):
 
         headers = {
             'content-type': 'application/x-www-form-urlencoded',
-            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
-            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
         }
 
         req = requests.post(url, data=infos, headers=headers)
@@ -1020,8 +1020,8 @@ def rechargeAmountBeforeBudgetFromAd(ad_name=None, idC=None, idA=None, ad_group_
 
         headers = {
             'content-type': 'application/x-www-form-urlencoded',
-            'API_KEY':"3e379206e070968fa5cb0f63c5ef1a4cb3a988f037cbe5af6f456d124af0b819",
-            'API_SECRET':"f3a6c5f015ea7352fd067d4fd0fbcc2c106f89c9f3858af890f6d25aa75ffbae",
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
         }
 
         req = requests.post(url, data=infos, headers=headers)
