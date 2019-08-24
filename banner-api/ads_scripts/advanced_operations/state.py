@@ -32,7 +32,7 @@ PAGE_SIZE = 500
 def main(client):
   # Initialize appropriate service.
   ad_group_bid_modifier_service = client.GetService(
-      'AdGroupBidModifierService', version='v201809')
+      'AdGroupAdService', version='v201809')
 
   # Get all ad group bid modifiers for the campaign.
   selector = {

@@ -295,33 +295,36 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         this.auth.user.forEach(data => {
 
           var mystr = this.decrypted(params['money'], data.uid)
+          if(parseInt(mystr)!==NaN){
+            
+            
+            this.auth.updateUser(data.uid, { account_value: parseInt(mystr) })
+          this.auth.getInfos(data.uid).subscribe(el => {
+            this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+              Swal.fire({
+                title: 'Service Rechargement!',
+                text: 'Compte mis à jour avec succès.',
+                type: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  //window.location.replace(REDIRECT_URL)
+                  window.history.pushState("", "", REDIRECT_URL)
+          
+                  this.isCreating = false
+                }
+              })
+            })
+      
+   
+          })
+          }
 
        
           
-                
-                this.auth.updateUser(data.uid, { account_value: parseInt(mystr) })
-              this.auth.getInfos(data.uid).subscribe(el => {
-                this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
-                  Swal.fire({
-                    title: 'Service Rechargement!',
-                    text: 'Compte mis à jour avec succès.',
-                    type: 'success',
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ok'
-                  }).then((result) => {
-                    if (result.value) {
-                      //window.location.replace(REDIRECT_URL)
-                      window.history.pushState("", "", REDIRECT_URL)
-              
-                      this.isCreating = false
-                    }
-                  })
-                })
-          
-       
-              })
          
            
           
