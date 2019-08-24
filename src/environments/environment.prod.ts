@@ -5,7 +5,7 @@ export const SERVER = {
   //url: "http://127.0.0.1:5000",
 
   url: "https://adafri.comparez.co",
-  url_redirect: "/",
+  url_redirect: "https://adafri.com/#",
   confidentialite: "https://adafri.comparez.co/#/confidentialite"
 
 }

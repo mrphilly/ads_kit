@@ -3261,7 +3261,7 @@ if (this.budget === 0) {
           confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
-            window.location.replace(REDIRECT_URL+"defineBudget/"+0+"/"+self.idC)
+            window.location.replace(REDIRECT_URL+"/defineBudget/"+0+"/"+self.idC)
             $("#"+this.idC).trigger("click")
           }
         })
