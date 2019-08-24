@@ -293,8 +293,10 @@ export class UserLoginComponent {
   }
 
   async signInWithGoogle() {
+    this.isCreating=true
     await this.auth.googleLogin().then(res => {
       if (res == "ok") {
+        this.isCreating=false
          Swal.fire({
         title: 'Authentification',
         text: 'Vous êtes maintenant connecté',
@@ -311,6 +313,8 @@ export class UserLoginComponent {
         }
 
       })
+      } else {
+        this.isCreating=false
       }
     })
     
@@ -324,9 +328,10 @@ export class UserLoginComponent {
 
 
   async signInWithFacebook() {
+    this.isCreating=true
     await this.auth.facebookLogin().then(res => {
       if (res == "ok") {
-        if (res == "ok") {
+    
           Swal.fire({
             title: 'Authentification',
             text: 'Vous êtes maintenant connecté',
@@ -343,8 +348,10 @@ export class UserLoginComponent {
             }
 
           })
+      } else {
+        this.isCreating=false
         }
-      }
+      
     });
 
   }
@@ -379,6 +386,7 @@ export class UserLoginComponent {
         
       this.auth.emailSignUp(this.userForm.value['username'], this.userForm.value['email'], this.userForm.value['password']).then(res => {
         if (res == "ok") {
+          this.isCreating=false
            Swal.fire({
               title: 'Authentification',
               text: 'Inscription terminée avec succès',
@@ -398,6 +406,7 @@ export class UserLoginComponent {
         }
       });
     } else {
+      this.isCreating=false
        Swal.fire({
               title: 'Authentification',
               text: "Nom d'utilisateur indisponible ou vide",
@@ -423,7 +432,8 @@ export class UserLoginComponent {
     this.isCreating = true
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']).then(res => {
       
-      if (res.toString()!= "") {
+      if (res.toString() != "") {
+        this.isCreating=false
         Swal.fire({
             title: 'Authentification',
             text: 'Vous êtes maintenant connecté',
