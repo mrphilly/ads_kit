@@ -883,9 +883,9 @@ def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None
 
 @app.route('/rechargeAmount',  methods=['POST'])
 
-@app.route('/rechargeAmount/<money>', methods=['POST'])
+@app.route('/rechargeAmount/<money>/<key>', methods=['POST'])
 
-def rechargeAmount(money=None):
+def rechargeAmount(money=None, key=None):
         """
         Get payexpress token
         """
@@ -894,7 +894,7 @@ def rechargeAmount(money=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = FRONT_END_URL+"/#/"+money
+        success_url = FRONT_END_URL+"/#/new_rechargement/"+key
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -936,9 +936,9 @@ def rechargeAmount(money=None):
 
 @app.route('/rechargeAmountBeforeBudget',  methods=['POST'])
 
-@app.route('/rechargeAmountBeforeBudget/<money>/<idC>/<crypt>', methods=['POST'])
+@app.route('/rechargeAmountBeforeBudget/<money>/<idC>', methods=['POST'])
 
-def rechargeAmountBeforeBudget(money=None, idC=None, crypt=None):
+def rechargeAmountBeforeBudget(money=None, idC=None):
         """
         Get payexpress token
         """
@@ -947,7 +947,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None, crypt=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = FRONT_END_URL+"/#/"+crypt+"/"+idC
+        success_url = FRONT_END_URL+"/#/account_pay/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 

@@ -58,7 +58,8 @@ def UpdateBudget(client, budgetId, amount, dure):
   }]
   budget = budget_service.mutate(operations)
   response.append({
-    "dailyBudget": (value_in_dollar*555)
+    "dailyBudget": (value_in_dollar*555),
+    "status": "ok",
   })
   for item in budget['value']:
     print(item)

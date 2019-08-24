@@ -129,6 +129,10 @@
             <div class="card no-b animated fadeInUp">
 
               <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item d-inline-block" style="margin-top: 20px">
+                   <img class="img-responsive" src="assets/img/images/creategroupe.jpg">
+
+                </li>
                 <!--     <li class="list-group-item grey lighten-2"><i class="icon-chevron-circle-right text-white" style="float: left"></i><strong class="s-12 text-white" style="float: left">Nom</strong> <span class="float-right s-12 text-white" style="font-weight: bold">{{name}}</span></li> -->
                 <!-- <li class="list-group-item text-center">
                   <img class="img-responsive" src="assets/img/images/campaign.png">
@@ -146,7 +150,7 @@
                   <a class="btn btn-sm btn-block white r-20 btn-social text-black-50" style="font-size: 12px; border: 1px solid grey" (click)="go1()" ><i class="icon-view_list"
                     ></i> Affichez vos campagnes</a> 
                  </li> -->
-                 <li class="list-group-item d-inline-block" style="margin-top: 20px">
+                 <!-- <li class="list-group-item d-inline-block" style="margin-top: 20px">
                    <img class="img-responsive" src="assets/img/images/creategroupe.jpg">
 
                  </li>
@@ -168,7 +172,7 @@
                 </li>
                 <li class="list-group-item" *ngIf="servingStatus=='ENDED'"><i class="icon-alarm_off text-danger"
                     style="float: left"></i><strong class="s-12 text-danger"
-                    style="float: right">{{labelEnded}}</strong></li>
+                    style="float: right">{{labelEnded}}</strong></li> -->
                <!--  <li class="list-group-item"><i class="icon icon-hourglass-start adafri-police text-black-50 s-18"
                     style="float: left"></i><strong class="s-12 adafri-police text-black-50 s-18"
                     style="float: right">{{labelDateStart}}</strong> <strong class="s-12 adafri-police text-black-50 s-18"
@@ -313,7 +317,7 @@
                           <small style="font-size: 16px">Ces annonces (imagées) dirigeront <strong>toutes</strong> vers une seule page de votre site</small>
                         </div>
                         <div class="text-center" style="width: 100%"> 
-                          <a class="btn btn-sm grey text-white btn-social r-20 d-inline-block" (click)="toggleAddNewAdGroup()" style="width: 200px; display: inline-block"><i class="icon-add_circle" ></i> Cliquer pour commencer</a>
+                          <a class="btn btn-sm white text-black-50 adafri-police-12 btn-social r-20 d-inline-block border-grey" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle" ></i> Cliquer pour commencer</a>
                         </div>
                       </div>
 
@@ -533,7 +537,7 @@
                                                     </div> </td>
                                                   
                                                    <td>XOF {{budget}}</td>
-                                                   <td><div class="dropdown">
+        <td><div class="dropdown" *ngIf="accountValue===0 || budget===0">
                                                      <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
        Sélectionner
      
@@ -631,8 +635,8 @@
          <div class="form-row text-center" *ngIf="isAccountRechargement">
           <div class="col-md-12 mb-3 text-center">
             
-            <small class="text-success"
-              style="font-size: 12px; margin-top: -5px;">NB: Cette opération vous permettra dans la suite d'éviter les paiments pour démarrer une nouvelle campagne</small>
+            <small class="adafri adafri-police-16"
+              style="margin-top: -5px;">NB: Cette opération vous permettra dans la suite d'éviter les paiments pour démarrer une nouvelle campagne</small>
             <input type="number" class="form-control bg-light" id="montant" (keyup)="handleIfValide()"
               placeholder="Montant" min="10000"  placeholder="Montant supérieur ou égal à 20 000 FCA" required>
             <small class="text-danger" id="error_recharge"
@@ -657,9 +661,9 @@
                  <div class="form-row text-center" *ngIf="isPlacementBudgetFromAccount">
           <div class="col-md-12 mb-3 text-center">
             
-            <small class="text-success"
-              style="font-size: 12px; margin-top: -5px;">NB: La valeur du budget doit être disponible dans votre compte et supérieur ou égale à 10 000 FCFA</small>
-            <input type="number" class="form-control bg-light" id="montant" (keyup)="handleIfBudgetToPlaceFromAccountIsValid()"
+            <small class="adafri adafri-police-16"
+              style="margin-top: -5px;">NB: La valeur du budget doit être disponible dans votre compte et supérieur ou égale à 10 000 FCFA</small>
+            <input type="number" class="form-control text-center" id="montant" (keyup)="handleIfBudgetToPlaceFromAccountIsValid()"
               placeholder="Montant" placeholder="Montant supérieur ou égal à 10 000 FCA"required>
             <small class="text-danger" id="error_recharge"
               style="font-size: 12px; display: none">La valeur du budget invalide</small>
@@ -673,9 +677,9 @@
                                   
                                 </div>
                <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
-                style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid grey"
+                style="display: inline-block; margin-top: 30px; border: 1px solid grey"
                 (click)="defineBudgetFromAccount()">Placer mon budget</button>
-                <button type="button" class="btn btn-sm bg-danger text-danger btn-social r-20"
+                <button type="button" class="btn btn-sm white text-danger btn-social r-20"
                 style="height: 30px; display: inline-block; margin-top: 30px; border: 1px solid red"
                 (click)=" ClosePlaceBudgetFromAccountValue()">Annuler</button>
 

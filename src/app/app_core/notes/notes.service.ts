@@ -104,8 +104,9 @@ export class NotesService implements OnInit {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -124,8 +125,9 @@ export class NotesService implements OnInit {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -143,8 +145,9 @@ export class NotesService implements OnInit {
           text: 'Cette camapagne exite déjà',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -159,9 +162,10 @@ export class NotesService implements OnInit {
     })
    
   }
-    targetLocation(id: string, campaign_id: string, name: string, location: any) {
+    targetLocation(id: string, campaign_id: string, name: string, location: any): Promise<any> {
  
-    return this.getCampaignZones(campaign_id, name).then(value => {
+      return new Promise(resolve => {
+      this.getCampaignZones(campaign_id, name).then(value => {
       //console.log(`promise result: ${value}`)
 
       
@@ -173,7 +177,11 @@ export class NotesService implements OnInit {
       .subscribe(
         res => {
           //console.log(`res from location backend: ${res}`)
-          this.updateNote(id, {zones: location })
+          this.updateNote(id, { zones: location }).then(res => {
+            if (res == "ok") {
+              resolve('ok')
+            }
+          })
         },
         err => {
           Swal.fire({
@@ -181,8 +189,9 @@ export class NotesService implements OnInit {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -196,14 +205,16 @@ export class NotesService implements OnInit {
           text: 'Erreur service1',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
           })
         
       } */
+    })
     })
    
   }
@@ -250,8 +261,9 @@ export class NotesService implements OnInit {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -265,8 +277,9 @@ export class NotesService implements OnInit {
           text: 'Erreur service1',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -312,8 +325,9 @@ export class NotesService implements OnInit {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -456,8 +470,9 @@ export class NotesService implements OnInit {
           text: this.error_end_date,
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -482,7 +497,10 @@ export class NotesService implements OnInit {
            
            
             this.updateNote(id, { endDate: res[0]['endDate'], endDateFrench: endDateFrench, startDate: res[0]['startDate'], startDateFrench: startDateFrench, servingStatus: res[0]['servingStatus'] }).then(res => {
-            resolve('ok')
+              if (res == "ok") {
+                
+                resolve('ok')
+              }
            })
             
           },
@@ -613,8 +631,14 @@ parseDate(str) {
     })
   }
 
-  updateNote(id: string, data: any) {
-    return this.getNote(id).update(data);
+  updateNote(id: string, data: any): Promise<any> {
+    return new Promise(resolve => {
+
+      this.getNote(id).update(data).then(res => {
+
+        resolve("ok")
+      })
+    })
   }
 
   /* deleteNote(id: string, ad_groups_list_id: any, ads_list_id: any) {

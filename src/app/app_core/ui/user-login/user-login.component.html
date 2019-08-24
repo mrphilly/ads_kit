@@ -1,3 +1,5 @@
+
+
 <ng-template #isConnected>
     
   <main>
@@ -62,9 +64,9 @@
 
 </ng-template>
 
-<main *ngIf="!(auth.user | async); else isConnected">
+<div class="height-full" *ngIf="!(auth.user | async); else isConnected">
  <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
-<section class="login-block height-full"  style="background:url(assets/img/images/fond-sombre.png) no-repeat left bottom; background-size: cover
+<div class="login-block height-full"  style="background:url(assets/img/images/fond-sombre.png) no-repeat left bottom; background-size: cover
 ">
     
 	
@@ -394,8 +396,8 @@
   </div>
 
 
-</section>
-<section class="login-block1">
+</div>
+<div class="login-block1">
 
      <div class="row">
         <div class="col-md-12 text-center">
@@ -453,7 +455,7 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
   <div class="card no-b">
     <img class="img-responsive" src="assets/img/images/3raisons.jpg">
   </div>
-</section>
+</div>
  
  
    
@@ -481,7 +483,7 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
       </div>
     </div>  -->
    
-</main>
+</div>
 <div *ngIf="isCreating">
   <app-spinner-overlay [message]="message"></app-spinner-overlay>
 

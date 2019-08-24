@@ -16,6 +16,7 @@ import { map } from 'rxjs/operators'
 import * as moment from 'moment'
 /* import { NoteDetailComponent } from './note-detail/note-detail.component' */
 import {SERVER} from '../../../environments/environment'
+import { resolveDefinition } from '@angular/core/src/view/util';
 
 declare var require: any;
 var _ = require('lodash');
@@ -125,9 +126,10 @@ export class AdGroupService {
       }, 2000);
     });
   }
- async targetGenre(id: string, campaign_id: string, ad_group_id: any,  genre: any) {
-   var genre_legnth = genre.length;
-   return await this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
+ async targetGenre(id: string, campaign_id: string, ad_group_id: any,  genre: any): Promise<any> {
+   new Promise(resolve => {
+     var genre_legnth = genre.length;
+   this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
   
     // console.log(`value:`)
     // console.log(value)
@@ -143,7 +145,11 @@ export class AdGroupService {
       .subscribe(
         res => {
          // console.log(`res from location backend: ${res}`)
-          this.updateAdgroup(id, {sexes: genre })
+          this.updateAdgroup(id, { sexes: genre }).then(res => {
+            if (res == "ok") {
+              resolve('ok')
+            }
+          })
         },
         err => {
           Swal.fire({
@@ -151,8 +157,9 @@ export class AdGroupService {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -161,6 +168,7 @@ export class AdGroupService {
       );
     })
    
+  })
   }
 
   removePlacement(id: any, campaign_id: any, ad_group_id: any, criterion: any): Promise<any> {
@@ -179,7 +187,10 @@ export class AdGroupService {
      last_placement.splice(i, 1); 
    }
                 this.updateAdgroup(id, { placement: last_placement, criterion_placement: last_placement }).then(res => {
-     resolve('ok')
+                  if (res == "ok") {
+                    resolve('ok')
+                    
+                  }
    })
 }
             })
@@ -192,8 +203,9 @@ export class AdGroupService {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -205,9 +217,10 @@ export class AdGroupService {
     })
   }
 
-  async targetPlacement(id: string, campaign_id: string, ad_group_id: any,  placement: any) {
-   var genre_legnth = placement.length[0];
-   return await this.getAdGroupPlacement(campaign_id, ad_group_id).then(value => {
+  async targetPlacement(id: string, campaign_id: string, ad_group_id: any,  placement: any): Promise<any> {
+    return new Promise(resolve => {
+     var genre_legnth = placement.length[0];
+    this.getAdGroupPlacement(campaign_id, ad_group_id).then(value => {
       
     
         this.http.post(SERVER_URL+'/setPlacement', {
@@ -219,7 +232,12 @@ export class AdGroupService {
         res => {
          // console.log(`res from location backend: ${res}`)
          // console.log(res)
-          this.updateAdgroup(id, {placement: res, criterion_placement: res })
+          this.updateAdgroup(id, { placement: res, criterion_placement: res }).then(res => {
+            if (res == "ok") {
+              
+              resolve('ok')
+            }
+          })
         },
         err => {
           Swal.fire({
@@ -227,8 +245,9 @@ export class AdGroupService {
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -236,12 +255,14 @@ export class AdGroupService {
         }
       );
     })
+   })
    
   }
 
-async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices: any) {
+async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices: any): Promise<any> {
    
-   return await this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
+  return new Promise(resolve => {
+     this.getAdGroupDevices(campaign_id, ad_group_id).then(value => {
   
     // console.log(`value:`)
     // console.log(value)
@@ -257,7 +278,12 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
       .subscribe(
         res => {
          // console.log(`res from location backend: ${res}`)
-          this.updateAdgroup(id, {devices: devices })
+          this.updateAdgroup(id, { devices: devices }).then(res => {
+         if (res == "ok") {
+              
+              resolve('ok')
+            }
+          })
         },
         err => {
           Swal.fire({
@@ -265,8 +291,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -280,8 +307,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           text: 'Erreur service1',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -289,13 +317,15 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
         
       } */
     })
+   })
    
   }
 
 
-  async targetAge(id: string, campaign_id: string, ad_group_id: any,  age: any) {
+  async targetAge(id: string, campaign_id: string, ad_group_id: any,  age: any): Promise<any> {
 
-   return await this.getAdGroupAge(campaign_id, ad_group_id).then(value => {
+    return new Promise(resolve => {
+      this.getAdGroupAge(campaign_id, ad_group_id).then(value => {
   
     // console.log(`value:`)
     // console.log(value)
@@ -319,7 +349,12 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
       .subscribe(
         res => {
          // console.log(`res from location backend: ${res}`)
-          this.updateAdgroup(id, {ages: age })
+          this.updateAdgroup(id, { ages: age }).then(res => {
+           if (res == "ok") {
+              
+              resolve('ok')
+            }
+          })
         },
         err => {
           Swal.fire({
@@ -327,8 +362,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
             if (result.value){}
@@ -337,6 +373,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
       );
 
     })
+   })
    
   }
 
@@ -384,8 +421,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -405,8 +443,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -424,8 +463,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
           text: 'Cette camapagne exite déjà',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -493,8 +533,13 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
     const docRef = await this.afs.collection('adgroup').add(this.adgroup);
   }
 
-  updateAdgroup(id: string, data: any) {
-    return this.getAdGroup(id).update(data);
+  updateAdgroup(id: string, data: any): Promise<any> {
+    return new Promise(resolve => {
+      this.getAdGroup(id).update(data).then(res => {
+        resolve("ok")
+      })
+    })
+  
   }
 
   deleteAdGroup(id: string) {

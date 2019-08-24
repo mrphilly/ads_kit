@@ -71,7 +71,8 @@ export class NotesListComponent implements AfterViewInit {
   isCampaign = false;
   ad_group_id: string;
   adgroups: any;
-  dure_campagne= 0
+  dure_campagne = 0
+  photoURL = ""
   //Si aucune campagne le bloc pour crÃ©er une nouvelle campagne
   _addCampaign_ = false;
 
@@ -83,7 +84,7 @@ export class NotesListComponent implements AfterViewInit {
   //Le bloc pour afficher la page pour une campagne donnÃ©e
   _showCampaignSettings_ = false
   isCreating = false
-  notificationAccountValue: any;
+  notificationAccountValue = "";
   numberOfNotifications = 0
 
   constructor(private notesService: NotesService, public auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute, private router: Router) {
@@ -122,7 +123,7 @@ localStorage.getItem("")
 var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
             { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding });
 
-    console.log('Decrypted:' + bytes.toString(CryptoJS.enc.Utf8));
+    //console.log('Decrypted:' + bytes.toString(CryptoJS.enc.Utf8));
    
       status.push({
         "status": "ok",
@@ -139,11 +140,12 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
          this.email = value.email
          this.accountValue = value.account_value
          this.email_letter = value.email.charAt(0)
+         this.photoURL = value.photoURL
          this.notes = this.notesService.getListCampaign(value.uid)
          this.notes.forEach(child => {
-      //console.log(child.length)
+      ////console.log(child.length)
       if (child.length > 0) {
-        //console.log(child.length)
+        ////console.log(child.length)
         this.toggleListCampaign()
       } else {
         this.initCampagne()
@@ -287,18 +289,14 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
            window.history.pushState("","",REDIRECT_URL)
               
                   }, 2000)
-      }
-  
-      if (typeof (params['money']) != "undefined") {
-        this.isCreating = true
-        
-        this.auth.user.forEach(data => {
-
-          var mystr = this.decrypted(params['money'], data.uid)
-          if(parseInt(mystr)!==NaN){
-            
-            
-            this.auth.updateUser(data.uid, { account_value: parseInt(mystr) })
+            } else if (window.location.href.includes('account_pay')) {
+              this.auth.user.forEach(data => {
+                var key = params['idC']
+                var montant = localStorage.getItem(key)
+                if (montant === null) {
+                  this.isCreating = false
+                } else {
+                                     this.auth.updateUser(data.uid, { account_value: parseInt(montant) })
           this.auth.getInfos(data.uid).subscribe(el => {
             this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
               Swal.fire({
@@ -312,6 +310,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
               }).then((result) => {
                 if (result.value) {
                   //window.location.replace(REDIRECT_URL)
+                  localStorage.removeItem(key)
                   window.history.pushState("", "", REDIRECT_URL)
           
                   this.isCreating = false
@@ -321,6 +320,62 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
       
    
           })
+                }
+                
+              })
+            } else if (window.location.href.includes('new_rechargement')) {
+          
+                         this.isCreating = true
+              this.auth.user.forEach(data => {
+                //alert(params['idC'])
+                var montant = localStorage.getItem(params['idC'])
+                //console.log(montant)
+                if (montant === null) {
+                  
+                  this.isCreating = false
+                } else {
+                     this.isCreating = false
+                   this.auth.updateUser(data.uid, { account_value: parseInt(montant) })
+                  this.auth.getInfos(data.uid).subscribe(el => {
+                    this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+                      Swal.fire({
+                        title: 'Service Rechargement!',
+                        text: 'Compte mis à jour avec succès.',
+                        type: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                      }).then((result) => {
+                        if (result.value) {
+                          //window.location.replace(REDIRECT_URL)
+                          window.history.pushState("", "", REDIRECT_URL)
+                          localStorage.removeItem(params['idC'])
+                          this.isCreating = false
+                     
+                    
+                        }
+                      })
+                    })
+              
+           
+                  })
+               
+                }
+        })
+              
+      }
+  
+/*       if (typeof (params['money']) != "undefined") {
+        this.isCreating = true
+        
+        this.auth.user.forEach(data => {
+
+          var mystr = this.decrypted(params['money'], data.uid)
+          if(parseInt(mystr)!==NaN){
+            
+            
+  
           }
 
        
@@ -333,10 +388,10 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         
 
         // In a real app: dispatch action to load the details here.
-      }
+      } */
 
 
-      if (typeof (params['money']) != "undefined" && typeof (params['idC']) != "undefined") {
+/*       if (typeof (params['money']) != "undefined" && typeof (params['idC']) != "undefined") {
          
          if (params['money'] == 0) {
           
@@ -385,9 +440,9 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         }
 
         // In a real app: dispatch action to load the details here.
-      }
+      } */
 
-       if (typeof (params['idC']) != "undefined" && typeof(params['campagne_id']) && params['budget'] != "undefined" && params['dailyBudget'] != "undefined" && params['numberOfDays'] != "undefined") {
+  /*      if (typeof (params['idC']) != "undefined" && typeof(params['campagne_id']) && params['budget'] != "undefined" && params['dailyBudget'] != "undefined" && params['numberOfDays'] != "undefined") {
         this.isCreating = true
     
          
@@ -413,7 +468,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
      
 
         // In a real app: dispatch action to load the details here.
-      }
+      } */
     })
    /* $(document).ready(() => {
 
@@ -432,8 +487,9 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
       text: 'Compte mis à jour avec succès.',
       type: 'success',
       showCancelButton: false,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+       buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
       confirmButtonText: 'Ok'
     }).then((result) => {
       if (result.value) {
@@ -457,6 +513,19 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
 
 
 // PROCESS
+  
+  
+  
+  generate(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
 encrypted(text, password){
 
   return CryptoJS.AES.encrypt(text, password);
@@ -531,9 +600,9 @@ encrypted(text, password){
 
     clickHandler(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string, budgetId: any) {
     
-      console.log(this.uid)
-      console.log(name)
-      console.log(status)
+      //console.log(this.uid)
+      //console.log(name)
+      //console.log(status)
       
       this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus, budgetId
       ).then(res => {
@@ -543,8 +612,9 @@ encrypted(text, password){
       text: 'Votre campagne a été ajouté avec succès.',
       type: 'success',
       showCancelButton: false,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+       buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
       confirmButtonText: 'Ok'
     }).then((result) => {
       if (result.value) {
@@ -577,8 +647,8 @@ encrypted(text, password){
     })
       .subscribe(
         res => {
-          console.log(res)
-          console.log(res['budgetId'])
+          //console.log(res)
+          //console.log(res['budgetId'])
           if (res['status'] == "ok") {
             this.id_campagne = res['id']
             this.status = res['status_campaign']
@@ -592,8 +662,10 @@ encrypted(text, password){
               text: 'Erreur.',
               type: 'error',
               showCancelButton: false,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
+              buttonsStyling: true,
+      
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
               confirmButtonText: 'Ok'
             }).then((result) => {
               if (result.value) { }
@@ -609,8 +681,9 @@ encrypted(text, password){
       text: 'Erreur.',
       type: 'error',
       showCancelButton: false,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+       buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
       confirmButtonText: 'Ok'
     }).then((result) => {
       if (result.value) {}
@@ -633,19 +706,45 @@ encrypted(text, password){
     this.montant = $("#montant").val()
     if (this.montant < 10000) {
       $('#error_recharge').show()
-    } else {
-      
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service rechargement",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else{
+      var key = this.generate(10)
+      localStorage.setItem(key, this.montant.toString())
       $('#closeModalRecharge').trigger('click')
       var self = this
-      this.isCreating = true
+      Swal.fire({
+          title: "Service rechargement",
+          html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+          type: 'info',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+          cancelButtonText: "annuler"
+        }).then((result) => {
+          if (result.value) {
+                 this.isCreating = true
       setTimeout(function () {
     
-        var btn = document.getElementById("budgetSet");
+        var btn = document.getElementById("amountSet");
         var selector = pQuery(btn);
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant,
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/"+key,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -657,7 +756,7 @@ encrypted(text, password){
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                  alert(success_url)
+                  //alert(success_url)
                 
                   //window.location.href = success_url; 
                 } else {
@@ -666,23 +765,23 @@ encrypted(text, password){
                 }
             },
             willGetToken: function () {
-                console.log("Je me prepare a obtenir un token");
+                //console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-                alert('erreur inconnu');
+                //alert('erreur inconnu');
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                console.log('non success response ', jsonResponse);
-                alert(jsonResponse.errors);
+                //console.log('non success response ', jsonResponse);
+                //alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
         }).send({
@@ -712,6 +811,9 @@ encrypted(text, password){
           
         });
     }, 500)
+          }
+        })
+
 
       
       

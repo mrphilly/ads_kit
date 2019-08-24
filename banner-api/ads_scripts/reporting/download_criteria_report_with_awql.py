@@ -72,7 +72,7 @@ def get_campaign_report_performance(client, CampaignId):
     result.append(row)
   print(result)
 
-
+  print(result[0]['Cost'])
   report = {
     "clicks": result[0]['Clicks'],
     "cost": result[0]['Cost'],

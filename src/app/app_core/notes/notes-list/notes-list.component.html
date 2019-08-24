@@ -109,32 +109,39 @@
             
         </li>
          <li style="margin-top: 3px">
-            <a class="nav-link text-black-50" title="Argent disponible dans votre compte" style="font-size: 12px">
+            <a class="nav-link adafri-police-16 font-weight-bold" title="Argent disponible dans votre compte">
                 <i class="icon-money-bag"></i> {{accountValue}} CFA
             </a>
         </li>
          <li class="dropdown custom-dropdown notifications-menu" *ngIf="!_init_campagne" style="margin-top: 5px">
             <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
                 <i class="icon-notifications_none text-black-50"></i>
-                <span class="badge badge-danger badge-mini rounded-circle">{{numberOfNotifications}}</span>
+                <span class="badge adafri-background badge-mini rounded-circle">{{numberOfNotifications}}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
                 <li class="header">Vous avez {{numberOfNotifications}} notification(s)</li>
                 <li>
                     <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                        <li>
-                            <a data-toggle="modal" data-target="#modalRechargement" *ngIf="notificationAccountValue!==''" class="text-danger">
-                                <i class="icon icon-data_usage text-danger"></i>{{notificationAccountValue}} 
-                            </a>
-                              <a href="#" *ngIf="notificationAccountValue ===''">
+                    <ul class="menu no-b">
+                        <li class="no-b white">
+                           
+                              <a href="#" *ngIf="accountValue !==0">
                                 <i class="icon icon-data_usage text-danger"></i>Aucune Notification pour le moment 
                             </a>
+                            <a class="adafri-police-12" *ngIf="accountValue ===0">
+                                <i class="icon icon-data_usage text-danger"></i>Rechargez ici votre solde
+                            </a>
+                            
+                        </li>
+                        <li class="no-b white text-center" *ngIf="accountValue===0">
+                              <button class="btn btn-sm white border-grey text-black-50 btn-social r-20 d-inline-block" data-toggle="modal" data-target="#modalRechargement">
+                                Charger mon compte
+                            </button>
                         </li>
                 
                     </ul>
                 </li>
-                <li class="footer p-2 text-center"><a href="#">View all</a></li>
+               
             </ul>
         </li>
        
@@ -145,11 +152,10 @@
         <!-- User Account-->
         <li class="dropdown custom-dropdown user user-menu ">
             <a href="#" class="nav-link text-white" data-toggle="dropdown" style="font-size: 12px">
-          <!--       <p class="text-white d-none" style="font-size: 12px">{{email}}</p> -->
-               
-                                                        <span  style="font-size: 12px" class="avatar-letter avatar-letter-{{email_letter | lowercase}} avatar-md circle"></span>
-                                                        <i class="icon-more_vert"></i>
-                                                  
+      
+                <figure class="avatar">
+                  <img [src]='photoURL'>
+                </figure>
                                                         
             </a>
             <div class="dropdown-menu p-4 dropdown-menu-right">
@@ -336,21 +342,21 @@
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalsmall">Recharger mon compte pour mes campagnes</h5>
+      <div class="modal-header white no-b">
+        <h5 class="adafri-police-22 adafri" id="exampleModalsmall">Chargement de votre solde</h5>
         <button type="button" class="close" data-dismiss="modal" aria-small="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="card no-b shadow white">
+      <div class="modal-body white no-b">
+        <div class="card no-b white">
           <div class="card-body no-b white">
                       <div class="form-row text-center">
-                  <div class="col-md-12 mb-3 text">
+                  <div class="col-md-12 mb-3 text-center">
                     <h6 for="validationCustom01">Montant à recharger</h6>
-                    <input type="number" class="form-control" id="montant" placeholder="Montant" min="10000"
+                    <input type="number" class="form-control text-center d-inline-block" id="montant" placeholder="Montant" min="10000" max="1000000"
                       required>
-                      <small class="text-success">Saisir un montant supérieur ou égal à 10000 FCA</small>
+                      <small class="adafri-police-14 adafri">Saisir un montant supérieur ou égal à 10000 FCA</small>
                       <div id="error_recharge" style="display: none">
                           <p class="text-danger">Eurreur montant saisi invalide !</p>
                       </div>
@@ -371,13 +377,13 @@
                         </div> -->
           </div>
 
-          <div class="card-footer white no-b">
-            <button type="button" class="btn teal lighten-1 text-white" id="amountSet" (click)=" defineAmountAccount()">Recharger mon compte</button>
+          <div class="card-footer white no-b text-center">
+            <button type="button" class="btn btn-sm white btn-social text-black-50 r-20 adafri-police-16 border-grey shadow d-inline-block" id="amountSet" (click)=" defineAmountAccount()">Recharger mon compte</button>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger text-white" id="closeModalRecharge" data-dismiss="modal">Close</button>
+      <div class="modal-footer white no-b">
+        <button type="button" class="btn btn-sm btn-social text-danger white r-20 shadow border-danger" id="closeModalRecharge" data-dismiss="modal">Fermer</button>
       
       </div>
     </div>

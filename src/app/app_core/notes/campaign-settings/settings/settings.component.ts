@@ -462,7 +462,8 @@ getDateArray(start, end) {
         this.genres = data['sexes']
         this.clicks = data['clicks']
         this.impressions = data['impressions']
-        this.cost = data['cost']
+        this.cost = data['costs']
+        
         //console.log(data['startDate'])
         var startDate = data['startDate'].slice(0,4)+"-"+ data['startDate'].slice(4,6)+"-"+ data['startDate'].slice(6,8)
         var endDate = data['endDate'].slice(0, 4) + "-" + data['endDate'].slice(4, 6) + "-" + data['endDate'].slice(6, 8)
@@ -1256,7 +1257,7 @@ xhr.send();
       }
     }).catch(err => {
       this.isCreating = false
-      alert('Opération échouée')
+      //alert('Opération échouée')
     })
   }
 
@@ -1275,7 +1276,7 @@ xhr.send();
     this.notesService.getCampaignDates(this.id_campagne, this.name).then(value => {
 
       if (value['startDate'] == date || value['endDate'] == date) {
-        alert('erreur de date de début')
+        //alert('erreur de date de début')
         this.isCreating = false
       } else {
         this.notesService.updateStartDate(this.id, this.id_campagne, date, this.startDate)
@@ -1308,7 +1309,7 @@ xhr.send();
       if (value['startDate'] == date || value['endDate'] == date) {
     
           this.isCreating = false
-        alert('erreur de date de fin')
+        //alert('erreur de date de fin')
         
 
       } else {
@@ -1329,8 +1330,13 @@ xhr.send();
     this.isCreating = true
   
     this.notesService.targetLocation(this.id, this.id_campagne, this.name, this.selectedZones).then(res => {
-      this.isCiblage = false
-      this.isCreating = false
+      if (res == "ok") {
+        this.isCiblage = false
+        this.isCreating = false
+        
+      } else {
+         this.isCreating = false
+      }
     })
   }
 
@@ -1385,9 +1391,9 @@ xhr.send();
             title: 'Modification!',
             text: 'Aucune modification détectée',
             type: 'warning',
-              buttonsStyling: true,
-      showCancelButton: false,
-      focusConfirm: false,
+            showCancelButton: false,
+            focusConfirm: false,
+            buttonsStyling: true,
       confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
       cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
             confirmButtonText: 'Ok'
@@ -1422,8 +1428,9 @@ xhr.send();
                 text: 'Status de la campagne modifié avec succès.',
                 type: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 this.isCreating = false
@@ -1442,8 +1449,9 @@ xhr.send();
                 text: "Erreur serveur, Réssayer",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               })
             }
@@ -1476,8 +1484,9 @@ xhr.send();
                 text: 'Nom de la campagne modifié avec succès.',
                 type: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
@@ -1492,8 +1501,9 @@ xhr.send();
                 text: "Erreur serveur, Réssayer",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               })
 
@@ -1529,8 +1539,9 @@ xhr.send();
                 text: 'Le nom et le status de votre campagne ont été modifié avec succès.',
                 type: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
@@ -1546,8 +1557,9 @@ xhr.send();
                 text: "Erreur serveur, Réssayer",
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               })
             }
@@ -1580,8 +1592,9 @@ xhr.send();
                 text: 'Nom de la campagne a été modifié avec succès.',
                 type: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
@@ -1681,8 +1694,9 @@ xhr.send();
                 text: 'Erreur.',
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {}
@@ -1736,8 +1750,9 @@ xhr.send();
                 text: 'Erreur.',
                 type: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+   buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {}
@@ -2143,7 +2158,7 @@ this.getListIdAd().then(res => {
                 }
               })
             } else {
-               alert(date_start_check+" "+ this.today)
+               //alert(date_start_check+" "+ this.today)
               Swal.fire({
                 title: 'Service Campagne',
                 text: "Date de début"+new Date(date_start_check)+" ne peut être définie dans le passé",
@@ -2820,9 +2835,47 @@ if (this.endDate == date || this.startDate == date) {
   defineBudget() {
     var self = this
     
-      
-     /*  $('#button_modal_define_budget').trigger('click') */
-      var self = this
+    if (this.montant < 10000) {
+         Swal.fire({
+          title: "Service budget",
+          text: "Montant invalide",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service budget",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else {
+      Swal.fire({
+        title: "Service budget",
+        html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+        cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+        cancelButtonText: "annuler"
+      }).then((result) => {
+        if (result.value) {
+            var self = this
     this.isCreating = true
     
       setTimeout(function () {
@@ -2864,12 +2917,12 @@ if (this.endDate == date || this.startDate == date) {
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-                alert('erreur inconnu');
+                //alert('erreur inconnu');
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
                 //console.log('non success response ', jsonResponse);
-                alert(jsonResponse.errors);
+                //alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
         }).send({
@@ -2899,6 +2952,11 @@ if (this.endDate == date || this.startDate == date) {
           
         });
     }, 500)
+        }
+      })
+      }
+     /*  $('#button_modal_define_budget').trigger('click') */
+    
 
       
       
@@ -2906,8 +2964,12 @@ if (this.endDate == date || this.startDate == date) {
     
   }
 
+
+
+
+
   defineBudgetFromAccount() {
-    
+    var self = this
     var montant = parseInt($("#montant").val())
     var newAccountValue = this.accountValue - montant
     if (montant > this.accountValue || montant < 10000) {
@@ -2916,7 +2978,7 @@ if (this.endDate == date || this.startDate == date) {
       $('#error_recharge').show()
        
     } else {
-      this.isRoller = true
+      this.isCreating = true
       this.isPlacementBudgetFromAccount = false
       this.montant = montant
          this.http.post(SERVER_URL+'/setBudgetFromAccount', {
@@ -2926,26 +2988,44 @@ if (this.endDate == date || this.startDate == date) {
     })
       .subscribe(
         res => {
-          //console.log(res)
-           this.notesService.updateNote(this.id, { budget: this.budget_to_place , dailyBudget: res[0]['dailyBudget']}).then(() => {
-             this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
-               
-               Swal.fire({
-                 title: 'Service Campagne!',
-                 text: 'Budget mis à jour.',
-                 type: 'success',
-                 showCancelButton: false,
-                 confirmButtonColor: '#3085d6',
-                 cancelButtonColor: '#d33',
-                 confirmButtonText: 'Ok'
-               }).then((result) => {
-                 if (result.value) {
-                  
-                 }
-               })
-             })
-                
+          
+          if (res[0]['status'] == "ok") {
+            this.notesService.updateNote(this.id, { budget: this.budget_to_place, dailyBudget: res[0]['dailyBudget'] }).then(res => {
+              
+              if (res == "ok") {
+                 
+                      this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
+                        
+                        if (res == "ok") {
+                          self.isCreating = false
+                          Swal.fire({
+                  title: 'Service Campagne!',
+                  text: 'Budget mis à jour.',
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  if (result.value) {
+                   window.location.reload()
+                  }else{
+                    window.location.reload()
+                  }
+                })
+                        } else {
+                          self.isCreating = false
+                        }
               })
+              } else {
+                self.isCreating = false
+              }
+                 
+               })
+            
+          } else {
+            self.isCreating = false
+          }
           
           
         },
@@ -2978,13 +3058,40 @@ if (this.endDate == date || this.startDate == date) {
     this.montant = $("#montant").val()
     if (this.montant < 20000) {
       $('#error_recharge').show()
-    } else {
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service rechargement",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else{
       
-      /* var crypt = this.cryptMoney(this.montant.toString()) */
-      var crypt = this.encrypted(this.montant.toString(), this.uid)
+
+       Swal.fire({
+          title: "Service rechargement",
+          html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+          type: 'info',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+          cancelButtonText: "annuler"
+       }).then((result) => {
+         if (result.value) {
+              /* var crypt = this.cryptMoney(this.montant.toString()) */
+              this.isCreating = true
+      localStorage.setItem(this.id_campagne,this.montant.toString())
+     /*  var crypt = this.encrypted(this.montant.toString(), this.uid) */
       $('#closeModalRecharge').trigger('click')
       var self = this
-      this.isCreating = true
       setTimeout(function () {
     
         var btn = document.getElementById("budgetSet");
@@ -2992,7 +3099,7 @@ if (this.endDate == date || this.startDate == date) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id + "/"+crypt,
+            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id_campagne,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -3004,7 +3111,7 @@ if (this.endDate == date || this.startDate == date) {
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                  alert(success_url)
+                  //alert(success_url)
                 
                   //window.location.href = success_url; 
                 } else {
@@ -3024,13 +3131,13 @@ if (this.endDate == date || this.startDate == date) {
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-                alert('erreur inconnu');
+                //alert('erreur inconnu');
               selector.prop('disabled', false);
               self.isCreating = false
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
                 //console.log('non success response ', jsonResponse);
-                alert(jsonResponse.errors);
+                //alert(jsonResponse.errors);
               selector.prop('disabled', false);
               self.isCreating = false
             }
@@ -3060,7 +3167,10 @@ if (this.endDate == date || this.startDate == date) {
           alertDialogConfirmButtonTextColor: '#fff',
           
         });
-    }, 500) 
+    }, 500)  
+         }
+       })
+
 
       
       

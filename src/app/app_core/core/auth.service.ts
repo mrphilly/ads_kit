@@ -273,7 +273,7 @@ getUser(id: string) {
 
    updateUser(id: string, data: any) :Promise<any>{
      return new Promise(resolve => {
-       this.getUser(id).update(data).then((onFull) => {
+       this.getUser(id).update(data).then(() => {
          resolve('ok')
          
        }).catch(err => {

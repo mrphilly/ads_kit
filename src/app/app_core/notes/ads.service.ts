@@ -176,8 +176,9 @@ private basePath = '/uploads';
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+            buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -195,8 +196,9 @@ private basePath = '/uploads';
           text: "Il éxiste déjà une annonce portant une des données renseignées !",
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
@@ -268,8 +270,9 @@ private basePath = '/uploads';
           text: "Il éxiste déjà une annonce portant une des données renseignées !",
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {

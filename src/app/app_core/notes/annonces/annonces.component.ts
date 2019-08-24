@@ -930,7 +930,10 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
   }
   ngOnInit() {
   
-   
+   this.auth.user.forEach(data=>{
+           this.photoURL = data.photoURL
+           //alert(this.photoURL)
+         })
      this.auth.notificationAccount.forEach((value) => {
       if(value.notification != ""){
         this.numberOfNotifications = 1
@@ -981,10 +984,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       
       
            })
-         this.auth.user.forEach(data=>{
-           this.photoURL = data.photoURL
-           //alert(this.photoURL)
-         })
+         
          if (this.isNull == true) {
         //alert(this.placement.toString().length )
       if ( this.placement.toString().length ==0 || this.genres.toString().length ==0 || this.populations.toString().length ==0  || this.appareils.toString().length == 0) {
@@ -992,13 +992,14 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
         if (this.budget > 0) {
 
           //alert('ok budget')
-      
-           document.getElementById("v-pills-placement-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', "text-success")
-             document.getElementById("v-pills-ciblage-ads-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', 'text-success')
+          this.isDone = true
+          /*  document.getElementById("v-pills-placement-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', "text-success")
+             document.getElementById("v-pills-ciblage-ads-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', 'text-success') */
         }
       } else {
-        document.getElementById("v-pills-placement-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold')
-             document.getElementById("v-pills-ciblage-ads-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold')
+        this.isDone = false
+       /*  document.getElementById("v-pills-placement-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold')
+             document.getElementById("v-pills-ciblage-ads-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold') */
       }
     }
     })
@@ -1484,6 +1485,13 @@ if (chLine) {
 $('#popper').trigger('click')
    
   }
+
+  triggerEmplacement() {
+    document.getElementById('v-pills-placement-tab').click()
+  }
+  triggerCiblage() {
+    document.getElementById('v-pills-ciblage-ads-tab').click()
+  }
   async toggleListAd() {
     
     this.isEditor = false
@@ -1582,10 +1590,13 @@ $('#popper').trigger('click')
       })
     } else {
       this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
-        this.sexes = []
+        if (res == "ok") {
+          this.sexes = []
+          this.isCiblageGenre = false
+          this.isCreating = false
+          
+        }
       }).then(res => {
-        this.isCiblageGenre = false
-        this.isCreating = false
       })
 
     }
@@ -1657,10 +1668,13 @@ $('#popper').trigger('click')
     } else {
       placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
       this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
-        this.sexes = []
-      }).then(res => {
-        this.isCiblageGenre = false
+        if (res == "ok") {
+           this.isPlacement = false
         this.isCreating = false
+        this.placement = []
+        }
+      }).then(res => {
+       
       })
 
     }
@@ -1684,10 +1698,14 @@ $('#popper').trigger('click')
       })
     } else {
       this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
-        this.devices = []
-      }).then(res => {
-        this.isCreating = false
+        if (res == "ok") {
+            this.isCreating = false
         this.isCiblageDevices = false
+          this.devices = []
+          
+        }
+      }).then(res => {
+      
 
       })
 
@@ -1732,10 +1750,13 @@ $('#popper').trigger('click')
       })
     } else {
       this.adGroupService.targetAge(this.idA, this.campagne_id, this.ad_group_id, this.ages).then(res => {
-        this.ages = []
+        if (res == "ok") {
+          this.ages = []
+          this.isCiblageAge = false
+          this.isCreating = false
+          
+        }
       }).then(res => {
-        this.isCiblageAge = false
-        this.isCreating = false
 
       })
 
@@ -3235,8 +3256,8 @@ if (this.budget === 0) {
           text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#26a69a',
-          cancelButtonColor: '#d33',
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
@@ -4834,8 +4855,8 @@ if (this.budget === 0) {
           text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#26a69a',
-          cancelButtonColor: '#d33',
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
@@ -4848,24 +4869,60 @@ if (this.budget === 0) {
 }
 }
 
-   defineAmountAccount() {
+  generate(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+  defineAmountAccount() {
     var self = this
     this.montant = $("#montant").val()
     if (this.montant < 10000) {
       $('#error_recharge').show()
-    } else {
-      
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service rechargement",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else{
+      var key = this.generate(10)
+      localStorage.setItem(key, this.montant.toString())
       $('#closeModalRecharge').trigger('click')
       var self = this
-      this.isCreating = true
+      Swal.fire({
+          title: "Service rechargement",
+          html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+          type: 'info',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+          cancelButtonText: "annuler"
+        }).then((result) => {
+          if (result.value) {
+                 this.isCreating = true
       setTimeout(function () {
     
-        var btn = document.getElementById("budgetSet");
+        var btn = document.getElementById("amountSet");
         var selector = pQuery(btn);
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant,
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/"+key,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -4877,7 +4934,7 @@ if (this.budget === 0) {
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                  //alert(success_url)
+                  alert(success_url)
                 
                   //window.location.href = success_url; 
                 } else {
@@ -4886,23 +4943,23 @@ if (this.budget === 0) {
                 }
             },
             willGetToken: function () {
-                //console.log("Je me prepare a obtenir un token");
+                console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
-                //alert('erreur inconnu');
+                alert('erreur inconnu');
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                //console.log('non success response ', jsonResponse);
-                //alert(jsonResponse.errors);
+                console.log('non success response ', jsonResponse);
+                alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
         }).send({
@@ -4926,18 +4983,21 @@ if (this.budget === 0) {
             totalIconBackgroundRadianStart: '#0178bc',
             totalIconBackgroundRadianEnd: '#00bdda',
             formLabelTextColor: '#292b2c',
-            //alertDialogTextColor: '#333',
-            //alertDialogConfirmButtonBackgroundColor: '#0178bc',
-          //alertDialogConfirmButtonTextColor: '#fff',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
           
         });
     }, 500)
+          }
+        })
+
 
       
       
       
     }
-   }
+  }
   
   
   defineBudget() {
@@ -5683,8 +5743,8 @@ if (this.budget === 0) {
           text: "Date de début ne peut être définie dans le passé",
           type: 'error',
           showCancelButton: false,
-          confirmButtonColor: '#26a69a',
-          cancelButtonColor: '#d33',
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
