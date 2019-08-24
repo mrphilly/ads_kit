@@ -133,7 +133,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
    })
   }
   ngOnInit() {
-     document.getElementById('body').classList.remove('adafri-background')
+    
        this.auth.user.forEach((value) => {
         
          this.uid = value.uid
@@ -147,8 +147,10 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
       if (child.length > 0) {
         ////console.log(child.length)
         this.toggleListCampaign()
+         document.querySelector('.height-full').classList.remove('adafri-background')
       } else {
         this.initCampagne()
+         document.querySelector('.height-full').classList.add('adafri-background')
         /* setTimeout(() => {
              particlesJS("particles-js", {
   "particles": {

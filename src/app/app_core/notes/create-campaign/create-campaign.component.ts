@@ -44,7 +44,7 @@ export class CreateCampaignComponent implements OnInit {
 
 
   ngOnInit() {
-    document.getElementById('body').classList.add('adafri-background')
+    document.querySelector('.height-full').classList.add('adafri-background')
    /*  setTimeout(() => {
              particlesJS("particles-js", {
   "particles": {
@@ -185,7 +185,7 @@ export class CreateCampaignComponent implements OnInit {
  }
   
   go() {
-    document.getElementById('body').classList.remove('adafri-background')
+    document.querySelector('.height-full').classList.remove('adafri-background')
     window.location.replace(REDIRECT_URL)
    
    /*  this.router.navigate(['/']) */
