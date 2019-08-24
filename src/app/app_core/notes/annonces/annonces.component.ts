@@ -3261,8 +3261,19 @@ if (this.budget === 0) {
           confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
-            window.location.replace(REDIRECT_URL+"/defineBudget/"+0+"/"+self.idC)
-            $("#"+this.idC).trigger("click")
+            this.router.navigate(["defineBudget", self.idC], { skipLocationChange: true }).then(() => {
+              
+             /*  this.route.params.subscribe(params => { 
+                alert(params['idC'])
+  
+               $("#"+params['idC']).trigger("click" *
+  
+              }) */
+            })
+          /*  window.location.replace(REDIRECT_URL+"/defineBudget/"+0+"/"+self.idC) */
+           /*  setTimeout(() => {
+              
+            },1000) */
           }
         })
 } else {

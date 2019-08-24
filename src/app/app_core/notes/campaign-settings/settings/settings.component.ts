@@ -1915,7 +1915,7 @@ this.getListIdAd().then(res => {
 
   goAdGroups(ad_group_name: string, idA: string, ad_group_id: string) {
     
-     this.router.navigate(['ads', ad_group_name, this.id, idA, ad_group_id, this.id_campagne])
+     this.router.navigate(['ads', ad_group_name, this.id, idA, ad_group_id, this.id_campagne], {skipLocationChange: true})
    
   }
   handleErrorBudget() {

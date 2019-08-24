@@ -267,11 +267,33 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
     })
        })
     
-
+    this.route.params.subscribe(params => { 
+        
+      if (params['idBC'] !== undefined) {
+        this.isCreating = true
+        setTimeout(() => {
+          this.isCreating = true
+                   
+          document.getElementById(params['idBC']).click()
+        }, 2000)
+        setTimeout(() => {
+                   
+          document.getElementById("v-pills-payments-tab").click()
+          this.isCreating = false
+              
+        }, 2000)
+        setTimeout(() => {
+                   
+          document.getElementById("button_define_budget").click()
+          this.isCreating = false
+        }, 2000)
+        this.isCreating = false
+      }
+    })
      
 
     this.route.params.subscribe(params => {
-            if (window.location.href.includes('defineBudget')) {
+        /*     if (window.location.href.includes('defineBudget')) {
          setTimeout(() => {
                    
                     document.getElementById(params['idC']).click()
@@ -291,7 +313,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
            window.history.pushState("","",REDIRECT_URL)
               
                   }, 2000)
-            } else if (window.location.href.includes('account_pay')) {
+            } else */ if (window.location.href.includes('account_pay')) {
               this.auth.user.forEach(data => {
                 var key = params['idC']
                 var montant = localStorage.getItem(key)
@@ -330,7 +352,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                          this.isCreating = true
               this.auth.user.forEach(data => {
                 //alert(params['idC'])
-                var montant = localStorage.getItem(params['idC'])
+                var montant = localStorage.getItem(params['id_campaign_to_recharge'])
                 //console.log(montant)
                 if (montant === null) {
                   
@@ -593,7 +615,7 @@ encrypted(text, password){
    
     */
    
-  this.router.navigate(['createCampaign'])    
+  this.router.navigate(['createCampaign'], {skipLocationChange: true})    
   }
 
   goBack() {

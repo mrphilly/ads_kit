@@ -18,6 +18,8 @@ import { SpinnerOverlayComponent } from './spinner-overlay-ui/spinner-overlay.co
 
 
 
+
+
 @NgModule({
   imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule],
   declarations: [
@@ -40,7 +42,7 @@ import { SpinnerOverlayComponent } from './spinner-overlay-ui/spinner-overlay.co
     LoadingSpinnerComponent,
     NotificationMessageComponent,
     UserProfileComponent,
-    UserFormComponent
-  ]
+    UserFormComponent,
+      ]
 })
 export class UiModule {}

@@ -22,7 +22,8 @@ const routes: Routes = [
   { path: 'UserProfile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'confidentialite', component: SsrPageComponent },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
-  { path: 'defineBudget/:number/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
+  { path: 'defineBudget/:idBC', component: NotesListComponent, canActivate: [AuthGuard] },
+  
  
     { path: ':money/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: ':idC/:campagne_id/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent, canActivate: [AuthGuard] },

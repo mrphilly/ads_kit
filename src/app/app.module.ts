@@ -33,9 +33,12 @@ import { UiModule } from './app_core/ui/ui.module';
 import { AngularFireDatabaseModule } from '@angular/fire/database'
 
 import { FusionChartsModule } from 'angular-fusioncharts';
+
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
+import {DeviceDetectorModule} from 'ngx-device-detector';
+
 
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, TimeSeries);
@@ -58,9 +61,11 @@ firebase.initializeApp(credentials)
 @NgModule({
   declarations: [
     AppComponent,
+
     
   ],
   imports: [
+    DeviceDetectorModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserTransferStateModule,
     AppRoutingModule,
@@ -80,7 +85,8 @@ firebase.initializeApp(credentials)
     AngularFireDatabaseModule,
     NgbModule.forRoot(),
     NgxFormatFieldModule,
-    FusionChartsModule
+    FusionChartsModule,
+   
     
 
 
