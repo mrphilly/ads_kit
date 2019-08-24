@@ -45,7 +45,7 @@ export class CreateCampaignComponent implements OnInit {
 
   ngOnInit() {
     document.getElementById('body').classList.add('adafri-background')
-    setTimeout(() => {
+   /*  setTimeout(() => {
              particlesJS("particles-js", {
   "particles": {
     "number": {
@@ -156,7 +156,7 @@ export class CreateCampaignComponent implements OnInit {
   },
   "retina_detect": true
 }); 
-        }, 2000)
+        }, 2000) */
     
       this.auth.user.forEach((value) => {
          this.uid = value.uid

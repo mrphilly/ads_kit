@@ -149,7 +149,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         this.toggleListCampaign()
       } else {
         this.initCampagne()
-        setTimeout(() => {
+        /* setTimeout(() => {
              particlesJS("particles-js", {
   "particles": {
     "number": {
@@ -178,13 +178,13 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
       }
     },
     "opacity": {
-      "value": 1,
-      "random": true,
+      "value": 0.3,
+      "random": false,
       "anim": {
-        "enable": true,
+        "enable": false,
         "speed": 1,
         "opacity_min": 0.1,
-        "sync": true
+        "sync": false
       }
     },
     "size": {
@@ -260,7 +260,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
   },
   "retina_detect": true
 }); 
-        }, 2000)
+        }, 2000) */
       }
     })
        })
