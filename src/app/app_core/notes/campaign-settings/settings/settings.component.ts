@@ -436,7 +436,7 @@ getDateArray(start, end) {
     });
   }
   ngOnInit() {
-   
+
     /*        L10n.load({
           'fr': {
             'datepicker': {
@@ -447,11 +447,14 @@ getDateArray(start, end) {
         }) */
     ;
  
-    this.auth.user.subscribe(data => {
+        
+    this.auth.user.forEach(data1 => {
+      this.accountValue = data1.account_value
+ 
       
-    this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
-      res.forEach(data => {
-            this.startDateFrench = data['startDateFrench']
+      this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
+        res.forEach(data => {
+          this.startDateFrench = data['startDateFrench']
         this.endDateFrench = data['endDateFrench'] 
          this.dure_campagne = this.datediff(this.parseDate(data['startDateFrench']), this.parseDate(data['endDateFrench'] ))
         this.servingStatus = data['servingStatus']
