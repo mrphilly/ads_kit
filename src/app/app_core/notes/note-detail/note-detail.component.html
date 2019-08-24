@@ -26,8 +26,8 @@
      
     </button> {{note?.name}}
     <div class="dropdown-menu">
-      <a class="dropdown-item"  (click)="updateCampaign(note?.id, note?.id_campagne, note?.name, note?.status)"><i class="icon-circle text-success"></i> Modifier</a>
-      <a class="dropdown-item text-danger" (click)="deleteCampaign(note?.id, note?.id_campagne)" ><i class="icon-delete"></i> Supprimmer</a>
+      <a class="dropdown-item"  (click)="updateCampaign(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget)"><i class="icon-circle text-success"></i> Modifier</a>
+      <a class="dropdown-item text-danger" (click)="deleteCampaign(note?.id, note?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
     </div>
      <!-- <div class="dropdown-menu"  *ngIf="note?.status==='ENABLED'">
        <a class="dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs'
 import { AdGroupService } from '../ad-groupe.service'
 import Swal from 'sweetalert2'
 import {SERVER} from '../../../../environments/environment'
+import { b } from '@angular/core/src/render3';
 
 
 @Component({
@@ -107,16 +108,22 @@ export class NoteDetailComponent implements OnInit {
                 })
   } */
 
-  updateCampaign(id, id_campagne, name, status) {
+  updateCampaign(id, id_campagne, name, status, budget) {
       
     var html = ""
-    if (status === "PAUSED") {
+    if (status === "PAUSED" && budget > 0) {
       html = ' <div class="card shadow no-b r-0"><div class="card-header text-center white b-0"><h6>Modifier la campagne</h6></div>' +
         ' <div class="card-body"><form class="needs-validation" novalidate><div class="form-row">' +
         '<div class="col-md-6"> <label for="validationCustom01">Nom</label> <input type="text" class="form-control"  placeholder="Nom de la campagne" id="campagne_name" value=' + name + ' required><div class="valid-feedback">Looks good!</div></div>' +
         '<div class="col-md-6"> <label for="validationCustom01">Status</label>  <select class="custom-select select2" required><option value=""></option><option value="ENABLED">Activer</option> </select></div>' +
         '</form></div></div></div>'
-    } else {
+    } else if (status === "PAUSED" && budget === 0) {
+           html = ' <div class="card shadow no-b r-0"><div class="card-header text-center white b-0"><h6>Modifier la campagne</h6></div>' +
+        ' <div class="card-body"><form class="needs-validation" novalidate><div class="form-row">' +
+        '<div class="col-md-6"> <label for="validationCustom01">Nom</label> <input type="text" class="form-control"  placeholder="Nom de la campagne" id="campagne_name" value=' + name + ' required><div class="valid-feedback">Looks good!</div></div>' +
+        '<div class="col-md-6"> <label for="validationCustom01">Status</label>  <select class="custom-select select2" required><option value=""></option></select></div>' +
+        '</form></div></div></div>'
+    }else {
      
       html = ' <div class="card shadow no-b r-0"><div class="card-header text-center white b-0"><h6>Modifier la campagne</h6></div>' +
         ' <div class="card-body"><form class="needs-validation" novalidate><div class="form-row">' +
