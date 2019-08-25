@@ -24,3 +24,14 @@ export const SERVER = {
   confidentialite: "http://localhost:4200/#/confidentialite"
 
 }
+
+
+export const FIREBASE_CREDENTIALS  = {
+    apiKey: "AIzaSyCpC7FjiILozY9z5990DcnIw7IoJdA8E2g",
+    authDomain: "adafri-e5ceb.firebaseapp.com",
+    databaseURL: "https://adafri-e5ceb.firebaseio.com",
+    projectId: "adafri-e5ceb",
+    storageBucket: "gs://adafri-e5ceb.appspot.com/",
+    messagingSenderId: "702910555148",
+    appId: "1:702910555148:web:0e2506edd3602e5f"
+  };

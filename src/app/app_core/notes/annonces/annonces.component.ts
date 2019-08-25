@@ -1138,6 +1138,7 @@ if (chLine) {
       this.populations = res['ages']
       this.appareils = res['devices']
       this.placement = res['placement']
+      alert(res['sexes'])
       
       //console.log('populations')
       /* //console.log(this.genres) */
@@ -1352,7 +1353,7 @@ if (chLine) {
     })
 
      
-
+this.buildForm()
    
 
 

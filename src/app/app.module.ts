@@ -39,11 +39,12 @@ import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
 import {DeviceDetectorModule} from 'ngx-device-detector';
 
+import {FIREBASE_CREDENTIALS} from '../environments/environment'
 
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, TimeSeries);
 
-const credentials = {
+/* const credentials = {
      apiKey: "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
     authDomain: "comparez.firebaseapp.com",
     databaseURL: "https://comparez.firebaseio.com",
@@ -51,16 +52,17 @@ const credentials = {
     storageBucket: "gs://comparez.appspot.com/",
     messagingSenderId: "975260713071",
   }
-  
+   */
 
 
-firebase.initializeApp(credentials)
+firebase.initializeApp(FIREBASE_CREDENTIALS)
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
+  
 
     
   ],
@@ -72,7 +74,7 @@ firebase.initializeApp(credentials)
     CoreModule,
     UiModule,
     NotesModule,
-    AngularFireModule.initializeApp(credentials, 'firestarter'),
+    AngularFireModule.initializeApp(FIREBASE_CREDENTIALS, 'firestarter'),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     AngularFireStorageModule,

@@ -9,7 +9,9 @@ import { UserLoginComponent } from './app_core/ui/user-login/user-login.componen
 import { CampaignSettingsComponent } from './app_core/notes/campaign-settings/campaign-settings.component'
 import { AnnoncesComponent } from './app_core/notes/annonces/annonces.component'
 import { CreateCampaignComponent } from './app_core/notes/create-campaign/create-campaign.component'
-import { UserProfileComponent} from './app_core/ui/user-profile/user-profile.component'
+import { UserProfileComponent } from './app_core/ui/user-profile/user-profile.component'
+
+import {TermsComponent} from './app_core/ui/terms/terms.component'
 
 
 const routes: Routes = [
@@ -21,8 +23,11 @@ const routes: Routes = [
   { path: 'createCampaign', component: CreateCampaignComponent, canActivate: [AuthGuard]},
   { path: 'UserProfile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'confidentialite', component: SsrPageComponent },
+  { path: 'terms', component: TermsComponent },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'defineBudget/:idBC', component: NotesListComponent, canActivate: [AuthGuard] },
+  { path: 'new_rechargement/:key_recharge_account', component: NotesListComponent, canActivate: [AuthGuard] },
+  { path: 'account_pay/:id_campaign_to_recharge', component: NotesListComponent, canActivate: [AuthGuard] },
   
  
     { path: ':money/:idC', component: NotesListComponent, canActivate: [AuthGuard] },

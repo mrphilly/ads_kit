@@ -288,6 +288,85 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
           this.isCreating = false
         }, 2000)
         this.isCreating = false
+      } else if (params['key_recharge_account'] !== undefined) {
+        var key = params['key_recharge_account']
+        alert(key)
+        this.isCreating = true
+        window.history.pushState("", "", REDIRECT_URL)
+              this.auth.user.forEach(data => {
+                //alert(params['idC'])
+                var montant = localStorage.getItem(key)
+                //console.log(montant)
+                if (montant === null) {
+                  
+                  this.isCreating = false
+                } else {
+                     this.isCreating = false
+                   this.auth.updateUser(data.uid, { account_value: parseInt(montant) })
+                  this.auth.getInfos(data.uid).subscribe(el => {
+                    this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+                      Swal.fire({
+                        title: 'Service Rechargement!',
+                        text: 'Compte mis à jour avec succès.',
+                        type: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                      }).then((result) => {
+                        if (result.value) {
+                          //window.location.replace(REDIRECT_URL)
+                         
+                          localStorage.removeItem(key)
+                          this.isCreating = false
+                     
+                    
+                        }
+                      })
+                    })
+              
+           
+                  })
+               
+                }
+        })
+      }else if(params['id_campaign_to_recharge'] !== undefined){
+                   this.auth.user.forEach(data => {
+                     var key = params['id_campaign_to_recharge']
+                       window.history.pushState("", "", REDIRECT_URL)
+                var montant = localStorage.getItem(key)
+                if (montant === null) {
+                  this.isCreating = false
+                } else {
+                                     this.auth.updateUser(data.uid, { account_value: parseInt(montant) })
+          this.auth.getInfos(data.uid).subscribe(el => {
+            this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
+              Swal.fire({
+                title: 'Service Rechargement!',
+                text: 'Compte mis à jour avec succès.',
+                type: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  //window.location.replace(REDIRECT_URL)
+                  localStorage.removeItem(key)
+                 /*  window.history.pushState("", "", REDIRECT_URL) */
+          
+                  this.isCreating = false
+                }
+              })
+            })
+      
+   
+          })
+                }
+                
+              })
+      } else {
+          window.history.pushState("", "", REDIRECT_URL)
       }
     })
      
@@ -313,7 +392,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
            window.history.pushState("","",REDIRECT_URL)
               
                   }, 2000)
-            } else */ if (window.location.href.includes('account_pay')) {
+            } else */ /* if (window.location.href.includes('account_pay')) {
               this.auth.user.forEach(data => {
                 var key = params['idC']
                 var montant = localStorage.getItem(key)
@@ -347,7 +426,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 }
                 
               })
-            } else if (window.location.href.includes('new_rechargement')) {
+            } */ /* else if (window.location.href.includes('new_rechargement')) {
           
                          this.isCreating = true
               this.auth.user.forEach(data => {
@@ -388,7 +467,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 }
         })
               
-      }
+      } */
   
 /*       if (typeof (params['money']) != "undefined") {
         this.isCreating = true

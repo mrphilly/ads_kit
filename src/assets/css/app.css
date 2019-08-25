@@ -1010,6 +1010,20 @@ list-group-item.active {
     color: #4cb5b1 !important
 }
 
+.adafri-color{
+    color: #4cb5b1 !important
+}
+
+.adafri-nav-darken{
+    background-color: #4cb5b1 !important;
+}
+
+.adafri-nav-lighten{
+    background-color: white !important;
+}
+
+
+
 .adafri-background{
     background-color: #4cb5b1 !important;
 }
@@ -1019,27 +1033,25 @@ list-group-item.active {
     
 }
 
-.adafri-police-16{
-    font-family: "merriweather", serif !important;
-    font-size: 16px !important;
-}
-
-.adafri-police-12{
-    font-family: "merriweather", serif;
-    font-size: 12px 
-}
-
 .adafri-police-10{
     font-family: "merriweather", serif !important;
     font-size: 10px !important;
 }
+.adafri-police-12{
+    font-family: "merriweather", serif;
+    font-size: 12px !important 
+}
+.adafri-police-14{
+    font-family: "merriweather", serif;
+    font-size: 14px !important
+}
 .adafri-police-18{
     font-family: "merriweather", serif !important;
-    font-size: 14px !important;
+    font-size: 18px !important;
 }
 .adafri-police-16{
     font-family: "merriweather", serif !important;
-    font-size: 18px !important;
+    font-size: 16px !important;
 }
 
 .adafri-police-22{
@@ -1050,12 +1062,32 @@ list-group-item.active {
     font-family: "merriweather", serif !important;
     font-size: 24px !important; 
 }
-
-
+.adafri-police-26{
+    font-family: "merriweather", serif !important;
+    font-size: 26px !important; 
+}
+.adafri-police-28{
+    font-family: "merriweather", serif !important;
+    font-size: 28px !important; 
+}
+.adafri-police-30{
+    font-family: "merriweather", serif !important;
+    font-size: 30px !important; 
+}
+.adafri-police-32{
+    font-family: "merriweather", serif !important;
+    font-size: 32px !important; 
+}
+.adafri-police-34{
+    font-family: "merriweather", serif !important;
+    font-size: 34px !important; 
+}
+.adafri-police-36{
+    font-family: "merriweather", serif !important;
+    font-size: 36px !important; 
+}
 .border-grey{
     border: 1px solid grey !important;
-   
-
 }
 .border-red{
     border: 1px solid red !important;
@@ -1063,4 +1095,22 @@ list-group-item.active {
 .border-green{
     border: 1px solid green !important;
 }
+
+.adafri-border{
+    border: 1px solid #4cb5b1 !important;
+}
+
+.adafri-body-darken{
+    background-color: #4cb5b1 !important;
+}
+
+.adafri-lighten-darken{
+    background-color: white !important;
+}
+
+
+.whitesapce-nowrap{
+    white-space: nowrap !important;
+}
+
 

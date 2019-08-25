@@ -14,7 +14,8 @@ import { SsrPageComponent } from './ssr-page/ssr-page.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { SpinnerOverlayComponent } from './spinner-overlay-ui/spinner-overlay.component'
+import { SpinnerOverlayComponent } from './spinner-overlay-ui/spinner-overlay.component';
+import { TermsComponent } from './terms/terms.component'
 
 
 
@@ -33,7 +34,10 @@ import { SpinnerOverlayComponent } from './spinner-overlay-ui/spinner-overlay.co
     SsrPageComponent,
     
    
-    SpinnerOverlayComponent
+    SpinnerOverlayComponent,
+    
+   
+    TermsComponent
    
  
   ],

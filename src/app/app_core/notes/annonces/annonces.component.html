@@ -689,9 +689,9 @@
         <!-- modal -->
         <div class="row p-t-b-10 ">
             <div class="bg-danger no-b shadow1 text-center animated fadeInLeft delay-1s" style="float: right; position: absolute; right: 5% ;top: 5%; z-index: 1;" *ngIf="isDone">
-              <span class="text-white adafri-police-14" *ngIf="this.placement.toString().length===0">Emplacements non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerEmplacement()"> <strong>Cliquez ici</strong></a></span>
+              <span class="text-white adafri-police-14" *ngIf="placement.toString().length===0">Emplacements non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerEmplacement()"> <strong>Cliquez ici</strong></a></span>
               <br>
-               <span class="text-white adafri-police-14" *ngIf="his.genres.toString().length ===0 || his.populations.toString().length ===0 || this.appareils.toString().length === 0">Ciblages non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerCiblage()"> <strong>Cliquez ici</strong></a></span>
+               <span class="text-white adafri-police-14" *ngIf="genres.toString().length ===0 || populations.toString().length ===0 || tappareils.toString().length === 0">Ciblages non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerCiblage()"> <strong>Cliquez ici</strong></a></span>
               
             </div>
       <div class="col">
@@ -822,14 +822,37 @@
 
           </ng-container>
           <ng-container *ngIf="number_ads==='0' && init_choose_ad_size!==true">
-            <div class="container-fluid">
-              <div class="text-center p-5">
-                <i class="icon-note-important s-64 text-white"></i>
-                <h4 class="my-3">Aucun visuel trouvé</h4>
-                <p>Vous devez créer ou charger un visuel pour commencer</p>
-                <button href="#" class="btn white text-black-50 btn-sm btn-social r-20 shadow btn-sm r-20" (click)='initAdd()' style="border: 1px solid grey"><i
-                    class="icon-plus-circle mr-2 "></i>Créer un visuel</button>
+            <div class="container-fluid text-center">
+              <div class="row">
+                <div class="col-md-6 text-center">
+                         <div class="d-inline-block p-5 shadow adafri-background">
+                <img src="assets/img/images/banniere.png" class="img-responsive d-inline-block">
+                <h4 class="my-3 text-white adafri-police-22">Aucun visuel trouvé</h4>
+                <p class="text-white adafri-police-16">Vous devez créer ou charger un visuel pour commencer</p>
+                <button href="#" class="btn white adafri btn-social r-20 shadow btn-sm r-20" (click)='initAdd()' style=""><i
+                    class="icon-plus-circle mr-2 adafri"></i>Créer un visuel</button>
               </div>
+                </div>
+                <div class="col-md-6 text-center">
+                 <div class="card no-b shadow adafri-background">
+                   <div class="card-header no-b text-white adafri-police-22">Bienvenue dans votre groupe de visuel</div>
+                    <div class="card-body text-center text-white">
+                    
+                      <p class="adafri-police-16">Cliquez sur emplacement pour placer toutes les annonces de ce groupe dans différents sites web</p>
+                      <p class="adafri-police-16">Cliquez sur ciblage pour choisir vos cibles</p>
+                    </div>
+                 </div>
+                <!--  <div class="card no-b shadow adafri-background">
+                   <div class="card-header no-b text-white adafri-police-18">Bienvenue dans votre groupe de visuel</div>
+                    <div class="card-body text-center text-white">
+                    
+                      <p class="adafri-police-16">Cliquez sur emplacement pour placer toutes les annonces de ce groupe dans différents sites web</p>
+                      <p class="adafri-police-16">Cliquez sur ciblage pour choisir vos cibles</p>
+                    </div>
+                 </div> -->
+                </div>
+              </div>
+       
             </div>
           </ng-container>
 
