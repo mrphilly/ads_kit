@@ -48,7 +48,7 @@ export class AdGroupService {
   // console.log(parseInt(campaign_id))
    
    
- return this.afs.collection('adgroup', (ref) => ref.where('campaign_id','==',parseInt(`${campaign_id}`))).snapshotChanges().pipe(
+ return this.afs.collection('adgroup', (ref) => ref.where('campaign_id','==',`${campaign_id}`)).snapshotChanges().pipe(
       map((actions) => {
         return actions.map((a) => {
           const data = a.payload.doc.data();
@@ -67,7 +67,7 @@ export class AdGroupService {
    // console.log(`owner: ${user_id}, name: ${name}, campaign_id: ${id_campaign}`)
      return new Promise(resolve => {
       setTimeout(() => {
-        this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${id_campaign}`)).where('name', '==', `${name}`).where('owner', '==', `${user_id}`)).snapshotChanges().subscribe(data => {
+        this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', `${id_campaign}`).where('name', '==', `${name}`).where('owner', '==', `${user_id}`)).snapshotChanges().subscribe(data => {
          // console.log(`data ${data}`)
           this.item = data
           resolve(data.length)
@@ -80,7 +80,7 @@ export class AdGroupService {
     return new Promise(resolve => {
         setTimeout(() => {
        
-          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', `${campaign_id}`).where('ad_group_id', '==', `${ad_group_id}`)).valueChanges().subscribe(el => {
            // console.log(el)
           resolve(el[0]['sexes'])
         })
@@ -93,7 +93,7 @@ export class AdGroupService {
     return new Promise(resolve => {
         setTimeout(() => {
        
-          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', `${campaign_id}`).where('ad_group_id', '==', `${ad_group_id}`)).valueChanges().subscribe(el => {
            // console.log(el)
           resolve(el[0]['criterion_placement'])
         })
@@ -107,7 +107,7 @@ export class AdGroupService {
     return new Promise(resolve => {
         setTimeout(() => {
        
-          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', `${campaign_id}`).where('ad_group_id', '==', `${ad_group_id}`)).valueChanges().subscribe(el => {
            // console.log(el)
           resolve(el[0]['ages'])
         })
@@ -120,7 +120,7 @@ export class AdGroupService {
     return new Promise(resolve => {
         setTimeout(() => {
        
-          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).valueChanges().subscribe(el => {
+          this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', `${campaign_id}`).where('ad_group_id', '==', `${ad_group_id}`)).valueChanges().subscribe(el => {
            // console.log(el)
           resolve(el[0]['devices'])
         })
@@ -382,7 +382,8 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
   async addAdGroup(campaign_id: any, user_id: string, name: string): Promise<any> {
    // console.log(`User id: ${user_id}`)
   
-  
+    
+    
     return await new Promise(resolve => {
       this.addGroupVerification(user_id, name, campaign_id).then(value => {
      // console.log(`promise result: ${value}`)
@@ -398,8 +399,10 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
          // console.log(`add group ${res}`)
           if (res['status'] == "ok") {
             var id= res['id']
-           this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res=>{
-            Swal.fire({
+            this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res => {
+             alert(res)
+             if (res == "ok") {
+                      Swal.fire({
              html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> le dossier <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> regroupant vos visuels a été créé</span>',
               type: 'success',
               showCancelButton: false,
@@ -414,6 +417,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
                 resolve(id)
               }
             })
+            }
          })
           } else {
              Swal.fire({
@@ -528,9 +532,14 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
       return this.getAdGroup(id).update(data);
   }
 
-  async createAdGroup(id_campagne: string, name: string, status: string, ad_group_id: string) {
-    this.adgroup = this.prepareSaveAdGroup(id_campagne, name, status, ad_group_id);
-    const docRef = await this.afs.collection('adgroup').add(this.adgroup);
+   createAdGroup(id_campagne: string, name: string, status: string, ad_group_id: string): Promise<any> {
+     return new Promise(resolve => {
+      this.adgroup = this.prepareSaveAdGroup(id_campagne, name, status, ad_group_id);
+       const docRef = this.afs.collection('adgroup').add(this.adgroup).then(res => {
+         
+         resolve("ok")
+       })
+    })
   }
 
   updateAdgroup(id: string, data: any): Promise<any> {

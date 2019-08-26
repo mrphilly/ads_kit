@@ -231,6 +231,10 @@ error_recharge = ""
   ads_websites = []
   currentAdStatus: any
   apps = []
+  currentUser: any;
+  numberOfNotifications = 0
+  notificationAccountValue = ""
+  photoURL = ""
   
    public barChartOptions = {
     scaleShowVerticalLines: false,
@@ -247,10 +251,17 @@ error_recharge = ""
   ];
 
   constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads,  private route: ActivatedRoute) {
-    this.getUser().then(res => {
-      //console.log(res)
-      //console.log(this.id_campagne)
-
+this.auth.user.forEach(data => {
+  this.currentUser = data.displayName
+  this.photoURL = data.photoURL
+    })
+    
+    this.auth.notificationAccount.forEach((value) => {
+      if(value.notification != ""){
+        this.numberOfNotifications = 1
+        this.notificationAccountValue = value.notification
+      
+      }
     })
      this.type = 'timeseries';
     this.width = '400';
@@ -435,6 +446,17 @@ getDateArray(start, end) {
       }, 2000);
     });
   }
+
+  getRoute(): Promise<any>{
+    return new Promise(resolve => {
+       this.route.params.subscribe(params => {
+      this.name = params['name']
+      this.id = params['id']
+         this.id_campagne = params['id_campagne']
+         resolve("ok")
+    })
+    })
+  }
   ngOnInit() {
 
     /*        L10n.load({
@@ -446,13 +468,9 @@ getDateArray(start, end) {
           }
         }) */
     ;
- 
-    this.route.params.subscribe(params => {
-      this.name = params['name']
-      this.id = params['id']
-      this.id_campagne = params['id_campagne']
-    })
-    this.auth.user.forEach(data1 => {
+    this.getRoute().then(res => {
+      if (res == "ok") {
+              this.auth.user.forEach(data1 => {
       this.accountValue = data1.account_value
       this.uid = data1.uid
  
@@ -839,6 +857,10 @@ var data = new Blob([text], {type: 'text/plain'});
 var url = window.URL.createObjectURL(data);
 
 document.getElementById('download_link').setAttribute('href', url)  */
+          }
+        })
+   
+        
   }
 
   downloadFile() {
