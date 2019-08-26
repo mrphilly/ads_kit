@@ -3,6 +3,7 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
@@ -11,7 +12,6 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -1006,7 +1006,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
     })
       } else {
         //console.log(params)
-        this.id_ad_firebase = params['id_ad_firebase']
+/*         this.id_ad_firebase = params['id_ad_firebase']
          this.ad_group_name = params['name']
       this.campagne_id = params['campaign_id']
       this.ad_group_id = params['ad_group_id']
@@ -1060,11 +1060,11 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
                   }
                 })
                 
-              })
+              }) */
       }
      
 
-      if (typeof (params['money']) != "undefined" && typeof (params['id_ad_firebase']) != "undefined") {
+  /*     if (typeof (params['money']) != "undefined" && typeof (params['id_ad_firebase']) != "undefined") {
         this.isCreating = true
         this.auth.user.forEach(data => {
           this.auth.updateUser(data.uid, { account_value: params['money'] })
@@ -1096,7 +1096,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
    
           })
         })
-      }
+      } */
     })
     
     var chartData = {
@@ -1138,7 +1138,7 @@ if (chLine) {
       this.populations = res['ages']
       this.appareils = res['devices']
       this.placement = res['placement']
-      alert(res['sexes'])
+     
       
       //console.log('populations')
       /* //console.log(this.genres) */

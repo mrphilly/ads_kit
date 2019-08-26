@@ -25,7 +25,8 @@ interface User {
   email?: string | null;
   photoURL?: string;
   displayName?: string;
-  account_value?: any;
+  account_value?: number;
+  paymentKey?: string
 }
 
 interface NotificationAccountValue {
@@ -248,14 +249,15 @@ export class AuthService {
       email: user.email || null,
       displayName: user.displayName || username,
       photoURL: user.photoURL || 'https://pecb.com/conferences/wp-content/uploads/2017/10/no-profile-picture.jpg',
-      account_value: 0
+      account_value: 0,
+      paymentKey: ""
     };
       userRef.set(data);
       resolve("ok")
    })
   }
 
-  getInfos(user_id: any) {
+  getNotificationData(user_id: any) {
         return  this.afs.collection('notifications_account_value', (ref) => ref.where('uid', '==', `${user_id}`)).snapshotChanges().pipe(
       map((actions) => {
         return actions.map((a) => {
@@ -266,6 +268,8 @@ export class AuthService {
     );
   }
 
+
+
    
 getUser(id: string) {
     return this.afs.doc<any>(`users/${id}`);
@@ -273,7 +277,7 @@ getUser(id: string) {
 
    updateUser(id: string, data: any) :Promise<any>{
      return new Promise(resolve => {
-       this.getUser(id).update(data).then(() => {
+       this.getUser(id).update(data).then((onFull) => {
          resolve('ok')
          
        }).catch(err => {

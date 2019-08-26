@@ -894,7 +894,7 @@ def rechargeAmount(money=None, key=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = FRONT_END_URL+"/#/new_rechargement/"+key
+        success_url = FRONT_END_URL+"/#/success/solde"
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -947,7 +947,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = FRONT_END_URL+"/#/account_pay/"+idC
+        success_url = FRONT_END_URL+"/#/success_budget/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 

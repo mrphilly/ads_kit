@@ -229,13 +229,13 @@ ul.social-network li {
  
     <header></header> 
     <section class="height-full white">
- <div id="app">
+
 
      <app-root>
          
      </app-root>
 
- </div>
+
  
     </section>
 <!--     <footer class="mainfooter" role="contentinfo">
@@ -306,12 +306,12 @@ ul.social-network li {
 </footer> -->
 <footer class="white text-center">
   
-   <p class="adafri-police-16 text-black">&copy; Copyright 2019 - Adafri.  All rights reserved.</p>
-   <!-- <a href="http://localhost:4200/#/confidentialite" class="adafri-police-18 text-white">Conditions de confidentialités</a> -->
+  <!-- <a href="http://localhost:4200/#/confidentialite" class="adafri-police-18 text-white">Conditions de confidentialités</a> -->
+  <span class="adafri-police-10 text-black">&copy; Copyright 2019 - Adafri.  All rights reserved.</span>
    <div class="row">
     <div class="col-sm-12 text-center float-right">
-         <a href="https://adafri.com/#/terms" class="adafri-police-14 text-black" style="text-decoration: underline">Conditions générales d'utilisations</a>
-          <a href="https://adafri.com/#/confidentialite" class="adafri-police-14 text-black" style="text-decoration: underline">Politique de confidentialité</a>
+         <a href="https://adafri.com/#/terms" class="adafri-police-12 text-black" style="text-decoration: underline">Conditions générales d'utilisations</a>
+          <a href="https://adafri.com/#/confidentialite" class="adafri-police-12 text-black" style="text-decoration: underline">Politique de confidentialité</a>
     </div>
     
    </div>
@@ -363,15 +363,36 @@ function topFunction() {
 
 
  -->
-<script src="/__/firebase/6.4.2/firebase-app.js"></script>
+<!-- <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '361773794725824',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v4.0'
+    });
+      
+    FB.AppEvents.logPageView();   
+      FB.getLoginStatus(function(response) {
+     console.log(response)
+    statusChangeCallback(response);
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#reserved-urls -->
+});
+  };
+  
 
-<!-- Initialize Firebase -->
-<script src="/__/firebase/init.js"></script>
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+   
+</script>
  
-
+ -->
 
     
     <script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>

@@ -293,10 +293,10 @@ export class UserLoginComponent {
   }
 
   async signInWithGoogle() {
-    this.isCreating=true
+
     await this.auth.googleLogin().then(res => {
       if (res == "ok") {
-        this.isCreating=false
+     
          Swal.fire({
         title: 'Authentification',
         text: 'Vous êtes maintenant connecté',
@@ -314,7 +314,7 @@ export class UserLoginComponent {
 
       })
       } else {
-        this.isCreating=false
+
       }
     })
     
@@ -328,11 +328,11 @@ export class UserLoginComponent {
 
 
   async signInWithFacebook() {
-    this.isCreating=true
+   
     await this.auth.facebookLogin().then(res => {
       if (res == "ok") {
     
-          Swal.fire({
+         /*  Swal.fire({
             title: 'Authentification',
             text: 'Vous êtes maintenant connecté',
             type: 'success',
@@ -347,9 +347,9 @@ export class UserLoginComponent {
               
             }
 
-          })
+          }) */
       } else {
-        this.isCreating=false
+   
         }
       
     });

@@ -128,16 +128,21 @@
                               <a href="#" *ngIf="accountValue !==0">
                                 <i class="icon icon-data_usage text-danger"></i>Aucune Notification pour le moment 
                             </a>
-                            <a class="adafri-police-12" *ngIf="accountValue ===0">
+                            <a class="adafri-police-12" *ngIf="accountValue <10000">
                                 <i class="icon icon-data_usage text-danger"></i>Rechargez ici votre solde
                             </a>
                             
                         </li>
-                        <li class="no-b white text-center" *ngIf="accountValue===0">
+                        <li class="no-b white text-center">
                               <button class="btn btn-sm white border-grey text-black-50 btn-social r-20 d-inline-block" data-toggle="modal" data-target="#modalRechargement">
                                 Charger mon compte
                             </button>
                         </li>
+                        <!--  <li class="no-b white text-center" *ngIf="accountValue<10000">
+                              <button class="btn btn-sm white border-grey text-black-50 btn-social r-20 d-inline-block" data-toggle="modal" data-target="#modalRechargement">
+                                Charger mon compte
+                            </button>
+                        </li> -->
                 
                     </ul>
                 </li>

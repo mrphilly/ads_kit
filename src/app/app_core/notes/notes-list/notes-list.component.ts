@@ -96,6 +96,7 @@ export class NotesListComponent implements AfterViewInit {
       if(value.notification != ""){
         this.numberOfNotifications = 1
         this.notificationAccountValue = value.notification
+      
       }
     })
   }
@@ -132,6 +133,75 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
       resolve(status)
    })
   }
+
+
+
+
+  getCurrentUserCredentials(): Promise<any>{
+    return new Promise(resolve => {
+      var response = []
+       this.auth.user.forEach(data => {
+        response.push({
+          "uid": data.uid,
+          "account_value": data.account_value,
+          "paymentKey": data.paymentKey
+        })
+          
+          resolve(response)
+          
+        })
+    })
+  } 
+
+/*  getCurrentUserCredentials(){
+    
+      var response = []
+       this.auth.user.forEach(data => {
+        response.push({
+          "uid": data.uid,
+          "account_value": data.account_value,
+          "paymentKey": data.paymentKey
+        })
+        console.log(data)
+      })
+   
+  }
+ */
+
+  getCurrentAccountValue(): Promise<number> {
+    return new Promise(resolve => {
+      this.auth.user.forEach(data => {
+        resolve(data.account_value)
+      })
+    })
+  }
+
+  getCurrentUserId(): Promise<string>{
+    return new Promise(resolve => {
+      this.auth.user.forEach(data => {
+        resolve(data.uid)
+      })
+    })
+  }
+
+
+  getPaymentKey(): Promise<string>{
+    return new Promise(resolve => {
+      this.auth.user.forEach(data => {
+        resolve(data.paymentKey)
+      })
+    })
+  }
+
+
+  getNotificationId(uid: string): Promise<string>{
+    return new Promise(resolve => {
+      this.auth.getNotificationData(uid).forEach(data => {
+        resolve(data[0]['id'])
+      })
+    })
+  }
+
   ngOnInit() {
     
        this.auth.user.forEach((value) => {
@@ -139,10 +209,12 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
          this.uid = value.uid
          this.email = value.email
          this.accountValue = value.account_value
+        
          this.email_letter = value.email.charAt(0)
          this.photoURL = value.photoURL
          this.notes = this.notesService.getListCampaign(value.uid)
          this.notes.forEach(child => {
+          
       ////console.log(child.length)
       if (child.length > 0) {
         ////console.log(child.length)
@@ -266,7 +338,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
       }
     })
        })
-    
+
     this.route.params.subscribe(params => { 
         
       if (params['idBC'] !== undefined) {
@@ -288,49 +360,63 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
           this.isCreating = false
         }, 2000)
         this.isCreating = false
-      } else if (params['key_recharge_account'] !== undefined) {
-        var key = params['key_recharge_account']
-        alert(key)
-        this.isCreating = true
-        window.history.pushState("", "", REDIRECT_URL)
-              this.auth.user.forEach(data => {
-                //alert(params['idC'])
-                var montant = localStorage.getItem(key)
-                //console.log(montant)
-                if (montant === null) {
-                  
-                  this.isCreating = false
-                } else {
-                     this.isCreating = false
-                   this.auth.updateUser(data.uid, { account_value: parseInt(montant) })
-                  this.auth.getInfos(data.uid).subscribe(el => {
-                    this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
-                      Swal.fire({
-                        title: 'Service Rechargement!',
-                        text: 'Compte mis à jour avec succès.',
-                        type: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ok'
-                      }).then((result) => {
-                        if (result.value) {
-                          //window.location.replace(REDIRECT_URL)
-                         
-                          localStorage.removeItem(key)
-                          this.isCreating = false
-                     
-                    
-                        }
-                      })
-                    })
-              
-           
-                  })
-               
+      } else if (params['message'] !== undefined) {
+        var message = params['message']
+        var id = params['id']
+        
+        this.getCurrentUserCredentials().then(credentials => {
+          console.log(credentials)
+          var paymentKey = credentials[0]['paymentKey']
+          this.uid = credentials[0]['uid']
+          this.accountValue = credentials[0]['account_value']
+          window.location.replace(REDIRECT_URL)
+          var montant = localStorage.getItem(paymentKey)
+          if (montant === null) {
+              this.isCreating = false
+          } else {
+            this.isCreating = true
+              var new_value = 0
+              if (this.accountValue > new_value) {
+                console.log("Solde du compte non null")
+                console.log("solde actuel: " + this.accountValue.toString())
+                new_value = parseInt(montant) + this.accountValue
+                console.log("Nouveau solde: "+new_value.toString())
+              } else {
+                  console.log("Solde du compte null")
+                  console.log("solde actuel: " + this.accountValue.toString())
+                  new_value = parseInt(montant)
+                  console.log("Nouveau solde: "+new_value.toString())
                 }
-        })
-      }else if(params['id_campaign_to_recharge'] !== undefined){
+              this.auth.updateUser(this.uid, { account_value: new_value, paymentKey: "" }).then(res => {
+              if (res != "error") {
+                this.getNotificationId(this.uid).then(res => {
+                this.auth.updateNotification
+                (res, { notification: "" }).then(() => {
+                Swal.fire({
+                  title: 'Service Rechargement!',
+                  text: 'Compte mis à jour avec succès.',
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.value) {  
+                      localStorage.removeItem(paymentKey)
+                      this.isCreating = false
+                      if (message !== 'success') {
+                        document.getElementById(id).click()
+                      } 
+                    }
+                  })
+                })
+                })
+              }
+              })
+            }
+        }) 
+  
+      }/* else if(params['id_campaign_to_recharge'] !== undefined){
                    this.auth.user.forEach(data => {
                      var key = params['id_campaign_to_recharge']
                        window.history.pushState("", "", REDIRECT_URL)
@@ -338,7 +424,13 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 if (montant === null) {
                   this.isCreating = false
                 } else {
-                                     this.auth.updateUser(data.uid, { account_value: parseInt(montant) })
+                  var value = 0
+                  if (this.accountValue > 0) {
+                    value = parseInt(montant) + this.accountValue
+                  } else {
+                    value = parseInt(montant)
+                  }
+                                     this.auth.updateUser(data.uid, { account_value: value })
           this.auth.getInfos(data.uid).subscribe(el => {
             this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
               Swal.fire({
@@ -353,7 +445,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 if (result.value) {
                   //window.location.replace(REDIRECT_URL)
                   localStorage.removeItem(key)
-                 /*  window.history.pushState("", "", REDIRECT_URL) */
+                
           
                   this.isCreating = false
                 }
@@ -365,8 +457,50 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 }
                 
               })
-      } else {
-          window.history.pushState("", "", REDIRECT_URL)
+      } */ else  if (params['idC'] !== undefined && params['campagne_id'] !== undefined && params['budget'] !== undefined && params['dailyBudget'] !== undefined && params['numberOfDays'] !== undefined) {
+        this.isCreating = true
+        var idC = params['idC']
+        var id_campagne = params['campagne_id']
+        
+        var dailyBudget = params['dailyBudget']
+        var numberOfDays = params['numberOfDays']
+        window.history.pushState("", "", REDIRECT_URL)
+        window.location.replace(REDIRECT_URL)
+         this.getCurrentUserCredentials().then(credentials => {
+          var paymentKey = credentials[0]['paymentKey']
+           var montant = localStorage.getItem(paymentKey)
+          if (montant === null) {
+            this.isCreating = false
+          } else {
+            this.isCreating = true
+            var budget = parseInt(montant)
+             this.notesService.updateNote(idC, { budget: budget , dailyBudget: dailyBudget, numberOfDays: numberOfDays}).then(() => {
+                Swal.fire({
+                  title: 'Service Campagne!',
+                  text: 'Budget mis à jour.',
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  if (result.value) {
+                    //window.location.replace(REDIRECT_URL)
+                    this.isCreating = false
+                    localStorage.removeItem(paymentKey)
+                    document.getElementById(idC).click()
+
+                  }
+                })
+                
+              })
+          
+          } 
+        })
+        // In a real app: dispatch action to load the details here.
+      }else {
+        
+        window.history.pushState("", "", REDIRECT_URL)
       }
     })
      
@@ -807,7 +941,7 @@ encrypted(text, password){
   defineAmountAccount() {
     var self = this
     this.montant = $("#montant").val()
-    if (this.montant < 10000) {
+    if (this.montant < 20000) {
       $('#error_recharge').show()
     } else if (this.montant > 1000000) {
        Swal.fire({
@@ -824,8 +958,9 @@ encrypted(text, password){
           }
         })
     } else{
-      var key = this.generate(10)
+      var key = this.generate(100)
       localStorage.setItem(key, this.montant.toString())
+      this.auth.updateUser(this.uid, {paymentKey: key})
       $('#closeModalRecharge').trigger('click')
       var self = this
       Swal.fire({
@@ -847,7 +982,7 @@ encrypted(text, password){
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/"+key,
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/rechargement",
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -876,6 +1011,7 @@ encrypted(text, password){
             },
             didGetToken: function (token, redirectUrl) {
                 //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+              console.log('redirec_url')
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {

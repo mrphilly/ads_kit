@@ -26,13 +26,13 @@ const routes: Routes = [
   { path: 'terms', component: TermsComponent },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'defineBudget/:idBC', component: NotesListComponent, canActivate: [AuthGuard] },
-  { path: 'new_rechargement/:key_recharge_account', component: NotesListComponent, canActivate: [AuthGuard] },
-  { path: 'account_pay/:id_campaign_to_recharge', component: NotesListComponent, canActivate: [AuthGuard] },
+  /* { path: 'new_rechargement/:key_recharge_account', component: NotesListComponent, canActivate: [AuthGuard] }, */
+ /*  { path: 'account_pay/:id_campaign_to_recharge', component: NotesListComponent, canActivate: [AuthGuard] }, */
   
  
-    { path: ':money/:idC', component: NotesListComponent, canActivate: [AuthGuard] },
-  { path: ':idC/:campagne_id/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent, canActivate: [AuthGuard] },
-   { path: ':idC/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent,  canActivate: [AuthGuard] },
+    { path: ':message/:id', component: NotesListComponent, canActivate: [AuthGuard] },
+  { path: ':idC/:campagne_id/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent, canActivate: [AuthGuard], pathMatch: 'full' },
+   { path: ':idC/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent,  canActivate: [AuthGuard], pathMatch: 'full' },
    
   
   { path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id', component: AnnoncesComponent },

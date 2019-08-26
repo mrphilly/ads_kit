@@ -427,7 +427,7 @@ getDateArray(start, end) {
             this.accountValue = data.account_value
             
           } else {
-            this.accountValue = parseInt(data.account_value)
+            this.accountValue = data.account_value
           }
         
           resolve(data.uid)
@@ -2879,7 +2879,11 @@ if (this.endDate == date || this.startDate == date) {
       }).then((result) => {
         if (result.value) {
             var self = this
-    this.isCreating = true
+          this.isCreating = true
+                
+          var key = this.generate(100)
+          localStorage.setItem(key, this.budget_to_place.toString())
+          this.auth.updateUser(this.uid, {paymentKey: key})
     
       setTimeout(function () {
     
@@ -3091,7 +3095,9 @@ if (this.endDate == date || this.startDate == date) {
          if (result.value) {
               /* var crypt = this.cryptMoney(this.montant.toString()) */
               this.isCreating = true
-      localStorage.setItem(this.id_campagne,this.montant.toString())
+       var key = this.generate(100)
+      localStorage.setItem(key, this.montant.toString())
+      this.auth.updateUser(this.uid, {paymentKey: key})
      /*  var crypt = this.encrypted(this.montant.toString(), this.uid) */
       $('#closeModalRecharge').trigger('click')
       var self = this
@@ -3180,5 +3186,14 @@ if (this.endDate == date || this.startDate == date) {
       
     }
   }
-  
+   generate(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
 }
