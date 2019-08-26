@@ -1,22 +1,33 @@
  <div class="container relative animatedParent animateOnce p-0 bg-white text-center "  *ngIf="!_showCampaignSettings_">
+  
 <div class="row d-flex bd-highlight no-gutters">
 <div class="col-md-12 text-center white">
+   <div class="card r-3 no-b shadow animated fadeIn slow adafri-background" style="margin-top: 10px;" id="particles-js">
+              <div class="p-4">
+                <div class="text-center">
+                  <!-- <span class="icon-award text-white s-48"></span> -->
+                  <img class="img-responsive" src="assets/img/images/groupe d'annonces.png" style="width: 10%">
+                </div>
+                <div class="sc-counter mt-3 adafri-police text-center animated fadeInLeft text-white">Campagne (s) actuelle (s)</div>
+              
+              </div>
+            </div>
   <br>
-  <h5 class="adafri-police" syle="color: #9e9e9e">Campagne (s) actuelle (s)</h5>
+
   <br>
   <br>
-                    <div class="card no-b white shadow" style="" >
+                    <div class="card no-b white shadow adafri-background" style="" >
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table">
                                   <tbody>
-                                    <tr class="no-b" *ngFor="let note of notes | async">
+                                    <tr class="no-b adafri-background" *ngFor="let note of notes | async">
                                  
-                                        <td class="table-img">
-                                            <div class="avatar avatar-md mr-3 mb-2 mt-1 grey lighten-1">
-                                                        <span class="grey lighten-1 avatar-letter avatar-letter-{{note?.name.charAt(0) | lowercase}} avatar-md circle"></span>
+                                       <!--  <td class="table-img">
+                                            <div class="avatar avatar-md mr-3 mb-2 mt-1 white adafri">
+                                                        <span class="white adafri avatar-letter avatar-letter-{{note?.name.charAt(0) | lowercase}} avatar-md circle"></span>
                                                     </div>
-                                        </td>
+                                        </td> -->
                                         <td class="text-center">
                                            <div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                                           <div class="dropdown text-center" style="margin-top: 10px" *ngIf="!isRoller">
@@ -24,7 +35,7 @@
       <i class="icon-pause" *ngIf="note?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="note?.status==='ENABLED'"></i> 
      
-    </button> <p class="text-center adafri-police-14">{{note?.name}}</p>
+    </button> <p class="d-inline-block adafri-police-14 text-white">{{note?.name}}</p>
     <div class="dropdown-menu no-b shadow">
       <a class="dropdown-item adafri-police-14 cursor" style="cursor: pointer"  (click)="updateCampaign(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget)"><i class="icon-circle text-success"></i> Modifier</a>
       <a class="dropdown-item text-danger adafri-police-14 cursor" style="cursor: pointer" (click)="deleteCampaign(note?.id, note?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
@@ -46,13 +57,13 @@
                                          <td *ngIf="note?.status=='PAUSED'"><a class="btn btn-sm white text-danger btn-social d-inline-block r-20" style="margin-left: -40px; font-size: 10px; margin-top: 15px; border: 1px solid red">Désactiver</a>
                                         </td> -->
                                         <td>
-                                            <div class="d-none d-lg-block">
+                                            <div class="d-none d-lg-block text-white">
                                             <span  class="adafri-police r-20" style="color: #9e9e9e; margin-top: 15px"><i class="icon icon-calendar"></i>  <span style="font-size: 14px;"> Début: {{ note?.startDateFrench }}</span></span><br>
                                             <span  class="adafri-police r-20" style="color: #9e9e9e; margin-left: -17px; margin-top: 15px"><i class="icon icon-calendar-times-o"></i>  <span style="font-size: 14px;"> Fin: {{ note?.endDateFrench }}</span></span>
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <a class="btn btn-sm white text-black-50 btn-social r-20 d-inline-block border-grey adafri-police-12" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.ad_group_id, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-mode_edit"></i> Configurer</a>
+                                            <a class="btn btn-sm white adafri btn-social r-20 d-inline-block adafri-police-12" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-mode_edit"></i> je débute</a>
                                         </td>
                                         <hr>
                                     </tr>
@@ -93,10 +104,10 @@
                       </div>
 </div> -->
  </div>
-<div *ngIf="_showCampaignSettings_">
+<!-- <div *ngIf="_showCampaignSettings_">
   <app-campaign-settings [id_campagne]="id_campagne" [id]="id" [name]="name" [_showCamp]="_showCampaignSettings_"
     [status]="status" [ad_group_id]="ad_group_id" [budget]="budget" [budgetId]="budgetId" [dailyBudget]="dailyBudget" [numberOfDays]="numberOfDays"></app-campaign-settings>
-</div>
+</div> -->
 
 
                 

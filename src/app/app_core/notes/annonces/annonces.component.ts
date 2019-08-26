@@ -3,6 +3,8 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
@@ -10,8 +12,6 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -154,6 +154,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     notificationAccountValue = "";
   numberOfNotifications = 0
   url_errors = [];
+  reload_url = ""
   adForm: FormGroup;
   FINAL_ARRAY_TO_SEND =  [];
  
@@ -364,10 +365,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   element_checked = ""
   illustration = false
   illustrationUrl = ""
-  AD_TYPES_1 = [
+  AD_TYPES_SPECIAL_1 = [
     { "name": "Rectangle", "width": "300", "height": "250", "id": "MediumRectangle", "isSpecial": true, "img": "https://dummyimage.com/300x250/000/fff" },
     { "name": "Rectangle Large", "width": "336", "height": "280", "id": "LargeRectangle", "isSpecial": true, "img": "https://dummyimage.com/336x280/000/fff" },
     { "name": "Horizontal Medium", "width": "728", "height": "90", "id": "Leaderboard", "isSpecial": true, "img": "https://dummyimage.com/728x90/000/fff" },
+     
+
+    
+    /* {"name": "Vertical", "width": "320", "height": "50", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"}, */
+    
+  ]
+  AD_TYPES_SPECIAL_2 = [
      { "name": "Vertical Medium", "width": "160", "height": "600", "id": "Wideskyscraper", "isSpecial": true, "img": "https://dummyimage.com/160x600/000/fff" },
     { "name": "Carré", "width": "250", "height": "250", "id": "Square", "isSpecial": true, "img": "https://dummyimage.com/250x250/000/fff" },
      { "name": "Demi page", "width": "300", "height": "600", "id": "LargeSkyscraper", "isSpecial": true, "img": "https://dummyimage.com/300x600/000/fff" },
@@ -376,10 +384,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     /* {"name": "Vertical", "width": "320", "height": "50", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"}, */
     
   ]
-  AD_TYPES_2 = [
+  AD_TYPES_NOSPECIAL_1 = [
     { "name": "Horizontal", "width": "468", "height": "60", "id": "Banner", "isSpecial": false,  "img": "https://dummyimage.com/468x60/000/fff" },
     { "name": "Vertical", "width": "120", "height": "600", "id": "Skyscraper", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
     { "name": "Rectangle Vertical", "width": "240", "height": "400", "id": "RV", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
+   
+  ]
+  AD_TYPES_NOSPECIAL_2 = [
    
     { "name": "Horizontal Large", "width": "970", "height": "90", "id": "LargerLeaderboard", "isSpecial": false, "img": "https://dummyimage.com/970x90/000/fff" },
     { "name": "Big Panneau", "width": "970", "height": "250", "id": "BigPanneau", "isSpecial": false, "img": "https://dummyimage.com/970x250/000/fff" },
@@ -742,6 +753,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    
   
   }
+ 
   
   toggleModifyUploadImage() {
     this.button_modify_image_upload = false
@@ -928,8 +940,11 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
     this.chooseBlock = true
  
   }
+  reload() {
+    return 'reload'
+  }
   ngOnInit() {
-  
+   
    this.auth.user.forEach(data=>{
            this.photoURL = data.photoURL
            //alert(this.photoURL)
@@ -941,7 +956,17 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       }
     })
       
-               
+    this.route.params.subscribe(params => {
+      var name = params['name']
+      var idC = params['idC']
+      var idA = params['idA']
+      var adgroupid = params['ad_group_id']
+      var campaignid = params['campaign_id']
+      this.reload_url = SERVER.url_redirect + "/ads/" + name + "/" + idC + "/" + idA + "/" + adgroupid + "/" + campaignid
+    
+    })
+    
+    
 
     // get references to the html canvas element & its context
     // this.canvas.on('mouse:down', (e) => {
@@ -2280,7 +2305,7 @@ $('#popper').trigger('click')
           //console.log('success')
           //console.log(res)
           self.isRoller = false
-          window.location.reload()
+          window.location.reload(true)
           
         })
      })
@@ -2307,7 +2332,7 @@ $('#popper').trigger('click')
           if (res != "error") {
             
             self.isRoller = false
-              window.location.reload()
+              window.location.reload(true)
           } else {
             self.isRoller = false
           }
@@ -3284,7 +3309,7 @@ if (this.budget === 0) {
      //console.log(res)
      if (res != "error") {
        this.isCreating = false
-       window.location.reload()
+       window.location.reload(true)
           
      } else {
        this.isCreating = false

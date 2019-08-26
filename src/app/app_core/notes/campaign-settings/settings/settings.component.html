@@ -102,22 +102,22 @@
                     <div class="card-body no-b white">
                         <ul class="social">
                             <li>
-                                <a class="adafri-police s-16">
+                                <a class="s-16">
                                     <img src="assets/img/images/clicks.png">
-                                </a> Clics
-                                <span class="float-right mt-2 font-weight-bold">{{clicks}}</span>
+                                </a> <span class="adafri-police-14">Clics</span>
+                                <span class="float-right mt-2 font-weight-bold adafri-police-16">{{clicks}}</span>
                             </li>
                             <li>
-                                <a  class="adafri-police s-16">
+                                <a  class="s-16">
                                     <img src="assets/img/images/impressions.png">
-                                </a>Affichages
-                                <span class="float-right mt-2 font-weight-bold">{{impressions}}</span>
+                                </a> <span class="adafri-police-14">Nombre de vues</span>
+                                <span class="float-right mt-2 font-weight-bold adafri-police-16" >{{impressions}}</span>
                             </li>
                             <li>
-                                <a class="adafri-police s-16">
+                                <a class="s-16">
                                    <img src="assets/img/images/cost.png">
-                                </a>Coût
-                                <span class="float-right mt-2 font-weight-bold">{{cost}}</span>
+                                </a><span class="adafri-police-14">Dépenses</span>
+                                <span class="float-right mt-2 font-weight-bold adafri-police-16">{{cost}}</span>
                             </li>
                            
                         </ul>
@@ -217,7 +217,7 @@
                   </div>
                 </div>
 
-                <div class="card my-3 my-3 no-b no-b animated fadeInRight shadow">
+                <div class="card my-3 my-3 no-b no-b animated fadeInRight">
                  <!--  <button class="btn btn-sm btn-secondary bg-gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="float: right !important; width: 20px">
                     <i class="icon-edit"></i>
                   </button> -->
@@ -226,9 +226,9 @@
                     <h6 class="adafri-police" style="color: white; font-size: 16px">Groupes d'annonces </h6>
                     
                   </div>
-                  <div class="card-body p-0 white slimScroll no-b" data-height="300" *ngIf="number_ad_groups!=0; else noAdGroups">
+                  <div class="card-body p-0 white slimScroll no-b shadow" data-height="300" *ngIf="number_ad_groups!=0; else noAdGroups">
                     <div class="table-responsive no-b">
-                      <table class="table table-hover no-b">
+                      <table class="table no-b">
                         <!-- Table heading -->
                         <tbody class="no-b">
                           <tr class="no-b adafri-background text-white text-center">
@@ -244,12 +244,12 @@
                           <tr class="text-center" *ngFor="let adgroup of adgroups | async" class="no-b white" title="cliquez sur le nom du groupe pour créer des annonces">
                             <!-- Check box -->
                              <td class="text-center">
-                                        <div class="dropdown d-inline-block" style="margin-top: 10px" *ngIf="!isRoller">
-    <button type="button" class="btn btn-sm white dropdown-toggle no-b shadow float-left" style="box-shadow: none" data-toggle="dropdown">
+                                        <div class="dropdown text-center" style="margin-top: 10px" *ngIf="!isRoller">
+    <button type="button" class="btn btn-sm white dropdown-toggle no-b shadow box-popup box float-left" style="box-shadow: none" data-toggle="dropdown">
       <i class="icon-pause" *ngIf="adgroup?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="adgroup?.status==='ENABLED'"></i> 
      
-    </button> <p class="text-center adafri-police-14">{{adgroup?.name}}</p> 
+    </button> <p class="text-center adafri-police-14 d-inline-block">{{adgroup?.name}}</p> 
     <div class="dropdown-menu no-b white shadow">
       <a  style="cursor: pointer" class="dropdown-item adafri-police-14" *ngIf="adgroup?.status==='PAUSED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-success"></i> Activer</a>
        <a  style="cursor: pointer" class="dropdown-item adafri-police-14" *ngIf="adgroup?.status==='ENABLED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-danger"></i> Désactiver</a>
@@ -312,19 +312,19 @@
                     <div class="card-body text-center no-b white" *ngIf="!isAdGroup">
                       <div class="card white no-b text-center" >
                         <div class="card-body white no-b text-center">
-                     
-                          <small style="font-size: 16px">Un groupe de visuels regroupe plusieurs formats d'images avec <strong>un thème</strong> et <strong>une destination uniques</strong>.</small><br>
-                          <small style="font-size: 16px">Ces annonces (imagées) dirigeront <strong>toutes</strong> vers une seule page de votre site</small>
+                          <span class="adafri-police-22">Plaçons ensembles vos images ou visuels</span>
+                         <!--  <small style="font-size: 16px">Un groupe de visuels regroupe plusieurs formats d'images avec <strong>un thème</strong> et <strong>une destination uniques</strong>.</small><br>
+                          <small style="font-size: 16px">Ces annonces (imagées) dirigeront <strong>toutes</strong> vers une seule page de votre site</small> -->
                         </div>
                         <div class="text-center" style="width: 100%"> 
-                          <a class="btn btn-sm white text-black-50 adafri-police-12 btn-social r-20 d-inline-block border-grey" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle" ></i> Cliquer pour commencer</a>
+                          <a class="btn btn-sm adafri-background  text-white adafri-police-12 btn-social r-20 d-inline-block border-white animated pulse infinite" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle" ></i> Cliquer pour commencer</a>
                         </div>
                       </div>
 
                     </div>
                     </ng-template>
                   <div class="card-footer white text-center no-b" *ngIf="number_ad_groups!=0">
-                    <a class="btn btn-sm adafri-background btn-social shadow  text-white r-20" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe de visuel</a>
+                    <a class="btn btn-sm adafri-background btn-social shadow text-white r-20 border-white" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe de visuel</a>
 
                     
                     <!--  <a href="#" class="btn btn-outline-danger btn-xs">Delete All</a> -->
@@ -388,7 +388,8 @@
                 <div class="collapse animated fadeInDown shadow" id="collapseZone" style="margin-top: 50px">
                         <div class="card no-b shadow timeline-item">
               <div class="card-header adafri-background adafri-police text-white s-15 b-0 p-3 text-center no-b">
-                <small>Visualiser ici vos zones ciblées et si nécessaire modifier les stratégies d'enchères.</small>
+                <span class="adafri-police-14">Définir la zone de diffusion de votre annonces (pays et ville)
+                </span>
                
               </div>
               <div class="collapse show" id="invoiceCard">
@@ -616,7 +617,7 @@
                                 </div> -->
                                 <div class="text-center">
                                 
-                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Nombre d'impressions estimé avec ce budget: <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span> fois</span>
+                                 <span class="adafri-police-16" *ngIf="number_of_impressions_simulated!=0">Nombre de vues estimées:  <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span></span>
                                   
                                 </div>
                <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
@@ -673,7 +674,7 @@
                                 </div> -->
                                 <div class="text-center">
                                 
-                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Nombre d'impressions estimé avec ce budget: <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span> fois</span>
+                                 <span class="adafri-police-16" *ngIf="number_of_impressions_simulated!=0">Nombre de vues estimées:  <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span></span>
                                   
                                 </div>
                <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
@@ -1150,7 +1151,7 @@
                                 </div> -->
                                 <div class="text-center">
                                 
-                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Nombre d'impressions estimé avec ce budget: <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span> fois</span>
+                                 <span class="adafri-police-16" *ngIf="number_of_impressions_simulated!=0">Nombre de vues estimées:  <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span></span>
                                   
                                 </div>
                <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"
@@ -1209,7 +1210,7 @@
                                 </div> -->
                                 <div class="text-center">
                                 
-                                 <span style="font-size: 12px" *ngIf="number_of_impressions_simulated!=0">Nombre d'impressions estimé avec ce budget: <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span> fois</span>
+                                 <span class="adafri-police-16" *ngIf="number_of_impressions_simulated!=0">Nombre de vues estimées:  <span class="adafri blink adafri-police-24 font-weight-bold" >{{number_of_impressions_simulated}}</span></span>
                                   
                                 </div>
                <button type="button" class="btn btn-sm white text-black-50 adafri-police btn-social r-20"

@@ -16,7 +16,7 @@ import { map } from 'rxjs/operators'
 import * as moment from 'moment'
 /* import { NoteDetailComponent } from './note-detail/note-detail.component' */
 import {SERVER} from '../../../environments/environment'
-import { resolveDefinition } from '@angular/core/src/view/util';
+
 
 declare var require: any;
 var _ = require('lodash');
@@ -40,6 +40,7 @@ export class AdGroupService {
     this.adGroupCollection = this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${this.campaign_id}`)));
     this.auth.user.forEach(data => {
       this.uid = data.uid
+      this.currentUser = data.displayName
     })
   }
   
@@ -399,8 +400,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
             var id= res['id']
            this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res=>{
             Swal.fire({
-              title: 'Ajouter un nouveau groupe',
-              text: 'Groupe ajouté avec succès',
+             html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> le dossier <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> regroupant vos visuels a été créé</span>',
               type: 'success',
               showCancelButton: false,
               confirmButtonColor: '#3085d6',

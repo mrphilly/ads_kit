@@ -10,7 +10,7 @@ import { Observable } from 'rxjs'
 import { AdGroupService } from '../ad-groupe.service'
 import Swal from 'sweetalert2'
 import {SERVER} from '../../../../environments/environment'
-import { b } from '@angular/core/src/render3';
+
 
 
 @Component({
@@ -508,20 +508,21 @@ export class NoteDetailComponent implements OnInit {
 
   }
 
-  goCampaignSettings(id: string,id_campagne: string, name: string, status: string, ad_group_id: string, budget: any, budgetId: any, dailyBudget: any, numberOfDays: any) {
+  goCampaignSettings(id: string,id_campagne: string, name: string, status: string, budget: any, budgetId: any, dailyBudget: any, numberOfDays: any) {
     //console.log(id + " " + id_campagne + " " + name + " " + status + " "+dailyBudget+" "+numberOfDays);
     id_campagne = id_campagne;
-    
+    this.router.navigate(["/edit", name, id, id_campagne])
+    /* 
     this.id = id;
     this.name = name;
     this.status = status;
-    this.ad_group_id = ad_group_id
+   this.ad_group_id = ad_group_id
     this.id_campagne = id_campagne
     this.budget = budget
     this.budgetId = budgetId
     this.dailyBudget = dailyBudget
     this.numberOfDays = numberOfDays
-    this._showCampaignSettings_ = true
+    this._showCampaignSettings_ = true */
   }
  /*  async loadScript(src){
     var script = document.createElement("script");

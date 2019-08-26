@@ -6,7 +6,7 @@ import { NotesListComponent } from './app_core/notes/notes-list/notes-list.compo
 import { HomePageComponent } from './app_core/ui/home-page/home-page.component';
 import { SsrPageComponent } from './app_core/ui/ssr-page/ssr-page.component';
 import { UserLoginComponent } from './app_core/ui/user-login/user-login.component';
-import { CampaignSettingsComponent } from './app_core/notes/campaign-settings/campaign-settings.component'
+import { SettingsComponent } from './app_core/notes/campaign-settings/settings/settings.component'
 import { AnnoncesComponent } from './app_core/notes/annonces/annonces.component'
 import { CreateCampaignComponent } from './app_core/notes/create-campaign/create-campaign.component'
 import { UserProfileComponent } from './app_core/ui/user-profile/user-profile.component'
@@ -26,6 +26,7 @@ const routes: Routes = [
   { path: 'terms', component: TermsComponent },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'defineBudget/:idBC', component: NotesListComponent, canActivate: [AuthGuard] },
+   { path: 'edit/:name/:id/:id_campagne', component: SettingsComponent, canActivate: [AuthGuard] },
   /* { path: 'new_rechargement/:key_recharge_account', component: NotesListComponent, canActivate: [AuthGuard] }, */
  /*  { path: 'account_pay/:id_campaign_to_recharge', component: NotesListComponent, canActivate: [AuthGuard] }, */
   
@@ -38,7 +39,7 @@ const routes: Routes = [
   { path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id', component: AnnoncesComponent },
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id/:money/:id_ad_firebase', component: AnnoncesComponent},
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id/:budget/:dailyBudget/:numberOfDays/:id_ad_firebase', component: AnnoncesComponent},
-  { path: 'campaign/:id', component: CampaignSettingsComponent, canActivate: [AuthGuard] },
+ /*  { path: 'campaign/:id', component: CampaignSettingsComponent, canActivate: [AuthGuard] }, */
 ];
  
 

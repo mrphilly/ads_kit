@@ -40,7 +40,8 @@ export class NotesService implements OnInit {
   constructor(private auth: AuthService, private afs: AngularFirestore, private http: HttpClient,  private adGroupService: AdGroupService, private adsService : Ads) {
     this.auth.user.forEach(child => {
       this.uid =child.uid
-      this.notesCollection = this.afs.collection('notes', (ref) => ref.where('owner', '==', child.uid)); 
+      this.notesCollection = this.afs.collection('notes', (ref) => ref.where('owner', '==', child.uid));
+      this.currentUser = child.displayName
     })
   }
   ngOnInit() { 
@@ -83,8 +84,8 @@ export class NotesService implements OnInit {
             //console.log(res['startDateFrench'])
               this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res=>{
             Swal.fire({
-              title: 'Ajouter une nouvelle campagne',
-              text: 'Campagne ajoutée avec succès',
+              html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
+             
               type: 'success',
               showCancelButton: false,
               confirmButtonColor: '#3085d6',

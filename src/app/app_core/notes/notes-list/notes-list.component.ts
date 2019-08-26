@@ -60,6 +60,7 @@ export class NotesListComponent implements AfterViewInit {
 
   email_letter: any;
   @Input()
+  currentUser: any;
   notes: Observable<any[]>;
   name: string;
   id: string;
@@ -90,7 +91,9 @@ export class NotesListComponent implements AfterViewInit {
   constructor(private notesService: NotesService, public auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute, private router: Router) {
       var self = this
     
-
+    this.auth.user.forEach(data => {
+      this.currentUser = data.displayName
+    })
     
     this.auth.notificationAccount.forEach((value) => {
       if(value.notification != ""){
@@ -845,8 +848,8 @@ encrypted(text, password){
       ).then(res => {
         if (res == "ok") {
            Swal.fire({
-      title: 'Service Campagne!',
-      text: 'Votre campagne a été ajouté avec succès.',
+    html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
+             
       type: 'success',
       showCancelButton: false,
        buttonsStyling: true,

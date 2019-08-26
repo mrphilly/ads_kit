@@ -35,7 +35,7 @@ import * as $ from 'jquery'
 import { AdGroupService } from '../../ad-groupe.service'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 import { Ads } from '../../ads.service'
 import {
   AdGroup
@@ -147,16 +147,16 @@ dataSource: any;
   type: string;
   width: string;
   height: string;
-  @Input() id_campagne: string;
-  @Input() id: string;
-  @Input() name: string;
-  @Input() status: string;
-  @Input() ad_group_id: string;
-  @Input() uid: string;
-  @Input() budget: any;
-  @Input() budgetId: any;
-  @Input() dailyBudget: any;
-  @Input() numberOfDays: any;
+  id_campagne: string;
+  id: string;
+  name: string;
+  status: string;
+  ad_group_id: string;
+  uid: string;
+  budget: any;
+  budgetId: any;
+  dailyBudget: any;
+  numberOfDays: any;
   impressions = 0
   clicks = 0
   cost = 0
@@ -246,7 +246,7 @@ error_recharge = ""
     { data: [0], label: 'Impressions' }
   ];
 
-  constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads) {
+  constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads,  private route: ActivatedRoute) {
     this.getUser().then(res => {
       //console.log(res)
       //console.log(this.id_campagne)
@@ -447,13 +447,19 @@ getDateArray(start, end) {
         }) */
     ;
  
-        
+    this.route.params.subscribe(params => {
+      this.name = params['name']
+      this.id = params['id']
+      this.id_campagne = params['id_campagne']
+    })
     this.auth.user.forEach(data1 => {
       this.accountValue = data1.account_value
+      this.uid = data1.uid
  
       
       this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
         res.forEach(data => {
+          this.status = data['status']
           this.startDateFrench = data['startDateFrench']
         this.endDateFrench = data['endDateFrench'] 
          this.dure_campagne = this.datediff(this.parseDate(data['startDateFrench']), this.parseDate(data['endDateFrench'] ))
@@ -465,7 +471,13 @@ getDateArray(start, end) {
         this.genres = data['sexes']
         this.clicks = data['clicks']
         this.impressions = data['impressions']
-        this.cost = data['costs']
+          this.cost = data['costs']
+          this.budgetId = data['budgetId']
+        this.budget = data['budget']
+          this.dailyBudget = data['dailyBudget']
+          this.numberOfDays = data['numberOfDays']
+
+
         
         //console.log(data['startDate'])
         var startDate = data['startDate'].slice(0,4)+"-"+ data['startDate'].slice(4,6)+"-"+ data['startDate'].slice(6,8)
@@ -1915,7 +1927,7 @@ this.getListIdAd().then(res => {
 
   goAdGroups(ad_group_name: string, idA: string, ad_group_id: string) {
     
-     this.router.navigate(['ads', ad_group_name, this.id, idA, ad_group_id, this.id_campagne], {skipLocationChange: true})
+     this.router.navigate(['ads', ad_group_name, this.id, idA, ad_group_id, this.id_campagne], /* {skipLocationChange: true} */)
    
   }
   handleErrorBudget() {

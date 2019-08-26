@@ -348,9 +348,9 @@
  <div class="sticky">
         <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
-             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow" style="height: 60px">
-            <img class="d-none d-md-block" src="assets/img/adafri.png" style="width: 5%; float: left" (click)="go()">
-            <img class="d-md-none d-sm-block" src="assets/img/adafri.png" style="width: 15%; float: left" (click)="go()">
+             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow" style="height: 90px">
+          <img class="d-none d-md-block float-left" src="assets/img/images/newlogo.png" style="width: 15%" (click)="go1()">
+            <img class="d-md-none d-sm-block float-left" src="assets/img/images/newlogo.png" style="width: 35%" (click)="go1()">
             <!--Top Menu Start -->
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
@@ -469,7 +469,7 @@
                         </div>
                       </div>
                       <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
+                        <small for="pattern">Votre site web</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlInitCreatives" required (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != []">
@@ -772,12 +772,12 @@
                              <div class="d-inline-block">
                                 <div class="d-flex">
                                        <div class="dropdown text-center">
-    <button type="button" class="btn btn-sm white dropdown-toggle float-left no-b shadow" style="box-shadow: none" data-toggle="dropdown">
+    <button type="button" class="btn btn-sm white dropdown-toggle float-left no-b shadow box box-popup" style="box-shadow: none" data-toggle="dropdown">
       <i class="icon-pause" *ngIf="ad?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="ad?.status==='ENABLED'"></i> 
        <i class="icon-phonelink_off text-success"  *ngIf="ad?.status===''"></i> 
      
-    </button><p class="text-center adafri-police-14">{{ ad?.ad_name }}</p> 
+    </button><p class="text-center adafri-police-14 d-inline-block">{{ ad?.ad_name }}</p> 
     <div class="dropdown-menu no-b white shadow"  *ngIf="ad?.status==='PAUSED'">
       <a style="cursor: pointer" class="adafri-police-14 dropdown-item"  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"><i class="icon-circle text-success"></i> Activer</a>
       <a style="cursor: pointer" class="adafri-police-14 dropdown-item disabled" href="#"><i class="icon-pause"></i> Désactiver</a>
@@ -858,20 +858,36 @@
 
                 <ng-container *ngIf="init_choose_ad_size && number_ads==='0'">
                       <div class="card no-b shadow animated fadeIn" *ngIf="chooseAdSize">
-      <div class="card-header no-b white text-center">
+      <div class="card-header no-b white text-center adafri-police-18">
         Choisir un format d'image
       </div>
-      <div class="card-body no-b white">
+      <div class="card-body no-b white text-center">
+        <div class="text-center">
+                  <span class="adafri-police-14">Les formats les plus performants</span>
         	<div class="row">	
-
-			<div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer"> <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
+        
+			<div class="col text-center" *ngFor="let type of AD_TYPES_SPECIAL_1" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline-block"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
+    	<div class="row" style="margin-top: 10px">	
+        
+			<div class="col text-center" *ngFor="let type of AD_TYPES_SPECIAL_2" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline-block"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
+             
+    </div>
+        </div>
+      <div class="text-center" style="margin-top: 20px">
+              <span class="adafri-police-14">Les autres formats</span>
     <div class="row">	
 
-		<div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer"> <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
+		<div class="col text-center" *ngFor="let type of AD_TYPES_NOSPECIAL_1" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline" *ngIf="type.isSpecial===true"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey; margin-left: 5px"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
+     <div class="row" style="margin-top: 10px">	
+
+		<div class="col text-center" *ngFor="let type of AD_TYPES_NOSPECIAL_2" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline" *ngIf="type.isSpecial===true"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey; margin-left: 5px"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
+             
+    </div>
+      </div>
       </div>
       <div class="card-footer text-center white no-b">
          <div class="card no-b shadow" style="display: inline-block" *ngIf="illustration">
@@ -931,7 +947,7 @@
                        <div class="card no-b d-inline-block">
                    
                     <div class="card-body white text-center">
-                        <span class="adafri-police text-black">Url de redirection</span>
+                        <span class="adafri-police text-black">Votre site web</span>
                       <input type="text" autocomplete="off" class="form-control white no-b text-black adafri-police d-inline-block text-center" id="redirect"
                            placeholder="Exemple: https://www.votresite.com"  [id]="idOfDisplayUrlModify" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()" readonly>
@@ -1008,7 +1024,7 @@
                         </div>
                       </div> -->
                       <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
+                        <small for="pattern">Votre site web</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                            placeholder="Exemple: https://www.votresite.com"  [id]="idOfDisplayUrlNotPublishCreatives" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()">
@@ -1140,7 +1156,7 @@
                       </div>
                  
                       <div class="col-md-6 mb-3 text-center">
-                        <small for="pattern">Nouvelle url de redirection</small><br>
+                        <small for="pattern">Nouvelle Votre site web</small><br>
                         <input type="text" autocomplete="off" class="form-control d-inline-block text-center" id="redirect"
                            placeholder="Exemple: https://www.votresite.com"  [id]="idOfDisplayUrlNotPublishUpload" [value]="currentFinalUrls" style="width: 70%" required
                         >
@@ -1233,7 +1249,7 @@
                         </div>
                       </div> -->
                       <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
+                        <small for="pattern">Votre site web</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                            placeholder="Exemple: https://www.votresite.com"  id="finalUrlsmodify" [value]="currentFinalUrls" required
                           (keyup)="handleErrorUrl()">
@@ -1310,7 +1326,7 @@
                         </div>
                       </div>
                       <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
+                        <small for="pattern">Votre site web</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlInitUpload" required (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != []">
@@ -1732,24 +1748,33 @@
       <div class="card-header no-b white text-center">
         Type d'annonces
       </div>
-      <div class="card-body no-b white">
+     <div class="card-body no-b white text-center">
+        <div class="text-center">
+                  <span class="adafri-police-14">Les formats les plus performants</span>
         	<div class="row">	
-
-      <div class="col" *ngFor="let type of AD_TYPES_1" style="cursor: pointer">
-         <i class="icon-diamond adafri" *ngIf="type.isSpecial===true"></i>
-        <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
-          
-      
+        
+			<div class="col text-center" *ngFor="let type of AD_TYPES_SPECIAL_1" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline-block"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
+    	<div class="row" style="margin-top: 10px">	
+        
+			<div class="col text-center" *ngFor="let type of AD_TYPES_SPECIAL_2" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline-block"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
+             
+    </div>
+        </div>
+      <div class="text-center" style="margin-top: 20px">
+              <span class="adafri-police-14">Les autres formats</span>
     <div class="row">	
 
-    <div class="col" *ngFor="let type of AD_TYPES_2" style="cursor: pointer">
-      <i class="icon-diamond text-white" *ngIf="type.isSpecial===false"></i>
-     
-      <span class="badge badge-white text-black-50 img-check" style="border: 1px solid grey"  (click)="checkAdType(type.id, type.width, type.height, type.img)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
+		<div class="col text-center" *ngFor="let type of AD_TYPES_NOSPECIAL_1" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline" *ngIf="type.isSpecial===true"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey; margin-left: 5px"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
              
     </div>
+     <div class="row" style="margin-top: 10px">	
+
+		<div class="col text-center" *ngFor="let type of AD_TYPES_NOSPECIAL_2" style="cursor: pointer"><i class="icon-diamond2 adafri d-inline" *ngIf="type.isSpecial===true"></i> <span class="badge badge-white text-black-50 img-check d-inline" style="border: 1px solid grey; margin-left: 5px"  (click)="checkAdType(type.id, type.width, type.height, type.img, type.name)" [id]="type.id">{{type.width}}x{{type.height}}</span></div>
+             
+    </div>
+      </div>
       </div>
       <div class="card-footer text-center white no-b">
          <div class="card no-b shadow" style="display: inline-block" *ngIf="illustration">
@@ -1829,7 +1854,7 @@
                         </div>
                       </div>
                       <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
+                        <small for="pattern">Votre site web</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlCreateCreatives" required (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != []">
@@ -2060,7 +2085,7 @@
                       </div>
       
                       <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
+                        <small for="pattern">Votre site web</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlCreateCreatives" required (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != ''">
@@ -2185,7 +2210,7 @@
                     </div>
                 
                     <div class="form-group col-md-6 mb-3">
-                      <small for="pattern">Url de redirection</small>
+                      <small for="pattern">Votre site web</small>
                       <input type="text" autocomplete="off" class="form-control" id="redirect"
                         placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlCreateUpload" required (keyup)="handleErrorUrl()">
                       <ng-container *ngIf="url_errors != []">
@@ -2275,7 +2300,7 @@
                         </div>
                       </div>
                       <div class="form-group col-md-6 mb-3">
-                        <small for="pattern">Url de redirection</small>
+                        <small for="pattern">Votre site web</small>
                         <input type="text" autocomplete="off" class="form-control" id="redirect"
                           placeholder="Exemple: https://www.votresite.com" [id]="idOfDisplayUrlCreateUpload" required (keyup)="handleErrorUrl()">
                         <ng-container *ngIf="url_errors != []">
