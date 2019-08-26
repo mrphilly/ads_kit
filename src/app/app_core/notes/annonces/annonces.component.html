@@ -370,7 +370,7 @@
                 <i class="icon-notifications_none text-black-50"></i>
                 <span class="badge adafri-background badge-mini rounded-circle">{{numberOfNotifications}}</span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu no-b white shadow dropdown-menu no-b white shadow-right">
                 <li class="header">Vous avez {{numberOfNotifications}} notification(s)</li>
                 <li>
                     <!-- inner menu: contains the actual data -->
@@ -410,7 +410,7 @@
                 </figure>
                                                         
             </a>
-            <div class="dropdown-menu p-4 dropdown-menu-right">
+            <div class="dropdown-menu no-b white shadow p-4 dropdown-menu no-b white shadow-right">
                 <div class="row box justify-content-between my-4">
                     <div class="col">
                         <a (click)="auth.signOut()">
@@ -763,8 +763,8 @@
                           <tr class="no-b text-center" *ngFor="let ad of ads | async">
 
 
-                            <td class="table-img">
-                              <img src="{{ad?.url_image}}" alt="{{ad?.ad_name}}">
+                            <td class="table-img text-center">
+                              <img src="{{ad?.url_image}}" class="img-responsive d-inline-block" alt="{{ad?.ad_name}}">
 
                             </td>
                             <td class="text-center">
@@ -772,26 +772,26 @@
                              <div class="d-inline-block">
                                 <div class="d-flex">
                                        <div class="dropdown">
-    <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-sm white dropdown-toggle float-left no-b shadow" style="box-shadow: none" data-toggle="dropdown">
       <i class="icon-pause" *ngIf="ad?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="ad?.status==='ENABLED'"></i> 
        <i class="icon-phonelink_off text-success"  *ngIf="ad?.status===''"></i> 
      
-    </button> {{ ad?.ad_name }}
-    <div class="dropdown-menu"  *ngIf="ad?.status==='PAUSED'">
-      <a class="dropdown-item"  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"><i class="icon-circle text-success"></i> Activer</a>
-      <a class="dropdown-item disabled" href="#"><i class="icon-pause"></i> Désactiver</a>
-      <a class="dropdown-item text-danger"  (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)"><i class="icon-delete"></i> Supprimmer</a>
+    </button><p class="text-center adafri-police-14">{{ ad?.ad_name }}</p> 
+    <div class="dropdown-menu no-b white shadow"  *ngIf="ad?.status==='PAUSED'">
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item"  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"><i class="icon-circle text-success"></i> Activer</a>
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item disabled" href="#"><i class="icon-pause"></i> Désactiver</a>
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item text-danger"  (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)"><i class="icon-delete"></i> Supprimmer</a>
     </div>
-     <div class="dropdown-menu"  *ngIf="ad?.status==='ENABLED'">
-      <a class="dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
-      <a class="dropdown-item text-danger"  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"><i class="icon-pause"></i> Désactiver</a>
-      <a class="dropdown-item text-danger"  (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)"><i class="icon-delete"></i> Supprimmer</a>
+     <div class="dropdown-menu no-b white shadow"  *ngIf="ad?.status==='ENABLED'">
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item text-danger"  (click)="changeAdStatus(ad?.id, ad?.ad_group_id, ad?.ad_id, ad?.status)"><i class="icon-pause"></i> Désactiver</a>
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item text-danger"  (click)="removeAd(ad?.id, ad?.ad_group_id, ad?.ad_id)"><i class="icon-delete"></i> Supprimmer</a>
     </div>
-     <div class="dropdown-menu"  *ngIf="ad?.status===''">
-      <a class="dropdown-item disabled grey lighten-4" href="#"><i class="icon-circle text-success"></i> Activer</a>
-      <a class="dropdown-item text-danger grey lighten-4 disabled"><i class="icon-pause"></i> Désactiver</a>
-      <a class="dropdown-item text-danger" style="cursor: pointer" (click)="removeAdFirebase(ad?.id)"><i class="icon-delete"></i> Supprimmer</a>
+     <div class="dropdown-menu no-b white shadow"  *ngIf="ad?.status===''">
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item disabled grey lighten-4" href="#"><i class="icon-circle text-success"></i> Activer</a>
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item text-danger grey lighten-4 disabled"><i class="icon-pause"></i> Désactiver</a>
+      <a style="cursor: pointer" class="adafri-police-14 dropdown-item text-danger" style="cursor: pointer" (click)="removeAdFirebase(ad?.id)"><i class="icon-delete"></i> Supprimmer</a>
     </div>
   </div>
                               
@@ -800,12 +800,12 @@
                          
                             </td>
                
-                            <td>
-                              <a class="btn btn-sm white shadow text-black-50 r-20" [id]="ad?.id"
+                            <td class="text-center">
+                              <a class="btn btn-sm white shadow text-black-50 r-20 d-inline-block adafri-police-16" [id]="ad?.id"
                                 (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId, ad?.size, ad?.ad_type)" style="border: 1px solid grey" *ngIf="ad?.status===''"><i
                                   class="icon-settings2" ></i>Terminer</a>
 
-                                   <a class="btn btn-sm white shadow text-black-50 r-20" [id]="ad?.id"
+                                   <a class="btn btn-sm white shadow text-black-50 r-20 d-inline-block adafri-police-14" [id]="ad?.id"
                                 (click)="goAdSettings(ad?.id, ad?.ad_name, ad?.ad_group_id, ad?.ad_id, ad?.status, ad?.url_image, ad?.finalUrls, ad?.finalAppUrls, ad?.finalMobileUrls, ad?.image_content, ad?.referenceId, ad?.size, ad?.ad_type)" style="border: 1px solid grey" *ngIf="ad?.status!==''"><i
                                   class="icon-settings2" ></i>Voir</a>
                             </td>

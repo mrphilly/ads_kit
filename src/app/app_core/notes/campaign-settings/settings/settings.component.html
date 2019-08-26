@@ -245,20 +245,20 @@
                             <!-- Check box -->
                              <td class="text-center">
                                         <div class="dropdown d-inline-block" style="margin-top: 10px" *ngIf="!isRoller">
-    <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-sm white dropdown-toggle no-b shadow float-left" style="box-shadow: none" data-toggle="dropdown">
       <i class="icon-pause" *ngIf="adgroup?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="adgroup?.status==='ENABLED'"></i> 
      
-    </button> {{adgroup?.name}}
-    <div class="dropdown-menu">
-      <a class="dropdown-item" *ngIf="adgroup?.status==='PAUSED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-success"></i> Activer</a>
-       <a class="dropdown-item" *ngIf="adgroup?.status==='ENABLED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-danger"></i> Désactiver</a>
-      <a class="dropdown-item text-danger" (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)" ><i class="icon-delete"></i> Supprimmer</a>
+    </button> <p class="text-center adafri-police-14">{{adgroup?.name}}</p> 
+    <div class="dropdown-menu no-b white shadow">
+      <a  style="cursor: pointer" class="dropdown-item adafri-police-14" *ngIf="adgroup?.status==='PAUSED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-success"></i> Activer</a>
+       <a  style="cursor: pointer" class="dropdown-item adafri-police-14" *ngIf="adgroup?.status==='ENABLED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-danger"></i> Désactiver</a>
+      <a  style="cursor: pointer" class="dropdown-item adafri-police-14 text-danger" (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)" ><i class="icon-delete"></i> Supprimmer</a>
     </div>
-     <!-- <div class="dropdown-menu"  *ngIf="adgroup?.status==='ENABLED'">
-       <a class="dropdown-item disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
-      <a class="dropdown-item text-danger"  (click)="updateCampaign(adgroup?.id, adgroup?.id_campagne, adgroup?.name, adgroup?.status)"><i class="icon-pause"></i> Désactiver</a>
-      <a class="dropdown-item text-danger"  (click)="deleteCampaign(adgroup?.id, adgroup?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
+     <!-- <div class="dropdown-menu no-b white shadow"  *ngIf="adgroup?.status==='ENABLED'">
+       <a  style="cursor: pointer" class="dropdown-item adafri-police-14 disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
+      <a  style="cursor: pointer" class="dropdown-item adafri-police-14 text-danger"  (click)="updateCampaign(adgroup?.id, adgroup?.id_campagne, adgroup?.name, adgroup?.status)"><i class="icon-pause"></i> Désactiver</a>
+      <a  style="cursor: pointer" class="dropdown-item adafri-police-14 text-danger"  (click)="deleteCampaign(adgroup?.id, adgroup?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
     </div> -->
   </div>
                                     </td>
@@ -514,9 +514,9 @@
                                                  
                                                    <td>
                                                     <div class="dropdown">
-                                                     <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">{{startDateFrench}}</button> 
-                                                     <div class="dropdown-menu" >
-                                                    <a class="dropdown-item white text-black-50 adafri-police"
+                                                     <button type="button" class="btn btn-sm white dropdown-toggle no-b shadow float-left" style="box-shadow: none" data-toggle="dropdown">{{startDateFrench}}</button> 
+                                                     <div class="dropdown-menu no-b white shadow" >
+                                                    <a style="cursor: pointer"  class="dropdown-item adafri-police-14 white text-black-50 adafri-police"
                                                           style="font-size: 12px; curdor: pointer" (click)="OpenModifyDateCampaign()">
                                                           Modifier la date 
                                                         </a>
@@ -526,9 +526,9 @@
                                                     
                                                    </td>
                                                    <td> <div class="dropdown">
-                                                     <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">{{endDateFrench}}</button> 
-                                                     <div class="dropdown-menu" >
-                                                    <a class="dropdown-item white text-black-50 adafri-police"
+                                                     <button type="button" class="btn btn-sm white dropdown-toggle no-b shadow float-left" style="box-shadow: none" data-toggle="dropdown">{{endDateFrench}}</button> 
+                                                     <div class="dropdown-menu no-b white shadow" >
+                                                    <a style="cursor: pointer"  class="dropdown-item adafri-police-14 white text-black-50 adafri-police"
                                                           style="font-size: 12px; cursor: pointer" (click)="OpenModifyDateCampaign()">
                                                           Modifier la date 
                                                         </a>
@@ -538,20 +538,20 @@
                                                   
                                                    <td>XOF {{budget}}</td>
         <td><div class="dropdown" *ngIf="accountValue==0 || budget==0">
-                                                     <button type="button" class="btn btn-sm white dropdown-toggle" data-toggle="dropdown">
+                                                     <button type="button" class="btn btn-sm white dropdown-toggle no-b shadow float-left" style="box-shadow: none" data-toggle="dropdown">
        Sélectionner
      
     </button> 
-    <div class="dropdown-menu" >
-       <a class="dropdown-item white text-black-50 adafri-police"
+    <div class="dropdown-menu no-b white shadow" >
+       <a  style="cursor: pointer" class="dropdown-item adafri-police-14 white text-black-50 adafri-police"
             style="font-size: 12px;" (click)="handlePlaceBudgetFromSolde()" *ngIf="accountValue!=0 && budget==0">
             <i class="icon-payment"></i> Placement depuis mon solde 
           </a>
-       <a class="dropdown-item white text-black-50 adafri-police"
+       <a  style="cursor: pointer" class="dropdown-item adafri-police-14 white text-black-50 adafri-police"
             style="font-size: 12px;" (click)="handleAccountRechargement()" *ngIf="accountValue==0">
             <i class="icon-payment"></i> Recharger mon compte
           </a>
-      <a class="dropdown-item white text-black-50 adafri-police"
+      <a  style="cursor: pointer" class="dropdown-item adafri-police-14 white text-black-50 adafri-police"
             style="font-size: 12px;" (click)="handleBudgetPlacement()" *ngIf="budget==0">
             <i class="icon-pay-point"></i> Placer directement un budget
           </a>

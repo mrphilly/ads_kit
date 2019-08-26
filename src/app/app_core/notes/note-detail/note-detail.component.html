@@ -24,8 +24,8 @@
       <i class="icon-pause" *ngIf="note?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="note?.status==='ENABLED'"></i> 
      
-    </button> <p class="text-center adafri-police-16">{{note?.name}}</p>
-    <div class="dropdown-menu border-dark no-b">
+    </button> <p class="text-center adafri-police-14">{{note?.name}}</p>
+    <div class="dropdown-menu no-b shadow">
       <a class="dropdown-item adafri-police-14 cursor" style="cursor: pointer"  (click)="updateCampaign(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget)"><i class="icon-circle text-success"></i> Modifier</a>
       <a class="dropdown-item text-danger adafri-police-14 cursor" style="cursor: pointer" (click)="deleteCampaign(note?.id, note?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
     </div>
