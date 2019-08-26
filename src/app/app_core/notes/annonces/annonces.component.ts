@@ -791,7 +791,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.selectedAdType=name
     }
   }
-  public loadScript(src) {
+/*   public loadScript(src) {
     var isFound = false;
     var scripts = document.getElementsByTagName("script")
     for (var i = 0; i < scripts.length; ++i) {
@@ -813,16 +813,23 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       }
 
     }
-  }
+  } */
   goBackSelectSize() {
     this.chooseBlock = false
     this.chooseAdSize = true
    
   }
+    loadScript(src){
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    document.getElementsByTagName("body")[0].appendChild(script);
+    script.src = src;
+    
+  }
  async handleUploadBanner(){
    //this.chooseBlock = false
    //this.chooseAdSize = false
-  
+/*   this.loadScript('../../../../assets/js/app.js') */
    this.is_upload_way = true
    this.ad_type = "UPLOAD"
    

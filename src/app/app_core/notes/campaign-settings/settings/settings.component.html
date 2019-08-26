@@ -57,10 +57,10 @@
                 <i class="icon-money-bag"></i> {{accountValue}} CFA
             </a>
         </li>
-         <li class="dropdown custom-dropdown notifications-menu" *ngIf="!_init_campagne" style="margin-top: 5px">
+         <li class="dropdown custom-dropdown notifications-menu" style="margin-top: 5px">
             <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
                 <i class="icon-notifications_none text-black-50"></i>
-                <span class="badge adafri-background badge-mini rounded-circle">{{numberOfNotifications}}</span>
+                <span class="badge adafri-background badge-mini rounded-circle text-white">{{numberOfNotifications}}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
                 <li class="header">Vous avez {{numberOfNotifications}} notification(s)</li>
@@ -338,7 +338,7 @@
                             <!-- Check box -->
                              <td class="text-center">
                                         <div class="dropdown text-center" style="margin-top: 10px" *ngIf="!isRoller">
-    <button type="button" class="btn btn-sm white dropdown-toggle no-b shadow box-popup box float-left" style="box-shadow: none" data-toggle="dropdown">
+    <button type="button" class="btn btn-sm white dropdown-toggle float-left box-popup box shadow" style="box-shadow: none" data-toggle="dropdown">
       <i class="icon-pause" *ngIf="adgroup?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="adgroup?.status==='ENABLED'"></i> 
      

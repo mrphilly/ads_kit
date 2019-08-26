@@ -326,3 +326,4 @@ var calculateAspectRatio = function (image, canvas) {
 
 /* ---- stats.js config ---- */
 
+

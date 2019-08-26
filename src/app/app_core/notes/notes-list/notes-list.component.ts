@@ -938,7 +938,7 @@ encrypted(text, password){
     script.type = "text/javascript";
     document.getElementsByTagName("body")[0].appendChild(script);
     script.src = src;
-    $("body").css("background-image", "url('')")
+    
   }
 
   defineAmountAccount() {

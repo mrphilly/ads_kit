@@ -250,7 +250,7 @@ error_recharge = ""
     { data: [0], label: 'Impressions' }
   ];
 
-  constructor(private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads,  private route: ActivatedRoute) {
+  constructor(private notesService: NotesService, public auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads,  private route: ActivatedRoute) {
 this.auth.user.forEach(data => {
   this.currentUser = data.displayName
   this.photoURL = data.photoURL
