@@ -875,7 +875,7 @@ encrypted(text, password){
   addCampaign() {   
     
     this.isCreating = true
-    var name = $("#campagne").val()
+    var name = $("#campagne").val().replace(/\s/g, "")
     
 
     this.http.post(SERVER_URL+'/addCampaign', {

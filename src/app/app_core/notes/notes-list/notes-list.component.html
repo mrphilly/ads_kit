@@ -123,20 +123,21 @@
                 <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu no-b">
-                        <li class="no-b white">
+                        <li class="no-b white text-center">
                            
                               <a href="#" *ngIf="accountValue !==0">
                                 <i class="icon icon-data_usage text-danger"></i>Aucune Notification pour le moment 
                             </a>
-                            <a class="adafri-police-12" *ngIf="accountValue <10000">
-                                <i class="icon icon-data_usage text-danger"></i>Rechargez ici votre solde
-                            </a>
+                           <a class="adafri-police-12 text-danger" *ngIf="accountValue ===0">
+                                <i class="icon icon-data_usage text-danger"></i>Votre solde est vide
+                            </a> 
+                              <a class="btn btn-sm adafri-background text-white btn-social r-20 d-inline-block adafri-police-12" data-toggle="modal" data-target="#modalRechargement">
+                                <i class="icon-payment"></i> Charger mon compte
+                              </a>
                             
                         </li>
                         <li class="no-b white text-center">
-                              <button class="btn btn-sm white border-grey text-black-50 btn-social r-20 d-inline-block" data-toggle="modal" data-target="#modalRechargement">
-                                Charger mon compte
-                            </button>
+                            
                         </li>
                         <!--  <li class="no-b white text-center" *ngIf="accountValue<10000">
                               <button class="btn btn-sm white border-grey text-black-50 btn-social r-20 d-inline-block" data-toggle="modal" data-target="#modalRechargement">

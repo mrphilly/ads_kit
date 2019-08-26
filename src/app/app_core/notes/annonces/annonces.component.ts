@@ -3,7 +3,6 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
@@ -12,6 +11,7 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -2017,8 +2017,8 @@ $('#popper').trigger('click')
   
   handleImageModal() {
     //console.log(this.canvas.toDataURL('png'))
-    var name = $("#" + this.currentIdInputName).val()
-    var url = $("#" + this.currentIdInputDisplay).val()
+    var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
+    var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
     if (name == "") {
        Swal.fire({
                  title: "Service Groupe d'annonce!",
@@ -2070,8 +2070,8 @@ $('#popper').trigger('click')
   }
   handleImageUploadModal() {
 
-     var name = $("#" + this.currentIdInputName).val()
-    var url = $("#" + this.currentIdInputDisplay).val()
+     var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
+    var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
       console.log(document.querySelector('.dz-preview'))
      if(document.querySelector('.dz-preview')===null){
         Swal.fire({
@@ -2172,7 +2172,7 @@ $('#popper').trigger('click')
       if (res != 'error') {
         $('#button_modal_modified').trigger('click')
         $('#ad_image_modified').attr("src", this.canvas.toDataURL('png'))
-        $("#modified_name").text($("#" + this.currentIdInputName).val())
+        $("#modified_name").text($("#" + this.currentIdInputName).val().replace(/\s/g, ""))
          this.img_view_create_style['width']=this.size["width"]+'px'
               this.img_view_create_style['height']=this.size["height"]+'px'
         

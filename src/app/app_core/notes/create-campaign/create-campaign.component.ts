@@ -167,7 +167,7 @@ export class CreateCampaignComponent implements OnInit {
 
   addCampaign() {
     this.isCreating = true
-    var name = $("#campagne").val()
+    var name = $("#campagne").val().replace(/\s/g, "")
     this.notesService.addCampaign(this.email, this.uid, name).then(result => {
       if (result != "error") {
         this.isCreating = false
