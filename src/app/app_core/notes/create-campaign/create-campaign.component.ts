@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 
 import * as $ from 'jquery';
 
+import { AdGroupService } from '../ad-groupe.service';
 import { NotesService } from '../notes.service';
 import { AuthService } from '../../core/auth.service';
 import Swal from 'sweetalert2'
@@ -29,15 +30,16 @@ export class CreateCampaignComponent implements OnInit {
   status: string;
   id_campagne: string;
   title: string;
- 
+  currentUser: string;
   isCreating = false;
   isExist: boolean = false
   
-  constructor(private router: Router, private notesService: NotesService, private auth: AuthService,) { 
+  constructor(private router: Router, private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService) { 
      this.title = "Créer une campagne"
        this.auth.user.forEach((value) => {
          this.uid = value.uid
          this.email = value.email
+         this.currentUser = value.displayName
     })
   }
 
@@ -165,13 +167,62 @@ export class CreateCampaignComponent implements OnInit {
 
   }
 
+  
+  getCampaignIdFirebase(id, name): Promise<any>{
+    return new Promise(resolve => {
+      this.notesService.getSingleCampaign(id.toString(), name).subscribe(single => { 
+        resolve(single[0])
+      })
+    })
+  }
+
+
   addCampaign() {
     this.isCreating = true
     var name = $("#campagne").val().replace(/\s/g, "")
+    console.log(this.email)
+    console.log(this.uid)
+    console.log(name)
     this.notesService.addCampaign(this.email, this.uid, name).then(result => {
       if (result != "error") {
-        this.isCreating = false
-       window.location.replace(REDIRECT_URL)
+        var campaign = result[0]
+            
+            console.log('campagne')
+        console.log(campaign['id'])
+        console.log(campaign['campaign_id'])
+      
+          
+           Swal.fire({
+    html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
+             
+      type: 'success',
+      showCancelButton: false,
+       buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.value) {
+        this.adGroupService.addAdGroup(campaign['campaign_id'], this.uid, name).then(adgroup => {
+          if (adgroup!= "error") {
+              this.isCreating = false
+         
+                document.getElementById('body').classList.remove('adafri-background')
+              this.router.navigate(['/ads', name, campaign['campaign_id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], campaign['campaign_id']])
+            }
+          })
+      } else {
+            this.adGroupService.addAdGroup(campaign['id'], this.uid, name).then(adgroup => {
+              if (adgroup != "error") {
+                this.isCreating = false
+                document.getElementById('body').classList.remove('adafri-background')
+              this.router.navigate(['/ads', name, campaign['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], campaign['campaign_id']])
+            }
+          })
+      }
+    })
+
+  
       } else {
         this.isCreating = false
       }

@@ -372,7 +372,6 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
           var paymentKey = credentials[0]['paymentKey']
           this.uid = credentials[0]['uid']
           this.accountValue = credentials[0]['account_value']
-          window.location.replace(REDIRECT_URL)
           var montant = localStorage.getItem(paymentKey)
           if (montant === null) {
               this.isCreating = false
@@ -408,7 +407,11 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                       localStorage.removeItem(paymentKey)
                       this.isCreating = false
                       if (message !== 'success') {
+                        
                         document.getElementById(id).click()
+
+                      } else {
+                          this.router.navigate(['/'])
                       } 
                     }
                   })
@@ -446,7 +449,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  //window.location.replace(REDIRECT_URL)
+                  //this.router.navigate(['/'])
                   localStorage.removeItem(key)
                 
           
@@ -467,8 +470,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         
         var dailyBudget = params['dailyBudget']
         var numberOfDays = params['numberOfDays']
-        window.history.pushState("", "", REDIRECT_URL)
-        window.location.replace(REDIRECT_URL)
+        
          this.getCurrentUserCredentials().then(credentials => {
           var paymentKey = credentials[0]['paymentKey']
            var montant = localStorage.getItem(paymentKey)
@@ -488,10 +490,14 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                   confirmButtonText: 'Ok'
                 }).then((result) => {
                   if (result.value) {
-                    //window.location.replace(REDIRECT_URL)
+                    //this.router.navigate(['/'])
                     this.isCreating = false
                     localStorage.removeItem(paymentKey)
-                    document.getElementById(idC).click()
+               
+                    setTimeout(() => {
+                      
+                      document.getElementById(idC).click()
+                    }, 1500)
 
                   }
                 })
@@ -503,7 +509,8 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         // In a real app: dispatch action to load the details here.
       }else {
         
-        window.history.pushState("", "", REDIRECT_URL)
+        this.router.navigate(['/'])
+      
       }
     })
      
@@ -549,7 +556,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  //window.location.replace(REDIRECT_URL)
+                  //this.router.navigate(['/'])
                   localStorage.removeItem(key)
                   window.history.pushState("", "", REDIRECT_URL)
           
@@ -588,7 +595,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                         confirmButtonText: 'Ok'
                       }).then((result) => {
                         if (result.value) {
-                          //window.location.replace(REDIRECT_URL)
+                          //this.router.navigate(['/'])
                           window.history.pushState("", "", REDIRECT_URL)
                           localStorage.removeItem(params['idC'])
                           this.isCreating = false
@@ -661,7 +668,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  //window.location.replace(REDIRECT_URL)
+                  //this.router.navigate(['/'])
                   window.history.pushState("", "", REDIRECT_URL)
                   this.isCreating = false
                   document.getElementById(params['idC']).click()
@@ -697,7 +704,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
                   confirmButtonText: 'Ok'
                 }).then((result) => {
                   if (result.value) {
-                    //window.location.replace(REDIRECT_URL)
+                    //this.router.navigate(['/'])
                     window.history.pushState("", "", REDIRECT_URL)
                     this.isCreating = false
                     document.getElementById(params['idC']).click()
@@ -838,6 +845,16 @@ encrypted(text, password){
     this._addCampaign_=false
   }
 
+  getCampaignIdFirebase(id, name): Promise<any>{
+    return new Promise(resolve => {
+      this.notesService.getSingleCampaign(id.toString(), name).subscribe(single => { 
+        resolve(single[0])
+      })
+    })
+  }
+
+ 
+
     clickHandler(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string, budgetId: any) {
     
       //console.log(this.uid)
@@ -846,7 +863,13 @@ encrypted(text, password){
       
       this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus, budgetId
       ).then(res => {
-        if (res == "ok") {
+     
+        if (res != "error") {
+          this.getCampaignIdFirebase(id, name).then(single => {
+            console.log('campagne')
+            console.log(single['id_campagne'])
+      
+          
            Swal.fire({
     html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
              
@@ -858,18 +881,34 @@ encrypted(text, password){
       confirmButtonText: 'Ok'
     }).then((result) => {
       if (result.value) {
-          this.name = '';
-    this.id_campagne = '';
-    this.isCreating = false
-        this._init_campagne = false
-        document.getElementById('body').classList.remove('adafri-background')
+        this.adgroup_service.addAdGroup(id, this.uid, name).then(adgroup => {
+          if (adgroup != "error") {
+              this.name = '';
+              this.id_campagne = '';
+              this.isCreating = false
+              this._init_campagne = false
+                document.getElementById('body').classList.remove('adafri-background')
+              this.router.navigate(['/ads', name, single['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], single['id_campagne']])
+            }
+          })
       } else {
-          this.name = '';
-    this.id_campagne = '';
-    this.isCreating = false
-    this._init_campagne = false
+            this.adgroup_service.addAdGroup(id, this.uid, name).then(adgroup => {
+              if (adgroup != "error") {
+                this.name = '';
+                this.id_campagne = '';
+                this.isCreating = false
+                this._init_campagne = false
+                document.getElementById('body').classList.remove('adafri-background')
+                this.router.navigate(['/ads', name,single['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], single['id_campagne']])
+            }
+          })
       }
     })
+
+          })
+
+        } else {
+          this.isCreating = false
         }
       })
   
@@ -897,6 +936,7 @@ encrypted(text, password){
             
           } else {
           
+            this.isCreating = false      
             Swal.fire({
               title: 'Service Campagne!',
               text: 'Erreur.',
@@ -908,7 +948,8 @@ encrypted(text, password){
       cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
               confirmButtonText: 'Ok'
             }).then((result) => {
-              if (result.value) { }
+              if (result.value) { 
+              }
             })
           
           

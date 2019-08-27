@@ -370,7 +370,7 @@
                 <i class="icon-notifications_none text-black-50"></i>
                 <span class="badge adafri-background badge-mini rounded-circle text-white">{{numberOfNotifications}}</span>
             </a>
-            <ul class="dropdown-menu no-b white shadow dropdown-menu no-b white shadow-right">
+            <ul class="dropdown-menu no-b white shadow dropdown-menu no-b white">
                 <li class="header">Vous avez {{numberOfNotifications}} notification(s)</li>
                 <li>
                     <!-- inner menu: contains the actual data -->
@@ -410,16 +410,16 @@
                 </figure>
                                                         
             </a>
-            <div class="dropdown-menu no-b white shadow p-4 dropdown-menu no-b white shadow-right">
+            <div class="dropdown-menu no-b white shadow p-4 dropdown-menu no-b white shadow-right" style="position: absolute; right: 30%">
                 <div class="row box justify-content-between my-4">
                     <div class="col">
                         <a (click)="auth.signOut()">
-                            <i class="icon-apps purple lighten-2 avatar  r-5"></i>
+                            <i class="icon-apps purple lighten-2 avatar r-5"></i>
                             <div class="pt-1" >Déconnexion</div>
                         </a>
                     </div>
                     <div class="col"><a href="#">
-                        <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
+                        <i class="icon-beach_access pink lighten-1 avatar r-5"></i>
                         <div class="pt-1">Profile</div>
                     </a></div>
                    
@@ -723,15 +723,18 @@
             <i class="icon icon-view_list" style="color: grey"></i>Liste des annonces 
           </a>
         </li>
-            <li>
+            <li class="text-center">
+                  <span class="badge white border-grey badge-mini rounded-circle text-black-50" style="position: absolute; top: -5px; right: 50px">1</span>
                 <a class="nav-link" id="v-pills-placement-tab" style="color: grey" data-toggle="pill" href="#v-pills-placement" role="tab" aria-controls="v-pills-placement" aria-selected="false"><i class="icon icon-placeholder"></i>Emplacement</a>
             </li>
           <li>
+             <span class="badge white border-grey badge-mini rounded-circle text-black-50" style="position: absolute; top: -5px; right: 30px">2</span>
                           <a class="nav-link" id="v-pills-ciblage-ads-tab" style="color: grey" data-toggle="pill" href="#v-pills-ciblage-ads" role="tab" aria-controls="v-pills-ciblage-ads" aria-selected="false"><i class="icon icon-target"></i>Ciblage</a>
                       </li>
         <li>
+           <span class="badge white border-grey badge-mini rounded-circle text-black-50" style="position: absolute; top: -5px; right: 50px">3</span>
           <a class="nav-link" id="v-pills-add-ad-tab" data-toggle="pill" href="#v-pills-add-ad" role="tab"
-            aria-controls="v-pills-add-ad" aria-selected="false" style="color: grey" *ngIf="number_ads!=='0'"><i class="icon icon-yelp"
+            aria-controls="v-pills-add-ad" aria-selected="false" style="color: grey"><i class="icon icon-yelp"
               style="color: grey" ></i>Créer un visuel</a>
         </li>
       </ul>
@@ -824,16 +827,16 @@
           <ng-container *ngIf="number_ads==='0' && init_choose_ad_size!==true">
             <div class="container-fluid text-center">
               <div class="row">
-                <div class="col-md-6 text-center">
-                         <div class="d-inline-block p-5 shadow adafri-background">
+                <div class="col-md-12 text-center">
+                         <div class="d-inline-block p-5 shadow paper-card white">
                 <img src="assets/img/images/banniere.png" class="img-responsive d-inline-block">
-                <h4 class="my-3 text-white adafri-police-22">Aucun visuel trouvé</h4>
-                <p class="text-white adafri-police-16">Vous devez créer ou charger un visuel pour commencer</p>
-                <button href="#" class="btn white adafri btn-social r-20 shadow btn-sm r-20" (click)='initAdd()' style=""><i
-                    class="icon-plus-circle mr-2 adafri"></i>Créer un visuel</button>
+                <h4 class="my-3 text-black-50 adafri-police-22">Aucun visuel trouvé</h4>
+                <p class="text-black-50 adafri-police-16">Vous devez créer ou charger un visuel pour commencer</p>
+                <button href="#" class="btn white border-grey text-black-50 btn-social shadow btn-sm r-20" (click)='initAdd()'><i
+                    class="icon-plus-circle mr-2 text-black-50"></i>Créer mon premier visuel</button>
               </div>
                 </div>
-                <div class="col-md-6 text-center">
+              <!--   <div class="col-md-6 text-center">
                  <div class="card no-b shadow adafri-background">
                    <div class="card-header no-b text-white adafri-police-22">Bienvenue dans votre groupe de visuel</div>
                     <div class="card-body text-center text-white">
@@ -842,15 +845,8 @@
                       <p class="adafri-police-16">Cliquez sur ciblage pour choisir vos cibles</p>
                     </div>
                  </div>
-                <!--  <div class="card no-b shadow adafri-background">
-                   <div class="card-header no-b text-white adafri-police-18">Bienvenue dans votre groupe de visuel</div>
-                    <div class="card-body text-center text-white">
-                    
-                      <p class="adafri-police-16">Cliquez sur emplacement pour placer toutes les annonces de ce groupe dans différents sites web</p>
-                      <p class="adafri-police-16">Cliquez sur ciblage pour choisir vos cibles</p>
-                    </div>
-                 </div> -->
-                </div>
+                
+                </div> -->
               </div>
        
             </div>

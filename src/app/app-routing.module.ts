@@ -31,7 +31,7 @@ const routes: Routes = [
  /*  { path: 'account_pay/:id_campaign_to_recharge', component: NotesListComponent, canActivate: [AuthGuard] }, */
   
  
-    { path: ':message/:id', component: NotesListComponent, canActivate: [AuthGuard] },
+    { path: ':message/:id', component: NotesListComponent },
   { path: ':idC/:campagne_id/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent, canActivate: [AuthGuard], pathMatch: 'full' },
    { path: ':idC/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent,  canActivate: [AuthGuard], pathMatch: 'full' },
    

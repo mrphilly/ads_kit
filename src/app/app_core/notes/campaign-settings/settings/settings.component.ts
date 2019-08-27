@@ -1279,7 +1279,7 @@ xhr.send();
     this.isCreating = true;
     var self = this
     var name = $('#adgroup').val().replace(/\s/g, "")
-    this.adGroupService.addAdGroup(this.id_campagne, this.uid, name).then(res => {
+    this.adGroupService.newAdGroup(this.id_campagne, this.uid, name).then(res => {
       console.log(res)
       if (res != "error") {
         

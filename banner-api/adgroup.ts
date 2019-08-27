@@ -59,112 +59,6 @@ export class NotesService implements OnInit {
     });
   }
 
-
-
-    
-  async addNewCampaign(email: string, user_id: string, name: string): Promise<any> {
- 
-    return await new Promise(resolve => {
-      this.campaignVerification(user_id, name).then(value => {
-      //console.log(`promise result: ${value}`)
-
-      if (`${value}` == '0') {
-        
-        this.http.post(SERVER_URL+'/addCampaign', {
-       'email': email,
-       'campaign_name': name
-    })
-      .subscribe(
-        res => {
-        
-         
-         /*  var startDate = moment(res['startDate'], "YYYYMMDD").fromNow()
-          var endDate = moment(res['endDate'], "YYYYMMDD").fromNow() */
-          if (res['status'] == "ok") {
-            //console.log(res)
-            //console.log(res['startDateFrench'])
-              this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res=>{
-            Swal.fire({
-              html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
-             
-              type: 'success',
-              showCancelButton: false,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {
-                resolve('ok')
-              }else{
-                resolve('ok')
-              }
-            })
-         })
-          } else {
-             Swal.fire({
-          title: 'Ajouter une nouvelle campagne',
-          text: 'Erreur Service',
-          type: 'error',
-          showCancelButton: false,
-             buttonsStyling: true,
-      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
-      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-          if (result.value) {
-              resolve('error')
-          } else {
-            resolve('error')
-            }
-          })
-          }
-       
-          
-        },
-        err => {
-          Swal.fire({
-          title: 'Ajouter une nouvelle campagne',
-          text: 'Erreur Service',
-          type: 'error',
-          showCancelButton: false,
-             buttonsStyling: true,
-      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
-      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-          if (result.value) {
-              resolve('error')
-          } else {
-            resolve('error')
-            }
-          })
-        }
-      );
-
-      } else{
-        Swal.fire({
-          title: 'Ajouter une nouvelle campagne',
-          text: 'Cette camapagne exite déjà',
-          type: 'error',
-          showCancelButton: false,
-             buttonsStyling: true,
-      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
-      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-          if (result.value) {
-              resolve('error')
-          } else {
-            resolve('error')
-            }
-          })
-        
-      }
-    })
-    })
-   
-  }
-
   
   
   async addCampaign(email: string, user_id: string, name: string): Promise<any> {
@@ -184,16 +78,13 @@ export class NotesService implements OnInit {
         
      
           if (res['status'] == "ok") {
-        
+            console.log(res)
             //console.log(res['startDateFrench'])
-            this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res1 => {
-              if (res1 == "ok") {
-                console.log('from campaign service')
-                console.log("campaign created with name "+ name)
-                console.log(res)
-                console.log(res["id"])
-                console.log(user_id)
-                     this.PromiseGetCampaignSanpchot(res['id'].toString(), name).then(single => {
+            this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res => {
+              console.log('from campaign service')
+              console.log("campaign created with name "+ name)
+              console.log(res)
+              this.getSingleCampaignWithId(user_id, res['id']).then(single => {
                 console.log('getting single campaign credentials')
                 console.log(single)
                 var response = []
@@ -203,9 +94,21 @@ export class NotesService implements OnInit {
                 })
                 console.log(response)
                 resolve(response)
-      
+        /*         Swal.fire({
+                  html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
+                 
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  if (result.value) {
+                  }else{
+                    resolve(response)
+                  }
+                }) */
                 })
-              }
          })
           } else {
              Swal.fire({
@@ -569,16 +472,6 @@ export class NotesService implements OnInit {
     
   
   }
-
-
-  PromiseGetCampaignSanpchot(campaign_id, name): Promise<any>{
-    return new Promise(resolve => {
-      this.getSingleCampaign(campaign_id, name).subscribe(data => {
-        resolve(data[0])
-      })
-    })
-  }
-
 
   getSingleCampaignWithId(uid: any, campaign_id: any): Promise<any> {
     

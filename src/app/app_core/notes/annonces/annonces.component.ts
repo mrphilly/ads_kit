@@ -3,8 +3,6 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
@@ -12,6 +10,8 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -830,6 +830,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    //this.chooseBlock = false
    //this.chooseAdSize = false
  /*   this.loadScript('../../../../assets/js/app.js') */
+   var l = document.querySelector('.dropzone')
    
    this.is_upload_way = true
    this.ad_type = "UPLOAD"
@@ -3282,7 +3283,7 @@ defineBudgetFromAccount() {
 
   buildAd() {
 
-    /* var self = this
+    var self = this
 if (this.budget === 0) {
        
         Swal.fire({
@@ -3295,7 +3296,10 @@ if (this.budget === 0) {
           confirmButtonText: 'Définir mon budget '
         }).then((result) => {
           if (result.value) {
-            this.router.navigate(["defineBudget", self.idC], { skipLocationChange: true }).then(() => {
+            this.notesService.getSingleCampaignWithId(this.uid, this.campagne_id).then(res => {
+              
+              this.router.navigate(["/edit",res['name'], this.idC , this.campagne_id ]).then(() => {
+            })
             })
      
           }
@@ -3315,10 +3319,10 @@ if (this.budget === 0) {
      }
       })
    
-} */
+} 
     
     
-     this.isCreating = true
+/*      this.isCreating = true
    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls, this.currentAdSize).then(res => {
         //console.log('success')
      //console.log(res)
@@ -3330,7 +3334,7 @@ if (this.budget === 0) {
        this.isCreating = false
        
      }
-      })
+      }) */
    
     
     
@@ -6018,7 +6022,8 @@ if (this.endDate == date || this.startDate == date) {
     this.choose = true
   }
   initAdd() {
-    this.init_choose_ad_size = true
+  /*  this.init_choose_ad_size = true */
+    document.getElementById("v-pills-add-ad-tab").click()
   }
  
   handleSimulatedImpressionsCount() {

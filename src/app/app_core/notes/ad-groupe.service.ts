@@ -48,7 +48,7 @@ export class AdGroupService {
   // console.log(parseInt(campaign_id))
    
    
- return this.afs.collection('adgroup', (ref) => ref.where('campaign_id','==',`${campaign_id}`)).snapshotChanges().pipe(
+ return this.afs.collection('adgroup', (ref) => ref.where('campaign_id','==',parseInt(`${campaign_id}`))).snapshotChanges().pipe(
       map((actions) => {
         return actions.map((a) => {
           const data = a.payload.doc.data();
@@ -113,6 +113,30 @@ export class AdGroupService {
         })
       }, 2000);
     });
+  }
+
+   getSingleAdGroupID(campaign_id: string, ad_group_id: any) {
+    // console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`)
+    return  this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${campaign_id}`)).where('ad_group_id', '==', parseInt(`${ad_group_id}`))).snapshotChanges().pipe(
+      map((actions) => {
+        return actions.map((a) => {
+          const data = a.payload.doc.data();
+          return { id: a.payload.doc.id, ...data };
+        });
+      })
+    );
+  
+  }
+
+
+   PromiseGetAdGroup(campaign_id, ad_group_id): Promise<any>{
+    return new Promise(resolve => {
+      this.getSingleAdGroupID(campaign_id, ad_group_id).subscribe(single => { 
+        console.log("getting adgroup")
+        console.log(single)
+        resolve(single[0])
+      })
+    })
   }
 
    getAdGroupDevices(campaign_id: string, ad_group_id: any) {
@@ -378,8 +402,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
    
   }
 
-  
-  async addAdGroup(campaign_id: any, user_id: string, name: string): Promise<any> {
+
+
+    async newAdGroup(campaign_id: any, user_id: string, name: string): Promise<any> {
    // console.log(`User id: ${user_id}`)
   
     
@@ -417,6 +442,133 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
                 resolve(id)
               }
             })
+            }
+         })
+          } else {
+             Swal.fire({
+          title: 'Ajouter un nouveau groupe',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+              resolve('error')
+          } else {
+             resolve('error')
+            }
+          })
+         }
+        
+         
+          
+        },
+        err => {
+          Swal.fire({
+          title: 'Ajouter un nouveau groupe',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+               resolve('error')
+          } else {
+             resolve('error')
+            }
+          })
+        }
+      );
+
+      } else{
+        Swal.fire({
+          title: 'Ajouter une nouvelle campagne',
+          text: 'Cette camapagne exite déjà',
+          type: 'error',
+          showCancelButton: false,
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+               resolve('error')
+          } else {
+             resolve('error')
+            }
+          })
+        
+      }
+    })
+   
+    })
+  }
+
+  
+/*    getAdGroupIdFirebase(campaign_id, ad_group_id): Promise<any>{
+    return new Promise(resolve => {
+      this.notesService.getSingleCampaign(campaign_id.toString(), ad_group_id.toString()).subscribe(single => { 
+        resolve(single[0])
+      })
+    })
+  } */
+
+
+  async addAdGroup(campaign_id: any, user_id: string, name: string): Promise<any> {
+   // console.log(`User id: ${user_id}`)
+  
+    
+    
+    return await new Promise(resolve => {
+      this.addGroupVerification(user_id, name, campaign_id).then(value => {
+     // console.log(`promise result: ${value}`)
+      
+      if (`${value}` == '0') {
+        
+        this.http.post(SERVER_URL+'/addAdGroup', {
+       'ad_group_name': name,
+       'campaign_id': campaign_id
+    })
+      .subscribe(
+        res => {
+         // console.log(`add group ${res}`)
+          if (res['status'] == "ok") {
+            var id= res['id']
+            this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res => {
+              if (res == "ok") {
+                console.log(res)
+                this.PromiseGetAdGroup(campaign_id, id.toString()).then(adgroup => {
+                  console.log(adgroup)
+                  if (adgroup !== null) {
+                    var response = []
+                    response.push({
+                      "id": adgroup['id'],
+                      "ad_group_id": id
+                    })
+                    Swal.fire({
+           html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> le dossier <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> regroupant vos visuels a été créé</span>',
+            type: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok'
+          }).then((result) => {
+            if (result.value) {
+             
+              resolve(response)
+            } else {
+              resolve(response)
+            }
+          })
+                    
+                  }
+               })
             }
          })
           } else {
