@@ -829,7 +829,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
  async handleUploadBanner(){
    //this.chooseBlock = false
    //this.chooseAdSize = false
-/*   this.loadScript('../../../../assets/js/app.js') */
+ /*   this.loadScript('../../../../assets/js/app.js') */
+   
    this.is_upload_way = true
    this.ad_type = "UPLOAD"
    
@@ -3281,7 +3282,7 @@ defineBudgetFromAccount() {
 
   buildAd() {
 
-    var self = this
+    /* var self = this
 if (this.budget === 0) {
        
         Swal.fire({
@@ -3295,18 +3296,8 @@ if (this.budget === 0) {
         }).then((result) => {
           if (result.value) {
             this.router.navigate(["defineBudget", self.idC], { skipLocationChange: true }).then(() => {
-              
-             /*  this.route.params.subscribe(params => { 
-                alert(params['idC'])
-  
-               $("#"+params['idC']).trigger("click" *
-  
-              }) */
             })
-          /*  window.location.replace(REDIRECT_URL+"/defineBudget/"+0+"/"+self.idC) */
-           /*  setTimeout(() => {
-              
-            },1000) */
+     
           }
         })
 } else {
@@ -3324,7 +3315,22 @@ if (this.budget === 0) {
      }
       })
    
-}
+} */
+    
+    
+     this.isCreating = true
+   this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls, this.currentAdSize).then(res => {
+        //console.log('success')
+     //console.log(res)
+     if (res != "error") {
+       this.isCreating = false
+       window.location.reload(true)
+          
+     } else {
+       this.isCreating = false
+       
+     }
+      })
    
     
     

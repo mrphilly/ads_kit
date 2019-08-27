@@ -188,7 +188,7 @@
         <div class="row">
           <div class="col-md-3">
 
-                  <div class="card my-3 my-3 no-b shadow">
+                  <div class="card my-3 my-3 no-b paper-card">
                     <div class="card-header white no-b text-center adafri-police s-16 text-black-50">
                         <strong> Statistiques </strong>
                     </div>
@@ -219,13 +219,13 @@
                       <a id="download_link" (click)="downloadFile()" style="text-decoration: underline; cursor: pointer" >Rapport Complet</a>
                     </div>
                 </div>
-            <div class="card no-b animated fadeInUp shadow">
+            <div class="card grey lighten-4 no-b animated fadeInUp">
 
               <ul class="list-group list-group-flush text-center">
-                <li class="list-group-item d-inline-block" style="margin-top: 20px">
+               <!--  <li class="list-group-item d-inline-block" style="margin-top: 20px">
                    <img class="img-responsive" src="assets/img/images/creategroupe.jpg">
 
-                </li>
+                </li> -->
                 <!--     <li class="list-group-item grey lighten-2"><i class="icon-chevron-circle-right text-white" style="float: left"></i><strong class="s-12 text-white" style="float: left">Nom</strong> <span class="float-right s-12 text-white" style="font-weight: bold">{{name}}</span></li> -->
                 <!-- <li class="list-group-item text-center">
                   <img class="img-responsive" src="assets/img/images/campaign.png">
@@ -310,89 +310,64 @@
                   </div>
                 </div>
 
-                <div class="card my-3 my-3 no-b no-b animated fadeInRight">
+                <div class="card my-3 my-3 no-b animated fadeInRight paper-card p-0" *ngIf="number_ad_groups!=0; else noAdGroups">
                  <!--  <button class="btn btn-sm btn-secondary bg-gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="float: right !important; width: 20px">
                     <i class="icon-edit"></i>
                   </button> -->
-                  <div class="card-header adafri-background text-center no-b" *ngIf="number_ad_groups!='0'">
+                  <div class="card-header adafri-background text-center no-b" >
                     <!-- <i class="icon-clipboard-edit text-white"></i> -->
-                    <h6 class="adafri-police" style="color: white; font-size: 16px">Groupes d'annonces </h6>
+                    <h6 class="adafri-police" style="color: white; font-size: 16px">Mes groupes de visuels</h6>
                     
                   </div>
-                  <div class="card-body p-0 white slimScroll no-b shadow" data-height="300" *ngIf="number_ad_groups!=0; else noAdGroups">
-                    <div class="table-responsive no-b">
-                      <table class="table no-b">
+                  <div class="card-body white" >
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
                         <!-- Table heading -->
-                        <tbody class="no-b">
-                          <tr class="no-b adafri-background text-white text-center">
-                            <!--     <th>
-                                        <input type="checkbox">
-                                    </th> -->
-                            <th>Nom</th>
-                           <!--  <th>Status</th> -->
-                           <!--  <th>Paramètres</th> -->
-                             <th>Action</th>
-                          </tr>
+                        <tbody>
+                          <tr>
+                                       <th><div class="lds-roller" *ngIf="isRoller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></th>
+                                        <th class="adafri-police-14 text-center">Groupe de visuel</th>
+                                        <th class="adafri-police-14 text-center">Etat</th>
+                                        <th class="adafri-police-14 text-center">Creation de visuel</th>
+                                    </tr>
+                        
 
-                          <tr class="text-center" *ngFor="let adgroup of adgroups | async" class="no-b white" title="cliquez sur le nom du groupe pour créer des annonces">
+                          <tr class="white" *ngFor="let adgroup of adgroups | async" class="white" title="cliquez sur le nom du groupe pour créer des annonces">
                             <!-- Check box -->
-                             <td class="text-center">
-                                        <div class="dropdown text-center" style="margin-top: 10px" *ngIf="!isRoller">
-    <button type="button" class="btn btn-sm white dropdown-toggle float-left box-popup box shadow" style="box-shadow: none" data-toggle="dropdown">
+                             <td class="text-center" style="width: 30px">
+                                        <div class="dropdown text-center" *ngIf="!isRoller">
+    <button type="button" class="btn btn-sm white dropdown-toggle float-left box-popup box text-black-50" style="box-shadow: none" data-toggle="dropdown">
       <i class="icon-pause" *ngIf="adgroup?.status==='PAUSED'"></i> 
        <i class="icon-circle text-success"  *ngIf="adgroup?.status==='ENABLED'"></i> 
      
-    </button> <p class="text-center adafri-police-14 d-inline-block">{{adgroup?.name}}</p> 
+    </button>
     <div class="dropdown-menu no-b white shadow">
       <a  style="cursor: pointer" class="dropdown-item adafri-police-14" *ngIf="adgroup?.status==='PAUSED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-success"></i> Activer</a>
        <a  style="cursor: pointer" class="dropdown-item adafri-police-14" *ngIf="adgroup?.status==='ENABLED'"  (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"><i class="icon-circle text-danger"></i> Désactiver</a>
       <a  style="cursor: pointer" class="dropdown-item adafri-police-14 text-danger" (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)" ><i class="icon-delete"></i> Supprimmer</a>
     </div>
-     <!-- <div class="dropdown-menu no-b white shadow"  *ngIf="adgroup?.status==='ENABLED'">
-       <a  style="cursor: pointer" class="dropdown-item adafri-police-14 disabled" href="#"><i class="icon-circle text-success"></i> Activer</a>
-      <a  style="cursor: pointer" class="dropdown-item adafri-police-14 text-danger"  (click)="updateCampaign(adgroup?.id, adgroup?.id_campagne, adgroup?.name, adgroup?.status)"><i class="icon-pause"></i> Désactiver</a>
-      <a  style="cursor: pointer" class="dropdown-item adafri-police-14 text-danger"  (click)="deleteCampaign(adgroup?.id, adgroup?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
-    </div> -->
+
   </div>
                                     </td>
-                            <!-- Page name -->
-                           
-                            <!-- Page size -->
-                            <!-- Status -->
-                           <!--  <td *ngIf="adgroup?.status==='PAUSED'" class="text-center no-b">
-                              <span class="badge badge-danger r-5">Non actif</span>
-                            </td>
-                            <td *ngIf="adgroup?.status==='ENABLED'" class="text-center no-b">
-                              <span class="badge badge-success r-5">Actif</span>
-                            </td> -->
-                            <!-- Sort -->
-                            <!--   <td>
-                                        <a href="#">
-                                            <i class="icon-chevron-up text-success"></i>
-                                        </a>
-                                    </td> -->
-                            <!-- Actions -->
-                            <!-- <td class='no-b text-center'>
-                            
-                             
-                              <a class="text-danger" style="cursor: pointer" title="désactiver"
-                                (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"
-                                *ngIf="adgroup?.status==='ENABLED'">
-                                <i class="icon-stop text-danger"></i>
-                              </a> &nbsp;
-                              <a class="text-success" title="activer" style="cursor: pointer"
-                                (click)="changeAdGroupStatus(adgroup?.id, adgroup?.ad_group_id, adgroup?.status)"
-                                *ngIf="adgroup?.status==='PAUSED'" title="">
-                                <i class="icon-play text-success"></i>
-                              </a> &nbsp;
-                              <a class="text-danger" style="cursor: pointer"
-                                (click)="removeAdGroup(adgroup?.id, adgroup?.ad_group_id)">
-                                <i class="icon-close2 text-danger"></i>
-                              </a>
-                            </td> -->
-                            <td  class="text-center no-b">
-                              <a class="btn btn-sm btn-social white r-20" style="border: 1px solid grey; font-size: 14px" (click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" [id]="adgroup?.ad_group_id">
-                                <i class="icon-cloud-upload3"></i> Remonter vos images
+                                     <td class="text-center">
+                                           <p class="d-inline-block adafri-police-14 text-black">{{adgroup?.name}}</p>
+                                        </td>
+                                         <td class="text-center" *ngIf="adgroup?.status==='PAUSED' && status==='PAUSED'">
+                                           <p class="d-inline-block adafri-police-14 text-black-50">Mise en ville</p>
+                                        </td>
+                                         <td class="text-center" *ngIf="adgroup?.status==='ENABLED' && status==='ENABLED'">
+                                           <p class="d-inline-block adafri-police-14 adafri">En diffusion</p>
+                                        </td>
+                                        <td class="text-center" *ngIf="adgroup?.status==='PAUSED' && status==='ENABLED'">
+                                           <p class="d-inline-block adafri-police-14 text-black-50">Mise en veille</p>
+                                        </td>
+                                         <td class="text-center" *ngIf="adgroup?.status==='ENABLED' && status==='PAUSED'">
+                                           <p class="d-inline-block adafri-police-14 text-black-50">Mise en veille car la campagne est en veille</p>
+                                        </td>
+                          
+                            <td  class="text-center">
+                              <a class="btn-fab btn-fab-md btn-social white text-black border-grey"(click)="goAdGroups(adgroup?.name,adgroup?.id,adgroup?.ad_group_id)" [id]="adgroup?.ad_group_id">
+                                <i class="icon-cloud-upload3 text-black-50"></i>
                               </a>
                              
                             </td>
@@ -401,21 +376,7 @@
                       </table>
                     </div>
                   </div>
-                  <ng-template #noAdGroups>
-                    <div class="card-body text-center no-b white" *ngIf="!isAdGroup">
-                      <div class="card white no-b text-center" >
-                        <div class="card-body white no-b text-center">
-                          <span class="adafri-police-22">Plaçons ensembles vos images ou visuels</span>
-                         <!--  <small style="font-size: 16px">Un groupe de visuels regroupe plusieurs formats d'images avec <strong>un thème</strong> et <strong>une destination uniques</strong>.</small><br>
-                          <small style="font-size: 16px">Ces annonces (imagées) dirigeront <strong>toutes</strong> vers une seule page de votre site</small> -->
-                        </div>
-                        <div class="text-center" style="width: 100%"> 
-                          <a class="btn btn-sm adafri-background  text-white adafri-police-12 btn-social r-20 d-inline-block border-white animated pulse infinite" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle" ></i> Cliquer pour commencer</a>
-                        </div>
-                      </div>
-
-                    </div>
-                    </ng-template>
+                 
                   <div class="card-footer white text-center no-b" *ngIf="number_ad_groups!=0">
                     <a class="btn btn-sm adafri-background btn-social shadow text-white r-20 border-white" (click)="toggleAddNewAdGroup()" style="margin-top: -15px;"><i class="icon-add_circle"></i> Ajouter un groupe de visuel</a>
 
@@ -428,6 +389,21 @@
 
 
             </div>
+             <ng-template #noAdGroups>
+                 
+                      <div class="card white no-b text-center paper-card" *ngIf="!isAdGroup">
+                        <div class="card-body white no-b text-center">
+                          <span class="adafri-police-22">Plaçons ensembles vos images ou visuels</span>
+                         <!--  <small style="font-size: 16px">Un groupe de visuels regroupe plusieurs formats d'images avec <strong>un thème</strong> et <strong>une destination uniques</strong>.</small><br>
+                          <small style="font-size: 16px">Ces annonces (imagées) dirigeront <strong>toutes</strong> vers une seule page de votre site</small> -->
+                        </div>
+                        <div class="text-center" style="width: 100%"> 
+                          <a class="btn btn-sm adafri-background  text-white adafri-police-12 btn-social r-20 d-inline-block border-white animated pulse infinite" (click)="toggleAddNewAdGroup()"><i class="icon-add_circle" ></i> Cliquer pour commencer</a>
+                        </div>
+                      </div>
+
+                    
+                    </ng-template>
             
           
 

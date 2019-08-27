@@ -350,18 +350,18 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
           this.isCreating = true
                    
           document.getElementById(params['idBC']).click()
-        }, 2000)
+        }, 1500)
         setTimeout(() => {
                    
           document.getElementById("v-pills-payments-tab").click()
           this.isCreating = false
               
-        }, 2000)
+        }, 1500)
         setTimeout(() => {
                    
           document.getElementById("button_define_budget").click()
           this.isCreating = false
-        }, 2000)
+        }, 1500)
         this.isCreating = false
       } else if (params['message'] !== undefined) {
         var message = params['message']

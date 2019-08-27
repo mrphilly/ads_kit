@@ -28,7 +28,7 @@ section of our README.
 from googleads import adwords
 
 
-AD_GROUP_ID = 'INSERT_AD_GROUP_ID_HERE'
+AD_GROUP_ID = '77087191346'
 PAGE_SIZE = 100
 
 
@@ -74,10 +74,10 @@ def main(client, ad_group_id):
                'topic entries:' % ad['ad']['id'])
         # Display the policy topic entries related to the ad disapproval.
         for policy_topic_entry in policy_summary['policyTopicEntries']:
-          print '  topic ID: %s, topic name: %s, Help Center URL: %s' % (
+          print ('  topic ID: %s, topic name: %s, Help Center URL: %s' % (
               policy_topic_entry['policyTopicId'],
               policy_topic_entry['policyTopicName'],
-              policy_topic_entry['policyTopicHelpCenterUrl'])
+              policy_topic_entry['policyTopicHelpCenterUrl']))
           # Display the attributes and values that triggered the policy topic.
           policy_topic_evidences = policy_topic_entry['policyTopicEvidences']
           if policy_topic_evidences:
@@ -87,17 +87,17 @@ def main(client, ad_group_id):
               evidence_text_list = evidence['evidenceTextList']
               if evidence_text_list:
                 for index, evidence_text in enumerate(evidence_text_list):
-                  print '      evidence text[%d]: %s' % (index, evidence_text)
+                  print ('      evidence text[%d]: %s' % (index, evidence_text))
 
     offset += PAGE_SIZE
     selector['paging']['startIndex'] = str(offset)
     more_pages = offset < int(page['totalNumEntries'])
 
-  print '%d disapproved ads were found.' % disapproved_count
+  print ('%d disapproved ads were found.' % disapproved_count)
 
 
 if __name__ == '__main__':
   # Initialize client object.
-  adwords_client = adwords.AdWordsClient.LoadFromStorage()
+  adwords_client = adwords.AdWordsClient.LoadFromStorage("../../googleads.yaml")
 
   main(adwords_client, AD_GROUP_ID)
