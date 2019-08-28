@@ -184,17 +184,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   button_modify_image_upload = true
   idOfDisplayUrlNotPublishUpload = "display_url_modify_not_publish_upload"
   idOfAdNameNotPublishUpload = "ad_name_modify_not_publish_upload"
-  idOfphotoURLNotPublishCreatives = "display_url_modify_not_publish_creatives"
+  idOfdisplayUrlNotPublishCreatives = "display_url_modify_not_publish_creatives"
   idOfAdNameNotPublishCreatives = "ad_name_modify_not_publish_creatives"
   text_construire = "Construire son visuel"
   currentIdInputName = ""
   currentIdInputDisplay = ""
   idOfAdNameCreateUpload = "ad_name_create_upload"
-  idOfDisplayUrlCreateUpload = "photoURL_create_upload"
+  idOfDisplayUrlCreateUpload = "displayUrl_create_upload"
   idOfAdNameCreateCreatives = "ad_name_create_creatives"
-  idOfDisplayUrlCreateCreatives = "photoURL_create_creatives"
+  idOfDisplayUrlCreateCreatives = "displayUrl_create_creatives"
   idOfAdNameModify = "ad_name_modifed"
-  idOfDisplayModify = "photoURL_modify"
+  idOfDisplayModify = "displayUrl_modify"
   idOfAdNameInitUpload = "ad_name_init_upload"
   idOfDisplayUrlInitUpload = "display_url_init_upload"
   idOfAdNameInitCreatives = "ad_name_init_creatives"
@@ -734,11 +734,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
       if (this.isNull === false) {
         if (this.ad_type==="UPLOAD") {
-          this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
+          this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
           this.currentIdInputName = this.idOfAdNameCreateUpload
         } else {
-            this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
-          this.currentIdInputName = this.idOfAdNameInitCreatives
+            this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
+          this.currentIdInputName = this.idOfAdNameCreateCreatives
         }
       }
       
@@ -896,8 +896,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
    } else {
   
-this.currentIdInputName = this.idOfAdNameInitCreatives
-    this.currentIdInputDisplay = this.idOfDisplayUrlInitCreatives
+this.currentIdInputName = this.idOfAdNameCreateCreatives
+    this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
      }
         setTimeout(function(){ 
          
@@ -2159,6 +2159,7 @@ $('#popper').trigger('click')
   
   handleImageModal() {
     //console.log(this.canvas.toDataURL('png'))
+    
     var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
     var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
     if (name == "") {
@@ -2669,7 +2670,7 @@ defineBudgetFromAccount() {
      
       ad_name: name,
       url_image: url,
-      photoURL: displayUrl[0],
+      displayUrl: displayUrl[0],
       finalUrls: displayUrl[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
@@ -2719,7 +2720,7 @@ defineBudgetFromAccount() {
      
       ad_name: name,
       url_image: image,
-      photoURL: displayUrl[0],
+      displayUrl: displayUrl[0],
       finalUrls: displayUrl[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
@@ -2792,7 +2793,7 @@ defineBudgetFromAccount() {
       ad_name: name,
       url_image: url,
       image_content: image_content,
-      photoURL: displayUrl[0],
+      displayUrl: displayUrl[0],
       finalUrls: displayUrl[0],
       finalMobileUrls: finalMobileUrls,
       finalAppUrls: finalAppUrls,
@@ -3912,7 +3913,7 @@ if (this.budget === 0) {
         self.isCreating = false
         }, 2000);
            this.currentIdInputName = this.idOfAdNameNotPublishCreatives
-        this.currentIdInputDisplay = this.idOfphotoURLNotPublishCreatives
+        this.currentIdInputDisplay = this.idOfdisplayUrlNotPublishCreatives
         } else {
           self.isCreating = true
           setTimeout(function () { 
@@ -3930,7 +3931,7 @@ if (this.budget === 0) {
          self.isCreating  =false
        }, 2000);
           this.currentIdInputName = this.idOfAdNameNotPublishCreatives
-        this.currentIdInputDisplay = this.idOfphotoURLNotPublishCreatives
+        this.currentIdInputDisplay = this.idOfdisplayUrlNotPublishCreatives
     }
      /*  this.isCreating = false */
        
