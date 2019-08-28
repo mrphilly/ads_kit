@@ -51,6 +51,8 @@ from ads_scripts.targeting.placement import SetPlacement
 from ads_scripts.targeting.target_age_level_campaign import TargetAgeLevelCampaign
 from ads_scripts.targeting.remove_single_placemnet import RemoveSinglePlacement
 from ads_scripts.reporting.download_criteria_report_with_awql import get_campaign_report_performance
+from ads_scripts.campaign_management.get_all_disapproved_ads import getPolicySummurry
+
 import pyrebase
 config = {
       "apiKey": "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
@@ -65,7 +67,7 @@ firebase = pyrebase.initialize_app(config)
 app = Flask(__name__)
 CORS(app)
 URL_SERVER = "https://adafri.comparez.co"
-FRONT_END_URL = "www.adafri.com"
+FRONT_END_URL = "https://www.adafri.com"
 #FRONT_END_URL = "http://localhost:4200"
 #URL_SERVER = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = 'uploads/'
@@ -83,6 +85,19 @@ IMG = ""
 TAB = []
 USER = ""
 CAMPAGNE_NAME = ""
+
+
+
+
+@app.route("/getPolicySummury", methods=["POST"])
+def getPolicy():
+    ad_group_id = request.json['ad_group_id']
+    print(ad_group_id)
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    policy = getPolicySummurry(adwords_client, ad_group_id)
+    return jsonify(policy)
+
+
 
 
 

@@ -121,6 +121,27 @@ private basePath = '/uploads';
   
   }
 
+   getSingleAd(ad_group_id: string, ad_id: number): Promise<any> {
+  
+  
+   
+     return new Promise(resolve => {
+    this.afs.collection('ads', (ref) => ref.where('ad_group_id','==',`${ad_group_id}`).where('ad_id','==',parseInt(`${ad_id}`))).snapshotChanges().pipe(
+      map((actions) => {
+        return actions.map((a) => {
+          const data = a.payload.doc.data();
+          return { id: a.payload.doc.id, ...data };
+        });
+      })
+    ).subscribe(res => {
+      resolve(res[0])
+    });
+
+ })
+    
+  
+  }
+
   
   
   async addAd(ad_id: any, ad_group_id: any, ad_name: any, image_url: any, finalUrls: any, finalAppUrls: any, finalMobileUrls: any, size: any): Promise<any> {
@@ -348,6 +369,8 @@ private basePath = '/uploads';
       finalAppUrls: finalAppUrls,
       referenceId: referenceId,
       automated: automated,
+      combinedApprovalStatus: "",
+      policy: "",
       size: size,
       ad_type: ad_type,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -395,6 +418,13 @@ private basePath = '/uploads';
       this.getAd(id).update(data)
       resolve("ok")
     })
+  }
+
+
+  multipleUpdate(data: any) {
+    for (var i = 0; i < data.length; i++){
+    return  this.getAd(data[i]['ad_id']).update({combinedApprovalStatus: data[i]['combinedApprovalStatus'], policy: data[i]['policy']})
+    }
   }
 
   deleteAd(id: string) {

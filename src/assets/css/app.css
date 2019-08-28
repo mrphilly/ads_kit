@@ -1010,6 +1010,10 @@ list-group-item.active {
     color: #4cb5b1 !important
 }
 
+.border-adafri{
+    border: 1px solid #4cb5b1 !important
+}
+
 .adafri-color{
     color: #4cb5b1 !important
 }

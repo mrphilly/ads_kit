@@ -26,31 +26,28 @@ section of our README.
 """
 
 from googleads import adwords
-
+from googletrans import Translator
 
 AD_GROUP_ID = '77087191346'
 PAGE_SIZE = 100
 
 
-def main(client, ad_group_id):
+def getPolicySummurry(client, ad_group_id):
   # Initialize appropriate service.
+  translator = Translator()
   ad_group_ad_service = client.GetService('AdGroupAdService', version='v201809')
 
   # Construct selector and get all ads for a given ad group.
   offset = 0
   selector = {
-      'fields': ['Id', 'PolicySummary'],
+      'fields': ['Id', 'PolicySummary', 'CombinedApprovalStatus'],
       'predicates': [
           {
               'field': 'AdGroupId',
               'operator': 'EQUALS',
               'values': [ad_group_id]
           },
-          {
-              'field': 'CombinedApprovalStatus',
-              'operator': 'EQUALS',
-              'values': 'DISAPPROVED'
-          }
+        
       ],
       'paging': {
           'startIndex': str(offset),
@@ -62,6 +59,9 @@ def main(client, ad_group_id):
   disapproved_count = 0
 
   # Display results.
+  result = []
+  policy = []
+ 
   while more_pages:
     page = ad_group_ad_service.get(selector)
 
@@ -69,35 +69,58 @@ def main(client, ad_group_id):
       for ad in page['entries']:
         disapproved_count += 1
         policy_summary = ad['policySummary']
-
-        print ('Ad with id "%s" was disapproved with the following policy '
-               'topic entries:' % ad['ad']['id'])
+        print(ad['policySummary'])
+        """  print ('Ad with id "%s" and  disapproved with the following policy '
+               'topic entries:' % ad['ad']['id']) """
         # Display the policy topic entries related to the ad disapproval.
         for policy_topic_entry in policy_summary['policyTopicEntries']:
-          print ('  topic ID: %s, topic name: %s, Help Center URL: %s' % (
+         
+          policy.append({
+            "policyTopicEntryType": translator.translate(policy_topic_entry['policyTopicEntryType'], dest="fr").text,
+            "policyTopicId": policy_topic_entry['policyTopicId'],
+            "policyTopicName": translator.translate(policy_topic_entry['policyTopicName'], dest="fr").text,
+            "policyTopicEvidences": policy_topic_entry['policyTopicEvidences'],
+            "policyTopicHelpCenterUrl": policy_topic_entry['policyTopicHelpCenterUrl']
+          })
+        
+
+
+
+
+        """  print ('  topic ID: %s, topic name: %s, Help Center URL: %s' % (
               policy_topic_entry['policyTopicId'],
               policy_topic_entry['policyTopicName'],
-              policy_topic_entry['policyTopicHelpCenterUrl']))
-          # Display the attributes and values that triggered the policy topic.
-          policy_topic_evidences = policy_topic_entry['policyTopicEvidences']
+              policy_topic_entry['policyTopicHelpCenterUrl'])) """
+      
+        """ policy_topic_evidences = policy_topic_entry['policyTopicEvidences']
           if policy_topic_evidences:
+            
             for evidence in policy_topic_entry['policyTopicEvidences']:
+              topic_evidences.append({
+                "policyTopicEvidenceType": evidence['policyTopicEvidenceType']
+              })
               print ('    evidence type: %s'
                      % evidence['policyTopicEvidenceType'])
               evidence_text_list = evidence['evidenceTextList']
               if evidence_text_list:
                 for index, evidence_text in enumerate(evidence_text_list):
-                  print ('      evidence text[%d]: %s' % (index, evidence_text))
-
+                  print ('      evidence text[%d]: %s' % (index, evidence_text)) """
+        result.append({
+           "ad_id":  ad['ad']['id'],
+            "combinedApprovalStatus": translator.translate(policy_summary['combinedApprovalStatus'], dest="fr").text,
+          "policy": policy
+        })
     offset += PAGE_SIZE
     selector['paging']['startIndex'] = str(offset)
     more_pages = offset < int(page['totalNumEntries'])
+  print(result)
+  return result
+  #print('%d disapproved ads were found.' % disapproved_count)
+  
 
-  print ('%d disapproved ads were found.' % disapproved_count)
 
-
-if __name__ == '__main__':
+""" if __name__ == '__main__':
   # Initialize client object.
   adwords_client = adwords.AdWordsClient.LoadFromStorage("../../googleads.yaml")
 
-  main(adwords_client, AD_GROUP_ID)
+  main(adwords_client, AD_GROUP_ID) """

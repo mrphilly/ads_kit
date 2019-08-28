@@ -3,6 +3,8 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
@@ -10,8 +12,6 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -177,6 +177,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'maxlength': 'Url trop longue',
     },
   };
+  combinedApprovalStatus = ""
+  policy = []
   photoURL = ""
   selectedAdType = ""
   button_modify_image_upload = true
@@ -848,7 +850,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
    setTimeout(() => {
      
-     
+   
      
    }, 2000)
 
@@ -971,7 +973,7 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       var idA = params['idA']
       var adgroupid = params['ad_group_id']
       var campaignid = params['campaign_id']
-      this.reload_url = SERVER.url_redirect + "/ads/" + name + "/" + idC + "/" + idA + "/" + adgroupid + "/" + campaignid
+      
     
     })
     
@@ -1014,8 +1016,9 @@ this.currentIdInputName = this.idOfAdNameInitCreatives
       this.genres = res['sexes']
       this.populations = res['ages']
       this.appareils = res['devices']
-      this.placement = res['placement']
-      
+             this.placement = res['placement']
+       
+        
       
            })
          
@@ -1371,6 +1374,7 @@ if (chLine) {
     this.ads.forEach(child => {
 
       if (child.length > 0) {
+
         this.number_ads = child.length
         this.isNull = true
       
@@ -1386,12 +1390,108 @@ if (chLine) {
 
     })
 
-     
-this.buildForm()
+    
+/*     this.getAdsPolicy(this.ad_group_id).then(res => {
+      if(res!="error"){
+        console.log(res)
+
+        var i = 0
+        while (i> res.length) {
+          console.log(res[i])
+           var combined = res[i]['combinedApprovalStatus']
+          var policy = res[i]['policy']
+          console.log(combined)
+          this.adsService.multipleUpdate(res)
+           this.adsService.getSingleAd(this.ad_group_id.toString(), res[i]['ad_id']).then(ad => {
+            console.log(ad)
+        
+            this.adsService.updateAd(ad["id"], { combinedApprovalStatus: combined, policy: policy }).then(response => {
+              console.log(response)
+             if (response == "ok") {
+               i++;
+               
+             }
+           })
+           }) 
+        }
+        for (var i = 0; i < res.length; i++){
+          console.log(res[i])
+          var combined = res[i]['combinedApprovalStatus']
+          var policy = res[i]['policy']
+          console.log(combined)
+           this.adsService.getSingleAd(this.ad_group_id.toString(), res[i]['ad_id']).then(ad => {
+            console.log(ad)
+        
+            this.adsService.updateAd(ad["id"], { combinedApprovalStatus: combined, policy: policy })
+          })
+        }
+        
+  }
+})   */  
+
+
+
+
+    this.buildForm()
    
 
 
   }
+
+
+
+  async getAdsPolicy(ad_group_id: string): Promise<any> {
+    return new Promise(resolve => {
+          var infos = []
+    this.http.post(SERVER_URL+'/getPolicySummury', {
+      "ad_group_id": this.ad_group_id,        
+    })
+      .subscribe(
+        res => {
+          console.log(typeof(res))
+      
+          console.log(res)
+        
+          var arr = [];
+          for (var key in res) {
+            console.log(res.valueOf)
+        
+  if (res.hasOwnProperty(key)) {
+    console.log(key)
+    console.log(`key ${key} data: ${res[key]}`)
+    console.log(res[key])
+    var ad_id = res[key]['ad_id']
+    var combinedApprovalStatus = res[key]['combinedApprovalStatus']
+    var policy = res[key]['policy']
+    this.combinedApprovalStatus = combinedApprovalStatus
+    this.policy = policy
+    console.log(ad_id)
+    console.log(combinedApprovalStatus)
+    console.log(policy)
+    
+    infos.push({
+      "ad_id": ad_id,
+      "combinedApprovalStatus": combinedApprovalStatus,
+      "policy": policy
+    })
+
+
+
+    }
+  };
+  resolve(infos)
+
+         
+          
+          
+        },
+        err => {
+         resolve("error")
+        }
+      );
+    })
+}
+
 
    buildForm() {
    
@@ -1515,6 +1615,14 @@ this.buildForm()
 
     }
   }
+
+
+
+
+
+
+
+
 
   popperClick() {
 $('#popper').trigger('click')

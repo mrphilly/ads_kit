@@ -412,7 +412,7 @@ var encryptedMessage = CryptoJS.AES.encrypt(secretMessage, CryptoJS.enc.Hex.pars
   }
 
   go1() {
-   window.location.reload()
+   window.location.replace(SERVER.url_redirect)
  }
 getDateArray(start, end) {
     var arr = new Array();
