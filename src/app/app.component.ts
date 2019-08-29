@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { AuthService } from './app_core/core/auth.service';
-import { SERVER } from "./../environments/environment"
-
 import { DeviceDetectorService } from 'ngx-device-detector';
 
+import { AuthService } from './app_core/core/auth.service';
+import {SERVER} from "../environments/environment"
 
 import * as $ from 'jquery'
 declare var require: any;
@@ -22,10 +21,13 @@ export class AppComponent implements OnInit {
   public deviceInfo = null;
   policy_url = encodeURI(SERVER.confidentialite)
   constructor( sanitizer: DomSanitizer, private auth: AuthService, private deviceService: DeviceDetectorService) {
-   this.detectDevice(); 
+    this.detectDevice(); 
+    alert(this.deviceService.browser)
+    
   }
    public detectDevice() {
      this.deviceInfo = this.deviceService.getDeviceInfo();
+     console.log(window.location.href)
   }
   async ngOnInit() {
     /*  particlesJS("loader", {

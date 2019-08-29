@@ -21,7 +21,11 @@ export const SERVER = {
   //url: "https://adafri.comparez.co",
   //url_redirect: "/dist/#",
   url_redirect: "/#",
-  confidentialite: "http://localhost:4200/#/confidentialite"
+  confidentialite: "http://localhost:4200/#/confidentialite",
+  chrome: "http://localhost:4200/#",
+  opera: "http://localhost:4200/#",
+  safari1: "http://localhost:4200/#",
+   safari2: "http://localhost:4200/#",
 
 }
 

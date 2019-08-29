@@ -986,6 +986,24 @@ encrypted(text, password){
 
   defineAmountAccount() {
     var self = this
+    var browser = ""
+      var redirect = ""
+        
+        this.notesService.detectDevice().then(res => {
+        browser = res
+        })
+      if (browser === "Opera") {
+        redirect = SERVER.opera
+      } else if (browser === "Chrome") {
+        redirect = SERVER.chrome
+      } else if(browser === "Safari") {
+        var current_browser_url = window.location.href
+        if (current_browser_url.includes("www")) {
+          redirect = SERVER.safari1
+        } else {
+          redirect = SERVER.safari2
+        }
+      }
     this.montant = $("#montant").val()
     if (this.montant < 20000) {
       $('#error_recharge').show()
@@ -1028,7 +1046,7 @@ encrypted(text, password){
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/rechargement",
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/rechargement/"+redirect,
             method: 'POST',
             headers: {
                 "Accept": "application/json"

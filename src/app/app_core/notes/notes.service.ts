@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 
 import * as firebase from 'firebase/app';
 
+import { DeviceDetectorService } from 'ngx-device-detector';
+
 import { AuthService } from '../../app_core/core/auth.service';
 
 import { Note } from './note.models';
@@ -32,12 +34,12 @@ export class NotesService implements OnInit {
   text_error_date = "Cette campagne a déjà commencé"
   error_end_date = "Date invalide ou campagne déjà terminée"
   private notesCollection: AngularFirestoreCollection<Note>;
-  
+   public deviceInfo = null;
  
   
    
 
-  constructor(private auth: AuthService, private afs: AngularFirestore, private http: HttpClient,  private adGroupService: AdGroupService, private adsService : Ads) {
+  constructor(private auth: AuthService, private afs: AngularFirestore, private http: HttpClient,  private adGroupService: AdGroupService, private adsService : Ads, private deviceService: DeviceDetectorService) {
     this.auth.user.forEach(child => {
       this.uid =child.uid
       this.notesCollection = this.afs.collection('notes', (ref) => ref.where('owner', '==', child.uid));
@@ -46,6 +48,12 @@ export class NotesService implements OnInit {
   }
   ngOnInit() { 
 
+  }
+    public detectDevice():Promise<any>{
+      return new Promise(resolve => {
+      resolve(this.deviceService.browser)
+    })
+  
   }
 
   campaignVerification(user_id: string, name: string) {

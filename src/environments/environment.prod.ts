@@ -6,7 +6,11 @@ export const SERVER = {
 
   url: "https://adafri.comparez.co",
   url_redirect: "https://adafri.com/#",
-  confidentialite: "https://adafri.comparez.co/#/confidentialite"
+  confidentialite: "https://adafri.comparez.co/#/confidentialite",
+    chrome: "https://adafri.com/#",
+  opera: "https://www.adafri.com/#",
+  safari1: "https://www.adafri.com/#",
+  safari2: "https://adafri.com/#",
 
 }
 

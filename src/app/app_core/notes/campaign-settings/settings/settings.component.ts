@@ -41,6 +41,7 @@ import {
   AdGroup
 } from '../../ad_group.models'
 import * as CryptoJS from 'crypto-js'
+
 /* const dataUrl =
   SERVER.url+"/campaignReport/"+; */
 const schemaUrl =
@@ -864,7 +865,25 @@ document.getElementById('download_link').setAttribute('href', url)  */
   }
 
     defineAmountAccount() {
-    var self = this
+      var self = this
+      var browser = ""
+      var redirect = ""
+        
+        this.notesService.detectDevice().then(res => {
+        browser = res
+        })
+      if (browser === "Opera") {
+        redirect = SERVER.opera
+      } else if (browser === "Chrome") {
+        redirect = SERVER.chrome
+      } else if(browser === "Safari") {
+        var current_browser_url = window.location.href
+        if (current_browser_url.includes("www")) {
+          redirect = SERVER.safari1
+        } else {
+          redirect = SERVER.safari2
+        }
+      }
     this.montant = $("#montant").val()
     if (this.montant < 20000) {
       $('#error_recharge').show()
@@ -907,7 +926,7 @@ document.getElementById('download_link').setAttribute('href', url)  */
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/rechargement",
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/rechargement/"+redirect,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -2994,6 +3013,24 @@ if (this.endDate == date || this.startDate == date) {
   }
   defineBudget() {
     var self = this
+    var browser = ""
+      var redirect = ""
+        
+        this.notesService.detectDevice().then(res => {
+        browser = res
+        })
+      if (browser === "Opera") {
+        redirect = SERVER.opera
+      } else if (browser === "Chrome") {
+        redirect = SERVER.chrome
+      } else if(browser === "Safari") {
+        var current_browser_url = window.location.href
+        if (current_browser_url.includes("www")) {
+          redirect = SERVER.safari1
+        } else {
+          redirect = SERVER.safari2
+        }
+      }
     
     if (this.montant < 10000) {
          Swal.fire({
@@ -3049,7 +3086,7 @@ if (this.endDate == date || this.startDate == date) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/Budget/'+self.id+"/"+self.id_campagne+"/"+self.budgetId+"/"+ self.montant+"/"+self.budget_to_place+"/"+self.dure_campagne,
+            requestTokenUrl: SERVER_URL+'/Budget/'+self.id+"/"+self.id_campagne+"/"+self.budgetId+"/"+ self.montant+"/"+self.budget_to_place+"/"+self.dure_campagne+"/"+redirect,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -3219,6 +3256,24 @@ if (this.endDate == date || this.startDate == date) {
   defineAmountAccountBeforeBudget() {
 
     var self = this
+    var browser = ""
+      var redirect = ""
+        
+        this.notesService.detectDevice().then(res => {
+        browser = res
+        })
+      if (browser === "Opera") {
+        redirect = SERVER.opera
+      } else if (browser === "Chrome") {
+        redirect = SERVER.chrome
+      } else if(browser === "Safari") {
+        var current_browser_url = window.location.href
+        if (current_browser_url.includes("www")) {
+          redirect = SERVER.safari1
+        } else {
+          redirect = SERVER.safari2
+        }
+      }
     this.montant = $("#montant").val()
     if (this.montant < 20000) {
       $('#error_recharge').show()
@@ -3265,7 +3320,7 @@ if (this.endDate == date || this.startDate == date) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id_campagne,
+            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudget/'+ self.montant + "/"+self.id_campagne+"/"+redirect,
             method: 'POST',
             headers: {
                 "Accept": "application/json"

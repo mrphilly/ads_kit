@@ -221,14 +221,14 @@ def setBudgetFromAccount():
 
     #URL_SERVER+/updateBudgetA/hDxHvCnoc5sgwKZclltG/2078906359/6446768384/10000/8000/10
 
-@app.route("/updateBudgetA/<idC>/<campagne_id>/<budgetId>/<total>/<budget_to_place>/<dure>", methods=['POST', 'GET'])
-def updateBudgetA(idC=None, campagne_id=None, budgetId=None, total=None, budget_to_place= None, dure=None):
+@app.route("/updateBudgetA/<idC>/<campagne_id>/<budgetId>/<total>/<budget_to_place>/<dure>/<redirect>", methods=['POST', 'GET'])
+def updateBudgetA(idC=None, campagne_id=None, budgetId=None, total=None, budget_to_place= None, dure=None, redirect=None):
     print('success')
     print(total)
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     budget = UpdateBudget(adwords_client, budgetId, budget_to_place, dure)
 
-    return redirect(FRONT_END_URL+"/#/"+idC+"/"+str(campagne_id)+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure))
+    return redirect(redirect+"/#/"+idC+"/"+str(campagne_id)+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure))
 
 
 
@@ -847,8 +847,8 @@ def payBudget(money=None, budget_to_place=None, budgetId=None, idC=None, dure=No
         return jsonify(req)
 
 
-@app.route('/Budget/<idC>/<campagne_id>/<budgetId>/<money>/<budget_to_place>/<dure>', methods=['POST'])
-def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None, budget_to_place=None,  dure=None):
+@app.route('/Budget/<idC>/<campagne_id>/<budgetId>/<money>/<budget_to_place>/<dure>/<redirect>', methods=['POST'])
+def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None, budget_to_place=None,  dure=None, redirect=None):
         """
         Get payexpress token
         """
@@ -858,7 +858,7 @@ def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None
         
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = URL_SERVER+"/updateBudgetA/"+idC+"/"+campagne_id+"/"+budgetId + "/" +money+"/"+ budget_to_place+"/"+dure
+        success_url = URL_SERVER+"/updateBudgetA/"+idC+"/"+campagne_id+"/"+budgetId + "/" +money+"/"+ budget_to_place+"/"+dure+"/"+redirect
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -898,9 +898,9 @@ def payBudgetFromSettings(idC = None, campagne_id=None,budgetId=None, money=None
 
 @app.route('/rechargeAmount',  methods=['POST'])
 
-@app.route('/rechargeAmount/<money>/<key>', methods=['POST'])
+@app.route('/rechargeAmount/<money>/<key>/<redirect>', methods=['POST'])
 
-def rechargeAmount(money=None, key=None):
+def rechargeAmount(money=None, key=None, redirect=None):
         """
         Get payexpress token
         """
@@ -909,7 +909,7 @@ def rechargeAmount(money=None, key=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = FRONT_END_URL+"/#/success/solde"
+        success_url = redirect+"/#/success/solde"
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -951,9 +951,9 @@ def rechargeAmount(money=None, key=None):
 
 @app.route('/rechargeAmountBeforeBudget',  methods=['POST'])
 
-@app.route('/rechargeAmountBeforeBudget/<money>/<idC>', methods=['POST'])
+@app.route('/rechargeAmountBeforeBudget/<money>/<idC>/<redirect>', methods=['POST'])
 
-def rechargeAmountBeforeBudget(money=None, idC=None):
+def rechargeAmountBeforeBudget(money=None, idC=None, redirect=None):
         """
         Get payexpress token
         """
@@ -962,7 +962,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = FRONT_END_URL+"/#/success_budget/"+idC
+        success_url = redirect+"/#/success_budget/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
