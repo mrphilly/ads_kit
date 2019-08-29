@@ -11,29 +11,101 @@
 <link rel="stylesheet" href="assets/css/app.css"> 
     <link href="assets/css/bootstrap4-modal-fullscreen.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/animate.css">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    rel="stylesheet">
-    <link href="https://cdn.syncfusion.com/ej2/ej2-base/styles/material.css" rel="stylesheet" />
+<!--     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    rel="stylesheet"> -->
+   <!--  <link href="https://cdn.syncfusion.com/ej2/ej2-base/styles/material.css" rel="stylesheet" />
     <link href="https://cdn.syncfusion.com/ej2/ej2-buttons/styles/material.css" rel="stylesheet" />
     <link href="https://cdn.syncfusion.com/ej2/ej2-inputs/styles/material.css" rel="stylesheet" />
-    <link href="https://cdn.syncfusion.com/ej2/ej2-popups/styles/material.css" rel="stylesheet" />
+    <link href="https://cdn.syncfusion.com/ej2/ej2-popups/styles/material.css" rel="stylesheet" /> -->
 <link href="https://cdn.syncfusion.com/ej2/ej2-calendars/styles/material.css" rel="stylesheet" />
 <script src="assets/js/jquery-3.3.1.min.js"></script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({
     google_ad_client: "ca-pub-5854679224700851",
     enable_page_level_ads: true
   });
-</script>
+</script> -->
 <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script> -->
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+ <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js" type="text/javascript"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js" type="text/javascript"></script> -->
         
     <style>
+      .loader1  {
+  animation: rotate 1s infinite;  
+  height: 50px;
+  width: 50px;
+}
+
+.loader1:before,
+.loader1:after {   
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 20px;  
+  width: 20px;
+}
+.loader1:before {
+  animation: ball1 1s infinite;  
+  background-color: #cb2025;
+  box-shadow: 30px 0 0 #f8b334;
+  margin-bottom: 10px;
+}
+.loader1:after {
+  animation: ball2 1s infinite; 
+  background-color: #00a096;
+  box-shadow: 30px 0 0 #97bf0d;
+}
+
+@keyframes rotate {
+  0% { 
+    -webkit-transform: rotate(0deg) scale(0.8); 
+    -moz-transform: rotate(0deg) scale(0.8);
+  }
+  50% { 
+    -webkit-transform: rotate(360deg) scale(1.2); 
+    -moz-transform: rotate(360deg) scale(1.2);
+  }
+  100% { 
+    -webkit-transform: rotate(720deg) scale(0.8); 
+    -moz-transform: rotate(720deg) scale(0.8);
+  }
+}
+
+@keyframes ball1 {
+  0% {
+    box-shadow: 30px 0 0 #f8b334;
+  }
+  50% {
+    box-shadow: 0 0 0 #f8b334;
+    margin-bottom: 0;
+    -webkit-transform: translate(15px,15px);
+    -moz-transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #f8b334;
+    margin-bottom: 10px;
+  }
+}
+
+@keyframes ball2 {
+  0% {
+    box-shadow: 30px 0 0 #97bf0d;
+  }
+  50% {
+    box-shadow: 0 0 0 #97bf0d;
+    margin-top: -20px;
+    -webkit-transform: translate(15px,15px);
+    -moz-transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #97bf0d;
+    margin-top: 0;
+  }
+}
 
 @-webkit-keyframes spinnow {
     100% {
@@ -197,21 +269,13 @@ ul.social-network li {
 
 </style>    
 </head>
-<body style="" class="grey lighten-4 sidebar-mini sidebar-collapse particules" id="body">
-  <!-- <base href="/"> -->
-<!--   <div id="particles-js" style="background: url('assets/img/images/fond-clair.png')  no-repeat left bottom; background-size:cover;"></div> -->
-
-<!-- stats - count particles -->
-<!-- <div class="count-particles">
-  <span class="js-count-particles">--</span> particles
-</div> -->
- <div id="loader" class="loader text-center adafri-background">
-   
-    <div class="text-center no-b d-none d-md-inline d-sm-none" style="width: 100px; height: 100px;  position:absolute; left:50%; top:40%; width:100px;" >
-        <img class="img-responsive animated no-b sync fast shadow2" src="assets/img/images/google.ico" style="width: 100px; border-radius: 100px">
+<body style="" class="grey lighten-4 sidebar-mini sidebar-collapse">
+<!--      <div class="paper-card p-0 adafri-background">
+       <div class="text-center no-b d-none d-md-inline d-sm-none" style="width: 100px; height: 100px;  position:absolute; left:50%; top:40%; width:100px;" >
+        <img class="img-responsive animated no-b bounce shadow2 infinite" src="assets/img/adafri.png" style="width: 100px; border-radius: 100px">
         <br>
         <br>
-        <p class="text-white adafri-police-14 font-weight-bold animated">Synchronisation...</p> 
+        <p class="text-white adafri-police-14 font-weight-bold">Synchronisation...</p> 
        
         <img class="img-responsive" src="assets/img/images/google.svg">
        
@@ -220,20 +284,82 @@ ul.social-network li {
     
 
      <div class="text-center no-b d-md-none d-sm-inline" style="width: 100px; height: 100px;  position:absolute; left:50%; top:40%; width:100px; margin-left:-50px;">
-        <img class="img-responsive animated no-b sync shadow2 fast" src="assets/img/images/google.ico" style="width: 100px; border-radius: 100px">
+        <img class="img-responsive animated no-b shadow2 bounce infinite" src="assets/img/adafri.png" style="width: 100px; border-radius: 100px">
     
         <br>
         <br>
-       <p class="text-white adafri-police-12 font-weight-bold animated">Synchronisation...</p>
+       <p class="text-white adafri-police-12 font-weight-bold">Synchronisation...</p>
        <img class="img-responsive" src="assets/img/images/google.svg">
        
     </div>
+     </div> -->
+  <div id="loader" class="loader paper-card p-0 white">
+       <img class="img-responsive d-none d-md-block" src="assets/img/adafri.png" style="width: 10%; position: absolute; top: 40%; left: 47%">
+       <img class="img-responsive d-md-none d-sm-block" src="assets/img/adafri.png" style="width: 25%; position: absolute; top: 40%; left: 40%">
+    <div class="plane-container loader1 d-md-none d-sm-block" style="top: 60%; left: 45%"></div>
+        <div class="plane-container loader1 d-none d-md-block" style="top: 60%;"></div>
+  <!--   <div class="paper-card p-0 adafri-background" style="height: 50%">
 
-   
-</div>
+    </div> -->
+     
+    <!--   <img class="img-responsive d-none d-md-block" src="assets/img/adafri.png" style="width: 10%; position: absolute; top: 40%; left: 46%">
+       <img class="img-responsive d-md-none d-sm-block" src="assets/img/adafri.png" style="width: 25%; position: absolute; top: 40%; left: 42%">
+ -->
+     <!--    <div class="plane-container" style="top: 60%">
+        <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+        </div>
+    </div> -->
+</div>  
+  <!-- <base href="/"> -->
+<!--   <div id="particles-js" style="background: url('assets/img/images/fond-clair.png')  no-repeat left bottom; background-size:cover;"></div> -->
+
+<!-- stats - count particles -->
+<!-- <div class="count-particles">
+  <span class="js-count-particles">--</span> particles
+</div> -->
+
  
-    <header></header> 
-    <section class="height-full grey lighten-4">
+   
+    <section>
 
 
      <app-root>
@@ -309,7 +435,7 @@ ul.social-network li {
   </div>
   </div>
 </footer> -->
-<footer class="grey lighten-4 text-center">
+<footer class="bottom grey lighten-4 text-center">
   
   <!-- <a href="http://localhost:4200/#/confidentialite" class="adafri-police-18 text-white">Conditions de confidentialités</a> -->
   <span class="adafri-police-10 text-black">&copy; Copyright 2019 - Adafri.  All rights reserved.</span>
@@ -326,7 +452,7 @@ ul.social-network li {
 </footer>
  <noscript>Please enable JavaScript to continue using this application.</noscript>
  
- <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
             <script>
               new WOW().init();
               </script>
@@ -345,8 +471,8 @@ ul.social-network li {
 
         });
 
-        
-    </script>
+         
+    </script>-->
    <!--  <script>
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
@@ -400,16 +526,16 @@ function topFunction() {
  -->
 
     
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 <!-- <script type="text/javascript" src="assets/js/app.js"></script> -->
  <script type="text/javascript" src="assets/js/index.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.0.0/fabric.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.0.0/fabric.js"></script> -->
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 
-<script type="text/javascript" src="assets/js/particles.js"></script>
+<!-- <script type="text/javascript" src="assets/js/particles.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://threejs.org/examples/js/libs/stats.min.js" ></script>
+<!-- <script type="text/javascript" src="https://threejs.org/examples/js/libs/stats.min.js" ></script> -->
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="assets/js/payexpress/payExpress.js"></script>

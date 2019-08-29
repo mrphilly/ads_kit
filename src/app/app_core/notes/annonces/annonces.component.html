@@ -1,4 +1,31 @@
 <div id="app">
+<div id="app">
+  <!-- <div id="loader" class="loader text-center adafri-background">
+  
+   <div class="text-center no-b d-none d-md-inline d-sm-none" style="width: 100px; height: 100px;  position:absolute; left:50%; top:40%; width:100px;" >
+       <img class="img-responsive animated no-b sync fast shadow2" src="assets/img/images/google.ico" style="width: 100px; border-radius: 100px">
+       <br>
+       <br>
+       <p class="text-white adafri-police-14 font-weight-bold animated">Synchronisation...</p> 
+      
+       <img class="img-responsive" src="assets/img/images/google.svg">
+      
+   </div>
+  
+   
+  
+    <div class="text-center no-b d-md-none d-sm-inline" style="width: 100px; height: 100px;  position:absolute; left:50%; top:40%; width:100px; margin-left:-50px;">
+       <img class="img-responsive animated no-b sync shadow2 fast" src="assets/img/images/google.ico" style="width: 100px; border-radius: 100px">
+   
+       <br>
+       <br>
+      <p class="text-white adafri-police-12 font-weight-bold animated">Synchronisation...</p>
+      <img class="img-responsive" src="assets/img/images/google.svg">
+      
+   </div>
+  
+  
+  </div> -->
 
  <!--  <aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas' *ngIf="!_init_campagne">
     <div class="sidebar">
@@ -342,14 +369,14 @@
               
               </figure>
   </a> -->
-  <!-- <div class="has-sidebar-left has-sidebar-tabs"> -->
+   <div class="has-sidebar-tabs">
     <!--navbar-->
-    <div>
- <div class="sticky">
+
+    <div class="sticky">
         <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
              <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow" style="height: 90px">
-          <img class="d-none d-md-block float-left" src="assets/img/images/newlogo.png" style="width: 15%" (click)="go()">
+            <img class="d-none d-md-block float-left" src="assets/img/images/newlogo.png" style="width: 15%" (click)="go()">
             <img class="d-md-none d-sm-block float-left" src="assets/img/images/newlogo.png" style="width: 35%" (click)="go()">
             <!--Top Menu Start -->
 <div class="navbar-custom-menu">
@@ -365,31 +392,37 @@
                 <i class="icon-money-bag"></i> {{accountValue}} CFA
             </a>
         </li>
-         <li class="dropdown custom-dropdown notifications-menu" style="margin-top: 5px">
+         <li class="dropdown custom-dropdown notifications-menu"  style="margin-top: 5px">
             <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
                 <i class="icon-notifications_none text-black-50"></i>
                 <span class="badge adafri-background badge-mini rounded-circle text-white">{{numberOfNotifications}}</span>
             </a>
-            <ul class="dropdown-menu no-b white shadow dropdown-menu no-b white">
+            <ul class="dropdown-menu dropdown-menu-right">
                 <li class="header">Vous avez {{numberOfNotifications}} notification(s)</li>
                 <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu no-b">
-                        <li class="no-b white">
+                        <li class="no-b white text-center">
                            
                               <a href="#" *ngIf="accountValue !==0">
                                 <i class="icon icon-data_usage text-danger"></i>Aucune Notification pour le moment 
                             </a>
-                            <a class="adafri-police-12" *ngIf="accountValue ===0">
-                                <i class="icon icon-data_usage text-danger"></i>Rechargez ici votre solde
-                            </a>
+                           <a class="adafri-police-12 text-danger" *ngIf="accountValue ===0">
+                                <i class="icon icon-data_usage text-danger"></i>Votre solde est vide
+                            </a> 
+                              <a class="btn btn-sm adafri-background text-white btn-social r-20 d-inline-block adafri-police-12" data-toggle="modal" data-target="#modalRechargement">
+                                <i class="icon-payment"></i> Charger mon compte
+                              </a>
                             
                         </li>
-                        <li class="no-b white text-center" *ngIf="accountValue===0">
+                        <li class="no-b white text-center">
+                            
+                        </li>
+                        <!--  <li class="no-b white text-center" *ngIf="accountValue<10000">
                               <button class="btn btn-sm white border-grey text-black-50 btn-social r-20 d-inline-block" data-toggle="modal" data-target="#modalRechargement">
                                 Charger mon compte
                             </button>
-                        </li>
+                        </li> -->
                 
                     </ul>
                 </li>
@@ -410,16 +443,16 @@
                 </figure>
                                                         
             </a>
-            <div class="dropdown-menu no-b white shadow p-4 dropdown-menu no-b white shadow-right" style="position: absolute; right: 30%">
+            <div class="dropdown-menu p-4 dropdown-menu-right">
                 <div class="row box justify-content-between my-4">
                     <div class="col">
                         <a (click)="auth.signOut()">
-                            <i class="icon-apps purple lighten-2 avatar r-5"></i>
+                            <i class="icon-apps purple lighten-2 avatar  r-5"></i>
                             <div class="pt-1" >Déconnexion</div>
                         </a>
                     </div>
                     <div class="col"><a href="#">
-                        <i class="icon-beach_access pink lighten-1 avatar r-5"></i>
+                        <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
                         <div class="pt-1">Profile</div>
                     </a></div>
                    
@@ -440,20 +473,33 @@
 <!-- Modal -->
 
 
-    <header class="white pt-3 relative white" >
+    <header class="white relative white" >
       <div class="container-fluid text-center">
+     
         <!-- view modal -->
 
         <!-- modal -->
         
         <!-- modal -->
-        <div class="row p-t-b-10 ">
-            <div class="bg-danger no-b shadow1 text-center animated fadeInLeft delay-1s" style="float: right; position: absolute; right: 5% ;top: 5%; z-index: 1;" *ngIf="isDone">
-              <span class="text-white adafri-police-14" *ngIf="placement.toString().length===0">Emplacements non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerEmplacement()"> <strong>Cliquez ici</strong></a></span>
-              <br>
-               <span class="text-white adafri-police-14" *ngIf="genres.toString().length ===0 || populations.toString().length ===0 || tappareils.toString().length === 0">Ciblages non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerCiblage()"> <strong>Cliquez ici</strong></a></span>
-              
-            </div>
+        <div class="row p-t-b-10 " >
+         
+   <!--           <div *ngIf="isDone" class="row">
+                <div  class="paper-card alert shadow alert-danger alert-dismissible fade show text-white" role="alert" style="float: right; position: absolute; right: 0 ;top: 0; z-index: 1;"  >
+                  <span *ngIf="placement.toString().length===0" class="adafri-police-14 ">hey<strong class="font-weight-bold adafri-police-16"> {{currentUserName}},</strong> Emplacements des visuels non définis ! <strong class="font-weight-bold adafri-police-16" style="cursor: pointer" ><a class="btn btn-sm ct-js-btn-scroll emplacement"  data-toggle="pill"  (click)="triggerEmplacement()" href="#v-pills-placement-tab">Cliquez ici</a></strong> </span><br>
+                   <span *ngIf="placement.toString().length===0" class="adafri-police-14">Options de ciblage non définies! <strong class="font-weight-bold adafri-police-16" style="cursor: pointer"><a class="btn btn-sm ct-js-btn-scroll emplacement"  data-toggle="pill"  (click)="triggerCiblage()" href="#v-pills-ciblage-ads-tab">Cliquez ici</a></strong>.</span>
+  
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  
+</div>
+<br>
+
+
+             </div> -->
+<!--  <span class="text-white adafri-police-14" *ngIf="placement.toString().length===0">Emplacements non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerEmplacement()"> <strong>Cliquez ici</strong></a></span>
+ <br>
+  <span class="text-white adafri-police-14" *ngIf="genres.toString().length ===0 || populations.toString().length ===0 || tappareils.toString().length === 0">Ciblages non définis:<a style="text-decoration: underline; cursor: pointer" (click)="triggerCiblage()"> <strong>Cliquez ici</strong></a></span> -->
       <div class="col">
         <div class="card r-3 no-b shadow1 animated fadeIn slow adafri-background" style="margin-top: 10px;" id="particles-js">
               <div class="p-4">
@@ -1290,7 +1336,7 @@
 
             </ul> -->
 
-              <div class="card no-b white shadow" *ngIf="isPlacement">
+              <div class="card no-b white shadow" *ngIf="isPlacement" id="emplacement">
                   <div class="card-header no-b adafri-background adafri-police-16 text-white text-center">
                     <span>Sites webs où les annonces de ce groupe seront affichées</span>
                   </div>
@@ -1388,7 +1434,7 @@
 <div class="tab-pane fade" id="v-pills-ciblage-ads" role="tabpanel" aria-labelledby="v-pills-add-ad-tab">
 
    <ul class="timeline">
-     <div class="text-center">
+     <div class="text-center" id="ciblage">
 
        <small>Tous les ciblages qui seront fait ici concerneront uniquement les annonces de ce groupe</small>
      </div>
@@ -1404,7 +1450,7 @@
                 </a>
                 <div class="collapse" id="collapseAge">
                         <div class="card no-b shadow timeline-item">
-              <div class="card-header white b-0 p-3 text-center no-b">
+              <div class="card-header white b-0 p-3 text-center no-b" >
                 <!-- <h4 class="card-title">Liste des âges ciblés</h4> -->
                 <small class="card-subtitle mb-2 text-muted">Visualiser ici vos tranches d'âges ciblées.</small>
                 
@@ -2240,7 +2286,7 @@
 </div>
 </div>
 
-  </div>
+
 
 
 
@@ -2787,4 +2833,7 @@
   <!-- dialog -->
 
 </div>
+</div>
 <img id="_ad_image" style="display: none" src="#">
+
+</div>

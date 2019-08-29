@@ -3,15 +3,15 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { s } from '@angular/core/src/render3';
 import {
   ActivatedRoute, Router
 } from '@angular/router';
 import {
   HttpClient
 } from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { s } from '@angular/core/src/render3';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -44,6 +44,7 @@ import { Ads } from '../ads.service'
 import { AdGroupService } from '../ad-groupe.service'
 import { SERVER } from '../../../../environments/environment'
 import * as chart from "chart.js/dist/Chart.min"
+import * as Notify from '../../../../assets/js/notify'
 /* 
 import Swal from 'sweet//alert2'
 import { Ads } from '../ads.service'
@@ -258,6 +259,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   ad_id: any;
   id_ad_firebase: any;
   ad_name: any;
+  currentUserName = ""
   ages = []
   sexes = [];
   zones = [];
@@ -844,8 +846,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
    } else {
      $("#block").css("display", "block")
-     this.currentIdInputName = this.idOfAdNameInitUpload
-   this.currentIdInputDisplay = this.idOfDisplayUrlInitUpload
+     this.currentIdInputName = this.idOfAdNameCreateUpload
+   this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
    }
 
    setTimeout(() => {
@@ -957,7 +959,8 @@ this.currentIdInputName = this.idOfAdNameCreateCreatives
   ngOnInit() {
    
    this.auth.user.forEach(data=>{
-           this.photoURL = data.photoURL
+     this.photoURL = data.photoURL
+     this.currentUserName = data.displayName
            //alert(this.photoURL)
          })
      this.auth.notificationAccount.forEach((value) => {
@@ -1030,6 +1033,20 @@ this.currentIdInputName = this.idOfAdNameCreateCreatives
 
           //alert('ok budget')
           this.isDone = true
+          Notify.addStyle('happyblue', {
+  html: "<div>☺<span data-notify-text/>☺</div>",
+  classes: {
+    base: {
+      "white-space": "nowrap",
+      "background-color": "lightblue",
+      "padding": "5px"
+    },
+    superblue: {
+      "color": "white",
+      "background-color": "blue"
+    }
+  }
+});
           /*  document.getElementById("v-pills-placement-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', "text-success")
              document.getElementById("v-pills-ciblage-ads-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', 'text-success') */
         }
@@ -1164,7 +1181,8 @@ if (chLine) {
     }
   }
   });
-}
+    }
+    
 
 
       // In a real app: dispatch action to load the details here.
@@ -1631,9 +1649,20 @@ $('#popper').trigger('click')
 
   triggerEmplacement() {
     document.getElementById('v-pills-placement-tab').click()
+    setTimeout(() => {
+   $('html, body').animate({
+        scrollTop: $("#v-pills-placement-tab").offset().top
+      }, 800);
+    }, 500)
+     
   }
   triggerCiblage() {
     document.getElementById('v-pills-ciblage-ads-tab').click()
+       setTimeout(() => {
+   $('html, body').animate({
+        scrollTop: $("#v-pills-ciblage-ads-tab").offset().top
+      }, 800);
+    }, 500)
   }
   async toggleListAd() {
     

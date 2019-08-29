@@ -1,3 +1,4 @@
+<div id="app">
 <!--    
         <div class="">
             <div class="row my-3">
@@ -57,7 +58,7 @@
                 <i class="icon-money-bag"></i> {{accountValue}} CFA
             </a>
         </li>
-         <li class="dropdown custom-dropdown notifications-menu" style="margin-top: 5px">
+         <li class="dropdown custom-dropdown notifications-menu" *ngIf="!_init_campagne" style="margin-top: 5px">
             <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
                 <i class="icon-notifications_none text-black-50"></i>
                 <span class="badge adafri-background badge-mini rounded-circle text-white">{{numberOfNotifications}}</span>
@@ -1301,7 +1302,60 @@
   </div>
 </div>
 </div>
+                                 <div class="modal fade" id="modalRechargement" tabindex="-1" role="dialog" aria-smallledby="exampleModalsmall"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header white no-b">
+        <h5 class="adafri-police-22 adafri" id="exampleModalsmall">Chargement de votre solde</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-small="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body white no-b">
+        <div class="card no-b white">
+          <div class="card-body no-b white">
+                      <div class="form-row text-center">
+                  <div class="col-md-12 mb-3 text-center">
+                    <h6 for="validationCustom01">Montant à recharger</h6>
+                    <input type="number" class="form-control text-center d-inline-block" id="montant" placeholder="Montant" min="10000" max="1000000"
+                      required>
+                      <small class="adafri-police-14 adafri">Saisir un montant supérieur ou égal à 10000 FCA</small>
+                      <div id="error_recharge" style="display: none">
+                          <p class="text-danger">Eurreur montant saisi invalide !</p>
+                      </div>
+                  </div>
+                        
+
+                </div>
+               <!--   <div class="d-flex justify-content-between">
+                            <div>
+                                <p>
+                                    <i class="icon-angle-double-down text-red mr-2"></i><strong class="text-danger">{{number_of_impressions}} Impressions</strong></p>
+                                <p class="text-success">
+                                <i class="icon-circle-o text-green mr-2 text-infos"></i>Une impression signifie un affichage d'une annonce sur un site</p> 
+                            </div>
+                            <div>
+                               
+                            </div>
+                        </div> -->
+          </div>
+
+          <div class="card-footer white no-b text-center">
+            <button type="button" class="btn btn-sm white btn-social text-black-50 r-20 adafri-police-16 border-grey shadow d-inline-block" id="amountSet" (click)=" defineAmountAccount()">Recharger mon compte</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer white no-b">
+        <button type="button" class="btn btn-sm btn-social text-danger white r-20 shadow border-danger" id="closeModalRecharge" data-dismiss="modal">Fermer</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
 <div *ngIf="isCreating">
   <app-spinner-overlay [message]="message"></app-spinner-overlay>
+
+</div>
 
 </div>

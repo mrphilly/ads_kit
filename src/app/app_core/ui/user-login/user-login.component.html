@@ -64,7 +64,7 @@
 
 </ng-template>
 
-<div class="height-full" *ngIf="!(auth.user | async); else isConnected">
+<div class="paper-card p-0 white" *ngIf="!(auth.user | async); else isConnected">
  <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
 <div class="login-block height-full"  style="background:url(assets/img/images/fond-sombre.png) no-repeat left bottom; background-size: cover
 ">
@@ -75,22 +75,25 @@
 
   <div class="row">
        
-    <div class="col-md-6" >
-          <div id="particles-js"></div> 
+    <div class="col-md-6 text-center" >
+         
         <div class=" d-none d-md-inline d-sm-none" >
-
+               
             <div class="d-flex justify-content-between">
                                  <div class="white shadow" style="width: 300px; height: 10px">
                                     
                                  </div>
                                  <div  style="margin-top: -5px;">
                                      <h5 class="text-white font-weight-bold" style="font-family: 'soleil', sans-serif ">
-                                         People. Products. Software</h5>
+                                        Vos campagnes à la maison.</h5>
                                     
                                  </div>
                              </div>
+                             <div class="text-center"><img class="img-responsive float-left" src="../../../../assets/img/init.png"></div> 
         </div>
-    </div>
+          <a class="ct-btn-scroll d-none d-md-block ct-js-btn-scroll animated pulse infinite" href="#section2"><img alt="Arrow Down Icon" src="https://www.solodev.com/assets/anchor/arrow-down.png"></a>
+                  <a class="ct-btn-scroll1 d-md-none d-sm-block ct-js-btn-scroll animated pulse infinite" href="#section2"><img alt="Arrow Down Icon" src="https://www.solodev.com/assets/anchor/arrow-down.png"></a>
+        </div>
             <div class="col-md-6 text-center"  *ngIf="!newUser">
             <div class="row" style=" margin-top: -50px !important">
                 <div class="col-md-12 text-center">
@@ -210,25 +213,27 @@
                                  </div>
                                  <div style="margin-top: -5px; margin-left: 20px">
                                      <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
-                                         People. Products. Software</h5>
+                                        Vos campagnes à la maison.</h5>
                                     
                                  </div>
                              </div>
         </div>
+       
         </div>
-        <div class="text-center d-md-none d-sm-block" style="margin-top: 500px">
+        <div class="text-center d-md-none d-sm-block" style="margin-top: 470px">
              <div class="d-md-none d-sm-inline d-inline-block" >
 
             <div class="d-flex justify-content-between">
                                  <div class="white shadow" style="width: 100px; height: 10px">
-                                    
+                                 
                                  </div>
                                  <div style="margin-top: -5px; margin-left: 20px">
                                      <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
-                                         People. Products. Software</h5>
+                                        Vos campagnes à la maison.</h5>
                                     
                                  </div>
                              </div>
+                            
         </div>
         </div>
     </div>
@@ -369,13 +374,13 @@
                                  </div>
                                  <div style="margin-top: -5px; margin-left: 20px">
                                      <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
-                                         People. Products. Software</h5>
+                                        Vos campagnes à la maison.</h5>
                                     
                                  </div>
                              </div>
         </div>
         </div>
-        <div class="text-center d-md-none d-sm-block" style="margin-top: 500px">
+        <div class="text-center d-md-none d-sm-block" style="margin-top: 470px">
              <div class="d-md-none d-sm-inline d-inline-block" >
 
             <div class="d-flex justify-content-between">
@@ -384,7 +389,7 @@
                                  </div>
                                  <div style="margin-top: -5px; margin-left: 20px">
                                      <h5 class="text-white font-weight-bold"  style="font-family: 'soleil', sans-serif ">
-                                         People. Products. Software</h5>
+                                        Vos campagnes à la maison.</h5>
                                     
                                  </div>
                              </div>
@@ -397,7 +402,7 @@
 
 
 </div>
-<div class="login-block1">
+<div class="login-block1 white" id="section2">
 
      <div class="row">
         <div class="col-md-12 text-center">
@@ -452,8 +457,11 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
 
 
 
-  <div class="card no-b">
-    <img class="img-responsive" src="assets/img/images/3raisons.jpg">
+  <div class="card no-b d-none d-md-block"  style="width: 1200px; height: 315px">
+    <img class="img-responsive" src="assets/img/images/raisons.jpg">
+  </div>
+  <div class="card no-b d-md-none d-sm-block" >
+    <img class="img-responsive" src="assets/img/images/raisons.jpg">
   </div>
 </div>
  

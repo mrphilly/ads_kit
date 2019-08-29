@@ -1,4 +1,4 @@
-
+/* 
 interact('.draggable')
   .draggable({
     // enable inertial throwing
@@ -45,7 +45,7 @@ interact('.draggable')
 
 $('.colorpicker') .on('colorpickerChange colorpickerCreate', function (e) {
        $('.color').val(e.value)
-        });
+        }); */
 
 
   function buy() {
@@ -277,6 +277,19 @@ var takeScreenShotAdwords = function () {
 
 }
 
+
+
+$(".emplacement").on('click', function(event) {
+    if (this.hash !== "") {
+      event.preventDefault();
+      var hash = this.hash;
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+        window.location.hash = hash;
+      });
+    } 
+  });
 
 function screenShot(){
 

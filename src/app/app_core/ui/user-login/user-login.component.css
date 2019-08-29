@@ -29,7 +29,7 @@
 
 } */
 
-@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+
 .login-block {
     float: left;
     width: 100%;
@@ -263,4 +263,31 @@
 	100% {
 		background-position: 0% 50%;
 	}
+}
+
+.ct-btn-scroll {
+  width: 49px;
+  height: 49px;
+  position: absolute;
+  top: 50%;
+  left: 90%;
+  margin: auto;
+  z-index: 9;
+  border-radius: 50%;
+  -webkit-transition: background-color 0.25s ease-in-out;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.ct-btn-scroll1{
+    width: 49px;
+    height: 49px;
+    position: absolute;
+    bottom: -1165px;
+    top: 0;
+    right: 40%;
+    margin: auto;
+    z-index: 9;
+    border-radius: 50%;
+    -webkit-transition: background-color 0.25s ease-in-out;
+    transition: background-color 0.25s ease-in-out;
 }

@@ -863,6 +863,127 @@ document.getElementById('download_link').setAttribute('href', url)  */
         
   }
 
+    defineAmountAccount() {
+    var self = this
+    this.montant = $("#montant").val()
+    if (this.montant < 20000) {
+      $('#error_recharge').show()
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service rechargement",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else{
+      var key = this.generate(100)
+      localStorage.setItem(key, this.montant.toString())
+      this.auth.updateUser(this.uid, {paymentKey: key})
+      $('#closeModalRecharge').trigger('click')
+      var self = this
+      Swal.fire({
+          title: "Service rechargement",
+          html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+          type: 'info',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+          cancelButtonText: "annuler"
+        }).then((result) => {
+          if (result.value) {
+                 this.isCreating = true
+      setTimeout(function () {
+    
+        var btn = document.getElementById("amountSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: SERVER_URL+'/rechargeAmount/'+ self.montant+"/rechargement",
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+              self.isCreating = false
+              if (is_completed === true) {
+                  //alert(success_url)
+                
+                  //window.location.href = success_url; 
+                } else {
+                  self.isCreating = false
+                    //window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                //console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+              console.log('redirec_url')
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                //alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                //console.log('non success response ', jsonResponse);
+                //alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+          
+        });
+    }, 500)
+          }
+        })
+
+
+      
+      
+      
+    }
+  }
   downloadFile() {
     this.isCreating = true
     let download = require('../../../../../assets/js/download.js');

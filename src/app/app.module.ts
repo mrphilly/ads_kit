@@ -37,7 +37,8 @@ import { FusionChartsModule } from 'angular-fusioncharts';
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
-import {DeviceDetectorModule} from 'ngx-device-detector';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import {AccordionModule} from 'primeng/accordion';
 
 import {FIREBASE_CREDENTIALS} from '../environments/environment'
 
@@ -88,6 +89,7 @@ firebase.initializeApp(FIREBASE_CREDENTIALS)
     NgbModule.forRoot(),
     NgxFormatFieldModule,
     FusionChartsModule,
+    AccordionModule
    
     
 
