@@ -957,7 +957,7 @@ this.currentIdInputName = this.idOfAdNameCreateCreatives
     return 'reload'
   }
   ngOnInit() {
-   window.location.reload()
+   
    this.auth.user.forEach(data=>{
      this.photoURL = data.photoURL
      this.currentUserName = data.displayName

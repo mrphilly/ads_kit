@@ -888,7 +888,9 @@ encrypted(text, password){
               this.isCreating = false
               this._init_campagne = false
                 document.getElementById('body').classList.remove('adafri-background')
-              this.router.navigate(['/ads', name, single['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], single['id_campagne']])
+            this.router.navigate(['/ads', name, single['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], single['id_campagne']]).then(() => {
+                window.location.reload()
+              })
             }
           })
       } else {

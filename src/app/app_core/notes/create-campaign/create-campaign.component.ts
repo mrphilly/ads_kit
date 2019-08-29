@@ -216,7 +216,9 @@ export class CreateCampaignComponent implements OnInit {
               if (adgroup != "error") {
                 this.isCreating = false
                 document.getElementById('body').classList.remove('adafri-background')
-              this.router.navigate(['/ads', name, campaign['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], campaign['campaign_id']])
+                this.router.navigate(['/ads', name, campaign['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], campaign['campaign_id']]).then(() => {
+                window.location.reload()
+              })
             }
           })
       }
