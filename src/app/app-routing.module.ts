@@ -36,7 +36,7 @@ const routes: Routes = [
    { path: ':idC/:budget/:dailyBudget/:numberOfDays', component: NotesListComponent,  canActivate: [AuthGuard], pathMatch: 'full' },
    
   
-  { path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id', component: AnnoncesComponent },
+  { path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id', component: AnnoncesComponent, canActivate: [AuthGuard] },
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id/:money/:id_ad_firebase', component: AnnoncesComponent},
   {path: 'ads/:name/:idC/:idA/:ad_group_id/:campaign_id/:budget/:dailyBudget/:numberOfDays/:id_ad_firebase', component: AnnoncesComponent},
  /*  { path: 'campaign/:id', component: CampaignSettingsComponent, canActivate: [AuthGuard] }, */
