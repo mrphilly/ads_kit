@@ -990,9 +990,8 @@ encrypted(text, password){
       var redirect = ""
         
         this.notesService.detectDevice().then(res => {
-        browser = res
-        })
-      if (browser === "Opera") {
+          browser = res
+           if (browser === "Opera") {
         redirect = SERVER.opera
       } else if (browser === "Chrome") {
         redirect = SERVER.chrome
@@ -1003,8 +1002,8 @@ encrypted(text, password){
         } else {
           redirect = SERVER.safari2
         }
-      }
-    this.montant = $("#montant").val()
+          }
+              this.montant = $("#montant").val()
     if (this.montant < 20000) {
       $('#error_recharge').show()
     } else if (this.montant > 1000000) {
@@ -1122,6 +1121,9 @@ encrypted(text, password){
       
       
     }
+        })
+     
+
   }
   
 }

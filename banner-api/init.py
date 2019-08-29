@@ -962,7 +962,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None, redirect=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = redirect+"/#/success_budget/"+idC
+        success_url = "https://"+redirect+"/#/success_budget/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 

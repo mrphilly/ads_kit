@@ -22,10 +22,10 @@ export const SERVER = {
   //url_redirect: "/dist/#",
   url_redirect: "/#",
   confidentialite: "http://localhost:4200/#/confidentialite",
-  chrome: "http://localhost:4200/#",
-  opera: "http://localhost:4200/#",
-  safari1: "http://localhost:4200/#",
-   safari2: "http://localhost:4200/#",
+     chrome: "adafri.com",
+  opera: "www.adafri.com",
+  safari1: "www.adafri.com",
+  safari2: "adafri.com",
 
 }
 

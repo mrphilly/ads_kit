@@ -22,12 +22,12 @@ export class AppComponent implements OnInit {
   policy_url = encodeURI(SERVER.confidentialite)
   constructor( sanitizer: DomSanitizer, private auth: AuthService, private deviceService: DeviceDetectorService) {
     this.detectDevice(); 
-    alert(this.deviceService.browser)
+   
     
   }
    public detectDevice() {
      this.deviceInfo = this.deviceService.getDeviceInfo();
-     console.log(window.location.href)
+
   }
   async ngOnInit() {
     /*  particlesJS("loader", {

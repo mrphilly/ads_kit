@@ -870,9 +870,8 @@ document.getElementById('download_link').setAttribute('href', url)  */
       var redirect = ""
         
         this.notesService.detectDevice().then(res => {
-        browser = res
-        })
-      if (browser === "Opera") {
+          browser = res
+           if (browser === "Opera") {
         redirect = SERVER.opera
       } else if (browser === "Chrome") {
         redirect = SERVER.chrome
@@ -883,8 +882,8 @@ document.getElementById('download_link').setAttribute('href', url)  */
         } else {
           redirect = SERVER.safari2
         }
-      }
-    this.montant = $("#montant").val()
+          }
+          this.montant = $("#montant").val()
     if (this.montant < 20000) {
       $('#error_recharge').show()
     } else if (this.montant > 1000000) {
@@ -1002,6 +1001,9 @@ document.getElementById('download_link').setAttribute('href', url)  */
       
       
     }
+        })
+     
+    
   }
   downloadFile() {
     this.isCreating = true
@@ -3017,9 +3019,8 @@ if (this.endDate == date || this.startDate == date) {
       var redirect = ""
         
         this.notesService.detectDevice().then(res => {
-        browser = res
-        })
-      if (browser === "Opera") {
+          browser = res
+           if (browser === "Opera") {
         redirect = SERVER.opera
       } else if (browser === "Chrome") {
         redirect = SERVER.chrome
@@ -3030,9 +3031,8 @@ if (this.endDate == date || this.startDate == date) {
         } else {
           redirect = SERVER.safari2
         }
-      }
-    
-    if (this.montant < 10000) {
+          }
+          if (this.montant < 10000) {
          Swal.fire({
           title: "Service budget",
           text: "Montant invalide",
@@ -3156,6 +3156,10 @@ if (this.endDate == date || this.startDate == date) {
         }
       })
       }
+    
+        })
+     
+    
      /*  $('#button_modal_define_budget').trigger('click') */
     
 
@@ -3260,21 +3264,25 @@ if (this.endDate == date || this.startDate == date) {
       var redirect = ""
         
         this.notesService.detectDevice().then(res => {
-        browser = res
-        })
-      if (browser === "Opera") {
+          browser = res
+          
+           if (browser === "Opera") {
         redirect = SERVER.opera
+        
       } else if (browser === "Chrome") {
-        redirect = SERVER.chrome
+             redirect = SERVER.chrome
+               
       } else if(browser === "Safari") {
         var current_browser_url = window.location.href
         if (current_browser_url.includes("www")) {
           redirect = SERVER.safari1
+            
         } else {
           redirect = SERVER.safari2
-        }
-      }
-    this.montant = $("#montant").val()
+            
+             }
+             
+                 this.montant = $("#montant").val()
     if (this.montant < 20000) {
       $('#error_recharge').show()
     } else if (this.montant > 1000000) {
@@ -3397,6 +3405,12 @@ if (this.endDate == date || this.startDate == date) {
       
       
     }
+      }
+
+        })
+   
+     
+
   }
    generate(length) {
    var result           = '';
