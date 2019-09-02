@@ -75,7 +75,7 @@ export class UserLoginComponent {
     this.buildForm()
     this.auth.user.forEach(value => {
       var jQuery = $
-      console.log(value)
+      //console.log(value)
       if (value!=null) {
         this.email = value.displayName
         this.accountValue = value.account_value 
@@ -234,7 +234,7 @@ export class UserLoginComponent {
    };
    xhr.open('GET', url);
         xhr.send();
-        console.log(url)
+        //console.log(url)
 
         this.auth.updateUser(this.uid, { photoURL: url }).then(res => {
 

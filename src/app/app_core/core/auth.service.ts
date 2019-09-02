@@ -96,10 +96,11 @@ export class AuthService {
 
   private oAuthLogin(provider: any): Promise<any> {
     return new Promise(resolve => {
+    
       this.afAuth.auth
       .signInWithPopup(provider)
       .then(credential => {
-      
+        console.log(credential)
         this.updateUserData(credential.user, credential.user.displayName).then(res => {
           if (res == "ok") {
             resolve('ok')

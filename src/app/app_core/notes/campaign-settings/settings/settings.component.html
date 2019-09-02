@@ -311,13 +311,13 @@
                   </div>
                 </div>
 
-                <div class="card my-3 my-3 no-b animated fadeInRight paper-card p-0" *ngIf="number_ad_groups!=0; else noAdGroups">
+                <div class="card my-3 my-3 animated fadeInRight paper-card p-0" *ngIf="number_ad_groups!=0; else noAdGroups">
                  <!--  <button class="btn btn-sm btn-secondary bg-gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="float: right !important; width: 20px">
                     <i class="icon-edit"></i>
                   </button> -->
                   <div class="card-header adafri-background text-center no-b" >
                     <!-- <i class="icon-clipboard-edit text-white"></i> -->
-                    <h6 class="adafri-police" style="color: white; font-size: 16px">Mes groupes de visuels</h6>
+                    <span class="adafri-police-16 font-weight-bold text-white">Mes groupes de visuels</span>
                     
                   </div>
                   <div class="card-body white" >
@@ -456,35 +456,32 @@
                   <i class="icon icon-money-1"></i> Budget
                 </a>
                 <div class="collapse animated fadeInDown shadow" id="collapseZone" style="margin-top: 50px">
-                        <div class="card no-b shadow timeline-item">
-              <div class="card-header adafri-background adafri-police text-white s-15 b-0 p-3 text-center no-b">
-                <span class="adafri-police-14">Définir la zone de diffusion de votre annonces (pays et ville)
+            <div class="card shadow paper-card p-0 timeline-item">
+               <div class="card-header grey lighten-4 adafri-police-16 text-black text-center no-b">
+                <span class="adafri-police-16 font-weight-bold">Définir la zone de diffusion de votre annonces (pays et ville)
                 </span>
                
               </div>
-              <div class="collapse show" id="invoiceCard">
-                <div class="card-body p-0 no-b">
+        
+                <div class="card-body">
                   <div class="table-responsive">
-                    <table id="recent-orders" class="table mb-0 ps-container ps-theme-default">
-                      <thead class="white no-b">
-                        <tr class="text-center no-b">
-                          <th><strong class="adafri-police" style="font-size: 14px">Zones ciblées</strong></th>
-                         
-                          <!-- <th>Supprimer le ciblage</th>  -->
-                        </tr>
-                      </thead>
+                    <table class="table table-bordered">
+                     
                       <tbody>
-                        <tr *ngIf="zone==''" class="text-center no-b">
-                            {{text_no_zone}}
+                        <tr class="text-center">
+                           <th class="adafri-police-14 font-weight-bold text-center">Zones ciblées</th>
                         </tr>
-                        <ng-container >
-                          <tr *ngFor="let loc of zone" class="text-center no-b">
-                            <td>{{loc.item_text}}</td>
+                        <tr *ngIf="zone==''" class="text-center">
+                            <p class="adafri-police-14 text-center text-black" style="position: absolute; left: 0; right: 0">{{text_no_zone}}</p>
+                        </tr>
+                      
+                          <tr *ngFor="let loc of zone" class="text-center">
+                            <td class="text-center adafri-police-14 text-black">{{loc.item_text}}</td>
                             
                            <!-- <td><i class="icon-delete text-danger"></i></td> -->
                           </tr>
 
-                        </ng-container>
+                     
                       </tbody>
                     </table>
                   </div>
@@ -558,15 +555,15 @@
                   </div>
                 </div>
                 </div>
-              </div>
+          
             </div>
           </div>
-           <div class="collapse animated fadeInDown p-0 paper-card" id="collapseBudget" style="margin-top: 50px">
-                        <div class="card no-b shadow timeline-item">
+           <div class="collapse animated fadeInDown" id="collapseBudget" style="margin-top: 50px">
+                        <div class="card paper-card p-0 shadow timeline-item">
                         
                                
                                <div class="collapse show" id="invoiceCard">
-                                   <div class="card-body p-0">
+                                   <div class="card-body">
                                        <div class="table-responsive">
                                            <table
                                                   class="table table-bordered">
@@ -604,7 +601,7 @@
                                            <p class="d-inline-block adafri-police-14 text-black">{{endDateFrench}}</p>
                                         </td>
                                      <td class="text-center">
-                                           <p class="d-inline-block adafri-police-14 text-black">XOF {{budget}}</p>
+                                           <p class="d-inline-block adafri-police-14 text-black">XOF {{((budget*100)/80).toString()}}</p>
                                         </td>
 
                                         
@@ -1357,5 +1354,19 @@
   <app-spinner-overlay [message]="message"></app-spinner-overlay>
 
 </div>
+<footer class="white text-center">
+  
 
+  <span class="adafri-police-10 text-black">&copy; Copyright 2019 - Adafri.  All rights reserved.</span>
+   <div class="row">
+    <div class="col-sm-12 text-center float-right">
+         <a href="https://adafri.com/#/terms" class="adafri-police-12 text-black" style="text-decoration: underline">Conditions générales d'utilisations</a>
+          <a href="https://adafri.com/#/confidentialite" class="adafri-police-12 text-black" style="text-decoration: underline">Politique de confidentialité</a>
+    </div>
+    
+   </div>
+ 
+   
+
+</footer>
 </div>

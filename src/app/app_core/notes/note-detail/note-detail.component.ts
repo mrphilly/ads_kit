@@ -8,6 +8,7 @@ import { Router } from '@angular/router'
 import { Observable } from 'rxjs'
 
 import { AdGroupService } from '../ad-groupe.service'
+import { Ads } from '../ads.service'
 import Swal from 'sweetalert2'
 import {SERVER} from '../../../../environments/environment'
 
@@ -43,8 +44,11 @@ export class NoteDetailComponent implements OnInit {
   display_visuel = true
   isRoller = false
   email: any
+  listAdGroupId = []
+  listAdId = []
+  generalListDeletion = []
 
-  constructor(private notesService: NotesService, private router: Router, private adgroup_service: AdGroupService,private auth: AuthService) { 
+  constructor(private notesService: NotesService, private router: Router, private adgroup_service: AdGroupService,private auth: AuthService, private adsService : Ads) { 
     
    
     
@@ -427,8 +431,13 @@ export class NoteDetailComponent implements OnInit {
   
   deleteCampaign(id, id_campagne) {
     
-    
-     Swal.fire({
+  /*   this.getListAdGroupId(id_campagne).then(adgroup => {
+      console.log(adgroup)
+      this.getListAdId(adgroup).then(res => {
+        var list = res
+      })
+    }) */
+      Swal.fire({
       title: 'Vous voulez vraiment supprimer cette campagne?',
       text: "Cette action sera irréversible!",
        type: 'warning',
@@ -506,6 +515,52 @@ export class NoteDetailComponent implements OnInit {
       }
     })  
 
+  }
+
+  getListAdId(data): Promise<any>{
+    return new Promise(resolve => {
+      var generalListDeletion = []
+      var listAdId = []
+      for (var i = 0; i < data.length; i++){
+        this.adsService.getListAd(data[i]["ad_group_id"].toString()).forEach(ad => {
+          if (ad.length > 0) {
+            for (var j = 0; j < ad.length; j++){
+
+              listAdId.push({
+                "id_ad_firebase": ad[j]['id']
+              })
+            }
+          }
+        })
+        generalListDeletion.push({
+          "id_ad_group_firebase": data[i]['id'],
+          "ad_list": listAdId
+        })
+      }
+      resolve(generalListDeletion)
+        
+    })
+  } 
+
+  getListAdGroupId(campaign_id): Promise<any>{
+    return new Promise(resolve => {
+      var listAdGroupId = []
+      this.adgroup_service.promiseGetListAdGroupId(campaign_id).forEach(data => {
+        if (data.length > 0) {
+          for (var i = 0; i < data.length; i++){
+            listAdGroupId.push({
+              "id": data[i]['id'],
+              "ad_group_id": data[i]['ad_group_id']
+            })
+    
+          }
+          
+          resolve(listAdGroupId)
+        } else{
+          resolve(listAdGroupId)
+        }
+      })
+    })
   }
 
   goCampaignSettings(id: string,id_campagne: string, name: string, status: string, budget: any, budgetId: any, dailyBudget: any, numberOfDays: any) {

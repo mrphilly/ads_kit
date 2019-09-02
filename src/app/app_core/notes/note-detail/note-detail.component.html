@@ -59,7 +59,7 @@
                                            <span class="adafri-police r-20"><!-- <i class="icon icon-calendar"></i> --> {{ note?.endDateFrench }}</span>
                                         </td>
                                          <td class="text-center">
-                                           <span class="adafri-police r-20"><!-- <i class="icon icon-calendar"></i> --> {{ note?.budget.toString() }} XOF</span>
+                                           <span class="adafri-police r-20"><!-- <i class="icon icon-calendar"></i> -->{{ ((note?.budget * 100)/80).toString() }} XOF</span>
                                         </td>
                                         <td class="text-center">
                                             <a class="btn btn-sm white text-black btn-social r-20 d-inline-block adafri-police-12 border-grey" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-mode_edit"></i> je débute</a>
@@ -121,7 +121,7 @@
                                            <span class="adafri-police-12"><!-- <i class="icon icon-calendar"></i> --> {{ note?.endDateFrench }}</span>
                                         </td>
                                          <td class="text-center p-0" >
-                                           <span class="adafri-police-12"><!-- <i class="icon icon-calendar"></i> --> {{ note?.budget.toString() }} XOF</span>
+                                           <span class="adafri-police-12"><!-- <i class="icon icon-calendar"></i> --> {{ ((note?.budget * 100)/80).toString() }} XOF</span>
                                         </td>
                                         <td class="text-center p-0">
                                             <a class="btn btn-sm white text-black btn-social r-20 d-inline-block adafri-police-12 border-grey" [id]="note?.id" (click)="goCampaignSettings(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget, note?.budgetId, note?.dailyBudget, note?.numberOfDays)"><i class="icon-mode_edit"></i> je débute</a>

@@ -141,7 +141,7 @@ def updateAd():
 @app.route("/addAd", methods=["POST"])
 def addAd():
     ad_group_id = request.json['ad_group_id']
-    ad_name = request.json['ad_name']
+    ad_name = request.json['ad_name'].replace(" (image/png)", "")
     ad_image_ref = request.json['url_image']
     size = request.json['size']
     

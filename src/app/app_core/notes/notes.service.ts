@@ -36,7 +36,7 @@ export class NotesService implements OnInit {
   private notesCollection: AngularFirestoreCollection<Note>;
    public deviceInfo = null;
  
-  
+  private batch: any;
    
 
   constructor(private auth: AuthService, private afs: AngularFirestore, private http: HttpClient,  private adGroupService: AdGroupService, private adsService : Ads, private deviceService: DeviceDetectorService) {
@@ -45,6 +45,7 @@ export class NotesService implements OnInit {
       this.notesCollection = this.afs.collection('notes', (ref) => ref.where('owner', '==', child.uid));
       this.currentUser = child.displayName
     })
+    
   }
   ngOnInit() { 
 
@@ -74,7 +75,7 @@ export class NotesService implements OnInit {
  
     return await new Promise(resolve => {
       this.campaignVerification(user_id, name).then(value => {
-      //console.log(`promise result: ${value}`)
+      ////console.log(`promise result: ${value}`)
 
       if (`${value}` == '0') {
         
@@ -89,8 +90,8 @@ export class NotesService implements OnInit {
          /*  var startDate = moment(res['startDate'], "YYYYMMDD").fromNow()
           var endDate = moment(res['endDate'], "YYYYMMDD").fromNow() */
           if (res['status'] == "ok") {
-            //console.log(res)
-            //console.log(res['startDateFrench'])
+            ////console.log(res)
+            ////console.log(res['startDateFrench'])
               this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res=>{
             Swal.fire({
               html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
@@ -179,7 +180,7 @@ export class NotesService implements OnInit {
  
     return await new Promise(resolve => {
       this.campaignVerification(user_id, name).then(value => {
-      //console.log(`promise result: ${value}`)
+      ////console.log(`promise result: ${value}`)
 
       if (`${value}` == '0') {
         
@@ -193,23 +194,23 @@ export class NotesService implements OnInit {
      
           if (res['status'] == "ok") {
         
-            //console.log(res['startDateFrench'])
+            ////console.log(res['startDateFrench'])
             this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res1 => {
               if (res1 == "ok") {
-                console.log('from campaign service')
-                console.log("campaign created with name "+ name)
-                console.log(res)
-                console.log(res["id"])
-                console.log(user_id)
+                //console.log('from campaign service')
+                //console.log("campaign created with name "+ name)
+                //console.log(res)
+                //console.log(res["id"])
+                //console.log(user_id)
                      this.PromiseGetCampaignSanpchot(res['id'].toString(), name).then(single => {
-                console.log('getting single campaign credentials')
-                console.log(single)
+                //console.log('getting single campaign credentials')
+                //console.log(single)
                 var response = []
                 response.push({
                   "id": single['id'],
                   "campaign_id": res['id']
                 })
-                console.log(response)
+                //console.log(response)
                 resolve(response)
       
                 })
@@ -284,7 +285,7 @@ export class NotesService implements OnInit {
  
     return await new Promise(resolve => {
       this.campaignVerification(user_id, name).then(value => {
-      //console.log(`promise result: ${value}`)
+      ////console.log(`promise result: ${value}`)
 
       if (`${value}` == '0') {
         
@@ -297,8 +298,8 @@ export class NotesService implements OnInit {
         
         
           if (res['status'] == "ok") {
-            //console.log(res)
-            //console.log(res['startDateFrench'])
+            ////console.log(res)
+            ////console.log(res['startDateFrench'])
               this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res=>{
             Swal.fire({
               html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
@@ -389,7 +390,7 @@ export class NotesService implements OnInit {
  
       return new Promise(resolve => {
       this.getCampaignZones(campaign_id, name).then(value => {
-      //console.log(`promise result: ${value}`)
+      ////console.log(`promise result: ${value}`)
 
       
         
@@ -399,7 +400,7 @@ export class NotesService implements OnInit {
     })
       .subscribe(
         res => {
-          //console.log(`res from location backend: ${res}`)
+          ////console.log(`res from location backend: ${res}`)
           this.updateNote(id, { zones: location }).then(res => {
             if (res == "ok") {
               resolve('ok')
@@ -444,7 +445,7 @@ export class NotesService implements OnInit {
   getListCampaign(uid: any) {
    
    
-   //console.log(uid)
+   ////console.log(uid)
  return this.afs.collection('notes', (ref) => ref.where('owner','==',`${uid}`)).snapshotChanges().pipe(
       map((actions) => {
         return actions.map((a) => {
@@ -462,9 +463,9 @@ export class NotesService implements OnInit {
     return this.getCampaignZones(campaign_id, name).then(value => {
       
 
-      //console.log(`promise result: ${value['item_id']}`)
-      //console.log(`location id from me ${location[0].item_id}`)
-      //console.log(`location id from firestore ${value[0].item_id}`)
+      ////console.log(`promise result: ${value['item_id']}`)
+      ////console.log(`location id from me ${location[0].item_id}`)
+      ////console.log(`location id from firestore ${value[0].item_id}`)
       
       
         this.http.post(SERVER_URL+'/updateLocation', {
@@ -475,7 +476,7 @@ export class NotesService implements OnInit {
     })
       .subscribe(
         res => {
-          //console.log(`res from location backend: ${res}`)
+          ////console.log(`res from location backend: ${res}`)
           this.updateNote(id, {zones: location })
         },
         err => {
@@ -518,15 +519,15 @@ export class NotesService implements OnInit {
 
    return await this.getSingleCampaignWithId(uid, campaign_id).then(value => {
   
-     //console.log(`value:`)
-     //console.log(value)
-     //console.log(`age:`)
-     //console.log(age)
+     ////console.log(`value:`)
+     ////console.log(value)
+     ////console.log(`age:`)
+     ////console.log(age)
   
   /*    var tab = _.differenceWith(value, genre, _.isEqual)
-     //console.log(tab)
+     ////console.log(tab)
      if (tab = []) {
-       //console.log(`genre déjà ciblé`)
+       ////console.log(`genre déjà ciblé`)
      } else {
         
      }*/
@@ -539,7 +540,7 @@ export class NotesService implements OnInit {
     })
       .subscribe(
         res => {
-          //console.log(`res from location backend: ${res}`)
+          ////console.log(`res from location backend: ${res}`)
           this.updateNote(id, {ages: age, criterion_ages: res})
         },
         err => {
@@ -605,7 +606,7 @@ export class NotesService implements OnInit {
         setTimeout(() => {
        
           this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
-            //console.log(el[0]['zones'])
+            ////console.log(el[0]['zones'])
           resolve(el[0]['zones'])
         })
       }, 2000);
@@ -617,7 +618,7 @@ export class NotesService implements OnInit {
         setTimeout(() => {
        
           this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
-            //console.log(el)
+            ////console.log(el)
           resolve(el[0])
         })
       }, 2000);
@@ -633,7 +634,7 @@ export class NotesService implements OnInit {
       })
         .subscribe(
           res => {
-            //console.log(res)
+            ////console.log(res)
          
          
             this.updateNote(id, { startDate: res[0]['startDate'], startDateFrench: startDateFrench, servingStatus: res[0]['servingStatus'] }).then(res => {
@@ -678,7 +679,7 @@ export class NotesService implements OnInit {
     })
       .subscribe(
         res => {
-          //console.log(res)
+          ////console.log(res)
          
          
           this.updateNote(id, { endDate: res[0]['endDate'], endDateFrench: endDateFrench, servingStatus: res[0]['servingStatus'] }).then(res => {
@@ -726,7 +727,7 @@ export class NotesService implements OnInit {
       })
         .subscribe(
           res => {
-            //console.log(res)
+            ////console.log(res)
            
            
             this.updateNote(id, { endDate: res[0]['endDate'], endDateFrench: endDateFrench, startDate: res[0]['startDate'], startDateFrench: startDateFrench, servingStatus: res[0]['servingStatus'] }).then(res => {
@@ -754,8 +755,8 @@ export class NotesService implements OnInit {
       .subscribe(
         res => {
           
-        /* //console.log(res[0]['name']) */
-          //console.log(res[0]['servingStatus'])
+        /* ////console.log(res[0]['name']) */
+          ////console.log(res[0]['servingStatus'])
           this.getSingleCampaign(campaign_id, res[0]['name']).subscribe(data => {
             if (data[0]['servingStatus'] != res[0]['servingStatus']) {
               if (res[0]['servingStatus'] == null) {
@@ -876,19 +877,19 @@ parseDate(str) {
   }
 
   /* deleteNote(id: string, ad_groups_list_id: any, ads_list_id: any) {
-    //console.log(ad_groups_list_id.length)
-    //console.log(ads_list_id.length)
+    ////console.log(ad_groups_list_id.length)
+    ////console.log(ads_list_id.length)
 
-    //console.log(ad_groups_list_id)
-    //console.log(ads_list_id)
+    ////console.log(ad_groups_list_id)
+    ////console.log(ads_list_id)
     if (ad_groups_list_id.length == 0) {
-      //console.log("pas de groupe , pas d'annonce")
+      ////console.log("pas de groupe , pas d'annonce")
           return this.getNote(id).delete()
 
     } else if (ad_groups_list_id.length == 1) {
-              //console.log("un groupe d'annonce")
+              ////console.log("un groupe d'annonce")
       if (ads_list_id.length == 0) {
-        //console.log("groupe d'annonce n'a aucune annonce")
+        ////console.log("groupe d'annonce n'a aucune annonce")
         this.deleteAdGroupList(ad_groups_list_id).then(res => {
           if(res=="ok"){
             return this.getNote(id).delete()
@@ -896,8 +897,8 @@ parseDate(str) {
           }
         })
       } else {
-         //console.log(`ads list len ${ads_list_id.length}`)
-        //console.log("groupe d'annonce a plusieurs annonces")
+         ////console.log(`ads list len ${ads_list_id.length}`)
+        ////console.log("groupe d'annonce a plusieurs annonces")
          this.deleteAdList(ads_list_id).then(res => {
           this.deleteAdGroupList(ad_groups_list_id).then(res => {
           return this.getNote(id).delete()
@@ -909,7 +910,7 @@ parseDate(str) {
       
      
     } else if (ad_groups_list_id.length > 1) {
-      //console.log('plusieurs groupes')
+      ////console.log('plusieurs groupes')
       if (ads_list_id.length == 0) {
          this.deleteAdGroupList(ad_groups_list_id).then(res => {
           return this.getNote(id).delete()
@@ -933,11 +934,11 @@ parseDate(str) {
     }
    
     )
-    //console.log(ad_groups_list_id.length)
-    //console.log(ads_list_id.length)
+    ////console.log(ad_groups_list_id.length)
+    ////console.log(ads_list_id.length)
 
-    //console.log(ad_groups_list_id)
-    //console.log(ads_list_id)
+    ////console.log(ad_groups_list_id)
+    ////console.log(ads_list_id)
     
   }
 
@@ -953,10 +954,10 @@ parseDate(str) {
           
         }else {
          let i = 0
-         //console.log('groupe')
-         //console.log(ads_list_id)
+         ////console.log('groupe')
+         ////console.log(ads_list_id)
          for (let i = 0; i < ads_list_id.length; i++){
-             //console.log('removing')
+             ////console.log('removing')
             this.adsService.deleteAd(ads_list_id[i]).then(res => {
           
           resolve('ok')
@@ -978,10 +979,10 @@ parseDate(str) {
           
         }else {
          let i = 0
-         //console.log('groupe')
-         //console.log(ad_groups_list_id)
+         ////console.log('groupe')
+         ////console.log(ad_groups_list_id)
          for (let i = 0; i < ad_groups_list_id.length; i++){
-             //console.log('removing')
+             ////console.log('removing')
             this.adGroupService.deleteAdGroup(ad_groups_list_id[i]).then(res => {
               resolve('ok')
            

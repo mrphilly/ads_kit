@@ -149,7 +149,7 @@ private basePath = '/uploads';
   
   
     return await new Promise(resolve => {
-      alert(size[0]['width'].toString())
+     /*  alert(size[0]['width'].toString()) */
       this.annonceVerification(ad_name, ad_group_id).then(value => {
       //console.log(`promise result: ${value}`)
       
@@ -266,22 +266,8 @@ private basePath = '/uploads';
         
             this.createAd('', ad_group_id, ad_name, '', url_image,image_content, displayUrl[0], displayUrl[0], finalMobileUrls, finalAppUrls, '', '' , uid, size, ad_type).then(res=>{
               if (res == "ok") {
-                    Swal.fire({
-              title: 'Ajouter une annonce',
-              text: 'Annonce ajoutée avec succès',
-              type: 'success',
-              showCancelButton: false,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {
+           
                 resolve("ok")
-              } else {
-                resolve("ok")
-               
-              }
-            })
               }
          }) 
 
@@ -413,6 +399,17 @@ private basePath = '/uploads';
     })
   }
 
+
+  /*  async createMultipleAd(ad_id: any, ad_group_id: any, ad_name: any, status: any, url_image: any, image_content: any, displayUrl: any, finalUrls: any, finalMobileUrls: any, finalAppUrls: any, referenceId: any, automated: any, uid: any, size: any, ad_type: any):Promise<any> {
+     return new Promise(resolve => {
+      let batch = this.afs.firestore.batch();
+      this.annonce_model = this.prepareSaveAd(ad_id, ad_group_id, ad_name, status, url_image, image_content, displayUrl, finalUrls, finalMobileUrls, finalAppUrls, referenceId,  automated, uid, size, ad_type);
+       let docRef = this.afs.collection('ads')
+       batch.set(docRef., this.annonce_model)
+      resolve('ok')
+    })
+  } */
+
   updateAd(id: string, data: any):Promise<any> {
     return new Promise(resolve => {
       this.getAd(id).update(data)
@@ -427,8 +424,10 @@ private basePath = '/uploads';
     }
   }
 
-  deleteAd(id: string) {
-    return this.getAd(id).delete();
+  deleteAd(id: string): Promise<any> {
+    return new Promise(resolve => {
+      resolve("ok")
+    })
   }
 
   deleteAdPromise(id: string):Promise<any> {

@@ -74,14 +74,16 @@ def getPolicySummurry(client, ad_group_id):
                'topic entries:' % ad['ad']['id']) """
         # Display the policy topic entries related to the ad disapproval.
         for policy_topic_entry in policy_summary['policyTopicEntries']:
-         
-          policy.append({
-            "policyTopicEntryType": translator.translate(policy_topic_entry['policyTopicEntryType'], dest="fr").text,
-            "policyTopicId": policy_topic_entry['policyTopicId'],
-            "policyTopicName": translator.translate(policy_topic_entry['policyTopicName'], dest="fr").text,
-            "policyTopicEvidences": policy_topic_entry['policyTopicEvidences'],
-            "policyTopicHelpCenterUrl": policy_topic_entry['policyTopicHelpCenterUrl']
-          })
+          if len(policy_topic_entry['policyTopicEntryType']) > 0:
+            policy.append({
+              "policyTopicEntryType": translator.translate(policy_topic_entry['policyTopicEntryType'], dest="fr").text,
+              "policyTopicId": policy_topic_entry['policyTopicId'],
+              "policyTopicName": translator.translate(policy_topic_entry['policyTopicName'], dest="fr").text,
+              "policyTopicEvidences": policy_topic_entry['policyTopicEvidences'],
+              "policyTopicHelpCenterUrl": policy_topic_entry['policyTopicHelpCenterUrl']
+            })
+          else:
+            policy.append([])
         
 
 
@@ -110,6 +112,7 @@ def getPolicySummurry(client, ad_group_id):
             "combinedApprovalStatus": translator.translate(policy_summary['combinedApprovalStatus'], dest="fr").text,
           "policy": policy
         })
+        policy = []
     offset += PAGE_SIZE
     selector['paging']['startIndex'] = str(offset)
     more_pages = offset < int(page['totalNumEntries'])

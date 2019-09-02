@@ -127,7 +127,7 @@ localStorage.getItem("")
 var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
             { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding });
 
-    //console.log('Decrypted:' + bytes.toString(CryptoJS.enc.Utf8));
+    ////console.log('Decrypted:' + bytes.toString(CryptoJS.enc.Utf8));
    
       status.push({
         "status": "ok",
@@ -165,7 +165,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
           "account_value": data.account_value,
           "paymentKey": data.paymentKey
         })
-        console.log(data)
+        //console.log(data)
       })
    
   }
@@ -218,9 +218,9 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
          this.notes = this.notesService.getListCampaign(value.uid)
          this.notes.forEach(child => {
           
-      ////console.log(child.length)
+      //////console.log(child.length)
       if (child.length > 0) {
-        ////console.log(child.length)
+        //////console.log(child.length)
         this.toggleListCampaign()
          document.querySelector('.height-full').classList.remove('adafri-background')
       } else {
@@ -368,7 +368,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
         var id = params['id']
         
         this.getCurrentUserCredentials().then(credentials => {
-          console.log(credentials)
+          //console.log(credentials)
           var paymentKey = credentials[0]['paymentKey']
           this.uid = credentials[0]['uid']
           this.accountValue = credentials[0]['account_value']
@@ -379,15 +379,15 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
             this.isCreating = true
               var new_value = 0
               if (this.accountValue > new_value) {
-                console.log("Solde du compte non null")
-                console.log("solde actuel: " + this.accountValue.toString())
+                //console.log("Solde du compte non null")
+                //console.log("solde actuel: " + this.accountValue.toString())
                 new_value = parseInt(montant) + this.accountValue
-                console.log("Nouveau solde: "+new_value.toString())
+                //console.log("Nouveau solde: "+new_value.toString())
               } else {
-                  console.log("Solde du compte null")
-                  console.log("solde actuel: " + this.accountValue.toString())
+                  //console.log("Solde du compte null")
+                  //console.log("solde actuel: " + this.accountValue.toString())
                   new_value = parseInt(montant)
-                  console.log("Nouveau solde: "+new_value.toString())
+                  //console.log("Nouveau solde: "+new_value.toString())
                 }
               this.auth.updateUser(this.uid, { account_value: new_value, paymentKey: "" }).then(res => {
               if (res != "error") {
@@ -576,7 +576,7 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
               this.auth.user.forEach(data => {
                 //alert(params['idC'])
                 var montant = localStorage.getItem(params['id_campaign_to_recharge'])
-                //console.log(montant)
+                ////console.log(montant)
                 if (montant === null) {
                   
                   this.isCreating = false
@@ -857,17 +857,17 @@ encrypted(text, password){
 
     clickHandler(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string, budgetId: any) {
     
-      //console.log(this.uid)
-      //console.log(name)
-      //console.log(status)
+      ////console.log(this.uid)
+      ////console.log(name)
+      ////console.log(status)
       
       this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus, budgetId
       ).then(res => {
      
         if (res != "error") {
           this.getCampaignIdFirebase(id, name).then(single => {
-            console.log('campagne')
-            console.log(single['id_campagne'])
+            //console.log('campagne')
+            //console.log(single['id_campagne'])
       
           
            Swal.fire({
@@ -889,7 +889,7 @@ encrypted(text, password){
               this._init_campagne = false
                 document.getElementById('body').classList.remove('adafri-background')
             this.router.navigate(['/ads', name, single['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], single['id_campagne']]).then(() => {
-                window.location.reload()
+          
               })
             }
           })
@@ -928,8 +928,8 @@ encrypted(text, password){
     })
       .subscribe(
         res => {
-          //console.log(res)
-          //console.log(res['budgetId'])
+          ////console.log(res)
+          ////console.log(res['budgetId'])
           if (res['status'] == "ok") {
             this.id_campagne = res['id']
             this.status = res['status_campaign']
@@ -1066,15 +1066,15 @@ encrypted(text, password){
                 }
             },
             willGetToken: function () {
-                //console.log("Je me prepare a obtenir un token");
+                ////console.log("Je me prepare a obtenir un token");
                 selector.prop('disabled', true);
                 //var ads = []
 
 
             },
             didGetToken: function (token, redirectUrl) {
-                //console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
-              console.log('redirec_url')
+                ////console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+              //console.log('redirec_url')
                 selector.prop('disabled', false);
             },
             didReceiveError: function (error) {
@@ -1082,7 +1082,7 @@ encrypted(text, password){
                 selector.prop('disabled', false);
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
-                //console.log('non success response ', jsonResponse);
+                ////console.log('non success response ', jsonResponse);
                 //alert(jsonResponse.errors);
                 selector.prop('disabled', false);
             }
