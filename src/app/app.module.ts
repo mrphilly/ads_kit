@@ -14,10 +14,20 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import * as firebase from 'firebase';
 
+import * as FusionCharts from 'fusioncharts';
+
 import { ColorPickerModule } from 'ngx-color-picker';
 
 import { NgxFormatFieldModule } from 'ngx-format-field';
 
+import { AccordionModule } from 'primeng/accordion';
+
+import { DeviceDetectorModule } from 'ngx-device-detector';
+
+import { FusionChartsModule } from 'angular-fusioncharts';
+
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
 
 import { environment } from '../environments/environment';
 
@@ -29,16 +39,6 @@ import { AuthGuard } from './app_core/core/auth.guard';
 import { CoreModule } from './app_core/core/core.module';
 import { NotesModule } from './app_core/notes/notes.module';
 import { UiModule } from './app_core/ui/ui.module';
-
-import { AngularFireDatabaseModule } from '@angular/fire/database'
-
-import { FusionChartsModule } from 'angular-fusioncharts';
-
-import * as FusionCharts from 'fusioncharts';
-import * as Charts from 'fusioncharts/fusioncharts.charts';
-import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
-import { DeviceDetectorModule } from 'ngx-device-detector';
-import { AccordionModule } from 'primeng/accordion';
  import { NgNetworkStatusModule } from 'ng-network-status'; // <-- HERE
 
 import {FIREBASE_CREDENTIALS} from '../environments/environment'
@@ -86,7 +86,6 @@ firebase.initializeApp(FIREBASE_CREDENTIALS)
     HttpModule,
     RouterModule,
     ColorPickerModule,
-    AngularFireDatabaseModule,
     NgbModule.forRoot(),
     NgxFormatFieldModule,
     FusionChartsModule,
