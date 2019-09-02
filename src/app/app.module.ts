@@ -1,5 +1,5 @@
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireModule  } from '@angular/fire';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 import { CommonModule } from '@angular/common';  
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -8,7 +8,7 @@ import {  BrowserModule, BrowserTransferStateModule  } from '@angular/platform-b
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { NgModule } from '@angular/core';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -90,7 +90,8 @@ firebase.initializeApp(FIREBASE_CREDENTIALS)
     NgxFormatFieldModule,
     FusionChartsModule,
     AccordionModule,
-    NgNetworkStatusModule
+    NgNetworkStatusModule,
+    
    
     
 

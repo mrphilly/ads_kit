@@ -16,7 +16,6 @@ import { map } from 'rxjs/operators'
 import * as moment from 'moment'
 /* import { NoteDetailComponent } from './note-detail/note-detail.component' */
 
-import { AngularFireDatabase } from '@angular/fire/database'
 import {SERVER} from '../../../environments/environment'
 
 declare var require: any;
@@ -38,7 +37,7 @@ private basePath = '/uploads';
    
  
 
-  constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient, private db: AngularFireDatabase) {
+  constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient) {
     this.auth.user.subscribe(data => {
      this.uid = data.uid
    })
@@ -68,9 +67,7 @@ private basePath = '/uploads';
     );
   } */
  
-  private saveFileData(annonces: Annonces) {
-    this.db.list(`${this.basePath}/`).push(annonces);
-  }
+ 
 
   
  getListAnnonces(ad_group_id: string) {
