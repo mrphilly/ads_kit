@@ -4,14 +4,14 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import {
+  ActivatedRoute, Router
+} from '@angular/router';
+import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { s } from '@angular/core/src/render3';
-import {
-  ActivatedRoute, Router
-} from '@angular/router';
 
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
@@ -1484,7 +1484,7 @@ if (chLine) {
     })
 
     
-    /* this.getAdsPolicy(this.ad_group_id).then(res => {
+     this.getAdsPolicy(this.ad_group_id).then(res => {
       if(res!="error"){
         var promesse = ""
         var combined = ""
@@ -1507,7 +1507,7 @@ if (chLine) {
         
   }
 })   
- */
+ 
 
 
 
