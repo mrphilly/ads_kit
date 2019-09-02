@@ -2559,7 +2559,7 @@
             <div class="paper-card shadow">
                <div class="card no-b d-inline-block" *ngFor="let image of imagesUpload">
           
-              <img class="img-responsive" src="{{image.src}}" alt="{{image.name}}" id="ad_image">
+              <img class="img-responsive" src="{{image.src}}" alt="{{image.name}}" id="ad_image" [ngStyle]="img_view_create_style">
 
 
             </div>
