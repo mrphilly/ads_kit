@@ -515,7 +515,7 @@
             <mat-icon>add</mat-icon>
 
             <mcc-speed-dial-actions [animation]="animation">
-              <button mat-mini-fab class="adafri-background text-white">
+              <button mat-mini-fab class="adafri-background text-white" (click)="triggerImage()">
                 <mat-icon>add_a_photo</mat-icon>
               </button>
               <button mat-mini-fab  [matMenuTriggerFor]="menuFigure" class="adafri-background text-white">
@@ -526,7 +526,7 @@
   <button mat-menu-item  (click)="addShape('square');">  <mat-icon aria-label="Example icon-button with a heart icon">check_box_outline_blank</mat-icon> Carré</button>
   <button mat-menu-item  (click)="addShape('rectangle');">  <mat-icon aria-label="Example icon-button with a heart icon">aspect_ratio</mat-icon> Rectangle</button>
   <button mat-menu-item  (click)="addShape('triangle');">  <mat-icon aria-label="Example icon-button with a heart icon">change_history</mat-icon> Triangle</button>
-  <button mat-menu-item  (click)="addShape('start');">  <mat-icon aria-label="Example icon-button with a heart icon">star</mat-icon> Etoile</button>
+  <button mat-menu-item  (click)="addShape('star');">  <mat-icon aria-label="Example icon-button with a heart icon">star</mat-icon> Etoile</button>
 </mat-menu>
               <button mat-mini-fab [matMenuTriggerFor]="menuElements" class="adafri-background text-white">
                 <mat-icon>group_work</mat-icon>
@@ -1222,7 +1222,7 @@
             <mat-icon>add</mat-icon>
 
             <mcc-speed-dial-actions [animation]="animation">
-              <button mat-mini-fab>
+              <button mat-mini-fab (click)="triggerImage()">
                 <mat-icon>add_a_photo</mat-icon>
               </button>
               <button mat-mini-fab  [matMenuTriggerFor]="menuFigure">
@@ -1233,7 +1233,7 @@
   <button mat-menu-item  (click)="addShape('square');">  <mat-icon aria-label="Example icon-button with a heart icon">check_box_outline_blank</mat-icon> Carré</button>
   <button mat-menu-item  (click)="addShape('rectangle');">  <mat-icon aria-label="Example icon-button with a heart icon">aspect_ratio</mat-icon> Rectangle</button>
   <button mat-menu-item  (click)="addShape('triangle');">  <mat-icon aria-label="Example icon-button with a heart icon">change_history</mat-icon> Triangle</button>
-  <button mat-menu-item  (click)="addShape('start');">  <mat-icon aria-label="Example icon-button with a heart icon">star</mat-icon> Etoile</button>
+  <button mat-menu-item  (click)="addShape('star');">  <mat-icon aria-label="Example icon-button with a heart icon">star</mat-icon> Etoile</button>
 </mat-menu>
               <button mat-mini-fab [matMenuTriggerFor]="menuElements">
                 <mat-icon>group_work</mat-icon>
@@ -2009,7 +2009,7 @@
             <!-- This icon can be anything you want -->
             <mat-icon>add</mat-icon>
 
-            <mcc-speed-dial-actions [animation]="animation">
+            <mcc-speed-dial-actions [animation]="animation" (click)="triggerImage()">
               <button mat-mini-fab>
                 <mat-icon>add_a_photo</mat-icon>
               </button>
@@ -2021,7 +2021,7 @@
   <button mat-menu-item  (click)="addShape('square');">  <mat-icon aria-label="Example icon-button with a heart icon">check_box_outline_blank</mat-icon> Carré</button>
   <button mat-menu-item  (click)="addShape('rectangle');">  <mat-icon aria-label="Example icon-button with a heart icon">aspect_ratio</mat-icon> Rectangle</button>
   <button mat-menu-item  (click)="addShape('triangle');">  <mat-icon aria-label="Example icon-button with a heart icon">change_history</mat-icon> Triangle</button>
-  <button mat-menu-item  (click)="addShape('start');">  <mat-icon aria-label="Example icon-button with a heart icon">star</mat-icon> Etoile</button>
+  <button mat-menu-item  (click)="addShape('star');">  <mat-icon aria-label="Example icon-button with a heart icon">star</mat-icon> Etoile</button>
 </mat-menu>
               <button mat-mini-fab [matMenuTriggerFor]="menuElements">
                 <mat-icon>group_work</mat-icon>
