@@ -328,3 +328,6 @@ div.font-select {
 }
 
 
+#body > section > app-root > app-annonces > mat-sidenav-container > mat-sidenav-content > div > div > mat-card.lime.lighten-5.p-0.mat-card > mat-horizontal-stepper > div.mat-horizontal-content-container{
+  padding: 0px !important;
+}

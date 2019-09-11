@@ -50,9 +50,14 @@ export class NotesService implements OnInit {
   ngOnInit() { 
 
   }
-    public detectDevice():Promise<any>{
-      return new Promise(resolve => {
+  public detectDevice(): Promise<any> {
+    return new Promise(resolve => {
       resolve(this.deviceService.browser)
+    })
+  }
+      public isMobile():Promise<any>{
+      return new Promise(resolve => {
+      resolve(this.deviceService.isMobile)
     })
   
   }

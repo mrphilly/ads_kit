@@ -1,13 +1,20 @@
 
 <div id="app">
+
 <div class="has-sidebar-tabs">
     <!--navbar-->
-    <div class="sticky">
+   
+ <div class="sticky mat-elevation-z4">
         <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
-             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow" style="height: 90px">
-            <img class="d-none d-md-block float-left" src="assets/img/images/newlogo.png" style="width: 15%" (click)="go1()">
-            <img class="d-md-none d-sm-block float-left" src="assets/img/images/newlogo.png" style="width: 35%" (click)="go1()">
+             <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white" style="height: 70px">
+             
+                 <!--  <button mat-raised-button color="accent" (click)="sidenav.open()" class="">Menu</button> -->
+                
+                
+                  <img class="d-none d-md-block " src="assets/img/images/newlogo.png" style="width: 15%" (click)="go1()">
+                  <img class="d-md-none d-sm-block" src="assets/img/images/newlogo.png" style="width: 20%; margin-left: -70px" (click)="go1()">
+              
             <!--Top Menu Start -->
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
@@ -22,7 +29,7 @@
                 <i class="icon-money-bag"></i> {{accountValue}} CFA
             </a>
         </li>
-         <li class="dropdown custom-dropdown notifications-menu" *ngIf="!_init_campagne" style="margin-top: 5px">
+         <li class="dropdown custom-dropdown notifications-menu" style="margin-top: 5px">
             <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
                 <i class="icon-notifications_none text-black-50"></i>
                 <span class="badge adafri-background badge-mini rounded-circle text-white">{{numberOfNotifications}}</span>
@@ -40,9 +47,10 @@
                            <a class="adafri-police-12 text-danger" *ngIf="accountValue ===0">
                                 <i class="icon icon-data_usage text-danger"></i>Votre solde est vide
                             </a> 
-                              <a class="btn btn-sm adafri-background text-white btn-social r-20 d-inline-block adafri-police-12" data-toggle="modal" data-target="#modalRechargement">
+                             <!--  <a class="btn btn-sm adafri-background text-white btn-social r-20 d-inline-block adafri-police-12" data-toggle="modal" data-target="#modalRechargement">
                                 <i class="icon-payment"></i> Charger mon compte
-                              </a>
+                              </a> -->
+                               <button mat-raised-button class="adafri-background text-white" data-toggle="modal" data-target="#modalRechargement">Charger mon compte</button>
                             
                         </li>
                         <li class="no-b white text-center">
@@ -93,6 +101,7 @@
     </ul>
 </div>
         </div>
+       
     </div>
     <div *ngIf="_addCampaign_" style="position: relative">
         <app-create-campaign></app-create-campaign>
@@ -104,125 +113,46 @@
 
    
 
-    <div class="container-fluid pt-5 adafri-background" *ngIf="_init_campagne">
-         <div id="particles-js">
+    <div class="container-fluid pt-5 background-yellow-adafri" *ngIf="_init_campagne">
+    
+        <div class="height-full paper-card text-center" style="box-shadow: none">
+                 <div class="row">
+        <div class="col-md-12 background-yellow-adafri text-center">
+            <form class="example-form" [formGroup]="campaign" (ngSubmit)="addCampaign()">
+                <mat-card class="d-inline-block text-center mat-elevation-z10">
+            
+                           
 
-     </div>
+                   
+                            <img class="img-responsive d-inline-block" style="width: 50%" src="assets/img/init.png">
+               
+                <mat-card-content>
+                    <p class="font-weight-bold text-black">Créer une campagne publicitaire</p>
+  <mat-form-field class="example-full-width text-black" >
+    <input matInput [(ngModel)]="new_name" placeholder="Nom de la campagne" id="campagne" formControlName="campaign">
+  </mat-form-field>
 
-     <div class="row">
-        <div class="col-md-6 adafri-background">
-             <div class="text-center p-5 white shadow2 r-20 d-md-block d-none animated bounceIn delay-1s" style="position: absolute; width: 60%
-">
-       <img class="img-responsive" src="assets/img/init.png">
-       <br>
-       <br>
-       <small class="adafri-police text-black-50" style="font-size: 18px">Vous devez creer une nouvelle campagne publicitaire pour commencer</small>
-       <br>
-       <br>
-       <div class="form-row text-center">
-           <div class="col-md-12 text-center">
-
-               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%">
-           </div>
-
-       </div>
-        <br>
-       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
-       <br>
-   
+</mat-card-content>
+<mat-card-actions class="text-center">
+    <p class="text-black-50">{{message_to_show}}</p>
+     <mat-progress-bar mode="indeterminate" class="teal" *ngIf="progressBarAddCampaign"></mat-progress-bar>
+    <button mat-raised-button class="teal text-white" type="submit" *ngIf="!progressBarAddCampaign">Créer</button>
+</mat-card-actions>
+</mat-card>
+</form>
           
-       
-
-          
-   </div>
-   <div class="text-center p-5 white shadow2 r-20 d-md-none d-sm-block animated bounceIn delay-1s" style="position: absolute; width: 95%; margin-left: -5px">
-       <img class="img-responsive" src="assets/img/init.png">
-       <br>
-       <br>
-       <small class="adafri-police text-black-50" style="font-size: 18px">Vous devez creer une nouvelle campagne publicitaire pour commencer</small>
-       <br>
-       <br>
-       <div class="form-row text-center">
-           <div class="col-md-12 text-center">
-
-               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%; font-size: 12px">
-           </div>
-
-       </div>
-        <br>
-       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
-       <br>
-   
-          
-       
-
-          
-   </div>
         </div>
-                    <div class="col-md-6  d-md-block d-none">
-                        <h1 class="adafri-police text-white" style="font-size: 24px">Créez vite votre première campagne</h1>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6  " style="">
-                        <img class='img-responsive animated shadow2 fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/vert.jpg">
-                        <!-- <div class="card no-b mb-3 shadow text-white">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="col-md-6 col-sm-6" style="">
-                        <img class='img-responsive animated shadow2 fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/rose.jpg">
-                        <!-- <div class="card no-b mb-3 shadow">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6" style="">
-                        <img class='img-responsive animated shadow2 fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/bleue.png">
-                        <!-- <div class="card no-b mb-3 shadow">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="col-md-6 col-sm-6" style="">
-                        <img class='img-responsive animated shadow2 fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/degrade1.jpg">
-                        <!-- <div class="card no-b mb-3 shadow">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-                      <!--  <div class="col-md-6 d-md-none d-sm-block">
-                <div class="row">
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/vert.jpg">
-                      
-                    </div>
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateOut fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/rose.jpg">
-                     
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/bleue.png">
-                     
-                    </div>
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateOut fast infinite' style="border-radius: 400px;width: 25%" src="assets/img/images/degrade1.jpg">
-                       
-                    </div>
-                </div>
+                    <!-- <div class="col-md-6  d-md-block d-none text-center">
+                        <mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile><img class="img-responsive d-inline-block" style="width: 50%" src="assets/img/init.png"></mat-grid-tile>
+  <mat-grid-tile>2</mat-grid-tile>
+  <mat-grid-tile>3</mat-grid-tile>
+  <mat-grid-tile>4</mat-grid-tile>
+</mat-grid-list>
             </div> -->
+                     
      </div>
+        </div>
    
    
 
@@ -239,7 +169,10 @@
             </div> -->
         
         <!-- <h5 style="margin-top: 20px; font-weight: bold">Toutes les camapgnes</h5> -->
+    <div class="height-full">
+
         <note-detail></note-detail>
+    </div>
      
     </ng-container>
 
@@ -305,9 +238,9 @@
   </div>
 </div>
 
-<a class="btn-fab btn-fab-md fab-right fab-right-bottom-fixed shadow text-black-50  btn-social" *ngIf="!_init_campagne" (click)="action_2()" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);  "><img src="assets/img/images/groupe d'annonces.png"></a>
+<!-- <a class="btn-fab btn-fab-md fab-right fab-right-bottom-fixed shadow text-black-50  btn-social" *ngIf="!_init_campagne" (click)="action_2()" style="background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);  "><img src="assets/img/images/groupe d'annonces.png"></a> -->
 
-<footer class="white text-center" style="position: absolute; left: 0; right: 0">
+<!-- <footer class="white text-center" >
   
 
   <span class="adafri-police-10 text-black">&copy; Copyright 2019 - Adafri.  All rights reserved.</span>
@@ -321,7 +254,12 @@
  
    
 
-</footer>
+</footer> -->
+ <!-- <footer class="md-padding">
+        <div id="btmFooter" flex>
+          <p>Basic Footer</p>
+        </div>
+      </footer> -->
 
 
 </div>

@@ -39,16 +39,20 @@ AD_GROUP_ID = '72362966135'
 #Function for only target male ==> disable female et undetermined
 def SetPlacement(client, ad_group_id, placement, last_placement):
   result = []
-  #print(placement)
+  print("initial placement")
+  print(placement)
   ad_group_criteria = []
   ad_group_criterion_service = client.GetService(
         'AdGroupCriterionService', version='v201809')
  
   
   if len(last_placement) > 0:
+    print('last placement not null')
+    print(last_placement)
+    print("removing last placement")
     for place in last_placement:
-      if len(place) !=0:
-          ad_group_criteria=[
+      #if len(place) !=0:
+          ad_group_criteria.append(
               # Exclusion criterion.
               {
                   'xsi_type': 'BiddableAdGroupCriterion',
@@ -60,18 +64,21 @@ def SetPlacement(client, ad_group_id, placement, last_placement):
                       # https://developers.google.com/adwords/api/docs/appendix/ages.
                       'id':  place['criterion_id']
                   }
-              }]
+              })
+              
     operations = []
     for criterion in ad_group_criteria:
       operations.append({
           'operator': 'REMOVE',
           'operand': criterion
       })
-
+    print('last placement removed')
     remove = ad_group_criterion_service.mutate(operations)
     print(remove)
     if 'value' in remove:  
-
+      print("addind placement")
+      print("actual placement")
+      print(placement)
       for place in placement:
         i=0
         ad_group_criteria = []
@@ -123,7 +130,7 @@ def SetPlacement(client, ad_group_id, placement, last_placement):
               ad_group_criteria = []
             else:
               print('No criteria were returned.')
-          i = i+1
+            i = i+1
   else:
     print('condition')
     for place in placement:

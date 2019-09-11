@@ -4,6 +4,8 @@ import {
   ActivatedRoute
 } from '@angular/router';
 
+import { SidebarComponent, TreeViewComponent } from '@syncfusion/ej2-angular-navigations';
+
 import { Observable } from 'rxjs';
 
 import { NotesService } from '../notes.service';
@@ -16,8 +18,9 @@ import * as moment from 'moment'
 import { SERVER } from '../../../../environments/environment'
 import { Router } from '@angular/router'
 import * as CryptoJS from 'crypto-js'
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
-
+import {MatSnackBar} from "@angular/material"
 declare const particlesJS: any; 
 
 declare const pQuery: any
@@ -35,7 +38,86 @@ const REDIRECT_URL = SERVER.url_redirect
   providers: [NoteDetailComponent]
 })
 export class NotesListComponent implements AfterViewInit {
+  progressBarAddCampaign = false
+  message_to_show = ""
+  new_name = ""
+    @ViewChild('sidebarTreeviewInstance')
+    public sidebarTreeviewInstance: SidebarComponent;
+    @ViewChild('treeviewInstance')
+    public treeviewInstance: TreeViewComponent;
+    public width: string = '290px';
+    public enableDock: boolean = true;
+    public dockSize:string ="44px";
+    public mediaQuery: string = ('(min-width: 600px)');
+    public target: string = '.main-content';
+    campaign: FormGroup
+    public data: Object[] = [
+        {
+            nodeId: '01', nodeText: 'Installation', iconCss: 'icon-microchip icon',
+        },
+        {
+            nodeId: '02', nodeText: 'Deployment', iconCss: 'icon-thumbs-up-alt icon',
+        },
+        {
+            nodeId: '03', nodeText: 'Quick Start', iconCss: 'icon-docs icon',
+        },
+        {
+            nodeId: '04', nodeText: 'Components', iconCss: 'icon-th icon',
+            nodeChild: [
+                { nodeId: '04-01', nodeText: 'Calendar', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '04-02', nodeText: 'DatePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '04-03', nodeText: 'DateTimePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '04-04', nodeText: 'DateRangePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '04-05', nodeText: 'TimePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '04-06', nodeText: 'SideBar', iconCss: 'icon-circle-thin icon' }
+            ]
+        },
+        {
+            nodeId: '05', nodeText: 'API Reference', iconCss: 'icon-code icon',
+            nodeChild: [
+                { nodeId: '05-01', nodeText: 'Calendar', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '05-02', nodeText: 'DatePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '05-03', nodeText: 'DateTimePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '05-04', nodeText: 'DateRangePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '05-05', nodeText: 'TimePicker', iconCss: 'icon-circle-thin icon' },
+                { nodeId: '05-06', nodeText: 'SideBar', iconCss: 'icon-circle-thin icon' }
+            ]
+        },
+        {
+            nodeId: '06', nodeText: 'Browser Compatibility', iconCss: 'icon-chrome icon'
+        },
+        {
+            nodeId: '07', nodeText: 'Upgrade Packages', iconCss: 'icon-up-hand icon'
+        },
+        {
+            nodeId: '08', nodeText: 'Release Notes', iconCss: 'icon-bookmark-empty icon'
+        },
+        {
+            nodeId: '09', nodeText: 'FAQ', iconCss: 'icon-help-circled icon'
+        },
+        {
+            nodeId: '10', nodeText: 'License', iconCss: 'icon-doc-text icon'
+        }
+    ];
+    public field:Object ={ dataSource: this.data, id: 'nodeId', text: 'nodeText', child: 'nodeChild', iconCss: 'iconCss' };
 
+    public onCreated(args: any) {
+         this.sidebarTreeviewInstance.element.style.visibility = '';
+    }
+    public onClose(args: any) {
+        this.treeviewInstance.collapseAll();
+    }
+    openClick() {
+        if(this.sidebarTreeviewInstance.isOpen)
+        {
+            this.sidebarTreeviewInstance.hide();
+            this.treeviewInstance.collapseAll();
+        }
+        else {
+            this.sidebarTreeviewInstance.show();
+            this.treeviewInstance.expandAll();
+        }  
+    }
    @ViewChild(NoteDetailComponent) child: NoteDetailComponent;
 
   
@@ -88,7 +170,7 @@ export class NotesListComponent implements AfterViewInit {
   notificationAccountValue = "";
   numberOfNotifications = 0
 
-  constructor(private notesService: NotesService, public auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute, private router: Router) {
+  constructor(private notesService: NotesService, public auth: AuthService, private http: HttpClient, private adgroup_service: AdGroupService, private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private snackBar: MatSnackBar) {
       var self = this
     
     this.auth.user.forEach(data => {
@@ -102,6 +184,12 @@ export class NotesListComponent implements AfterViewInit {
       
       }
     })
+  }
+   openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      
+    });
   }
   ngAfterViewInit() {
   //var init_note = new NotesService(this.uid)
@@ -222,10 +310,14 @@ var bytes = CryptoJS.AES.decrypt(cipherParams,CryptoJS.enc.Hex.parse(uid),
       if (child.length > 0) {
         //////console.log(child.length)
         this.toggleListCampaign()
-         document.querySelector('.height-full').classList.remove('adafri-background')
+       /*   document.querySelector('.height-full').classList.remove('adafri-background') */
       } else {
         this.initCampagne()
-         document.querySelector('.height-full').classList.add('adafri-background')
+      /*   document.querySelector('.height-full').classList.add('adafri-background') */
+         this.campaign = this.fb.group({
+           campaign: ['', Validators.required],
+         
+    });
         /* setTimeout(() => {
              particlesJS("particles-js", {
   "particles": {
@@ -868,58 +960,39 @@ encrypted(text, password){
           this.getCampaignIdFirebase(id, name).then(single => {
             //console.log('campagne')
             //console.log(single['id_campagne'])
-      
-          
-           Swal.fire({
-    html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
-             
-      type: 'success',
-      showCancelButton: false,
-       buttonsStyling: true,
-      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
-      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
-      confirmButtonText: 'Ok'
-    }).then((result) => {
-      if (result.value) {
-        this.adgroup_service.addAdGroup(id, this.uid, name).then(adgroup => {
-          if (adgroup != "error") {
+            this.message_to_show = "Campagne ajoutée !"
+            this.openSnackBar("Félicitations "+this.currentUser+" la campagne " +name+" a été ajouté avec succès !", "")
+            this.message_to_show = "Création du groupe de visuel en cours..."
+             this.adgroup_service.addAdGroup(id, this.uid, name).then(adgroup => {
+               if (adgroup != "error") {
+                 this.message_to_show = "Opération terminée !"
+                  this.openSnackBar("Votre premier groupe de visuel " +name+" a été ajouté avec succès !", "")
               this.name = '';
               this.id_campagne = '';
-              this.isCreating = false
-              this._init_campagne = false
-                document.getElementById('body').classList.remove('adafri-background')
+              this.progressBarAddCampaign = false
+                 this._init_campagne = false
+                 this.message_to_show = ""
+            /*     document.getElementById('body').classList.remove('adafri-background') */
             this.router.navigate(['/ads', name, single['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], single['id_campagne']]).then(() => {
           
               })
             }
           })
-      } else {
-            this.adgroup_service.addAdGroup(id, this.uid, name).then(adgroup => {
-              if (adgroup != "error") {
-                this.name = '';
-                this.id_campagne = '';
-                this.isCreating = false
-                this._init_campagne = false
-                document.getElementById('body').classList.remove('adafri-background')
-                this.router.navigate(['/ads', name,single['id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], single['id_campagne']])
-            }
-          })
-      }
-    })
-
           })
 
         } else {
-          this.isCreating = false
+          this.progressBarAddCampaign  = false
         }
       })
   
    
   }
   addCampaign() {   
-    
-    this.isCreating = true
-    var name = $("#campagne").val().replace(/\s/g, "")
+
+    if (this.campaign.valid) {
+    this.message_to_show = "Initialisation..."
+    this.progressBarAddCampaign = true
+    var name = this.new_name.replace(/\s/g, "")
     
 
     this.http.post(SERVER_URL+'/addCampaign', {
@@ -930,6 +1003,7 @@ encrypted(text, password){
         res => {
           ////console.log(res)
           ////console.log(res['budgetId'])
+          this.message_to_show = "Traitement en cours..."
           if (res['status'] == "ok") {
             this.id_campagne = res['id']
             this.status = res['status_campaign']
@@ -938,7 +1012,8 @@ encrypted(text, password){
             
           } else {
           
-            this.isCreating = false      
+            this.progressBarAddCampaign = false    
+            this.message_to_show = ""
             Swal.fire({
               title: 'Service Campagne!',
               text: 'Erreur.',
@@ -959,6 +1034,7 @@ encrypted(text, password){
         
         },
         err => {
+          this.progressBarAddCampaign = false
           Swal.fire({
       title: 'Service Campagne!',
       text: 'Erreur.',
@@ -975,6 +1051,8 @@ encrypted(text, password){
       );
  
     return;              
+    }
+    
   }
     async loadScript(src){
     var script = document.createElement("script");

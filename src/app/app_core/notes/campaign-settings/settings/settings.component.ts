@@ -2,7 +2,7 @@ import {
   Component,
   OnInit,
   Input,
-  AfterViewInit
+  AfterViewInit,ViewChild
 } from '@angular/core';
 import {
   HttpClient
@@ -11,6 +11,10 @@ import {
   AngularFirestore,
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatTableDataSource, MatPaginator, MatSnackBar, NativeDateAdapter } from '@angular/material';
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats} from '@angular/material/core';
 
 import {
   loadCldr,
@@ -42,6 +46,7 @@ import {
 } from '../../ad_group.models'
 import * as CryptoJS from 'crypto-js'
 
+
 /* const dataUrl =
   SERVER.url+"/campaignReport/"+; */
 const schemaUrl =
@@ -54,7 +59,31 @@ const MAX_BUDGET_VALUE = 10000001
 const MIN_BUDGET_VALUE = 9999
 
 
-
+export class AppDateAdapter extends NativeDateAdapter {
+  format(date: Date, displayFormat: Object): string {
+    if (displayFormat === 'input') {
+      let day: string = date.getDate().toString();
+      day = +day < 10 ? '0' + day : day;
+      let month: string = (date.getMonth() + 1).toString();
+      month = +month < 10 ? '0' + month : month;
+      let year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+    return date.toDateString();
+  }
+}
+export const APP_DATE_FORMATS: MatDateFormats = {
+  parse: {
+    dateInput: { month: 'short', year: 'numeric', day: 'numeric' },
+  },
+  display: {
+    dateInput: 'input',
+    monthYearLabel: { year: 'numeric', month: 'numeric' },
+    dateA11yLabel: { year: 'numeric', month: 'long', day: 'numeric'
+    },
+    monthYearA11yLabel: { year: 'numeric', month: 'long' },
+  }
+};
 export interface JSONDATE {
   selectedDate: string;
 }
@@ -139,11 +168,51 @@ const MONTH = [{
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  styleUrls: ['./settings.component.css'],
+   providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {provide:  DateAdapter, useClass: AppDateAdapter, deps: [MAT_DATE_LOCALE]},
+   {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}
+  ],
 })
+  
 export class SettingsComponent {
- 
-  private adGroupCollection: AngularFirestoreCollection < AdGroup > ;
+   @ViewChild(MatPaginator) paginator: MatPaginator;
+ dataL : any;
+   displayedColumns = ['select', 'name', 'status', "Paramétrer"];
+  dataSourceList = new MatTableDataSource<AdGroup>([])
+  selection = new SelectionModel<AdGroup>(true, []);
+loadProgress = false
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSourceList.filter = filterValue;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+isAllSelected() {
+  const numSelected = this.selection.selected.length;
+  console.log(this.selection.selected)
+  console.log(this.dataSource.data)
+   const numRows = this.dataSourceList.data.length 
+  console.log(numSelected)
+     return numSelected === numRows; 
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSourceList.data.forEach(row => this.selection.select(row));
+  }
+  private adGroupCollection: AngularFirestoreCollection<AdGroup>;
+  budgetTable = [];
 dataSource: any;
   type: string;
   width: string;
@@ -251,7 +320,9 @@ error_recharge = ""
     { data: [0], label: 'Impressions' }
   ];
 
-  constructor(private notesService: NotesService, public auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads,  private route: ActivatedRoute) {
+  displayedColumnsBudget = ['change', 'debut', 'fin', 'budget', 'action'];
+  
+  constructor(private notesService: NotesService, public auth: AuthService, private adGroupService: AdGroupService, private http: HttpClient, private afs: AngularFirestore, private router: Router, private adsService: Ads,  private route: ActivatedRoute, public snackBar: MatSnackBar) {
 this.auth.user.forEach(data => {
   this.currentUser = data.displayName
   this.photoURL = data.photoURL
@@ -476,7 +547,8 @@ getDateArray(start, end) {
       this.uid = data1.uid
  
       
-      this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
+                this.notesService.getSingleCampaign(this.id_campagne, this.name).subscribe(res => {
+       this.budgetTable = res
         res.forEach(data => {
           this.status = data['status']
           this.startDateFrench = data['startDateFrench']
@@ -495,6 +567,11 @@ getDateArray(start, end) {
         this.budget = data['budget']
           this.dailyBudget = data['dailyBudget']
           this.numberOfDays = data['numberOfDays']
+          /* this.budgetTable.push({
+            "debut": data['startDateFrench'],
+            "fin": data['endDateFrench'] ,
+            "budget": data['budget']
+          }) */
 
 
         
@@ -515,7 +592,11 @@ for (var i = 0; i < dateArr.length; i++) {
     }) 
     })
 
-    this.adgroups = this.adGroupService.getListAdGroup(this.id_campagne)
+        this.adgroups = this.adGroupService.getListAdGroup(this.id_campagne)
+        this.adgroups.subscribe(data => {
+          this.dataSourceList = new MatTableDataSource(data)
+          this.dataSourceList.paginator = this.paginator
+        })
     this.adgroups.forEach(child => {
       ////console.log(child)
       if (child.length > 0) {
@@ -739,116 +820,7 @@ for (var i = 0; i < dateArr.length; i++) {
 
        };
             
-             particlesJS("particles-js", {
-  "particles": {
-    "number": {
-      "value": 380,
-      "density": {
-        "enable": true,
-        "value_area": 1000
-      }
-    },
-    "color": {
-      "value": "#ffffff"
-    },
-    "shape": {
-      "type": "circle",
-      "stroke": {
-        "width": 0,
-        "color": "#ffffff"
-      },
-      "polygon": {
-        "nb_sides": 5
-      },
-      "image": {
-        "src": "../../../../assets/img/images/campaign.png",
-        "width": 1000,
-        "height": 1000
-      }
-    },
-    "opacity": {
-      "value": 1,
-      "random": true,
-      "anim": {
-        "enable": true,
-        "speed": 1,
-        "opacity_min": 0.1,
-        "sync": true
-      }
-    },
-    "size": {
-      "value": 3,
-      "random": true,
-      "anim": {
-        "enable": false,
-        "speed": 40,
-        "size_min": 0.1,
-        "sync": false
-      }
-    },
-    "line_linked": {
-      "enable": true,
-      "distance": 150,
-      "color": "#ffffff",
-      "opacity": 0.4,
-      "width": 1
-    },
-    "move": {
-      "enable": true,
-      "speed": 6,
-      "direction": "none",
-      "random": false,
-      "straight": false,
-      "out_mode": "out",
-      "bounce": false,
-      "attract": {
-        "enable": false,
-        "rotateX": 600,
-        "rotateY": 1200
-      }
-    }
-  },
-  "interactivity": {
-    "detect_on": "canvas",
-    "events": {
-      "onhover": {
-        "enable": true,
-        "mode": "grab"
-      },
-      "onclick": {
-        "enable": true,
-        "mode": "push"
-      },
-      "resize": true
-    },
-    "modes": {
-      "grab": {
-        "distance": 140,
-        "line_linked": {
-          "opacity": 1
-        }
-      },
-      "bubble": {
-        "distance": 400,
-        "size": 40,
-        "duration": 2,
-        "opacity": 8,
-        "speed": 3
-      },
-      "repulse": {
-        "distance": 200,
-        "duration": 0.4
-      },
-      "push": {
-        "particles_nb": 4
-      },
-      "remove": {
-        "particles_nb": 2
-      }
-    }
-  },
-  "retina_detect": true
-}); 
+
  
     
     this.fetchData();
@@ -1418,14 +1390,14 @@ xhr.send();
     );
   }
   addAdGroup() {
-    this.isCreating = true;
+    this.loadProgress= true;
     var self = this
     var name = $('#adgroup').val().replace(/\s/g, "")
     this.adGroupService.newAdGroup(this.id_campagne, this.uid, name).then(res => {
       //console.log(res)
       if (res != "error") {
         
-        this.isCreating = false
+        this.loadProgress = false
         this.isAdGroup = false
         setTimeout(() => {
           document.getElementById(res).click()

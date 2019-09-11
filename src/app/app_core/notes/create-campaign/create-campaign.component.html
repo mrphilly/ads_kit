@@ -1,130 +1,35 @@
     
- <div class="container-fluid pt-5 adafri-background" >
-     <div id="particles-js">
+ <div class="container-fluid pt-5 background-yellow-adafri" >
+           <div class="height-full paper-card text-center" style="box-shadow: none">
+                 <div class="row">
+        <div class="col-md-12 background-yellow-adafri text-center">
+            <form class="example-form" [formGroup]="campaign" (ngSubmit)="addCampaign()">
+                <mat-card class="d-inline-block text-center mat-elevation-z10">
+            
+                           
 
-     </div>
-    <div class="row">
-        <div class="col-md-6 text-center adafri-background">
+                   
+                            <img class="img-responsive d-inline-block" style="width: 50%" src="assets/img/init.png">
+               
+                <mat-card-content>
+                    <p class="font-weight-bold text-black">Créer une campagne publicitaire</p>
+  <mat-form-field class="example-full-width text-black" >
+    <input matInput [(ngModel)]="new_name" placeholder="Nom de la campagne" id="campagne" formControlName="campaign">
+  </mat-form-field>
 
-             <div class="text-center p-5 white shadow2 r-20 d-md-block d-none animated bounceIn delay-1s" style="position: absolute; width: 60%
-">
-       <img class="img-responsive" src="assets/img/init.png">
-       <br>
-       <br>
-       <small class="adafri-police text-black-50" style="font-size: 18px">Nouvelle campagne publicitaire</small>
-       <br>
-       <br>
-       <div class="form-row text-center">
-           <div class="col-md-12 text-center">
-
-               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%">
-           </div>
-
-       </div>
-        <br>
-       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
-       <br>
-       <br>
-        <a (click)="go()" class="btn white text-warning shadow btn-sm r-20 btn-social text-center" style="font-size: 14px; border: 1px solid orange"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
-   
+</mat-card-content>
+<mat-card-actions class="text-center">
+    <p class="text-black">{{message_to_show}}</p>
+     <mat-progress-bar mode="indeterminate" class="teal" *ngIf="progressBarAddCampaign"></mat-progress-bar>
+    <button mat-raised-button class="teal text-white" type="submit" *ngIf="!progressBarAddCampaign">Créer</button>
+     <button mat-raised-button color="warn"  *ngIf="!progressBarAddCampaign" (click)="go()">Retour</button>
+</mat-card-actions>
+</mat-card>
+</form>
           
-       
-
-          
-   </div>
-   <div class="text-center p-5 white shadow2 r-20 d-md-none d-sm-block animated bounceIn delay-1s" style="position: absolute; width: 95%; margin-left: -5px">
-       <img class="img-responsive" src="assets/img/init.png">
-       <br>
-       <br>
-       <small class="adafri-police text-black-50" style="font-size: 18px">Nouvelle campagne publicitaire</small>
-       <br>
-       <br>
-       <div class="form-row text-center">
-           <div class="col-md-12 text-center">
-
-               <input [(ngModel)]="name" placeholder="Nom de la campagne" class="form-control text-center d-inline-block" name="note" id="campagne" style="width: 70%; font-size: 12px">
-           </div>
-
-       </div>
-        <br>
-       <a class="btn white d-inline-block text-black-50 shadow btn-sm r-20 btn-social text-center" (click)="addCampaign()" style="font-size: 14px; border: 1px solid grey"><i class="icon-plus-circle mr-2 "></i>Nouvelle Campagne</a>
-       <br>
-       <br>
-        <a (click)="go()" class="btn white text-warning shadow btn-sm r-20 btn-social text-center" style="font-size: 14px; border: 1px solid orange"><i class="icon-chevron-circle-left mr-2"></i>Liste des campagnes</a>
-   
-          
-       
-
-          
-   </div>
         </div>
-                    <div class="col-md-6  d-md-block d-none">
-                        <h1 class="adafri-police text-white" style="font-size: 24px">Créez votre campagne</h1>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6  " style="">
-                        <img class='img-responsive animated shadow2 fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/vert.jpg">
-                        <!-- <div class="card no-b mb-3 shadow text-white">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="col-md-6 col-sm-6" style="">
-                        <img class='img-responsive animated shadow2 fadeInUp slow infinite' style="border-radius: 400px" src="assets/img/images/rose.jpg">
-                        <!-- <div class="card no-b mb-3 shadow">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6" style="">
-                        <img class='img-responsive animated shadow2 fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/bleue.png">
-                        <!-- <div class="card no-b mb-3 shadow">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="col-md-6 col-sm-6" style="">
-                        <img class='img-responsive animated shadow2 fadeInDown slow infinite' style="border-radius: 400px" src="assets/img/images/degrade1.jpg">
-                        <!-- <div class="card no-b mb-3 shadow">
-                            <div class="card-body no-b">
-
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-                      <!--  <div class="col-md-6 d-md-none d-sm-block">
-                <div class="row">
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/vert.jpg">
-                      
-                    </div>
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateOut fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/rose.jpg">
+                   
                      
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateIn fast infinite' style="border-radius: 400px; width: 25%" src="assets/img/images/bleue.png">
-                     
-                    </div>
-                    <div class="col" style="">
-                        <img class='img-responsive animated shadow2 rotateOut fast infinite' style="border-radius: 400px;width: 25%" src="assets/img/images/degrade1.jpg">
-                       
-                    </div>
-                </div>
-            </div> -->
      </div>
-   
-  <div *ngIf="isCreating">
-      <app-spinner-overlay [message]="message"></app-spinner-overlay>
-
-   </div>
+        </div>
 </div>

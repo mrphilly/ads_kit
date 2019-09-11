@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import * as $ from 'jquery';
 
@@ -7,10 +8,12 @@ import { AdGroupService } from '../ad-groupe.service';
 import { NotesService } from '../notes.service';
 import { AuthService } from '../../core/auth.service';
 import Swal from 'sweetalert2'
-
+import {MatSnackBar} from '@angular/material'
 import { Router } from '@angular/router'
+
 import { SERVER } from '../../../../environments/environment'
 import * as particules from "../../../../assets/js/particles"
+
 
 declare const particlesJS: any; 
 
@@ -22,7 +25,10 @@ const REDIRECT_URL = SERVER.url_redirect
 })
   
 export class CreateCampaignComponent implements OnInit {
-  
+  message_to_show = ""
+  campaign: FormGroup
+  progressBarAddCampaign = false
+  new_name = ""
   uid: string;
   notes: any;
   email: string;
@@ -34,8 +40,8 @@ export class CreateCampaignComponent implements OnInit {
   isCreating = false;
   isExist: boolean = false
   
-  constructor(private router: Router, private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService) { 
-     this.title = "Cr�er une campagne"
+  constructor(private router: Router, private notesService: NotesService, private auth: AuthService, private adGroupService: AdGroupService, private fb: FormBuilder, private snackBar: MatSnackBar) { 
+     this.title = "Créer une campagne"
        this.auth.user.forEach((value) => {
          this.uid = value.uid
          this.email = value.email
@@ -43,10 +49,17 @@ export class CreateCampaignComponent implements OnInit {
     })
   }
 
+  goback() {
+    window.location.reload()
+  }
 
 
   ngOnInit() {
-    document.querySelector('.height-full').classList.add('adafri-background')
+      this.campaign = this.fb.group({
+           campaign: ['', Validators.required],
+         
+    });
+   /*  document.querySelector('.height-full').classList.add('adafri-background') */
    /*  setTimeout(() => {
              particlesJS("particles-js", {
   "particles": {
@@ -178,22 +191,34 @@ export class CreateCampaignComponent implements OnInit {
 
 
   addCampaign() {
-    this.isCreating = true
-    var name = $("#campagne").val().replace(/\s/g, "")
-    console.log(this.email)
-    console.log(this.uid)
-    console.log(name)
+    if (this.campaign.valid) {
+      this.message_to_show = "Initialisation..."
+    this.progressBarAddCampaign = true
+     this.message_to_show = "Traitement en cours..."
+    var name = this.new_name.replace(/\s/g, "")
     this.notesService.addCampaign(this.email, this.uid, name).then(result => {
       if (result != "error") {
         var campaign = result[0]
+           this.message_to_show = "Campagne ajoutée !"
+            this.openSnackBar("Félicitations "+this.currentUser+" la campagne " +name+" a été ajouté avec succès !", "")
+        this.message_to_show = "Création du groupe de visuel en cours..."
+         this.adGroupService.addAdGroup(campaign['campaign_id'], this.uid, name).then(adgroup => {
+          if (adgroup!= "error") {
+               this.message_to_show = "Opération terminée !"
+                  this.openSnackBar("Votre premier groupe de visuel " +name+" a été ajouté avec succès !", "")
+              this.name = '';
             
-            console.log('campagne')
-        console.log(campaign['id'])
-        console.log(campaign['campaign_id'])
-      
+              this.progressBarAddCampaign = false
+                 
+                 this.message_to_show = ""
+         
+                
+              this.router.navigate(['/ads', name, campaign['campaign_id'], adgroup[0]['id'], adgroup[0]['ad_group_id'], campaign['campaign_id']])
+            }
+          })
           
-           Swal.fire({
-    html: '<span class="adafri-police-16">F�licitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a �t� ajout�e</span>',
+/*            Swal.fire({
+    html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
              
       type: 'success',
       showCancelButton: false,
@@ -222,16 +247,26 @@ export class CreateCampaignComponent implements OnInit {
             }
           })
       }
-    })
+    }) */
 
   
       } else {
-        this.isCreating = false
+        this.progressBarAddCampaign = false
+                 
+                 this.message_to_show = ""
       }
     })
+    }
+   
     
   }
 
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      
+    });
+  }
   go1() {
   window.location.replace(REDIRECT_URL)
    window.location.reload()

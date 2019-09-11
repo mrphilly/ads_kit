@@ -1,0 +1,506 @@
+
+
+<ng-template #isConnected>
+    
+  <main>
+       <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
+       <div id="particles-js">
+           <div  class="height-full text-center " style="background:url(assets/img/images/bureau.jpg) no-repeat left bottom; background-size:cover;">
+           <div class="row">
+             <div class="col-md-6 text-center d-none d-md-block">
+                <h1 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h1>
+                <br>
+                <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
+             </div>
+             <div class="col-md-6 text-center d-md-none d-sm-block">
+                <h4 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h4>
+                <br>
+                <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
+             </div>
+             <div class="col-md-6"  style="float: right; border-radius: 20px;">
+               <div class="row">
+                 <div class="col-md-12">
+       
+                   <img [src]="photoUrl" alt="" style="width:35%; border-radius: 200px" id="photoProfile" (click)="triggerUpload()">
+                   
+                   
+                     <!-- <h5 class="adafri-police text-white" style="margin-top: 60px">Bienvenue</h5>
+                                         <h5 class="adafri-police text-white" style="margin-top: 20px">{{email}}</h5> -->
+                      
+       
+                           
+                                        
+                                         
+                 </div>
+             
+               </div>
+               <br>
+               <br>
+               <div class="row">
+                <div class="col-md-12">
+                  <div class="text-center justify-content-between">
+                        
+       
+                            <img class='img-responsive animated pulse fast infinite d-none d-md-block' style="border-radius: 400px;  position: absolute; left: -100px" src="assets/img/images/play.png" (click)="go()">
+                             <img class='img-responsive animated pulse fast infinite d-md-none d-sm-block' style="border-radius: 400px;" src="assets/img/images/play.png" (click)="go()">
+          
+                    
+        
+         </div>
+                </div>
+                
+               </div>
+           </div>
+           </div>
+           
+            
+       
+               
+           </div>
+
+       </div>
+    <!-- #primary -->
+</main>
+
+</ng-template>
+
+<div class="paper-card p-0 white" *ngIf="!(auth.user | async); else isConnected">
+ <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
+<div class="login-block height-full"  style="background:url(assets/img/images/fond-sombre.png) no-repeat left bottom; background-size: cover
+">
+    
+	
+
+     
+
+  <div class="row">
+       
+    <div class="col-md-6 text-center" >
+         
+        <div class=" d-none d-md-inline d-sm-none" >
+               
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 300px; height: 10px">
+                                    
+                                 </div>
+                                 <div  style="margin-top: -5px;">
+                                     <h5 class="text-white font-weight-bold" style="font-family: 'soleil', sans-serif ">
+                                       Vos publicités google et Facebook payables par mobile money !</h5>
+                                    
+                                 </div>
+                             </div>
+                             <div class="text-center"><img class="img-responsive float-right" src="assets/img/init.png" style="width: 15%; position: absolute; top: 40%; right: -5%"></div> 
+        </div>
+          <a class="ct-btn-scroll d-none d-md-block ct-js-btn-scroll animated pulse infinite" href="#section2"><img alt="Arrow Down Icon" src="https://www.solodev.com/assets/anchor/arrow-down.png"></a>
+                  <a class="ct-btn-scroll1 d-md-none d-sm-block ct-js-btn-scroll animated pulse infinite" href="#section2"><img alt="Arrow Down Icon" src="https://www.solodev.com/assets/anchor/arrow-down.png"></a>
+        </div>
+            <div class="col-md-6 text-center"  *ngIf="!newUser">
+            <div class="row" style=" margin-top: -50px !important">
+                <div class="col-md-12 text-center">
+                    <img src="assets/img/adafri.png" class="img-responsive d-inline-block" alt="" style="width:25%;">
+
+                </div>
+            </div>
+            
+            <div class="row">
+                 <div class="col-md-12 text-center">
+         <div class="login-sec adafri-background d-none d-md-inline-block" style="border-radius: 40px; margin-top: -15px;">
+            <h6 class="text-center text-white font-weight-bold">Inscription</h6>
+            <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Username" formControlName="username" required style="width: 70%">
+
+                </div>
+                <br>
+            <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
+
+                </div>
+                <br>
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
+                </div>
+
+
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+  
+                             
+                              
+                
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Inscription</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous avez déjà un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Connexion</p></small>
+
+                        </div>
+   </div>
+    </div>
+ </div>
+     
+
+  
+  
+</form>
+
+            </div>
+
+                     <div class="login-sec adafri-background d-md-none d-sm-inline-block" style="border-radius: 40px; margin-top: -15px; width: 90% !important; position: absolute !important; margin-left: 5px">
+            <h6 class="text-center text-white font-weight-bold">Inscription</h6>
+            <form class="login-form" [formGroup]="userForm" (ngSubmit)="signup()">
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Username" formControlName="username" required style="width: 70%">
+
+                </div>
+                <br>
+            <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
+
+                </div>
+                <br>
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
+                </div>
+
+
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+  
+                             
+                              
+                
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Inscription</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous avez déjà un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Connexion</p></small>
+
+                        </div>
+   </div>
+    </div>
+ </div>
+     
+
+  
+  
+</form>
+
+            </div>
+   </div>
+            </div>
+    <div class="row">
+     
+    
+        <div class="text-center d-none d-md-block" style="margin-top: 50px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                    
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <span class="text-white font-weight-bold adafri-police-16"  style="font-family: 'soleil', sans-serif ">
+                                       Vos publicités google et Facebook payables par mobile money !</span>
+                                    
+                                 </div>
+                             </div>
+        </div>
+       
+        </div>
+        <div class="text-center d-md-none d-sm-block" style="margin-top: 470px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                 
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <span class="text-white font-weight-bold adafri-police-16"  style="font-family: 'soleil', sans-serif ">
+                                       Vos publicités google et Facebook payables par mobile money !</span>
+                                 </div>
+                             </div>
+                            
+        </div>
+        </div>
+    </div>
+
+</div>
+
+       
+        
+        <div class="col-md-6 text-center"  *ngIf="newUser">
+            <div class="row" style=" margin-top: -50px !important">
+                <div class="col-md-12 text-center">
+                    <img src="assets/img/adafri.png" class="img-responsive d-inline-block" alt="" style="width:25%;">
+
+                </div>
+            </div>
+            
+            <div class="row">
+                 <div class="col-md-12 text-center">
+         <div class="login-sec adafri-background d-none d-md-inline-block" style="border-radius: 40px; margin-top: -15px;">
+            <h6 class="text-center text-white font-weight-bold">Connexion</h6>
+            <form class="login-form" [formGroup]="userForm" (ngSubmit)="login()">
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
+
+                </div>
+                <br>
+            
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
+                </div>
+
+
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+     <div class="d-flex justify-content-between">
+                            <div>
+                             
+                              
+                
+                            <img src="assets/img/images/facebook.png"  (click)="signInWithFacebook()" class="img-responsive btn-social" alt="facebook" style="width: 50%">
+                            
+                    
+                            </div>
+                            <div>
+                               
+                                
+                            <img src="assets/img/images/gmail.png"  (click)="signInWithGoogle()" class="img-responsive btn-social" alt="gmail" style="width: 50%">
+                            
+                       
+                            </div>
+                        </div>
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Connexion</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous n'avez pas un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Inscription</p></small>
+
+                        </div>
+   </div>
+    </div>
+ </div>
+
+  
+  
+</form>
+
+            </div>
+                     <div class="login-sec adafri-background d-md-none d-sm-inline-block" style="border-radius: 40px; margin-top: -15px; width: 90% !important; position: absolute !important; margin-left: 5px">
+            <h6 class="text-center text-white font-weight-bold">Connexion</h6>
+            <form class="login-form" [formGroup]="userForm" (ngSubmit)="login()">
+                <div class="form-group text-center">
+                  
+                    <input type="text" class="form-control text-center d-inline-block" placeholder="Adresse email" formControlName="email" required style="width: 70%">
+
+                </div>
+                <br>
+            
+                
+                <div class="form-group text-center">
+                   
+                    <input type="password" class="form-control text-center d-inline-block" placeholder="mot de passe" formControlName="password" required style="width: 70%">
+                </div>
+
+
+              
+  
+ <div class="row">
+    <div class="col-md-12 text-center">
+          <div class="d-inline-block" style="width: 100%; margin-left: 0px;">
+     <div class="d-flex justify-content-between">
+                            <div>
+                             
+                              
+                
+                            <img src="assets/img/images/facebook.png"  (click)="signInWithFacebook()" class="img-responsive btn-social" alt="facebook" style="width: 50%">
+                            
+                    
+                            </div>
+                            <div>
+                               
+                                
+                            <img src="assets/img/images/gmail.png"  (click)="signInWithGoogle()" class="img-responsive btn-social" alt="gmail" style="width: 50%">
+                            
+                       
+                            </div>
+                        </div>
+                        <div class="text-center " style="margin-top: 10px">
+                             <button type="submit" class="btn btn-login btn-lg btn-block btn-social r-20">Connexion</button>
+                             <br>
+                             <small class="adafri-plice"><a class="forget-pass text-white" >Vous n'avez pas un compte ?</a><p (click)="toggleForm()" style="color: #E36262; text-decoration: underline; font-size: 14px; cursor: pointer" class="font-weight-bold ">Inscription</p></small>
+
+                        </div>
+   </div>
+    </div>
+ </div>
+
+  
+  
+</form>
+
+            </div>
+   </div>
+            </div>
+    <div class="row">
+     
+    
+        <div class="text-center d-none d-md-block" style="margin-top: 50px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                    
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <span class="text-white font-weight-bold adafri-police-16"  style="font-family: 'soleil', sans-serif ">
+                                       Vos publicités google et Facebook payables par mobile money !</span>
+                                    
+                                 </div>
+                             </div>
+        </div>
+        </div>
+        <div class="text-center d-md-none d-sm-block" style="margin-top: 470px">
+             <div class="d-md-none d-sm-inline d-inline-block" >
+
+            <div class="d-flex justify-content-between">
+                                 <div class="white shadow" style="width: 100px; height: 10px">
+                                    
+                                 </div>
+                                 <div style="margin-top: -5px; margin-left: 20px">
+                                     <span class="text-white font-weight-bold adafri-police-16"  style="font-family: 'soleil', sans-serif ">
+                                       Vos publicités google et Facebook payables par mobile money !</span>
+                                    
+                                 </div>
+                             </div>
+        </div>
+        </div>
+    </div>
+
+</div>
+  </div>
+
+
+</div>
+<div class="login-block1 white" id="section2">
+
+     <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="text-center">
+                <div class="card my-3 card-block d-inline-block no-b animated jello" style="width: 70%" >
+                    <div class="card-body align-items-center d-flex justify-content-center">
+                        <div>
+                            <!-- <h2 class="card-title"></h2> -->
+                            <p class="card-text adafri-police" style="font-size: 18px">Les régies digitales restent beaucoup trop compliquées avec leur mécanisme d’enchères en temps réél.
+
+Notre plateforme automatise vos campagnes digitales après votre règlement.
+
+Nous optimisons vos emplacements et vos enchères en fonction de la demande journalière et garantissons une diffusion de vos publicités.</p>
+                            <p class="card-text adafri-police" style="font-size: 18px">Charger les paramètres de votre campagne depuis votre canapé et laissez notre algorythme vous réferencer.</p>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+   <!--  <div class="card no-b white shadow" style="margin-top: 20px">
+        <div class="card-header white no-b text-center">
+<h2 class="text-wrap"></h2>
+        </div>
+        <div class="card-body text-center">
+            <span class="adafri-police text-wrap" style="font-size: 16px">Ad’Afri est simple d’utilisation. 
+
+</span>
+        </div>
+    </div> -->
+ <div class="card no-b"  style="margin-top: 20px">
+ 
+      <div class="row">
+        <div class="col-md-4">
+            <img class="img-responsive" src="assets/img/images/etape1.jpg">
+        </div>
+         <div class="col-md-4">
+            <img class="img-responsive" src="assets/img/images/etape2.jpg">
+        </div>
+         
+         <div class="col-md-4">
+            <img class="img-responsive" src="assets/img/images/etape4.jpg">
+        </div>
+      </div>
+   
+  
+  </div>
+
+
+
+  <div class="card no-b d-none d-md-block"  style="width: 1200px; height: 315px">
+    <img class="img-responsive" src="assets/img/images/reason.jpg">
+  </div>
+  <div class="card no-b d-md-none d-sm-block" >
+    <img class="img-responsive" src="assets/img/images/reason.jpg">
+  </div>
+
+   <div class="card no-b d-none d-md-block adafri-background">
+    <img class="img-responsive" src="assets/img/images/banner.jpg">
+  </div>
+  <div class="card no-b d-md-none d-sm-block" >
+    <img class="img-responsive" src="assets/img/images/banner.jpg">
+  </div>
+</div>
+ 
+ 
+   
+
+   <!--  <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100 shadow">
+
+            <div class="card-body white no-b">
+
+        <div class="row">
+          <div class="col">
+             <div class="login100-pic js-tilt" data-tilt>
+                <img src="assets/img/dummy/img-01.png" alt="">
+            </div>
+
+          </div>
+          <div class="col">
+             <user-form></user-form>
+          </div>
+        </div>
+
+      </div>
+        </div>
+      </div>
+    </div>  -->
+   
+</div>
+<div *ngIf="isCreating">
+  <app-spinner-overlay [message]="message"></app-spinner-overlay>
+
+</div>
+
+
+<input type="file" (change)="upload($event)" accept=".png,.jpg" class="d-none" id="file">
+<div class="control-sidebar-bg shadow white fixed"></div>

@@ -65,7 +65,7 @@ def RemoveTargetGender(client, ad_group_id, criterions_id):
   response = []
   for criterion in result['value']:
     response.append({
-        "service": ad_group_criterion_service
+        "status": "ok"
     })
     print ('Ad group criterion with ad group id "%s", criterion id "%s", '
            'and type "%s" was deleted.'

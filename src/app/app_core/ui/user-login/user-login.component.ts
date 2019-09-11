@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, ValidationErrors } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 import * as firebase from 'firebase';
@@ -9,7 +9,8 @@ import { database } from 'firebase';
 import { AuthService } from '../../core/auth.service';
 import Swal from 'sweetalert2'
 import * as $ from 'jquery'
-import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage'
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage'
+import { MatSnackBar} from "@angular/material"
 
 declare const particlesJS: any
 type UserFields = 'email' | 'password' | 'username';
@@ -20,6 +21,9 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./user-login.component.css'],
 })
 export class UserLoginComponent {
+  connexion: FormGroup
+  inscription: FormGroup
+    hide = true;
   fileToUpload: File = null;
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
@@ -35,6 +39,11 @@ export class UserLoginComponent {
   userForm: FormGroup;
   newUser = true; // to toggle login or signup form
   passReset = false; // set to true when password reset is triggered
+  button_signup = false
+  button_login = false
+  progressBarSignup = false
+  progressBarLogin = false
+
   formErrors: FormErrors = {
     'email': '',
     'username': '',
@@ -45,9 +54,9 @@ export class UserLoginComponent {
       'required': 'Adresse email requise.',
       'email': 'Saisissez une adresse email valide',
     },
-    'username': {
+     'username': {
       'required': "Nom d'utilisateur obligatoire ",
-      'email': "",
+     
     },
     
 
@@ -58,11 +67,14 @@ export class UserLoginComponent {
       'maxlength': 'La longueur du mot de passe ne peut pas dépasser 40 caractères',
     },
   };
-
-  email: any
+  email = ""
+  displayName =""
   userList = []
+  
+
+ 
   constructor(private fb: FormBuilder,public auth: AuthService,
-    private router: Router, private afs: AngularFirestore, private afStorage: AngularFireStorage) { 
+    private router: Router, private afs: AngularFirestore, private afStorage: AngularFireStorage, private snackBar: MatSnackBar) { 
     this.afs.collection('users').valueChanges().forEach(data => {
        this.userList = data
      })
@@ -70,19 +82,25 @@ export class UserLoginComponent {
               }
 
   /// Social Login
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      
+    });
+  }
   ngOnInit() {
     
-    this.buildForm()
+    this.buildFormInscription()
     this.auth.user.forEach(value => {
       var jQuery = $
       //console.log(value)
       if (value!=null) {
-        this.email = value.displayName
+        this.displayName = value.displayName
         this.accountValue = value.account_value 
         this.photoUrl = value.photoURL
         this.uid = value.uid
-
-        
+        this.email = value.email
+      
       }
 
      
@@ -286,10 +304,104 @@ export class UserLoginComponent {
     
   
   
+/*   getErrorMessage() {
+   
+    return this.email.hasError('required') ? 'Vous devez entrer une adresse email valide' :
+        this.email.hasError('email') ? 'Adresse email invalide' :
+            '';
+  } */
+
+getFormValidationErrors() {
+  Object.keys(this.connexion.controls).forEach(key => {
+
+  const controlErrors: ValidationErrors = this.connexion.get(key).errors;
+  if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        });
+      }
+    });
+  }
+  buildFormLogin() {
+   this.connexion = this.fb.group({
+      "email": ["",[Validators.required, Validators.email]],
+      'password': ["",[Validators.required]],
+     })
+
+    this.connexion.valueChanges.subscribe((data) => this.onValueChangedLogin(data));
+    this.onValueChangedLogin(); // reset validation messages
+  }
 
 
-   toggleForm() {
-    this.newUser = !this.newUser;
+   buildFormInscription() {
+     this.inscription = this.fb.group({
+     "username": ["", [Validators.required]],
+      "email": ["",[Validators.required, Validators.email]],
+      'password': ["",[Validators.required,
+        Validators.pattern('(?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*'),
+        Validators.minLength(6),
+        Validators.maxLength(25),
+      ]],
+     })
+
+    this.inscription.valueChanges.subscribe((data) => this.onValueChangedSignup(data));
+    this.onValueChangedSignup(); // reset validation messages
+  }
+
+  // Updates validation state on form changes.
+  onValueChangedSignup(data?: any) {
+    if (!this.inscription) { return; }
+    const form = this.inscription;
+    for (const field in this.formErrors) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'username' || field === 'email' || field === 'password')) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.validationMessages[field];
+          if (control.errors) {
+            for (const key in control.errors) {
+              if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                this.formErrors[field] += `${(messages as {[key: string]: string})[key]} `;
+                console.log( this.formErrors[field])
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  onValueChangedLogin(data?: any) {
+    if (!this.connexion) { return; }
+    const form = this.connexion;
+    for (const field in this.formErrors) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'password')) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.validationMessages[field];
+          if (control.errors) {
+            for (const key in control.errors) {
+              if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                this.formErrors[field] += `${(messages as {[key: string]: string})[key]} `;
+                console.log( this.formErrors[field])
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  toggleForm() {
+    if (this.newUser === true) {
+      this.newUser = false;
+      this.buildFormLogin()
+    } else {
+      this.newUser = true
+      this.buildFormInscription()
+    }
+    
   }
 
   async signInWithGoogle() {
@@ -357,86 +469,53 @@ export class UserLoginComponent {
   }
 
   signup() {
-    this.isCreating = true;
+    if (this.inscription.valid) {
+      this.progressBarSignup = true;
     if (this.userList.length == 0) {
-      if (this.userForm.value['username'] == "") {
-        this.usernameOk = false
-      } else {
+     
         this.usernameOk = true
         
-      }
     } else {
-
-      if (this.userForm.value['username'] == "") {
-        this.usernameOk = false
-      } else {
-         this.userList.forEach(data => {
-        if (data['displayName'] == this.userForm.value['username']) {
+    this.userList.forEach(data => {
+        if (data['displayName'] == this.inscription.value['username']) {
           this.usernameOk = false
         } else {
           this.usernameOk = true
         }
       })
-        
-      }
      
       
     }
     if (this.usernameOk === true) {
         
-      this.auth.emailSignUp(this.userForm.value['username'], this.userForm.value['email'], this.userForm.value['password']).then(res => {
+      this.auth.emailSignUp(this.inscription.value['username'], this.inscription.value['email'], this.inscription.value['password']).then(res => {
         if (res == "ok") {
-          this.isCreating=false
-           Swal.fire({
-              title: 'Authentification',
-              text: 'Inscription terminée avec succès',
-              type: 'success',
-              showCancelButton: false,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {
-                
-              } else {
-                
-              }
-  
-            })
+          
+          this.progressBarSignup = false;
+         this.openSnackBar("Inscription terminée avec succès", "")
         }
       });
     } else {
-      this.isCreating=false
-       Swal.fire({
-              title: 'Authentification',
-              text: "Nom d'utilisateur indisponible ou vide",
-              type: 'error',
-              showCancelButton: false,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Réessayer'
-            }).then((result) => {
-              if (result.value) {
-                
-              } else {
-                
-              }
-  
-            })
+      this.progressBarSignup = false;
+         this.openSnackBar("Nom d'utilisateur indisponible ou vide", "")
       }
+   }
     
   
   }
 
   login() {
-    this.isCreating = true
-    this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']).then(res => {
+    if (this.connexion.valid) {
+       this.progressBarLogin = true
+    this.auth.emailLogin(this.connexion.value['email'], this.connexion.value['password']).then(res => {
       
       if (res.toString() != "") {
-        this.isCreating=false
-        Swal.fire({
+
+        this.progressBarLogin=false
+        this.openSnackBar("Vous êtes maintenant connecté !", "")
+     /*    Swal.fire({
             title: 'Authentification',
-            text: 'Vous êtes maintenant connecté',
+            text: '',
             type: 'success',
             showCancelButton: false,
             confirmButtonColor: '#26a69a',
@@ -449,12 +528,15 @@ export class UserLoginComponent {
               
             }
 
-          })
+          }) */
           
-      } 
+      }else{
+         this.progressBarLogin=false
+      }
    
       
     });
+   }
   }
   listenError() {
    

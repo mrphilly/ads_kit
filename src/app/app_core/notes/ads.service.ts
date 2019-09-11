@@ -423,7 +423,9 @@ private basePath = '/uploads';
 
   deleteAd(id: string): Promise<any> {
     return new Promise(resolve => {
-      resolve("ok")
+        this.getAd(id).delete().then(()=>{
+        resolve('ok')
+      })
     })
   }
 

@@ -11,6 +11,7 @@ export const SERVER = {
   opera: "www.adafri.com",
   safari1: "www.adafri.com",
   safari2: "adafri.com",
+  protocol: "https://"
 
 }
 

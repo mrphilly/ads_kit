@@ -1,6 +1,7 @@
 import { Injectable, OnInit, Self,  AfterViewInit, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { HttpClient } from '@angular/common/http';
+import {MatTableDataSource, MatPaginator, MatSnackBar} from '@angular/material';
 
 import { Observable } from 'rxjs';
 
@@ -34,15 +35,19 @@ export class AdGroupService {
 
   private adGroupCollection: AngularFirestoreCollection<AdGroup>;
   
- 
-
-  constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient) {
+  constructor(private afs: AngularFirestore, private auth: AuthService, private http: HttpClient, private snackBar: MatSnackBar) {
     this.adGroupCollection = this.afs.collection('adgroup', (ref) => ref.where('campaign_id', '==', parseInt(`${this.campaign_id}`)));
     this.auth.user.forEach(data => {
       this.uid = data.uid
       this.currentUser = data.displayName
     })
   }
+          openSnackBarNewAddGroup(message: string, action: string) {
+           this.snackBar.open(message, action, {
+             duration: 30000,
+             
+           });
+         }
   
  getListAdGroup(campaign_id: string) {
   // //console.log(parseInt(campaign_id))
@@ -164,7 +169,7 @@ export class AdGroupService {
     });
   }
  async targetGenre(id: string, campaign_id: string, ad_group_id: any,  genre: any): Promise<any> {
-   new Promise(resolve => {
+   return new Promise(resolve => {
      var genre_legnth = genre.length;
    this.getAdGroupGenre(parseInt(campaign_id), parseInt(ad_group_id)).then(value => {
   
@@ -254,8 +259,13 @@ export class AdGroupService {
     })
   }
 
+
+
+  
+
   async targetPlacement(id: string, campaign_id: string, ad_group_id: string,  placement: any): Promise<any> {
     return new Promise(resolve => {
+      console.log(placement)
      var genre_legnth = placement.length[0];
     this.getAdGroupPlacement(parseInt(campaign_id), parseInt(ad_group_id)).then(value => {
       
@@ -438,22 +448,9 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
             var id= res['id']
             this.createAdGroup(parseInt(campaign_id), res['name'], res['status_adgroup'], res['id']).then(res => {
             /*  alert(res) */
-             if (res == "ok") {
-                      Swal.fire({
-             html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> le dossier <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> regroupant vos visuels a été créé</span>',
-              type: 'success',
-              showCancelButton: false,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {
-               
+              if (res == "ok") {
+               this.openSnackBarNewAddGroup("Félicitations "+ this.currentUser+" groupe de visuels "+ name+" a été créé", "ok")
                 resolve(id)
-              } else {
-                resolve(id)
-              }
-            })
             }
          })
           } else {
@@ -563,21 +560,7 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
                       "id": adgroup['id'],
                       "ad_group_id": id
                     })
-                    Swal.fire({
-           html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> le dossier <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> regroupant vos visuels a été créé</span>',
-            type: 'success',
-            showCancelButton: false,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ok'
-          }).then((result) => {
-            if (result.value) {
-             
-              resolve(response)
-            } else {
-              resolve(response)
-            }
-          })
+                    resolve(response)
                     
                   }
                })

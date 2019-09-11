@@ -2,7 +2,12 @@ import {
   Component,
   OnInit,
   AfterViewInit,
+  ViewChild,
+  Inject
 } from '@angular/core';
+import {Location} from '@angular/common';
+import {MatSidenav, MatDrawer} from '@angular/material/sidenav';
+import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import {
   ActivatedRoute, Router
 } from '@angular/router';
@@ -10,10 +15,8 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { s } from '@angular/core/src/render3';
-
-import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+import { SelectionModel } from '@angular/cdk/collections';
+import {MatTableDataSource, MatPaginator, MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import * as $ from 'jquery';
 
@@ -45,6 +48,9 @@ import { AdGroupService } from '../ad-groupe.service'
 import { SERVER } from '../../../../environments/environment'
 import * as chart from "chart.js/dist/Chart.min"
 import * as Notify from '../../../../assets/js/notify'
+import { MccColorPickerItem, MccColorPickerService } from 'material-community-components'
+
+import {Annonces} from '../annonces.models'
 /* 
 import Swal from 'sweet//alert2'
 import { Ads } from '../ads.service'
@@ -59,6 +65,10 @@ declare const PayExpresse: any
 declare const require: any;
 declare const Chart: any;
 declare const particlesJS: any;
+
+
+
+
 
 const SERVER_URL = SERVER.url
 const REDIRECT_URL = SERVER.url_redirect
@@ -138,7 +148,8 @@ const MONTH = [{
   }
 }]
 
-
+const MAX_BUDGET_VALUE = 10000001
+const MIN_BUDGET_VALUE = 9999
 @Component({
   selector: 'app-annonces',
   templateUrl: './annonces.component.html',
@@ -148,17 +159,269 @@ const MONTH = [{
 
   
 export class AnnoncesComponent implements OnInit, AfterViewInit {
-   public CURRENCY: string;
+  message_create = ""
+  message_init_upload = ""
+  spinnerPublish = false
+  successPublish = false
+  progressBarInit = false
+  progressBarInitCreative = false
+  progresBarCreateImageUpload = false
+  progresBarCreateImageCreatives = false
+  progresBarModifiedImageUpload = false
+  progresBarModifiedImageCreative = false
+  MODIFIED_IMAGE_UPLOAD_NAME = ""
+  MODIFIED_IMAGE_CREATIVE_NAME = ""
+  MODIFIED_UPLOAD_IMAGE = ""
+  MODIFIED_CREATIVE_IMAGE = ""
+  message_dialog_title = ""
+  message_dialog_content = ""
+  dialog_cancel_button = ""
+  dialog_submit_button = ""
+  placementSelected = false
+  SELECTED_PLACEMENT = []
+  BROWSER_URL = ""
+  PROTOCOL = ""
+  DOMAIN = ""
+  error_recharge = ""
+  chooseOptionsBudget = false
+  button_payments = true
+  selectedColor: string;
+  text_add = false
+  text_color = false;
+  changeColor: string;
+  cad = false
+  tp = false
+  ta = false
+  ts = false
+  td = false
+  opened = true
+  spinnerDeletePlacement = false
+  spinnerTargetPlacement = false
+  spinnerTargetAge = false
+  spinnerTargetGenre = false
+  spinnerTargetDevice = false
+  showSideBar = false
+  showBudgetStatusBar = true
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('sidenav') sidenav: MatSidenav;
+  @ViewChild('matDrawer') matDrawer: MatDrawer;
+  @ViewChild('nationals') mySelectNat;
+  @ViewChild('internationals') mySelectInt;
+  @ViewChild('adsWeb') mySelectAds;
+
+  displayedColumns = ['select', 'image', 'status', 'state', 'actions'];
+  dataSource = new MatTableDataSource<Annonces>([])
+  selection = new SelectionModel<Annonces>(true, []);
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+
+  openSideBar() {
+    if (this.opened === true) {
+      this.opened = false
+    } else {
+      this.opened = true
+    }
+  }
+  
+  chooseBudgetOptions() {
+    if (this.chooseOptionsBudget === false) {
+      this.chooseOptionsBudget = true
+    } else {
+      this.chooseOptionsBudget = false
+    }
+  }
+  /*  handleAccountRechargement() {
+   
+    this.modifyDate = false;
+     this.isSetBudget = false
+     this.isPlacementBudgetFromAccount = false;
+     this.button_payments = false
+     this.isAccountRechargement = true
+    
+    
+  } */
+
+  handleErrorBudget() {
+    $('#error_budget').hide()
+    
+  }
+
+  handleListeCampaign() {
+    this.router.navigate(["/"])
+  }
+
+  handleCampaignSettings() {
+    this.location.back()
+  }
+
+  handleListeVisuel() {
+    this.cad = false
+    this.ta = false
+    this.ts = false
+    this.td = false
+    this.tp = false
+    this.chooseOptionsBudget = false
+  }
+
+  placeChange(event) {
+    console.log(event)
+    this.placementSelected = true
+    this.SELECTED_PLACEMENT = []
+    var value = event.source.selectedOptions.selected.map(item => item.value)
+    for (var i = 0; i < value.length; i++) {
+      this.SELECTED_PLACEMENT.push(value[i])
+    }
+    console.log(this.SELECTED_PLACEMENT)
+    /*  if (event.option._selected === true) {
+      
+     } else {
+       for (var i = 0; i < this.SELECTED_PLACEMENT.length; i++){
+           event.source.selectedOptions.selected.map(item => {
+   
+          var result = item.value
+             if (this.SELECTED_PLACEMENT[i]['item_id'] === result.item_id) {
+               this.SELECTED_PLACEMENT[i].splice(i, 1)
+           }
+         
+           })
+          console.log(this.SELECTED_PLACEMENT)
+       }
+     } */
+    /*  if (event.option._selected === true) {
+            this.SELECTED_PLACEMENT.push(
+       )
+           console.log(this.SELECTED_PLACEMENT)
+     } else {
+           console.log(this.SELECTED_PLACEMENT)
+               for (var i = 0; i < this.SELECTED_PLACEMENT.length; i++) {
+                 for (var j = 0; j < this.SELECTED_PLACEMENT[i].length; j++){
+                    if (this.SELECTED_PLACEMENT[i][j] ==  event.source.selectedOptions.selected.map(item => item.value)) {
+            this.SELECTED_PLACEMENT[i].splice(j, 1)
+            console.log(this.SELECTED_PLACEMENT)
+    
+          }
+                 }
+        }
+            } */
+
+  }
+  handleCAD() {
+    this.ts = false
+    this.td = false
+    this.tp = false
+    this.ta = false
+    if (this.cad === false) {
+      this.cad = true
+    } else {
+      this.cad = false
+    }
+  }
+
+  handleTA() {
+    this.ts = false
+    this.td = false
+    this.tp = false
+    this.cad = false
+    if (this.ta === false) {
+      this.ta = true
+    } else {
+      this.ta = false
+    }
+  }
+  handleTS() {
+    this.ta = false
+    this.td = false
+    this.tp = false
+    this.cad = false
+    if (this.ts === false) {
+      this.ts = true
+    } else {
+      this.ts = false
+    }
+  }
+  handleTD() {
+    this.ts = false
+    this.ta = false
+    this.tp = false
+    this.cad = false
+    if (this.td === false) {
+      this.td = true
+    } else {
+      this.td = false
+    }
+  }
+  handleTP() {
+    this.ts = false
+    this.td = false
+    this.ta = false
+    this.cad = false
+    if (this.tp === false) {
+      this.tp = true
+    } else {
+      this.tp = false
+    }
+  }
+
+
+  reason = '';
+  /*  nationalWeb = new FormControl('', [Validators.required]); */
+  internationalWeb = new FormControl()
+  adWeb = new FormControl()
+  directions: string[] = ['up', 'down', 'left', 'right'];
+
+  animations: string[] = ['scale', 'fling'];
+
+  form: FormGroup;
+
+  get direction(): string {
+    return this.form.get('direction').value;
+  }
+
+  get open(): boolean {
+    return this.form.get('open').value;
+  }
+
+  get spin(): boolean {
+    return this.form.get('spin').value;
+  }
+
+  get mouse_hover(): boolean {
+    return this.form.get('mouse_hover').value;
+  }
+
+  get animation(): string {
+    return this.form.get('animation').value;
+  }
+  
+  
+  close(reason: string) {
+    this.reason = reason;
+    this.sidenav.close();
+  }
+
+  isLinear = true;
+  emplacement: FormGroup;
+  ageForm: FormGroup;
+  genreForm: FormGroup;
+  deviceForm: FormGroup;
+  ciblageControl: FormGroup;
+
+  public CURRENCY: string;
   public NUMERIC: string;
   public ALPHABET: string;
   public PATTERN: string;
   public COMMA: string;
-    notificationAccountValue = "";
+  notificationAccountValue = "";
   numberOfNotifications = 0
   url_errors = [];
   reload_url = ""
   adForm: FormGroup;
-  FINAL_ARRAY_TO_SEND =  [];
+  FINAL_ARRAY_TO_SEND = [];
   canvasCreate = false
   canvasModify = false
   passReset = false; // set to true when password reset is triggered
@@ -213,7 +476,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   init_choose_ad_size = false
   modifyPublishAd = false
   isUploadModified = false
-  ad_type=""
+  ad_type = ""
   is_upload_way = false
   is_creative_way = false
   img_view_create_style: Object = { 'width': '100px', 'height': '100px' }
@@ -224,10 +487,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   selectedWidth: any
   selectedHeight: any
   isUpload = false
-  handleCreateCanvas=false
+  handleCreateCanvas = false
+  handleCreateUpload = false
   new_image_content: any;
   today: any;
-  modifyDate = false
+  modifyDate = true
   dure_campagne = 0;
   budget = 0;
   isSetBudget = false
@@ -319,39 +583,187 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   public figureEditor: boolean = false;
   public textString: string;
   public selected: any;
-  public url: string = '';
+  public url: any;
   public size: any = {
     width: 300,
     height: 250
   };
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
-  constructor(private notesService: NotesService, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder, private router: Router) {
 
+
+  usedStart: string[] = [
+    '#FF3380',
+    '#CCCC00',
+    '#66E64D',
+    '#4D80CC',
+    '#9900B3',
+    '#E64D66',
+    '#4DB380',
+    '#FF4D4D',
+    '#99E6E6',
+    '#6666FF',
+    '#000zzz',
+    'zzzzzz',
+  ];
+
+  colors: string[] = [
+    '#FF6633',
+    '#FFB399',
+    '#FF33FF',
+    '#FFFF99',
+    '#00B3E6',
+    '#E6B333',
+    '#3366E6',
+    '#999966',
+    '#99FF99',
+    '#B34D4D',
+    '#80B300',
+    '#809900',
+    '#E6B3B3',
+    '#6680B3',
+    '#66991A',
+    '#FF99E6',
+    '#CCFF1A',
+    '#FF1A66',
+    '#E6331A',
+    '#33FFCC',
+    '#66994D',
+    '#B366CC',
+    '#4D8000',
+    '#B33300',
+    '#CC80CC',
+    '#66664D',
+    '#991AFF',
+    '#E666FF',
+    '#4DB3FF',
+    '#1AB399',
+    '#E666B3',
+    '#33991A',
+    '#CC9999',
+    '#B3B31A',
+    '#00E680',
+    '#4D8066',
+    '#809980',
+    '#E6FF80',
+    '#1AFF33',
+    '#999933',
+    '#FF3380',
+    '#CCCC00',
+    '#66E64D',
+    '#4D80CC',
+    '#9900B3',
+    '#E64D66',
+    '#4DB380',
+    '#FF4D4D',
+    '#99E6E6',
+    '#6666FF',
+  ];
+
+  
+
+  textDial: FormGroup;
+  items: MccColorPickerItem[] = [
+    { text: 'Black', value: '#000000' },
+    { text: 'White', value: '#FFFFFF' },
+    { text: 'Gray', value: '#CCCCCC' },
+  ];
+
+
+
+  isSideNavOpen = true
+
+  constructor(private notesService: NotesService, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder, private router: Router, private mccColorPickerService: MccColorPickerService, public snackBar: MatSnackBar, private location: Location, public dialog: MatDialog) {
+ 
   }
-   FONT_SIZES = [
-  { "size": "10", "name": "10px" },
-  { "size": "12", "name": "12px" },
-  { "size": "14", "name": "14px" },
-  { "size": "16", "name": "16px" },
-  { "size": "18", "name": "18px" },
-  { "size": "20", "name": "20px" },
-  { "size": "22", "name": "22px" },
-  { "size": "24", "name": "24px" },
-  { "size": "26", "name": "26px" },
-  { "size": "28", "name": "28px" },
-  { "size": "30", "name": "30px" },
-  {"size": "32", "name": "32px"},
-]
+  reset(): void {
+    this.mccColorPickerService.resetUseColors();
+  }
+
+  onSubmit({ value, valid }): void {
+    console.log(value, valid);
+  }
+  FONT_SIZES = [
+    { "size": "10", "name": "10px" },
+    { "size": "12", "name": "12px" },
+    { "size": "14", "name": "14px" },
+    { "size": "16", "name": "16px" },
+    { "size": "18", "name": "18px" },
+    { "size": "20", "name": "20px" },
+    { "size": "22", "name": "22px" },
+    { "size": "24", "name": "24px" },
+    { "size": "26", "name": "26px" },
+    { "size": "28", "name": "28px" },
+    { "size": "30", "name": "30px" },
+    { "size": "32", "name": "32px" },
+  ]
   isDone = false
-  dropdownListAges = [];
+  dropdownListAges = [{
+    item_id: 503999,
+    item_text: 'indéterminé'
+  },
+  {
+    item_id: 503001,
+    item_text: '18-24 ans'
+  },
+  {
+    item_id: 503002,
+    item_text: '25-34 ans'
+  },
+  {
+    item_id: 503003,
+    item_text: '35-44 ans'
+  },
+  {
+    item_id: 503004,
+    item_text: '45-54 ans'
+  },
+  {
+    item_id: 503005,
+    item_text: '55-64 ans'
+  },
+  {
+    item_id: 503006,
+    item_text: '+64 ans'
+  }
+  ];
+  dropdownListGenres = [{
+    item_id: 20,
+    item_text: 'indéterminé'
+  },
+  {
+    item_id: 10,
+    item_text: 'Hommes'
+  },
+  {
+    item_id: 11,
+    item_text: 'Femmes'
+  },
+  ];
+  dropdownListDevices = [{
+    item_id: 30000,
+    item_text: 'Ordinateurs'
+  },
+  {
+    item_id: 30001,
+    item_text: 'Mobiles'
+  },
+  {
+    item_id: 30002,
+    item_text: 'Tablettes'
+  },
+  {
+    item_id: 30004,
+    item_text: "Tv Connectée"
+  }
+  ];
   dropdownListSexes = [];
   dropdownListZones = [];
-  dropdownListDevices = [];
+  /* dropdownListDevices = []; */
   dropdownListNationalsWebsites = [];
-   dropdownListInternationalsWebsites = [];
+  dropdownListInternationalsWebsites = [];
   dropdownListAdsWebsites = [];
-   dropdownListApps = [];
+  dropdownListApps = [];
   selectedItems = [];
   dropdownSettingsAges = {};
   dropdownSettingsSexes = {};
@@ -360,7 +772,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   dropdownSettingsNationalsWebsites = {};
   dropdownSettingsInternationalsWebsites = {};
   dropdownSettingsAdsWebsites = {};
-   dropdownSettingsApps = {};
+  dropdownSettingsApps = {};
   text_visualise = "Visuel"
   text_no_genre = "Aucun genre ciblé"
   text_no_age = "Aucune tranche d'âge ciblée"
@@ -406,7 +818,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     { "name": "Futara", "font": "Futara" },
     { "name": "Franklin Gothic Medium", "font": "Franklin Gothic Medium" },
     { "name": "Trebuchet MS", "font": "Trebuchet MS" },
-    {"name": "Geneva", "font": "Geneva"},
+    { "name": "Geneva", "font": "Geneva" },
   ]
 
 
@@ -421,16 +833,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     
   ]
   AD_TYPES_SPECIAL_2 = [
-     { "name": "Vertical Medium", "width": "160", "height": "600", "id": "Wideskyscraper", "isSpecial": true, "img": "https://dummyimage.com/160x600/000/fff" },
+    { "name": "Vertical Medium", "width": "160", "height": "600", "id": "Wideskyscraper", "isSpecial": true, "img": "https://dummyimage.com/160x600/000/fff" },
     { "name": "Carré", "width": "250", "height": "250", "id": "Square", "isSpecial": true, "img": "https://dummyimage.com/250x250/000/fff" },
-     { "name": "Demi page", "width": "300", "height": "600", "id": "LargeSkyscraper", "isSpecial": true, "img": "https://dummyimage.com/300x600/000/fff" },
+    { "name": "Demi page", "width": "300", "height": "600", "id": "LargeSkyscraper", "isSpecial": true, "img": "https://dummyimage.com/300x600/000/fff" },
 
     
     /* {"name": "Vertical", "width": "320", "height": "50", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"}, */
     
   ]
   AD_TYPES_NOSPECIAL_1 = [
-    { "name": "Horizontal", "width": "468", "height": "60", "id": "Banner", "isSpecial": false,  "img": "https://dummyimage.com/468x60/000/fff" },
+    { "name": "Horizontal", "width": "468", "height": "60", "id": "Banner", "isSpecial": false, "img": "https://dummyimage.com/468x60/000/fff" },
     { "name": "Vertical", "width": "120", "height": "600", "id": "Skyscraper", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
     { "name": "Rectangle Vertical", "width": "240", "height": "400", "id": "RV", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
    
@@ -439,320 +851,320 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    
     { "name": "Horizontal Large", "width": "970", "height": "90", "id": "LargerLeaderboard", "isSpecial": false, "img": "https://dummyimage.com/970x90/000/fff" },
     { "name": "Big Panneau", "width": "970", "height": "250", "id": "BigPanneau", "isSpecial": false, "img": "https://dummyimage.com/970x250/000/fff" },
-        {"name": "Petit carré", "width": "200", "height": "200", "id": "Smallsquare", "isSpecial": false, "img": "https://dummyimage.com/200x100/000/fff"}  
+    { "name": "Petit carré", "width": "200", "height": "200", "id": "Smallsquare", "isSpecial": false, "img": "https://dummyimage.com/200x100/000/fff" }
    
   ]
   NATIONALS_WEBSITES = [
-  [1,"infos","dakarbuzz.net","http://dakarbuzz.net"  ],
-  [2,"infos","galsen221.com","http://galsen221.com"  ],
-  [3,"infos","leral.net","http://leral.net"  ],
-  [4,"infos","limametti.com","http://limametti.com"  ],
-  [5,"infos","sanslimitesn.com","http://sanslimitesn.com"  ],
-  [6,"infos","senego.com","http://senego.com"  ],
-  [7,"infos","seneweb.com","http://seneweb.com"  ],
-  [8,"infos","www.buzzsenegal.com","http://www.buzzsenegal.com"  ],
-  [9,"infos","www.dakar7.com","http://www.dakar7.com"  ],
-  [10,"infos","www.dakarflash.com","http://www.dakarflash.com"  ],
-  [11,"infos","www.lequotidien.sn","http://www.lequotidien.sn"  ],
-  [12,"infos","www.pressafrik.com","http://www.pressafrik.com"  ],
-  [13,"infos","www.senenews.com","http://www.senenews.com"  ],
-  [14,"infos","xalimasn.com","http://xalimasn.com"  ],
-  [15,"infos","metrodakar.net","http://metrodakar.net"  ],
-  [16,"infos","sunubuzzsn.com","http://sunubuzzsn.com"  ],
-  [17,"infos","senegal7.com","http://senegal7.com"  ],
-  [18,"infos","senescoop.net","http://senescoop.net"  ],
-  [19,"infos","sunugal24.net","http://sunugal24.net"  ],
-  [20,"infos","dakar92.com","http://dakar92.com"  ],
-  [21,"infos","rumeurs221.com","http://rumeurs221.com"  ],
-  [22,"infos","bonjourdakar.com","http://bonjourdakar.com"  ],
-  [23,"infos","vipeoples.net","http://vipeoples.net"  ],
-  [24,"infos","seneplus.com","http://seneplus.com"  ],
-  [25,"infos","wiwsport.com","http://wiwsport.com"  ],
-  [26,"infos","viberadio.sn","http://viberadio.sn"  ],
-  [27,"infos","yerimpost.com","http://yerimpost.com"  ],
-  [28,"infos","ndarinfo.com","http://ndarinfo.com"  ],
-  [29,"infos","dakarposte.com","http://dakarposte.com"  ],
-  [30,"infos","exclusif.net","http://exclusif.net"  ],
-  [31,"infos","senegaldirect.net","http://senegaldirect.net"  ]
+    [1, "infos", "dakarbuzz.net", "http://dakarbuzz.net"],
+    [2, "infos", "galsen221.com", "http://galsen221.com"],
+    [3, "infos", "leral.net", "http://leral.net"],
+    [4, "infos", "limametti.com", "http://limametti.com"],
+    [5, "infos", "sanslimitesn.com", "http://sanslimitesn.com"],
+    [6, "infos", "senego.com", "http://senego.com"],
+    [7, "infos", "seneweb.com", "http://seneweb.com"],
+    [8, "infos", "www.buzzsenegal.com", "http://www.buzzsenegal.com"],
+    [9, "infos", "www.dakar7.com", "http://www.dakar7.com"],
+    [10, "infos", "www.dakarflash.com", "http://www.dakarflash.com"],
+    [11, "infos", "www.lequotidien.sn", "http://www.lequotidien.sn"],
+    [12, "infos", "www.pressafrik.com", "http://www.pressafrik.com"],
+    [13, "infos", "www.senenews.com", "http://www.senenews.com"],
+    [14, "infos", "xalimasn.com", "http://xalimasn.com"],
+    [15, "infos", "metrodakar.net", "http://metrodakar.net"],
+    [16, "infos", "sunubuzzsn.com", "http://sunubuzzsn.com"],
+    [17, "infos", "senegal7.com", "http://senegal7.com"],
+    [18, "infos", "senescoop.net", "http://senescoop.net"],
+    [19, "infos", "sunugal24.net", "http://sunugal24.net"],
+    [20, "infos", "dakar92.com", "http://dakar92.com"],
+    [21, "infos", "rumeurs221.com", "http://rumeurs221.com"],
+    [22, "infos", "bonjourdakar.com", "http://bonjourdakar.com"],
+    [23, "infos", "vipeoples.net", "http://vipeoples.net"],
+    [24, "infos", "seneplus.com", "http://seneplus.com"],
+    [25, "infos", "wiwsport.com", "http://wiwsport.com"],
+    [26, "infos", "viberadio.sn", "http://viberadio.sn"],
+    [27, "infos", "yerimpost.com", "http://yerimpost.com"],
+    [28, "infos", "ndarinfo.com", "http://ndarinfo.com"],
+    [29, "infos", "dakarposte.com", "http://dakarposte.com"],
+    [30, "infos", "exclusif.net", "http://exclusif.net"],
+    [31, "infos", "senegaldirect.net", "http://senegaldirect.net"]
   ]
   
   INTERNATIONALS_WEBSITES = [
-  [1,"sport ","footmercato.net","http://www.footmercato.net"  ],
-  [2,"infos","lexpress.fr","http://www.lexpress.fr"  ],
-  [3,"sport ","mercatolive.fr","http://www.mercatolive.fr"  ],
-  [4,"sport ","maxifoot.fr","http://maxifoot.fr"  ],
-  [5,"sport ","livefoot.fr","http://livefoot.fr"  ],
-  [6,"forum","01net.com","http://01net.com"  ],
-  [7,"sport ","le10sport.com","http://le10sport.com"  ],
-  [8,"sport ","maxifoot-live.com","http://maxifoot-live.com"  ],
-  [9,"forum","01net.com","http://01net.com"  ],
-  [10,"infos","bfmtv.com","http://bfmtv.com"  ],
-  [11,"sport ","besoccer.com","http://besoccer.com"  ],
-  [12,"sport ","foot01.com","http://foot01.com"  ],
-  [13,"sport ","basketsession.com","http://basketsession.com"  ],
-  [14,"sport ","basket-infos.com","http://basket-infos.com"  ],
-  [15,"infos","skyrock.com","http://skyrock.com"  ],
-  [16,"infos","leparisien.fr","http://leparisien.fr"  ],
+    [1, "sport ", "footmercato.net", "http://www.footmercato.net"],
+    [2, "infos", "lexpress.fr", "http://www.lexpress.fr"],
+    [3, "sport ", "mercatolive.fr", "http://www.mercatolive.fr"],
+    [4, "sport ", "maxifoot.fr", "http://maxifoot.fr"],
+    [5, "sport ", "livefoot.fr", "http://livefoot.fr"],
+    [6, "forum", "01net.com", "http://01net.com"],
+    [7, "sport ", "le10sport.com", "http://le10sport.com"],
+    [8, "sport ", "maxifoot-live.com", "http://maxifoot-live.com"],
+    [9, "forum", "01net.com", "http://01net.com"],
+    [10, "infos", "bfmtv.com", "http://bfmtv.com"],
+    [11, "sport ", "besoccer.com", "http://besoccer.com"],
+    [12, "sport ", "foot01.com", "http://foot01.com"],
+    [13, "sport ", "basketsession.com", "http://basketsession.com"],
+    [14, "sport ", "basket-infos.com", "http://basket-infos.com"],
+    [15, "infos", "skyrock.com", "http://skyrock.com"],
+    [16, "infos", "leparisien.fr", "http://leparisien.fr"],
   ]
   
   SITES_ANNONCES = [
-     [1,"annonces","deals.jumia.sn","http://deals.jumia.sn"  ],
-  [2,"annonces","expat-dakar.com","http://expat-dakar.com"  ],
-  [3,"annonces","coinafrique.com","http://coinafrique.com"  ]
+    [1, "annonces", "deals.jumia.sn", "http://deals.jumia.sn"],
+    [2, "annonces", "expat-dakar.com", "http://expat-dakar.com"],
+    [3, "annonces", "coinafrique.com", "http://coinafrique.com"]
   ]
 
   APP_MOBILES = [
-  [1,"App","Senego","https://play.google.com/store/apps/details?id=com.nextwebart.senego"  ],
-  [2,"App","Super-Bright LED Flashlight ","https://play.google.com/store/apps/details?id=com.surpax.ledflashlight.panel"  ],
-  [3,"App","CallApp: Caller ID","https://play.google.com/store/apps/details?id=com.callapp.contacts"  ],
-  [4,"App","PhotoGrid: Video & Pic Collage Maker, ","https://play.google.com/store/apps/details?id=com.roidapp.photogrid"  ],
-  [5,"App","Bubble Shooter ","https://play.google.com/store/apps/details?id=bubbleshooter.orig"  ],
-  [6,"App"," MAX Cleaner - Antivirus, Phone Cleaner","https://play.google.com/store/apps/details?id=com.oneapp.max.cleaner.booster"  ],
-  [7,"App","Block Puzzle ","https://play.google.com/store/apps/details?id=com.puzzlegamesclassic.tetris.blockpuzzle"  ],
-  [8,"App","Bubble Breaker ","https://play.google.com/store/apps/details?id=com.faceplus.bubble.breaker"  ],
-  [9,"App","Flashlight ","https://play.google.com/store/apps/details?id=com.splendapps.torch"  ],
-  [10,"App","Photo Lock App ","https://play.google.com/store/apps/details?id=vault.gallery.lock"  ]
+    [1, "App", "Senego", "https://play.google.com/store/apps/details?id=com.nextwebart.senego"],
+    [2, "App", "Super-Bright LED Flashlight ", "https://play.google.com/store/apps/details?id=com.surpax.ledflashlight.panel"],
+    [3, "App", "CallApp: Caller ID", "https://play.google.com/store/apps/details?id=com.callapp.contacts"],
+    [4, "App", "PhotoGrid: Video & Pic Collage Maker, ", "https://play.google.com/store/apps/details?id=com.roidapp.photogrid"],
+    [5, "App", "Bubble Shooter ", "https://play.google.com/store/apps/details?id=bubbleshooter.orig"],
+    [6, "App", " MAX Cleaner - Antivirus, Phone Cleaner", "https://play.google.com/store/apps/details?id=com.oneapp.max.cleaner.booster"],
+    [7, "App", "Block Puzzle ", "https://play.google.com/store/apps/details?id=com.puzzlegamesclassic.tetris.blockpuzzle"],
+    [8, "App", "Bubble Breaker ", "https://play.google.com/store/apps/details?id=com.faceplus.bubble.breaker"],
+    [9, "App", "Flashlight ", "https://play.google.com/store/apps/details?id=com.splendapps.torch"],
+    [10, "App", "Photo Lock App ", "https://play.google.com/store/apps/details?id=vault.gallery.lock"]
   ]
   
   onSelect(event) {
     //console.log(event);
     this.files.push(...event.addedFiles);
     //console.log(this.files)
-}
+  }
  
-onRemove(event) {
-  //console.log(event);
-  this.files.splice(this.files.indexOf(event), 1);
-}
+  onRemove(event) {
+    //console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
+  }
 
   model: any = {};
   
   public canvas: any;
  
 
-    public Direction: any = {
-        LEFT: 0,
-        UP: 1,
-        RIGHT: 2,
-        DOWN: 3
-    };
-    public DirectionSteps: any = {
-        REGULAR: 1,
-        SHIFT: 5
-    };
-    public dragObject: any;
+  public Direction: any = {
+    LEFT: 0,
+    UP: 1,
+    RIGHT: 2,
+    DOWN: 3
+  };
+  public DirectionSteps: any = {
+    REGULAR: 1,
+    SHIFT: 5
+  };
+  public dragObject: any;
 
-    public presetFonts = ['Arial', 'Serif', 'Helvetica', 'Sans-Serif', 'Open Sans', 'Roboto Slab'];
-    public lastInputSelected: any;
+  public presetFonts = ['Arial', 'Serif', 'Helvetica', 'Sans-Serif', 'Open Sans', 'Roboto Slab'];
+  public lastInputSelected: any;
 
-    public customColors: any = [];
+  public customColors: any = [];
 
-    public selectedLibrary = 'brands';
-    public palettes: any = {
-        selected: null,
-        defaults: [
-            {key: '#001f3f', value: 'Navy', type: 'default'},
-            {key: '#0074D9', value: 'Blue', type: 'default'},
-            {key: '#7FDBFF', value: 'Aqua', type: 'default'},
-            {key: '#39CCCC', value: 'Teal', type: 'default'},
-            {key: '#3D9970', value: 'Olive', type: 'default'},
-            {key: '#2ECC40', value: 'Green', type: 'default'},
-            {key: '#01FF70', value: 'Lime', type: 'default'},
-            {key: '#FFDC00', value: 'Yellow', type: 'default'},
-            {key: '#FF851B', value: 'Orange', type: 'default'},
-            {key: '#FF4136', value: 'Red', type: 'default'},
-            {key: '#85144b', value: 'Maroon', type: 'default'},
-            {key: '#F012BE', value: 'Fuchsia', type: 'default'},
-            {key: '#B10DC9', value: 'Purple', type: 'default'},
-            {key: '#111111', value: 'Black', type: 'default'},
-            {key: '#AAAAAA', value: 'Gray', type: 'default'},
-            {key: '#DDDDDD', value: 'Silver', type: 'default'}
-        ],
-        custom: []
-    };
+  public selectedLibrary = 'brands';
+  public palettes: any = {
+    selected: null,
+    defaults: [
+      { key: '#001f3f', value: 'Navy', type: 'default' },
+      { key: '#0074D9', value: 'Blue', type: 'default' },
+      { key: '#7FDBFF', value: 'Aqua', type: 'default' },
+      { key: '#39CCCC', value: 'Teal', type: 'default' },
+      { key: '#3D9970', value: 'Olive', type: 'default' },
+      { key: '#2ECC40', value: 'Green', type: 'default' },
+      { key: '#01FF70', value: 'Lime', type: 'default' },
+      { key: '#FFDC00', value: 'Yellow', type: 'default' },
+      { key: '#FF851B', value: 'Orange', type: 'default' },
+      { key: '#FF4136', value: 'Red', type: 'default' },
+      { key: '#85144b', value: 'Maroon', type: 'default' },
+      { key: '#F012BE', value: 'Fuchsia', type: 'default' },
+      { key: '#B10DC9', value: 'Purple', type: 'default' },
+      { key: '#111111', value: 'Black', type: 'default' },
+      { key: '#AAAAAA', value: 'Gray', type: 'default' },
+      { key: '#DDDDDD', value: 'Silver', type: 'default' }
+    ],
+    custom: []
+  };
 
-    public library: any = {
-        brands: [
-            {name: 'Audi', src: 'assets/libraries/brands/audi-sd.png'},
-            {name: 'BMW', src: 'assets/libraries/brands/bmw-sd.png'},
-            {name: 'Citroen', src: 'assets/libraries/brands/citroen-sd.png'},
-            {name: 'Fiat', src: 'assets/libraries/brands/fiat-sd.png'},
-            {name: 'Ford', src: 'assets/libraries/brands/ford-sd.png'},
-            {name: 'General Motors', src: 'assets/libraries/brands/generalmotors-sd.png'},
-            {name: 'Honda', src: 'assets/libraries/brands/honda-sd.png'},
-            {name: 'Hyundai', src: 'assets/libraries/brands/hyundai-sd.png'},
-            {name: 'Infiniti', src: 'assets/libraries/brands/infiniti-sd.png'},
-            {name: 'Kia', src: 'assets/libraries/brands/kia-sd.png'},
-            {name: 'Lexus', src: 'assets/libraries/brands/lexus-sd.png'},
-            {name: 'Mazda', src: 'assets/libraries/brands/mazda-sd.png'},
-            {name: 'Mercedes-Benz', src: 'assets/libraries/brands/mercedesbenz-sd.png'},
-            {name: 'Mini', src: 'assets/libraries/brands/mini-sd.png'},
-            {name: 'Nissan', src: 'assets/libraries/brands/nissan-sd.png'},
-            {name: 'Peugeot', src: 'assets/libraries/brands/peugeot-sd.png'},
-            {name: 'Porsche', src: 'assets/libraries/brands/porsche-sd.png'},
-            {name: 'Renault', src: 'assets/libraries/brands/renault-sd.png'},
-            {name: 'Seat', src: 'assets/libraries/brands/seat-sd.png'},
-            {name: 'Skoda', src: 'assets/libraries/brands/skoda-sd.png'},
-            {name: 'Tesla', src: 'assets/libraries/brands/tesla-sd.png'},
-            {name: 'Toyota', src: 'assets/libraries/brands/toyota-sd.png'},
-            {name: 'Volkswagen', src: 'assets/libraries/brands/volkswagen-sd.png'},
-            {name: 'Volvo', src: 'assets/libraries/brands/volvo-sd.png'}
-        ]
-    };
+  public library: any = {
+    brands: [
+      { name: 'Audi', src: 'assets/libraries/brands/audi-sd.png' },
+      { name: 'BMW', src: 'assets/libraries/brands/bmw-sd.png' },
+      { name: 'Citroen', src: 'assets/libraries/brands/citroen-sd.png' },
+      { name: 'Fiat', src: 'assets/libraries/brands/fiat-sd.png' },
+      { name: 'Ford', src: 'assets/libraries/brands/ford-sd.png' },
+      { name: 'General Motors', src: 'assets/libraries/brands/generalmotors-sd.png' },
+      { name: 'Honda', src: 'assets/libraries/brands/honda-sd.png' },
+      { name: 'Hyundai', src: 'assets/libraries/brands/hyundai-sd.png' },
+      { name: 'Infiniti', src: 'assets/libraries/brands/infiniti-sd.png' },
+      { name: 'Kia', src: 'assets/libraries/brands/kia-sd.png' },
+      { name: 'Lexus', src: 'assets/libraries/brands/lexus-sd.png' },
+      { name: 'Mazda', src: 'assets/libraries/brands/mazda-sd.png' },
+      { name: 'Mercedes-Benz', src: 'assets/libraries/brands/mercedesbenz-sd.png' },
+      { name: 'Mini', src: 'assets/libraries/brands/mini-sd.png' },
+      { name: 'Nissan', src: 'assets/libraries/brands/nissan-sd.png' },
+      { name: 'Peugeot', src: 'assets/libraries/brands/peugeot-sd.png' },
+      { name: 'Porsche', src: 'assets/libraries/brands/porsche-sd.png' },
+      { name: 'Renault', src: 'assets/libraries/brands/renault-sd.png' },
+      { name: 'Seat', src: 'assets/libraries/brands/seat-sd.png' },
+      { name: 'Skoda', src: 'assets/libraries/brands/skoda-sd.png' },
+      { name: 'Tesla', src: 'assets/libraries/brands/tesla-sd.png' },
+      { name: 'Toyota', src: 'assets/libraries/brands/toyota-sd.png' },
+      { name: 'Volkswagen', src: 'assets/libraries/brands/volkswagen-sd.png' },
+      { name: 'Volvo', src: 'assets/libraries/brands/volvo-sd.png' }
+    ]
+  };
 
-    public font: Font = new Font({
-        family: 'Roboto',
-        size: '14px',
-        style: 'regular',
-        styles: ['regular']
-    });
+  public font: Font = new Font({
+    family: 'Roboto',
+    size: '14px',
+    style: 'regular',
+    styles: ['regular']
+  });
 
-    public props: any = {
-        canvasFill: '#ffffff',
-        canvasImage: '',
-        id: null,
-        opacity: null,
-        fill: null,
-        stroke: null,
-        strokeWidth: null,
-        fontSize: 0,
-        lineHeight: null,
-        charSpacing: null,
-        fontWeight: null,
-        fontStyle: null,
-        textAlign: null,
-        fontFamily: 'Open Sans',
-        TextDecoration: '',
-        scale: 1,
-        angle: 0
-    };
-    public elementTypes: any = {
-        'image': {key: 'image', text: 'Image', icon: 'icon-image'},
-        'i-text': {key: 'i-text', text: 'Texte', icon: 'icon-text_format'},
-        'rect': {key: 'rect', text: 'Rectangle', icon: 'icon-aspect_ratio'},
-        'triangle': {key: 'triangle', text: 'triangle', icon: 'icon-change_history'},
-        'circle': {key: 'circle', text: 'Cercle', icon: 'icon-radio_button_unchecked'},
-        'polygon': {key: 'polygon', text: 'Polygone', icon: 'icon-crop_square'}
-    };
+  public props: any = {
+    canvasFill: '#ffffff',
+    canvasImage: '',
+    id: null,
+    opacity: null,
+    fill: null,
+    stroke: null,
+    strokeWidth: null,
+    fontSize: 0,
+    lineHeight: null,
+    charSpacing: null,
+    fontWeight: null,
+    fontStyle: null,
+    textAlign: null,
+    fontFamily: 'Open Sans',
+    TextDecoration: '',
+    scale: 1,
+    angle: 0
+  };
+  public elementTypes: any = {
+    'image': { key: 'image', text: 'Image', icon: 'icon-image' },
+    'i-text': { key: 'i-text', text: 'Texte', icon: 'icon-text_format' },
+    'rect': { key: 'rect', text: 'Rectangle', icon: 'icon-aspect_ratio' },
+    'triangle': { key: 'triangle', text: 'triangle', icon: 'icon-change_history' },
+    'circle': { key: 'circle', text: 'Cercle', icon: 'icon-radio_button_unchecked' },
+    'polygon': { key: 'polygon', text: 'Polygone', icon: 'icon-crop_square' }
+  };
  
-    public urlName = '';
+  public urlName = '';
    
  
-    public selectedSize: any = null;
-    public sizes: any = [
-        {width: 640, height: 480},
-        {width: 1024, height: 768},
-        {width: 1920, height: 1080}
-    ];
+  public selectedSize: any = null;
+  public sizes: any = [
+    { width: 640, height: 480 },
+    { width: 1024, height: 768 },
+    { width: 1920, height: 1080 }
+  ];
 
-    public sliderConfig: any = {
-        pips: {
-            mode: 'range',
-            density: 5
-        }
-    };
-
-
-    public shapeEditor = false;
+  public sliderConfig: any = {
+    pips: {
+      mode: 'range',
+      density: 5
+    }
+  };
 
 
-    public layers: any = [];
-    canva_state = false
+  public shapeEditor = false;
+
+
+  public layers: any = [];
+  canva_state = false
 
 
   go() {
     window.location.replace(REDIRECT_URL)
    
-   /*  this.router.navigate(['/']) */
+    /*  this.router.navigate(['/']) */
   }
   
   handleCanvas(width: number, height: number) {
         
    
     this.canvas = new fabric.Canvas('canvas', {
-            hoverCursor: 'pointer',
-            selection: true,
-            selectionBorderColor: 'black',
+      hoverCursor: 'pointer',
+      selection: true,
+      selectionBorderColor: 'black',
       preserveObjectStacking: true,
         
-        });
+    });
 
-        this.loadPalette();
-        this.updateLayers()
-        // register keyboard events
-        fabric.util.addListener(document.body, 'keydown', (opt) => {
-            // do not invoke keyboard events on input fields
-            if (opt.target.tagName === 'INPUT') {
-                return;
-            }
-            // if(opt.repeat) return; // prevent repeating (keyhold)
+    this.loadPalette();
+    this.updateLayers()
+    // register keyboard events
+    fabric.util.addListener(document.body, 'keydown', (opt) => {
+      // do not invoke keyboard events on input fields
+      if (opt.target.tagName === 'INPUT') {
+        return;
+      }
+      // if(opt.repeat) return; // prevent repeating (keyhold)
 
-            const key = opt.which || opt.keyCode;
+      const key = opt.which || opt.keyCode;
 
-            /* this.handleKeyPress(key, opt); */
-        });
+      /* this.handleKeyPress(key, opt); */
+    });
 
-        // register fabric.js events
-        this.canvas.on({
-            'object:moving': (e) => {
-            },
-            'object:modified': (e) => {
-            },
-            'object:selected': (e) => {
+    // register fabric.js events
+    this.canvas.on({
+      'object:moving': (e) => {
+      },
+      'object:modified': (e) => {
+      },
+      'object:selected': (e) => {
 
-                const selectedObject = e.target;
-                this.selected = selectedObject;
-                selectedObject.hasRotatingPoint = true;
-                selectedObject.transparentCorners = false;
-                selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
+        const selectedObject = e.target;
+        this.selected = selectedObject;
+        selectedObject.hasRotatingPoint = true;
+        selectedObject.transparentCorners = false;
+        selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
 
-                this.resetPanels();
+        this.resetPanels();
 
-                if (selectedObject.type !== 'group' && selectedObject) {
+        if (selectedObject.type !== 'group' && selectedObject) {
 
-                    this.getId();
-                    this.getOpacity();
-                    this.getTitle();
+          this.getId();
+          this.getOpacity();
+          this.getTitle();
 
-                    switch (selectedObject.type) {
-                        case 'polygon':
-                        case 'rect':
-                        case 'circle':
-                        case 'triangle':
-                            this.shapeEditor = true;
-                            this.getFill();
-                            this.getStroke();
-                            this.getStrokeWidth();
-                            break;
-                        case 'i-text':
-                            this.textEditor = true;
-                            this.getLineHeight();
-                            this.getCharSpacing();
-                            this.getBold();
-                            this.getFontStyle();
-                            this.getFontSize();
-                            this.getFill();
-                            this.getStroke();
-                            this.getStrokeWidth();
-                            this.getTextDecoration();
-                            this.getTextAlign();
-                            this.getFontFamily();
-                            break;
-                        case 'image':
-                            break;
-                    }
-                }
-            },
-            'selection:cleared': (e) => {
-                this.selected = null;
-                this.resetPanels();
-            }
-        });
-    this.canvas_style['width']=width
-    this.canvas_style['height']=height
+          switch (selectedObject.type) {
+            case 'polygon':
+            case 'rect':
+            case 'circle':
+            case 'triangle':
+              this.shapeEditor = true;
+              this.getFill();
+              this.getStroke();
+              this.getStrokeWidth();
+              break;
+            case 'i-text':
+              this.textEditor = true;
+              this.getLineHeight();
+              this.getCharSpacing();
+              this.getBold();
+              this.getFontStyle();
+              this.getFontSize();
+              this.getFill();
+              this.getStroke();
+              this.getStrokeWidth();
+              this.getTextDecoration();
+              this.getTextAlign();
+              this.getFontFamily();
+              break;
+            case 'image':
+              break;
+          }
+        }
+      },
+      'selection:cleared': (e) => {
+        this.selected = null;
+        this.resetPanels();
+      }
+    });
+    this.canvas_style['width'] = width
+    this.canvas_style['height'] = height
     this.canvas.setWidth(width);
     this.canvas.setHeight(height);
-     this.canva_state = true 
+    this.canva_state = true
     ////console.log('handled')
    
   }
@@ -762,9 +1174,84 @@ onRemove(event) {
 
 
   ngAfterViewInit() {
+ 
    
-    var button = document.getElementById('v-pills-add-ad-tab')
-    var image = document.querySelector('.img-check')
+    this.route.params.subscribe(params => {
+      if (params["name"] !== undefined && params['idC'] !== undefined && params['idA'] !== undefined && params['ad_group_id'] !== undefined && params['campaign_id'] !== undefined && params['type'] !== undefined) {
+        ////console.log(params)
+        if (params['type'] === "rechargement") {
+          this.getCurrentUserCredentials().then(credentials => {
+            //console.log(credentials)
+            var paymentKey = credentials[0]['paymentKey']
+            this.uid = credentials[0]['uid']
+            this.accountValue = credentials[0]['account_value']
+            var montant = localStorage.getItem(paymentKey)
+            if (montant === null) {
+              this.isCreating = false
+            } else {
+              this.isCreating = true
+              var new_value = 0
+              if (this.accountValue > new_value) {
+                //console.log("Solde du compte non null")
+                //console.log("solde actuel: " + this.accountValue.toString())
+                new_value = parseInt(montant) + this.accountValue
+                //console.log("Nouveau solde: "+new_value.toString())
+              } else {
+                //console.log("Solde du compte null")
+                //console.log("solde actuel: " + this.accountValue.toString())
+                new_value = parseInt(montant)
+                //console.log("Nouveau solde: "+new_value.toString())
+              }
+              this.auth.updateUser(this.uid, { account_value: new_value, paymentKey: "" }).then(res => {
+                if (res != "error") {
+                  this.getNotificationId(this.uid).then(res => {
+                    this.auth.updateNotification
+                      (res, { notification: "" }).then(() => {
+                  
+                        this.isCreating = false
+                        localStorage.removeItem(paymentKey)
+                        this.openSnackBar("Nouveau solde de compte " + new_value.toString(), "Merci!")
+                         this.router.navigate(["/ads", params["name"],params['idC'], params['idA'], params['ad_group_id'], params['campaign_id']  ])
+                      
+                      })
+                  })
+                }
+              })
+            }
+          })
+        }
+        
+     
+      }else if (params["name"] !== undefined && params['idC'] !== undefined && params['idA'] !== undefined && params['ad_group_id'] !== undefined && params['campaign_id'] !== undefined && params['budget'] !== undefined && params['dailyBudget'] !== undefined && params['numberOfDays'] !== undefined) {
+            this.isCreating = true
+            var idC = params['idC']
+
+        
+            var dailyBudget = params['dailyBudget']
+            var numberOfDays = params['numberOfDays']
+        
+            this.getCurrentUserCredentials().then(credentials => {
+              var paymentKey = credentials[0]['paymentKey']
+              var montant = localStorage.getItem(paymentKey)
+              if (montant === null) {
+                this.isCreating = false
+              } else {
+                this.isCreating = true
+                var budget = parseInt(montant)
+                this.notesService.updateNote(idC, { budget: budget, dailyBudget: dailyBudget, numberOfDays: numberOfDays }).then(() => {
+                  this.isCreating = false
+                  localStorage.removeItem(paymentKey)
+                  this.openSnackBar("Budget de la campagne mis à jour avec succès", "Merci")
+
+                       this.router.navigate(["/ads", params["name"],params['idC'], params['idA'], params['ad_group_id'], params['campaign_id']  ])
+                       
+                })
+          
+              }
+            })
+            // In a real app: dispatch action to load the details here.
+          }
+    })
     this.isEditor = false
     this.isAdBlock = false
 
@@ -772,7 +1259,7 @@ onRemove(event) {
     this.ads.forEach(child => {
 
       if (child.length > 0) {
-        this.number_ads = child.length
+        this.number_ads = child.length.toString()
         this.isNull = true
         
         
@@ -786,11 +1273,11 @@ onRemove(event) {
       }
 
       if (this.isNull === false) {
-        if (this.ad_type==="UPLOAD") {
+        if (this.ad_type === "UPLOAD") {
           this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
           this.currentIdInputName = this.idOfAdNameCreateUpload
         } else {
-            this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
+          this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
           this.currentIdInputName = this.idOfAdNameCreateCreatives
         }
       }
@@ -798,15 +1285,10 @@ onRemove(event) {
 
     })
     
-     button.addEventListener("click", () => {
-      
-    $('#block').css("display", "none")
-
-      
-     }) 
-    $('html, body').animate({
-        scrollTop: $("#v-pills-tabContent").offset().top
-      }, 1000);
+   
+    /*   $('html, body').animate({
+          scrollTop: $("#v-pills-tabContent").offset().top
+        }, 1000); */
 
    
 
@@ -815,14 +1297,14 @@ onRemove(event) {
   scrollDownToChoose() {
     //console.log("click")
     /* this.confirmClear().then(res => { */
-     /*  if (res == "ok") { */
-         setTimeout(() => {
-           $('html, body').animate({
+    /*  if (res == "ok") { */
+    setTimeout(() => {
+      $('html, body').animate({
         scrollTop: $("#chooseAdSize").offset().top
       }, 800);
-        },500)
+    }, 500)
     /*   } */
-   /*  }) */
+    /*  }) */
    
   
   }
@@ -834,7 +1316,7 @@ onRemove(event) {
   
   closeModifyUploadImage() {
     $("#button_modify_image_upload").hide()
-     this.button_modify_image_upload = true
+    this.button_modify_image_upload = true
   }
 
   checkAdType(img, width, height, url, name) {
@@ -851,16 +1333,16 @@ onRemove(event) {
       this.illustrationUrl = url
       this.selectedAdType = name
       setTimeout(() => {
-   $('html, body').animate({
-        scrollTop: $("#illustration").offset().top
-      }, 800);
+        $('html, body').animate({
+          scrollTop: $("#illustration").offset().top
+        }, 800);
       }, 500)
       this.chooseAdType()
       
     } else {
       this.illustration = false
       $(this.element_checked).toggleClass('check')
-      $("#"+img).toggleClass('check')
+      $("#" + img).toggleClass('check')
       this.element_checked = "#" + img
       this.selectedWidth = width
       this.selectedHeight = height
@@ -868,115 +1350,117 @@ onRemove(event) {
       this.illustrationUrl = url
       this.selectedAdType = name
       setTimeout(() => {
-   $('html, body').animate({
-        scrollTop: $("#illustration").offset().top
-      }, 800);
+        $('html, body').animate({
+          scrollTop: $("#illustration").offset().top
+        }, 800);
       }, 500)
       this.chooseAdType()
     }
   }
-/*   public loadScript(src) {
-    var isFound = false;
-    var scripts = document.getElementsByTagName("script")
-    for (var i = 0; i < scripts.length; ++i) {
-      if (scripts[i].getAttribute('src') != null && scripts[i].getAttribute('src').includes("loader")) {
-        isFound = true;
+  /*   public loadScript(src) {
+      var isFound = false;
+      var scripts = document.getElementsByTagName("script")
+      for (var i = 0; i < scripts.length; ++i) {
+        if (scripts[i].getAttribute('src') != null && scripts[i].getAttribute('src').includes("loader")) {
+          isFound = true;
+        }
       }
-    }
-
-    if (!isFound) {
-      var dynamicScripts = [src];
-
-      for (var i = 0; i < dynamicScripts.length; i++) {
-        let node = document.createElement('script');
-        node.src = dynamicScripts[i];
-        node.type = 'text/javascript';
-        node.async = false;
-        node.charset = 'utf-8';
-        document.getElementsByTagName('body')[0].appendChild(node);
+  
+      if (!isFound) {
+        var dynamicScripts = [src];
+  
+        for (var i = 0; i < dynamicScripts.length; i++) {
+          let node = document.createElement('script');
+          node.src = dynamicScripts[i];
+          node.type = 'text/javascript';
+          node.async = false;
+          node.charset = 'utf-8';
+          document.getElementsByTagName('body')[0].appendChild(node);
+        }
+  
       }
-
-    }
-  } */
+    } */
   goBackSelectSize() {
     this.chooseBlock = false
     this.chooseAdSize = true
    
   }
-    loadScript(src){
+  loadScript(src) {
     var script = document.createElement("script");
     script.type = "text/javascript";
     document.getElementsByTagName("body")[0].appendChild(script);
     script.src = src;
     
   }
-  handleUploadBanner(){
+  handleUploadBanner() {
     this.chooseBlock = false
-    this.chooseAdSize = false 
+    this.chooseAdSize = false
     this.illustration = false
-   /* this.loadScript('../../../../assets/js/app.js') */
-   this.is_upload_way = true
-   this.ad_type = "UPLOAD"
-   
-$("#block").css("display", "block")
-     this.currentIdInputName = this.idOfAdNameCreateUpload
+    /* this.loadScript('../../../../assets/js/app.js') */
+    this.is_upload_way = true
+    this.ad_type = "UPLOAD"
+    if (this.handleCreateUpload === false) {
+      this.handleCreateUpload = true
+       this.currentIdInputName = this.idOfAdNameCreateUpload
     this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
-      setTimeout(() => {
-   $('html, body').animate({
+    setTimeout(() => {
+      $('html, body').animate({
         scrollTop: $("#block").offset().top
       }, 800);
     }, 500)
+    }else{
+      this.handleCreateUpload = false
+    }
+   
+   
     
 
     
     
   }
   goBackFromUpload() {
-    this.isUpload = false
-    this.is_upload_way = false
-    this.ad_type = ""
-     this.currentIdInputName = ""
-    this.currentIdInputDisplay = ""
-     if (this.isNull === true) {
-     
-     $("#block").css("display", "none")
-   } else {
-     $("#block").css("display", "none")
-   }
-    
-   this.chooseBlock = true
-    this.chooseAdSize = true 
-    this.illustration = true
+    if (this.handleCreateUpload === true) {
+      this.isUpload = false
+      this.is_upload_way = false
+      this.ad_type = ""
+      this.currentIdInputName = ""
+      this.currentIdInputDisplay = ""
+      
+      this.chooseBlock = true
+      this.chooseAdSize = true
+      this.illustration = true
+
+    }
   }
 
   goBackFromCreatives() {
 
-      Swal.fire({
-          title: 'Avertissement',
-          text: "Voulez vous annuler ce canvas ?",
-          type: 'warning',
-          showCancelButton: false,
-          confirmButtonColor: '#26a69a',
-          cancelButtonColor: '#d33',
-          confirmButtonText: "ok"
-        }).then((result) => {
-          if (result.value) {
-             if (document.getElementById("blockCreateCreatives").classList.contains('blockCreateCreatives')) {
-        document.getElementById("blockCreateCreatives").classList.remove("blockCreateCreatives")
-    }
-    this.canvas.clear()
-    this.canvas.dispose()
-  this.handleCreateCanvas = false
-   this.chooseBlock = true
-    this.chooseAdSize = true 
-    this.illustration = true
-    this.ad_type = "" 
-    this.currentIdInputName = ""
-    this.currentIdInputDisplay = ""
-    this.canvasCreate = false
-          }
+    Swal.fire({
+      title: 'Avertissement',
+      text: "Voulez vous annuler ce canvas ?",
+      type: 'warning',
+      showCancelButton: false,
+      confirmButtonColor: '#26a69a',
+      cancelButtonColor: '#d33',
+      confirmButtonText: "ok"
+    }).then((result) => {
+      if (result.value) {
+        /*   if (document.getElementById("blockCreateCreatives").classList.contains('blockCreateCreatives')) {
+     document.getElementById("blockCreateCreatives").classList.remove("blockCreateCreatives")
+ } */
+        this.canvas.clear()
+        this.canvas.dispose()
+        this.handleCreateCanvas = false
+        this.chooseBlock = true
+        this.chooseAdSize = true
+        this.illustration = true
+        this.ad_type = ""
+        this.currentIdInputName = ""
+        this.currentIdInputDisplay = ""
+        this.canvasCreate = false
+      }
              
-          })
+    })
     
 
 
@@ -988,40 +1472,42 @@ $("#block").css("display", "block")
   handleCreatives() {
    
     if (this.canvasModify === false) {
-       /*  var percentWidth = (parseInt(this.selectedWidth) * 100) / 16
-    var percentHeight = (parseInt(this.selectedHeight) * 100) / 16 */
+      /*  var percentWidth = (parseInt(this.selectedWidth) * 100) / 16
+   var percentHeight = (parseInt(this.selectedHeight) * 100) / 16 */
     
-    var self = this
-     this.chooseAdSize = false
-   this.illustration = false 
-    this.handleCreateCanvas = true
-    this.isCreating = true
-    this.chooseBlock = false
-         this.ad_type="CREATIVE"
+      var self = this
+      this.chooseAdSize = false
+      this.illustration = false
+      this.handleCreateCanvas = true
+      this.isCreating = true
+      this.chooseBlock = false
+      this.ad_type = "CREATIVE"
      
-    this.currentIdInputName = this.idOfAdNameCreateCreatives
-    this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
+      this.currentIdInputName = this.idOfAdNameCreateCreatives
+      this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
 
-  /*       setTimeout(function(){ 
-         
-         
-        }, 2000); */
-      setTimeout(function(){ 
+      /*       setTimeout(function(){ 
+             
+             
+            }, 2000); */
+      $("#body > section > app-root > app-annonces > mat-sidenav-container > mat-sidenav-content > div > div > mat-card.lime.lighten-5.p-0.mat-card > mat-horizontal-stepper > div.mat-horizontal-content-container").css("padding", "0px !important")
+      setTimeout(function () {
        
-          self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
-          self.isCreating = false
+        self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
+        self.isCreating = false
          
-        }, 2500);
+      }, 2500);
     
-       setTimeout(() => {
-   $('html, body').animate({
-        scrollTop: $("#blockCreateCreatives").offset().top
-      }, 800);
-       }, 1500)
+    
+      setTimeout(() => {
+        $('html, body').animate({
+          scrollTop: $("#blockCreateCreatives").offset().top
+        }, 800);
+      }, 1500)
       this.canvasCreate = true
     } else {
       this.confirmClear()
-   }
+    }
  
     
 
@@ -1032,32 +1518,61 @@ $("#block").css("display", "block")
 
     /* this.chooseAdSize = false */
     this.chooseBlock = true
-     setTimeout(() => {
-   $('html, body').animate({
-        scrollTop: $("#blockChoisir").offset().top
-      }, 800);
-    }, 500)
+    /* setTimeout(() => {
+  $('html, body').animate({
+       scrollTop: $("#blockChoisir").offset().top
+     }, 800);
+   }, 500) */
     
  
   }
   reload() {
     return 'reload'
   }
+  handleTextAdd() {
+    if (this.text_add === false) {
+      this.text_add = true
+    } else {
+      this.text_add = false
+    }
+  }
+  handleColorTexte() {
+    if (this.text_color === false) {
+      this.text_color = true
+    } else {
+      this.text_color = false
+    }
+  }
+
+  openSideNav() {
+    if (this.isSideNavOpen === true) {
+      this.isSideNavOpen = false
+    } else {
+      this.isSideNavOpen = true
+    }
+  }
   ngOnInit() {
-   
-   this.auth.user.forEach(data=>{
-     this.photoURL = data.photoURL
-     this.currentUserName = data.displayName
-           //alert(this.photoURL)
-         })
-     this.auth.notificationAccount.forEach((value) => {
-      if(value.notification != ""){
+    this.notesService.isMobile().then(res => {
+      if (res === true) {
+        this.isSideNavOpen = false
+      }
+    })
+   /*  this.BROWSER_URL = window.location.href.replace("http://localhost:4200/#/", "")
+    console.log(this.BROWSER_URL) */
+    this.auth.user.forEach(data => {
+      this.photoURL = data.photoURL
+      this.currentUserName = data.displayName
+      //alert(this.photoURL)
+    })
+    this.auth.notificationAccount.forEach((value) => {
+      if (value.notification != "") {
         this.numberOfNotifications = 1
         this.notificationAccountValue = value.notification
       }
     })
       
-    this.route.params.subscribe(params => {
+    
+    /* this.route.params.subscribe(params => {
       var name = params['name']
       var idC = params['idC']
       var idA = params['idA']
@@ -1066,7 +1581,7 @@ $("#block").css("display", "block")
       
     
     })
-    
+     */
     
 
     // get references to the html canvas element & its context
@@ -1074,409 +1589,584 @@ $("#block").css("display", "block")
     // let canvasElement: any = document.getElementById('canvas');
     // ////console.log(canvasElement)
     // });
-
     this.route.params.subscribe(params => {
-     //alert('ok')
-  
-      if (typeof(params['budget']) =="undefined") {
-  
-      this.ad_group_name = params['name']
-      this.campagne_id = params['campaign_id']
       this.ad_group_id = params['ad_group_id']
-      this.idC = params['idC']
-        this.idA = params['idA']
-         this.auth.user.subscribe(data => {
-      this.uid = data.uid
-      this.email = data.email
-      this.email_letter = data.email.charAt(0)
-      this.accountValue = data.account_value
-       this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
-      ////console.log(res)
-      this.startDateFrench = res['startDateFrench']
-         this.endDateFrench = res['endDateFrench']
-         this.startDate = res['startDate']
-         this.endDate = res['endDate']
-         this.budget = res['budget']
-         //alert(this.budget)
-         this.budgetId = res['budgetId']
-         this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
-
-           this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
-      this.status = res['status']
-      this.genres = res['sexes']
-      this.populations = res['ages']
-      this.appareils = res['devices']
-             this.placement = res['placement']
-       
-        
-      
-           })
-         
-         if (this.isNull == true) {
-        //alert(this.placement.toString().length )
-      if ( this.placement.toString().length ==0 || this.genres.toString().length ==0 || this.populations.toString().length ==0  || this.appareils.toString().length == 0) {
-        
-        if (this.budget > 0) {
-
-          //alert('ok budget')
-          this.isDone = true
-        
-          /*  document.getElementById("v-pills-placement-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', "text-success")
-             document.getElementById("v-pills-ciblage-ads-tab").classList.add('animated' ,'bounce', 'infinite', 'adafri-police-22', 'font-weight-bold', 'text-success') */
-        }
-      } else {
-        this.isDone = false
-       /*  document.getElementById("v-pills-placement-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold')
-             document.getElementById("v-pills-ciblage-ads-tab").classList.remove('animated' ,'bounceUp', 'infinite', 'adafri-police-18', 'font-weight-bold') */
-      }
-    }
-    })
-    })
-      } else {
-        ////console.log(params)
-/*         this.id_ad_firebase = params['id_ad_firebase']
-         this.ad_group_name = params['name']
-      this.campagne_id = params['campaign_id']
-      this.ad_group_id = params['ad_group_id']
-      this.idC = params['idC']
-      this.idA = params['idA']
-      
-        this.isCreating = true
-    
-         
-              this.notesService.updateNote(params['idC'], { budget: parseInt(params["budget"]) , dailyBudget: parseInt(params['dailyBudget']), numberOfDays: parseInt(params['numberOfDays'])}).then(() => {
-                Swal.fire({
-                  title: 'Service Campagne!',
-                  text: 'Budget mis à jour.',
-                  type: 'success',
-                  showCancelButton: false,
-                  confirmButtonColor: '#26a69a',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Ok'
-                }).then((result) => {
-                  if (result.value) {
-                    window.history.pushState("", "", "/ads/"+params['name']+"/"+params['idC']+"/"+params['idA']+"/"+params['ad_group_id']+"/"+params['campaign_id'])
-                    this.isCreating = false
-                
-                    
-                    this.auth.user.subscribe(data => {
-                    this.uid = data.uid
-                    this.email = data.email
-                    this.email_letter = data.email.charAt(0)
-                    this.accountValue = data.account_value
-                    this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
-                    ////console.log(res)
-                    this.startDateFrench = res['startDateFrench']
-                      this.endDateFrench = res['endDateFrench']
-                      this.startDate = res['startDate']
-                      this.endDate = res['endDate']
-                      this.budget = res['budget']
-                    
-                      this.budgetId = res['budgetId']
-                      this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
-                  })
-                  })
-                     
-                    document.getElementById(this.id_ad_firebase).click()
-                    this.isCreating = true
-                     setTimeout(function(){
-                       document.getElementById("publish").click()
-                       
-                      }, 2000);
-                      this.isCreating = false 
-                   
-                  }
-                })
-                
-              }) */
-      }
-     
-
-  /*     if (typeof (params['money']) != "undefined" && typeof (params['id_ad_firebase']) != "undefined") {
-        this.isCreating = true
-        this.auth.user.forEach(data => {
-          this.auth.updateUser(data.uid, { account_value: params['money'] })
-          this.auth.getInfos(data.uid).subscribe(el => {
-            this.auth.updateNotification(el[0]['id'], { notification: "" }).then(() => {
-              Swal.fire({
-                title: 'Service Rechargement!',
-                text: 'Compte mis à jour avec succès.',
-                type: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-              }).then((result) => {
-                if (result.value) {
-                  this.isCreating = false
-                  setTimeout(() => {
-                    document.getElementById(params['id_ad_firebase']).click()
-                  },2000)
-                  window.history.pushState("", "", "/ads/" + params['name'] + "/" + params['idC'] + "/" + params['idA'] + "/" + params['ad_group_id'] + "/" + params['campaign_id'])
-                   setTimeout(() => {
-                    document.getElementById("publish").click()
-                  },2000)
-                  
-                }
-              })
-            })
-      
-   
-          })
-        })
-      } */
-    })
-    
-    
-    var chartData = {
-  labels: ["S", "M", "T", "W", "T", "F", "S"],
-  datasets: [{
-    data: [589, 445, 483, 503, 689, 692, 634],
-  },
-  {
-    data: [639, 465, 493, 478, 589, 632, 674],
-  }]
-};
-
-    var chLine = document.getElementById("chLine");
-if (chLine) {
-  new Chart(chLine, {
-  type: 'line',
-  data: chartData,
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: false
-        }
-      }]
-    },
-    legend: {
-      display: false
-    }
-  }
-  });
-    }
-    
-
-
-      // In a real app: dispatch action to load the details here.
-  
-    this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
-      this.status = res['status']
-      this.genres = res['sexes']
-      this.populations = res['ages']
-      this.appareils = res['devices']
-      this.placement = res['placement']
-     
-      
-      ////console.log('populations')
-      /* ////console.log(this.genres) */
-      ////console.log(this.populations)
     })
 
-    this.dropdownListAges = [{
-        item_id: 503999,
-        item_text: 'indéterminé'
-      },
-      {
-        item_id: 503001,
-        item_text: '18-24 ans'
-      },
-      {
-        item_id: 503002,
-        item_text: '25-34 ans'
-      },
-      {
-        item_id: 503003,
-        item_text: '35-44 ans'
-      },
-      {
-        item_id: 503004,
-        item_text: '45-54 ans'
-      },
-      {
-        item_id: 503005,
-        item_text: '55-64 ans'
-      },
-      {
-        item_id: 503006,
-        item_text: '+64 ans'
-      }
-    ];
-    this.dropdownListSexes = [{
-        item_id: 20,
-        item_text: 'indéterminé'
-      },
-      {
-        item_id: 10,
-        item_text: 'Hommes'
-      },
-      {
-        item_id: 11,
-        item_text: 'Femmes'
-      },
-    ];
-    this.dropdownListDevices = [{
-        item_id: 30000,
-        item_text: 'Ordinateurs'
-      },
-      {
-        item_id: 30001,
-        item_text: 'Mobiles'
-      },
-      {
-        item_id: 30002,
-        item_text: 'Tablettes'
-      },
-      {
-        item_id: 30004,
-        item_text: "Tv Connectée"
-      }
-    ];
-    this.dropdownListZones = [{
-      item_id: 9070424,
-      item_text: 'Dakar'
-    },];
-    for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++){
-      ////console.log(this.NATIONALS_WEBSITES[i][2])
-      this.dropdownListNationalsWebsites.push({
-         item_id: this.NATIONALS_WEBSITES[i][3],
-         item_text: this.NATIONALS_WEBSITES[i][2]
-       }
-      );
-    }
 
-    for (let i = 0; i < this.INTERNATIONALS_WEBSITES.length; i++) {
-      
-      this.dropdownListInternationalsWebsites.push({
-        item_id: this.INTERNATIONALS_WEBSITES[i][3],
-        item_text: this.INTERNATIONALS_WEBSITES[i][2]
-      
-      }
-      );
-    }
-
-    for (let i = 0; i < this.SITES_ANNONCES.length; i++){
-      
-      this.dropdownListAdsWebsites.push({
-       item_id: this.SITES_ANNONCES[i][3],
-       item_text: this.SITES_ANNONCES[i][2]
-     }
-      );
-    }
-
-    for (let i = 0; i < this.APP_MOBILES.length; i++){
-      
-      this.dropdownListApps.push({
-        item_id: this.APP_MOBILES[i][3],
-        item_text: this.APP_MOBILES[i][2]
-      }
-      );
-    }
-    this.dropdownSettingsAges = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Tout sélectionner',
-      unSelectAllText: 'annuler',
-      itemsShowLimit: 8,
-      allowSearchFilter: false,
-      searchPlaceholderText: 'Rechercher',
-
-    };
-    this.dropdownSettingsSexes = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true,
-      searchPlaceholderText: 'Rechercher',
-
-    };
-    this.dropdownSettingsZones = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true,
-      searchPlaceholderText: 'Rechercher',
-
-    };
-    this.dropdownSettingsDevices = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Tout sélectionner',
-      unSelectAllText: 'annuler',
-      itemsShowLimit: 3,
-      allowSearchFilter: false,
-      searchPlaceholderText: 'Rechercher',
-
-    };
-     this.dropdownSettingsNationalsWebsites = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Tout sélectionner',
-      unSelectAllText: 'annuler',
-      itemsShowLimit: 10,
-      allowSearchFilter: true,
-      searchPlaceholderText: 'Rechercher',
-
-     };
-       this.dropdownSettingsInternationalsWebsites = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Tout sélectionner',
-      unSelectAllText: 'annuler',
-      itemsShowLimit: 10,
-      allowSearchFilter: true,
-      searchPlaceholderText: 'Rechercher',
-
-       };
-       this.dropdownSettingsAdsWebsites = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Tout sélectionner',
-      unSelectAllText: 'annuler',
-      itemsShowLimit: 10,
-      allowSearchFilter: false,
-      searchPlaceholderText: 'Rechercher',
-
-       };
-       this.dropdownSettingsApps = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Tout sélectionner',
-      unSelectAllText: 'annuler',
-      itemsShowLimit: 10,
-      allowSearchFilter: true,
-      searchPlaceholderText: 'Rechercher',
-
-    };
+    
     //setup front side canvas
     this.ads = this.adsService.getListAd(this.ad_group_id)
     this.ads.forEach(child => {
 
       if (child.length > 0) {
+       
 
         this.number_ads = child.length
         this.isNull = true
+        this.dataSource = new MatTableDataSource(child)
+        this.dataSource.paginator = this.paginator;
+        this.form = this.fb.group({
+          direction: ['right'],
+          open: [false],
+          spin: [true],
+          mouse_hover: [false],
+          animation: ['scale']
+        });
+        this.showSideBar = true
+        this.route.params.subscribe(params => {
+          //alert('ok')
+  
+          if (typeof (params['budget']) == "undefined") {
+  
+            this.ad_group_name = params['name']
+            this.campagne_id = params['campaign_id']
+            this.ad_group_id = params['ad_group_id']
+            this.idC = params['idC']
+            this.idA = params['idA']
+            this.auth.user.subscribe(data => {
+              this.uid = data.uid
+              this.email = data.email
+     
+              this.accountValue = data.account_value
+              this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
+                ////console.log(res)
+                this.startDateFrench = res['startDateFrench']
+                this.endDateFrench = res['endDateFrench']
+                this.startDate = res['startDate']
+                this.endDate = res['endDate']
+                this.budget = res['budget']
+                //alert(this.budget)
+                this.budgetId = res['budgetId']
+                this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
+
+                this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
+                  this.status = res['status']
+                  this.genres = res['sexes']
+                  this.populations = res['ages']
+                  this.appareils = res['devices']
+                  this.placement = res['placement']
+       
+        
       
+                })
+         
+                if (this.isNull == true) {
+                  //alert(this.placement.toString().length )
+                  if (this.placement.toString().length == 0 || this.genres.toString().length == 0 || this.populations.toString().length == 0 || this.appareils.toString().length == 0) {
+        
+                    if (this.budget > 0) {
+
+                      this.isDone = true
+        
+  
+                    }
+                  } else {
+                    this.isDone = false
+    
+                  }
+                }
+              })
+            })
+          } 
+     
+
+
+        })
+    
+    
+
+
+      
+  
+        this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
+          this.status = res['status']
+          this.genres = res['sexes']
+          this.populations = res['ages']
+          this.appareils = res['devices']
+          this.placement = res['placement']
+     
+      
+   
+        })
+
+        this.dropdownListAges = [{
+          item_id: 503999,
+          item_text: 'indéterminé'
+        },
+        {
+          item_id: 503001,
+          item_text: '18-24 ans'
+        },
+        {
+          item_id: 503002,
+          item_text: '25-34 ans'
+        },
+        {
+          item_id: 503003,
+          item_text: '35-44 ans'
+        },
+        {
+          item_id: 503004,
+          item_text: '45-54 ans'
+        },
+        {
+          item_id: 503005,
+          item_text: '55-64 ans'
+        },
+        {
+          item_id: 503006,
+          item_text: '+64 ans'
+        }
+        ];
+        this.dropdownListSexes = [{
+          item_id: 20,
+          item_text: 'indéterminé'
+        },
+        {
+          item_id: 10,
+          item_text: 'Hommes'
+        },
+        {
+          item_id: 11,
+          item_text: 'Femmes'
+        },
+        ];
+        this.dropdownListDevices = [{
+          item_id: 30000,
+          item_text: 'Ordinateurs'
+        },
+        {
+          item_id: 30001,
+          item_text: 'Mobiles'
+        },
+        {
+          item_id: 30002,
+          item_text: 'Tablettes'
+        },
+        {
+          item_id: 30004,
+          item_text: "Tv Connectée"
+        }
+        ];
+        this.dropdownListZones = [{
+          item_id: 9070424,
+          item_text: 'Dakar'
+        },];
+        for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++) {
+          ////console.log(this.NATIONALS_WEBSITES[i][2])
+          this.dropdownListNationalsWebsites.push({
+            item_id: this.NATIONALS_WEBSITES[i][3],
+            item_text: this.NATIONALS_WEBSITES[i][2]
+          }
+          );
+        }
+
+        for (let i = 0; i < this.INTERNATIONALS_WEBSITES.length; i++) {
+      
+          this.dropdownListInternationalsWebsites.push({
+            item_id: this.INTERNATIONALS_WEBSITES[i][3],
+            item_text: this.INTERNATIONALS_WEBSITES[i][2]
+      
+          }
+          );
+        }
+
+        for (let i = 0; i < this.SITES_ANNONCES.length; i++) {
+      
+          this.dropdownListAdsWebsites.push({
+            item_id: this.SITES_ANNONCES[i][3],
+            item_text: this.SITES_ANNONCES[i][2]
+          }
+          );
+        }
+
+        for (let i = 0; i < this.APP_MOBILES.length; i++) {
+      
+          this.dropdownListApps.push({
+            item_id: this.APP_MOBILES[i][3],
+            item_text: this.APP_MOBILES[i][2]
+          }
+          );
+        }
+        this.dropdownSettingsAges = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 8,
+          allowSearchFilter: false,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsSexes = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 3,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsZones = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 3,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsDevices = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 3,
+          allowSearchFilter: false,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsNationalsWebsites = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsInternationalsWebsites = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsAdsWebsites = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: false,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsApps = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
         
       } else {
-        this.list_ad = false
-        this._init_ad = true
+        this.showBudgetStatusBar = false
+       
         this.number_ads = "0"
+        this.route.params.subscribe(params => {
+          //alert('ok')
+          
+  
+          if (typeof (params['budget']) == "undefined") {
+  
+            this.ad_group_name = params['name']
+            this.campagne_id = params['campaign_id']
+            this.ad_group_id = params['ad_group_id']
+            this.idC = params['idC']
+            this.idA = params['idA']
+            this.auth.user.subscribe(data => {
+              this.uid = data.uid
+              this.email = data.email
+     
+              this.accountValue = data.account_value
+              this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
+                ////console.log(res)
+                this.startDateFrench = res['startDateFrench']
+                this.endDateFrench = res['endDateFrench']
+                this.startDate = res['startDate']
+                this.endDate = res['endDate']
+                this.budget = res['budget']
+                //alert(this.budget)
+                this.budgetId = res['budgetId']
+                this.dure_campagne = this.datediff(this.parseDate(res['startDateFrench']), this.parseDate(res['endDateFrench']))
+
+                this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
+                  this.status = res['status']
+                  this.genres = res['sexes']
+                  this.populations = res['ages']
+                  this.appareils = res['devices']
+                  this.placement = res['placement']
+       
+        
+      
+                })
+         
+                if (this.isNull == true) {
+                  //alert(this.placement.toString().length )
+                  if (this.placement.toString().length == 0 || this.genres.toString().length == 0 || this.populations.toString().length == 0 || this.appareils.toString().length == 0) {
+        
+                    if (this.budget > 0) {
+
+                      this.isDone = true
+        
+  
+                    }
+                  } else {
+                    this.isDone = false
+    
+                  }
+                }
+              })
+            })
+          } 
+     
+
+
+        })
+    
+    
+
+
+      
+  
+        this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
+          this.status = res['status']
+          this.genres = res['sexes']
+          this.populations = res['ages']
+          this.appareils = res['devices']
+          this.placement = res['placement']
+     
+      
+   
+        })
+
+        this.dropdownListAges = [{
+          item_id: 503999,
+          item_text: 'indéterminé'
+        },
+        {
+          item_id: 503001,
+          item_text: '18-24 ans'
+        },
+        {
+          item_id: 503002,
+          item_text: '25-34 ans'
+        },
+        {
+          item_id: 503003,
+          item_text: '35-44 ans'
+        },
+        {
+          item_id: 503004,
+          item_text: '45-54 ans'
+        },
+        {
+          item_id: 503005,
+          item_text: '55-64 ans'
+        },
+        {
+          item_id: 503006,
+          item_text: '+64 ans'
+        }
+        ];
+        this.dropdownListSexes = [{
+          item_id: 20,
+          item_text: 'indéterminé'
+        },
+        {
+          item_id: 10,
+          item_text: 'Hommes'
+        },
+        {
+          item_id: 11,
+          item_text: 'Femmes'
+        },
+        ];
+        this.dropdownListDevices = [{
+          item_id: 30000,
+          item_text: 'Ordinateurs'
+        },
+        {
+          item_id: 30001,
+          item_text: 'Mobiles'
+        },
+        {
+          item_id: 30002,
+          item_text: 'Tablettes'
+        },
+        {
+          item_id: 30004,
+          item_text: "Tv Connectée"
+        }
+        ];
+        this.dropdownListZones = [{
+          item_id: 9070424,
+          item_text: 'Dakar'
+        },];
+        for (let i = 0; i < this.NATIONALS_WEBSITES.length; i++) {
+          ////console.log(this.NATIONALS_WEBSITES[i][2])
+          this.dropdownListNationalsWebsites.push({
+            item_id: this.NATIONALS_WEBSITES[i][3],
+            item_text: this.NATIONALS_WEBSITES[i][2]
+          }
+          );
+        }
+
+        for (let i = 0; i < this.INTERNATIONALS_WEBSITES.length; i++) {
+      
+          this.dropdownListInternationalsWebsites.push({
+            item_id: this.INTERNATIONALS_WEBSITES[i][3],
+            item_text: this.INTERNATIONALS_WEBSITES[i][2]
+      
+          }
+          );
+        }
+
+        for (let i = 0; i < this.SITES_ANNONCES.length; i++) {
+      
+          this.dropdownListAdsWebsites.push({
+            item_id: this.SITES_ANNONCES[i][3],
+            item_text: this.SITES_ANNONCES[i][2]
+          }
+          );
+        }
+
+        for (let i = 0; i < this.APP_MOBILES.length; i++) {
+      
+          this.dropdownListApps.push({
+            item_id: this.APP_MOBILES[i][3],
+            item_text: this.APP_MOBILES[i][2]
+          }
+          );
+        }
+        this.dropdownSettingsAges = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 8,
+          allowSearchFilter: false,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsSexes = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 3,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsZones = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 3,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsDevices = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 3,
+          allowSearchFilter: false,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsNationalsWebsites = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsInternationalsWebsites = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsAdsWebsites = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: false,
+          searchPlaceholderText: 'Rechercher',
+
+        };
+        this.dropdownSettingsApps = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Tout sélectionner',
+          unSelectAllText: 'annuler',
+          itemsShowLimit: 10,
+          allowSearchFilter: true,
+          searchPlaceholderText: 'Rechercher',
+
+        };
         this.isNull = false
+        this.emplacement = this.fb.group({
+          nationalWeb: ['', Validators.required],
+          internationalWeb: ['', Validators.nullValidator],
+          adWeb: ['', Validators.nullValidator]
+        });
+        this.ciblageControl = this.fb.group({
+          ageControl: ['', Validators.required],
+          genreControl: ['', Validators.required],
+          deviceControl: ['', Validators.required]
+        });
+       
+        this.form = this.fb.group({
+          direction: ['right'],
+          open: [false],
+          spin: [true],
+          mouse_hover: [false],
+          animation: ['scale'],
+      
+        });
+        
        
           
       }
@@ -1484,20 +2174,20 @@ if (chLine) {
     })
 
     
-     this.getAdsPolicy(this.ad_group_id).then(res => {
-      if(res!="error"){
+    this.getAdsPolicy(this.ad_group_id).then(res => {
+      if (res != "error") {
         var promesse = ""
         var combined = ""
         var policy = ""
         var ad_id = ""
-        for (var i = 0; i < res.length; i++){
+        for (var i = 0; i < res.length; i++) {
           //console.log(res[i])
           combined = res[i]['combinedApprovalStatus']
           policy = res[i]['policy']
           ad_id = res[i]['ad_id']
           //console.log(combined)
           this.promiseUpdateSingleAd(this.ad_group_id, ad_id, { combinedApprovalStatus: combined, policy: policy }).then(response => {
-            promesse=response
+            promesse = response
           })
           if (promesse == "ok") {
             //console.log(promesse)
@@ -1505,8 +2195,8 @@ if (chLine) {
           }
         }
         
-  }
-})   
+      }
+    })
  
 
 
@@ -1516,84 +2206,125 @@ if (chLine) {
 
 
   }
-
-  promiseReturnAdIsOk(ad_id, data): Promise<any>{
+  getNotificationId(uid: string): Promise<string> {
     return new Promise(resolve => {
-        this.adsService.updateAd(ad_id, data).then(result=>{
-          if (result == "ok") {
-                resolve("ok")
-              }
-            })
+      this.auth.getNotificationData(uid).forEach(data => {
+        resolve(data[0]['id'])
+      })
     })
   }
 
-
-  promiseUpdateSingleAd(ad_group_id, ad_id, data):Promise<any> {
+  getCurrentUserCredentials(): Promise<any> {
     return new Promise(resolve => {
-      this.adsService.getSingleAd(ad_group_id.toString(), parseInt(ad_id)).then(ad => {
-        this.promiseReturnAdIsOk(ad['id'], data).then(response => {
-          if (response == "ok") {
+      var response = []
+      this.auth.user.forEach(data => {
+        response.push({
+          "uid": data.uid,
+          "account_value": data.account_value,
+          "paymentKey": data.paymentKey
+        })
+          
+        resolve(response)
+          
+      })
+    })
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 10000,
+      
+    });
+  }
+  openSnackBarErrorImage(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      
+    });
+  }
+  openSnackBarSuccessImage(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      
+    });
+  }
+  promiseReturnAdIsOk(ad_id, data): Promise<any> {
+    return new Promise(resolve => {
+      this.adsService.updateAd(ad_id, data).then(result => {
+        if (result == "ok") {
           resolve("ok")
         }
       })
     })
-   })
   }
 
-   getAdsPolicy(ad_group_id: string): Promise<any> {
+
+  promiseUpdateSingleAd(ad_group_id, ad_id, data): Promise<any> {
     return new Promise(resolve => {
-          var infos = []
-    this.http.post(SERVER_URL+'/getPolicySummury', {
-      "ad_group_id": this.ad_group_id,        
+      this.adsService.getSingleAd(ad_group_id.toString(), parseInt(ad_id)).then(ad => {
+        this.promiseReturnAdIsOk(ad['id'], data).then(response => {
+          if (response == "ok") {
+            resolve("ok")
+          }
+        })
+      })
     })
-      .subscribe(
-        res => {
-          //console.log(typeof(res))
+  }
+
+  getAdsPolicy(ad_group_id: string): Promise<any> {
+    return new Promise(resolve => {
+      var infos = []
+      this.http.post(SERVER_URL + '/getPolicySummury', {
+        "ad_group_id": this.ad_group_id,
+      })
+        .subscribe(
+          res => {
+            //console.log(typeof(res))
       
-          //console.log(res)
+            //console.log(res)
         
-          var arr = [];
-          for (var key in res) {
-            //console.log(res.valueOf)
+            var arr = [];
+            for (var key in res) {
+              //console.log(res.valueOf)
         
-  if (res.hasOwnProperty(key)) {
-    //console.log(key)
-    //console.log(`key ${key} data: ${res[key]}`)
-    //console.log(res[key])
-    var ad_id = res[key]['ad_id']
-    var combinedApprovalStatus = res[key]['combinedApprovalStatus']
-    var policy = res[key]['policy']
-    this.combinedApprovalStatus = combinedApprovalStatus
-    this.policy = policy
-    //console.log(ad_id)
-    //console.log(combinedApprovalStatus)
-    //console.log(policy)
+              if (res.hasOwnProperty(key)) {
+                //console.log(key)
+                //console.log(`key ${key} data: ${res[key]}`)
+                //console.log(res[key])
+                var ad_id = res[key]['ad_id']
+                var combinedApprovalStatus = res[key]['combinedApprovalStatus']
+                var policy = res[key]['policy']
+                this.combinedApprovalStatus = combinedApprovalStatus
+                this.policy = policy
+                //console.log(ad_id)
+                //console.log(combinedApprovalStatus)
+                //console.log(policy)
     
-    infos.push({
-      "ad_id": ad_id,
-      "combinedApprovalStatus": combinedApprovalStatus,
-      "policy": policy
-    })
+                infos.push({
+                  "ad_id": ad_id,
+                  "combinedApprovalStatus": combinedApprovalStatus,
+                  "policy": policy
+                })
 
 
 
-    }
-  };
-  resolve(infos)
+              }
+            };
+            resolve(infos)
 
          
           
           
-        },
-        err => {
-         resolve("error")
-        }
-      );
+          },
+          err => {
+            resolve("error")
+          }
+        );
     })
-}
+  }
 
 
-   buildForm() {
+  buildForm() {
    
     this.adForm = this.fb.group({
       'name': ['', [
@@ -1611,10 +2342,10 @@ if (chLine) {
     this.onValueChanged(); // reset validation messages
   }
 
-   editorTrue(): Promise<boolean>{
-     return  new Promise(async (resolve) => {
-       this.buildForm()
-       resolve(true)
+  editorTrue(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      this.buildForm()
+      resolve(true)
     })
   }
   
@@ -1633,8 +2364,8 @@ if (chLine) {
           const messages = this.validationMessages[field];
           if (control.errors) {
             for (const key in control.errors) {
-              if (Object.prototype.hasOwnProperty.call(control.errors, key) ) {
-                this.formErrors[field] += `${(messages as {[key: string]: string})[key]} `;
+              if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                this.formErrors[field] += `${(messages as { [key: string]: string })[key]} `;
               }
             }
           }
@@ -1644,73 +2375,79 @@ if (chLine) {
   }
 
   handleToggleAdGroupSettings() {
-    if(this.isCollapsed == false){
+    if (this.isCollapsed == false) {
       this.isCollapsed = true
       this.icon_toggle = "icon-chevron-right"
-    }else{
+    } else {
       this.isCollapsed = false
       this.icon_toggle = 'icon-chevron-left'
     }
   }
 
   handleToggleOptions() {
-    if(this.isOptions == false){
+    if (this.isOptions == false) {
       this.isOptions = true
       this.icon_toggle_options = "icon-chevron-up"
-    }else{
+    } else {
       this.isOptions = false
       this.icon_toggle_options = 'icon-chevron-down'
     }
   }
 
   handleTogglePlacement() {
-      this.isGender = true
-      this.isAge = true
-      this.isDevice = true
-    if(this.isPlacement == false){
+    this.isGender = true
+    this.isAge = true
+    this.isDevice = true
+    if (this.isPlacement == false) {
       this.isPlacement = true
 
-    }else{
+
+    } else {
       this.isPlacement = false
+      this.emplacement = this.fb.group({
+        nationalWeb: ['', Validators.required],
+        internationalWeb: ['', Validators.nullValidator],
+        adWeb: ['', Validators.nullValidator]
+      });
 
     }
   }
   handleToggleGender() {
     
-      this.isAge = true
-      this.isPlacement = true
-      this.isDevice = true
-    if(this.isGender == false){
+    this.isAge = true
+    this.isPlacement = true
+    this.isDevice = true
+    if (this.isGender == false) {
       this.isGender = true
 
-    }else{
+    } else {
       this.isGender = false
 
     }
   }
 
   handleToggleAge() {
-       this.isGender = true
+    this.isGender = true
 
-      this.isPlacement = true
-      this.isDevice = true
-    if(this.isAge == false){
+    this.isPlacement = true
+    this.isDevice = true
+    if (this.isAge == false) {
       this.isAge = true
 
-    }else{
+    } else {
       this.isAge = false
 
     }
   }
   handleToggleDevice() {
-       this.isGender = true
-      this.isAge = true
-      this.isPlacement = true
+    this.isGender = true
+    this.isAge = true
+    this.isPlacement = true
     
-    if(this.isDevice == false){
+    if (this.isDevice == false) {
       this.isDevice = true
 
-    }else{
+    } else {
       this.isDevice = false
 
     }
@@ -1725,14 +2462,14 @@ if (chLine) {
 
 
   popperClick() {
-$('#popper').trigger('click')
+    $('#popper').trigger('click')
    
   }
 
   triggerEmplacement() {
     document.getElementById('v-pills-placement-tab').click()
     setTimeout(() => {
-   $('html, body').animate({
+      $('html, body').animate({
         scrollTop: $("#v-pills-placement-tab").offset().top
       }, 800);
     }, 500)
@@ -1740,8 +2477,8 @@ $('#popper').trigger('click')
   }
   triggerCiblage() {
     document.getElementById('v-pills-ciblage-ads-tab').click()
-       setTimeout(() => {
-   $('html, body').animate({
+    setTimeout(() => {
+      $('html, body').animate({
         scrollTop: $("#v-pills-ciblage-ads-tab").offset().top
       }, 800);
     }, 500)
@@ -1754,14 +2491,14 @@ $('#popper').trigger('click')
     this.currentEditor = false
     this.isAdBlock = false
    
-     $("#blockUploadModified").css({'display': 'none'})
+    $("#blockUploadModified").css({ 'display': 'none' })
    
-   /*  if (this.list_ad == true) {
-      this.list_ad = false
-      
-    } else {
-      this.list_ad = true
-    } */
+    /*  if (this.list_ad == true) {
+       this.list_ad = false
+       
+     } else {
+       this.list_ad = true
+     } */
   }
 
   toggleEditor() {
@@ -1780,7 +2517,7 @@ $('#popper').trigger('click')
       
       this.isEditor = true
       if (this.canva_state == false) {
-        this.isCreating  =true
+        this.isCreating = true
         
         /*    this.isEditor = true
         setTimeout(function(){ 
@@ -1789,7 +2526,7 @@ $('#popper').trigger('click')
           
         }, 2000); */
   
-        setTimeout(function(){ 
+        setTimeout(function () {
          
           self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
           self.isCreating = false
@@ -1797,18 +2534,18 @@ $('#popper').trigger('click')
         }, 2000);
       } else {
         self.isCreating = true
-         setTimeout(function(){ 
+        setTimeout(function () {
          
-         self.canvas.clear()
+          self.canvas.clear()
          
-         }, 2000);
-        setTimeout(function(){ 
+        }, 2000);
+        setTimeout(function () {
          
-         self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
-         self.isCreating=false
+          self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
+          self.isCreating = false
         }, 2000);
        
-}
+      }
       
     } else {
       this.isEditor = false
@@ -1819,48 +2556,148 @@ $('#popper').trigger('click')
 
   openAddCiblageGenre() {
     this.isCiblageGenre = true;
+    this.genreForm = this.fb.group({
+      genre: ['', Validators.required],
+         
+    });
 
   }
   openAddCiblageDevices() {
     this.isCiblageDevices = true;
-
+    this.deviceForm = this.fb.group({
+      device: ['', Validators.required],
+         
+    });
   }
   targetGender() {
     ////console.log(this.sexes)
-    this.isCreating = true
-    if (this.sexes.length == 0) {
-      this.isCreating = false
-      Swal.fire({
-        title: 'Ciblage',
-        text: 'Aucun genre séléctionné',
-        type: 'error',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {}
-
-      })
-    } else {
+    if (this.genreForm.valid) {
+      this.spinnerTargetGenre = true
       this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
         if (res == "ok") {
           this.sexes = []
-          this.isCreating = false
+          this.spinnerTargetGenre = false
           this.isCiblageGenre = false
-          
-        }else{
-          this.isCreating=false
+          this.openSnackBar("Cible de genre effectué avec succès !", "ok")
         }
       })
-
+      
     }
+
+    /*  this.isCreating = true
+     if (this.sexes.length == 0) {
+       this.isCreating = false
+       Swal.fire({
+         title: 'Ciblage',
+         text: 'Aucun genre séléctionné',
+         type: 'error',
+         showCancelButton: false,
+         confirmButtonColor: '#26a69a',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Ok'
+       }).then((result) => {
+         if (result.value) {}
+ 
+       })
+     } else {
+       this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
+         if (res == "ok") {
+           this.sexes = []
+           this.isCreating = false
+           this.isCiblageGenre = false
+           
+         }else{
+           this.isCreating=false
+         }
+       })
+ 
+     } */
   }
   
-  removePlacement(name: any, criterion_id: any) {
-    Swal.fire({
+  removePlacement() {
+    var promesse = ""
+    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '250px',
+      data: {
+        title: "Attention",
+        content: "Vous êtes sûr ?",
+        submit_text: "Supprimer",
+        cancel_text: "Annuler",
+        submitColor: "warn",
+        cancelColor: "primary"
+      }
+      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      var self = this
+      if (result === true) {
+        this.spinnerDeletePlacement = true
+        for (var i = 0; i <= this.SELECTED_PLACEMENT.length - 1; i++) {
+          (function (ind) {
+            setTimeout(function () {
+         
+              if (ind === self.SELECTED_PLACEMENT.length - 1) {
+                self.promiseRemoveSingleForMultiple(self.SELECTED_PLACEMENT[ind]['criterion_id'])
+                  .then(res => {
+                    if (res != "error") {
+                      self.spinnerDeletePlacement = false
+                      self.SELECTED_PLACEMENT = []
+                      self.openSnackBar("Emplacement(s) supprimé(s) avec succès", "ok")
+                    }
+                  })
+                console.log('It was the last one');
+              } else {
+            
+                console.log(ind);
+                self.promiseRemoveSingleForMultiple(self.SELECTED_PLACEMENT[ind]['criterion_id'])
+              }
+            }, 1000 + (3000 * ind));
+          })(i);
+        }
+        /* Fiddle : http://jsfiddle
+                for (var i = 0; i < this.SELECTED_PLACEMENT.length; i++){
+                  console.log(this.SELECTED_PLACEMENT[i])
+        
+                  if (i === this.SELECTED_PLACEMENT.length - 1) {
+                
+                       this.promiseRemoveSingleForMultiple(this.SELECTED_PLACEMENT[i]['criterion_id'])
+                      .then(res => {
+                      if (res != "error") {
+                        this.spinnerDeletePlacement = false
+                        this.SELECTED_PLACEMENT = []
+                          this.openSnackBar("Emplacement(s) supprimé(s) avec succès", "ok")
+                      }
+                     })
+         
+                   
+                  } else {
+                 
+                      this.promiseRemoveSingleForMultiple(this.SELECTED_PLACEMENT[i]['criterion_id'])
+                        .then(res => {
+                          promesse=res
+                        })
+                    if(promesse=="ok"){continue}
+                  
+               
+                    
+                   
+                     
+                  
+                  }
+        
+                } */
+
+
+      }
+     
+    });
+     
+
+    /* Swal.fire({
         title: 'Emplacement',
-        text: "Vous allez supprimer l'emplacement "+name+" ?",
+        text: "Vous êtes s",
         type: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#26a69a',
@@ -1896,15 +2733,38 @@ $('#popper').trigger('click')
           this.isCreating = false
         }
 
+      }) */
+  }
+
+  sleep() {
+    return new Promise(resolve => setTimeout(resolve, 1500))
+  }
+
+  promiseRemoveSingleForMultiple(criterion_id): Promise<any> {
+    return new Promise(resolve => {
+      this.adGroupService.removePlacement(this.idA, this.campagne_id, this.ad_group_id, criterion_id).then(res => {
+        if (res != "error") {
+          resolve("ok")
+        }
       })
+    })
   }
 
   targetPlacement() {
-    var self = this
+    this.spinnerTargetPlacement = true
+    this.setPlacement().then(res => {
+      if (res == "ok") {
+        this.nationals_websites = []
+        this.internationals_websites = []
+        this.ads_websites = []
+        this.spinnerTargetPlacement = false
+        this.isPlacement = true
+        this.openSnackBar("Eplacements définis avec succès", "")
+      }
+    })
+    /* var self = this
     var placement = []
-    ////console.log(this.ads_websites)
-    ////console.log(this.nationals_websites)
-    ////console.log(this.internationals_websites)
+
     this.isCreating = true
     if (this.nationals_websites.length == 0) {
       this.isCreating = false
@@ -1928,42 +2788,56 @@ $('#popper').trigger('click')
        
            this.isPlacement = true
         this.isCreating = false
-     /*    this.placement = [] */
+ 
         }
       })
-    }
+    } */
   }
 
   targetDevices() {
     ////console.log(this.devices)
-    this.isCreating = true
-    if (this.devices.length == 0) {
-      this.isCreating = false
-      Swal.fire({
-        title: 'Ciblage',
-        text: 'Aucun appareil séléctionné',
-        type: 'warning',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {}
-      })
-    } else {
+
+    if (this.deviceForm.valid) {
+         
+      this.spinnerTargetDevice = true
       this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
         if (res == "ok") {
-            this.isCreating = false
-        this.isCiblageDevices = false
           this.devices = []
-          
+          this.spinnerTargetDevice = false
+          this.isCiblageDevices = false
+          this.openSnackBar("Cible d'appareil effectué avec succès !", "")
         }
-      }).then(res => {
-      
-
       })
-
+      
     }
+    /*  this.isCreating = true
+     if (this.devices.length == 0) {
+       this.isCreating = false
+       Swal.fire({
+         title: 'Ciblage',
+         text: 'Aucun appareil séléctionné',
+         type: 'warning',
+         showCancelButton: false,
+         confirmButtonColor: '#26a69a',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Ok'
+       }).then((result) => {
+         if (result.value) {}
+       })
+     } else {
+       this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
+         if (res == "ok") {
+             this.isCreating = false
+         this.isCiblageDevices = false
+           this.devices = []
+           
+         }
+       }).then(res => {
+       
+ 
+       })
+ 
+     } */
   }
 
   closeAddCiblageGenre() {
@@ -1973,48 +2847,72 @@ $('#popper').trigger('click')
     this.isCiblageDevices = false
   }
   closeAddPlacement() {
-  if(this.isPlacement == false){
+    this.nationals_websites = []
+    this.internationals_websites = []
+    this.ads_websites = []
+    if (this.isPlacement == false) {
       this.isPlacement = true
 
-    }else{
+    } else {
       this.isPlacement = false
 
     }
-}
+  }
 
   openAddCiblageAge() {
     this.isCiblageAge = true;
+    this.ageForm = this.fb.group({
+      age: ['', Validators.required],
+         
+    });
+
 
   }
   targetAge() {
     ////console.log(this.ages)
-    this.isCreating = true
-    if (this.ages.length == 0) {
-      this.isCreating = false
-      Swal.fire({
-        title: 'Ciblage',
-        text: 'Aucun genre séléctionné',
-        type: 'error',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {}
-      })
-    } else {
+    console.log(this.ageForm)
+    if (this.ageForm.valid) {
+      this.spinnerTargetAge = true
       this.adGroupService.targetAge(this.idA, this.campagne_id, this.ad_group_id, this.ages).then(res => {
         if (res == "ok") {
           this.ages = []
+          this.spinnerTargetAge = false
           this.isCiblageAge = false
-          this.isCreating = false
-          
+          this.openSnackBar("Ciblage éffectué avec succès !", "")
         }
-      }).then(res => {
-
       })
 
+   
+    } else {
+      
     }
+    /*  this.isCreating = true
+     if (this.ages.length == 0) {
+       this.isCreating = false
+       Swal.fire({
+         title: 'Ciblage',
+         text: 'Aucun genre séléctionné',
+         type: 'error',
+         showCancelButton: false,
+         confirmButtonColor: '#26a69a',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Ok'
+       }).then((result) => {
+         if (result.value) {}
+       })
+     } else {
+       this.adGroupService.targetAge(this.idA, this.campagne_id, this.ad_group_id, this.ages).then(res => {
+         if (res == "ok") {
+           this.ages = []
+           this.isCiblageAge = false
+           this.isCreating = false
+           
+         }
+       }).then(res => {
+ 
+       })
+ 
+     } */
   }
 
   goProfile() {
@@ -2025,8 +2923,25 @@ $('#popper').trigger('click')
     this.isCiblageAge = false
   }
 
-  onAgeSelect(item: any) {
-    this.ages.push(item)
+  onAgeSelect(event) {
+    /*  this.ages.push(item) */
+    if (event.isUserInput) {
+      if (event.source.selected === true) {
+        this.ages.push(
+          event.source.value
+        )
+      } else {
+        for (var i = 0; i < this.ages.length; i++) {
+          if (this.ages[i]['item_id'] == event.source.value.item_id) {
+            this.ages.splice(i, 1)
+            console.log(this.ages)
+
+          }
+        }
+      }
+      console.log(this.nationals_websites)
+      console.log(event.source.value, event.source.selected);
+    }
     ////console.log(this.ages)
   }
   onAgeSelectAll(items: any) {
@@ -2049,14 +2964,33 @@ $('#popper').trigger('click')
     ////console.log(this.ages)
   }
 
+  
 
-  onNationalsWebsitesSelect(item: any) {
-    this.nationals_errors = ''
-    this.nationals_websites.push(item)
+  onNationalsWebsitesSelect(event) {
+    /*  this.nationals_errors = ''
+     this.nationals_websites.push(item) */
+    if (event.isUserInput) {
+      if (event.source.selected === true) {
+        this.nationals_websites.push(
+          event.source.value
+        )
+      } else {
+        for (var i = 0; i < this.nationals_websites.length; i++) {
+          if (this.nationals_websites[i]['item_id'] == event.source.value.item_id) {
+            this.nationals_websites.splice(i, 1)
+            console.log(this.nationals_websites)
+
+          }
+        }
+      }
+      console.log(this.nationals_websites)
+      console.log(event.source.value, event.source.selected);
+      this.mySelectNat.close()
+    }
     ////console.log(this.nationals_websites)
   }
   onNationalsWebsitesSelectAll(items: any) {
-     this.nationals_errors = ''
+    this.nationals_errors = ''
     this.nationals_websites = []
     this.nationals_websites = items
     ////console.log(this.nationals_websites);
@@ -2077,8 +3011,26 @@ $('#popper').trigger('click')
   }
 
 
-   onInternationalsWebsitesSelect(item: any) {
-    this.internationals_websites.push(item)
+  onInternationalsWebsitesSelect(event) {
+    /*    this.internationals_websites.push(item) */
+    if (event.isUserInput) {
+      if (event.source.selected === true) {
+        this.internationals_websites.push(
+          event.source.value
+        )
+      } else {
+        for (var i = 0; i < this.internationals_websites.length; i++) {
+          if (this.internationals_websites[i]['item_id'] == event.source.value.item_id) {
+            this.internationals_websites.splice(i, 1)
+            console.log(this.internationals_websites)
+
+          }
+        }
+      }
+      console.log(this.internationals_websites)
+      console.log(event.source.value, event.source.selected);
+      this.mySelectInt.close()
+    }
     ////console.log(this.internationals_websites)
   }
   onInternationalsWebsitesSelectAll(items: any) {
@@ -2102,10 +3054,28 @@ $('#popper').trigger('click')
    
   }
 
-   onAdsWebsitesSelect(item: any) {
-    this.ads_websites.push(item)
+  onAdsWebsitesSelect(event) {
+    /*     this.ads_websites.push(item) */
+    if (event.isUserInput) {
+      if (event.source.selected === true) {
+        this.ads_websites.push(
+          event.source.value
+        )
+      } else {
+        for (var i = 0; i < this.ads_websites.length; i++) {
+          if (this.ads_websites[i]['item_id'] == event.source.value.item_id) {
+            this.ads_websites.splice(i, 1)
+            console.log(this.ads_websites)
+
+          }
+        }
+      }
+      console.log(this.ads_websites)
+      console.log(event.source.value, event.source.selected);
+          
+    }
     ////console.log(this.ads_websites)
-   }
+  }
   onAdsWebsitesSelectAll(items: any) {
     this.ads_websites = []
     this.ads_websites = items
@@ -2127,7 +3097,7 @@ $('#popper').trigger('click')
     ////console.log(this.ads_websites)
   }
 
-   onAppsSelect(item: any) {
+  onAppsSelect(item: any) {
     this.apps.push(item)
     ////console.log(this.apps)
   }
@@ -2153,9 +3123,26 @@ $('#popper').trigger('click')
 
 
 
-  onDevicesSelect(item: any) {
-    this.devices.push(item)
+  onDevicesSelect(event) {
+    /* this.devices.push(item) */
     ////console.log(this.devices)
+    if (event.isUserInput) {
+      if (event.source.selected === true) {
+        this.devices.push(
+          event.source.value
+        )
+      } else {
+        for (var i = 0; i < this.devices.length; i++) {
+          if (this.devices[i]['item_id'] == event.source.value.item_id) {
+            this.devices.splice(i, 1)
+            console.log(this.devices)
+
+          }
+        }
+      }
+      console.log(this.nationals_websites)
+      console.log(event.source.value, event.source.selected);
+    }
   }
   onDevicesSelectAll(items: any) {
     ////console.log(items);
@@ -2177,8 +3164,25 @@ $('#popper').trigger('click')
     ////console.log(this.devices)
   }
 
-  onSexeSelect(item: any) {
-    this.sexes.push(item)
+  onSexeSelect(event) {
+    /* this.sexes.push(item) */
+    if (event.isUserInput) {
+      if (event.source.selected === true) {
+        this.sexes.push(
+          event.source.value
+        )
+      } else {
+        for (var i = 0; i < this.sexes.length; i++) {
+          if (this.sexes[i]['item_id'] == event.source.value.item_id) {
+            this.sexes.splice(i, 1)
+            console.log(this.sexes)
+
+          }
+        }
+      }
+      console.log(this.nationals_websites)
+      console.log(event.source.value, event.source.selected);
+    }
     ////console.log(this.sexes)
   }
   onSexeSelectAll(items: any) {
@@ -2227,9 +3231,9 @@ $('#popper').trigger('click')
     if (this.collapseAge === false) {
       this.collapseAge = true
       setTimeout(() => {
-    $('html, body').animate({
-         scrollTop: $("#collapseAge").offset().top
-       }, 800);
+        $('html, body').animate({
+          scrollTop: $("#collapseAge").offset().top
+        }, 800);
       }, 500)
     
       
@@ -2239,10 +3243,10 @@ $('#popper').trigger('click')
     if (this.collapseGenre === false) {
       this.collapseGenre = true
       setTimeout(() => {
-    $('html, body').animate({
-         scrollTop: $("#collapseGenre").offset().top
-       }, 800);
-     }, 500)
+        $('html, body').animate({
+          scrollTop: $("#collapseGenre").offset().top
+        }, 800);
+      }, 500)
       
     }
 
@@ -2253,78 +3257,78 @@ $('#popper').trigger('click')
       this.collapseDevice = true
       setTimeout(() => {
         $('html, body').animate({
-             scrollTop: $("#collapseAppareil").offset().top
-           }, 800);
-         }, 500)
-       }
+          scrollTop: $("#collapseAppareil").offset().top
+        }, 800);
+      }, 500)
     }
+  }
 
 
   //Block "Add text"
 
- /*  addText() {
-    let textString = 'Double cliquez ici'
-    let text = new fabric.IText(textString, {
+  /*  addText() {
+     let textString = 'Double cliquez ici'
+     let text = new fabric.IText(textString, {
+       left: 10,
+       top: 10,
+       fontFamily: 'helvetica',
+       angle: 0,
+       fill: '#000000',
+       scaleX: 0.5,
+       scaleY: 0.5,
+       fontWeight: '',
+       hasRotatingPoint: true
+     });
+     this.extend(text, this.randomId());
+     this.canvas.add(text);
+     this.selectItemAfterAdded(text);
+     this.textString = '';
+      this.updateLayers();
+   }
+    */
+  addText() {
+    const textString = $('#text_canvas').val();
+    const text = new fabric.IText(textString, {
       left: 10,
       top: 10,
-      fontFamily: 'helvetica',
+      fontFamily: 'Arial',
       angle: 0,
       fill: '#000000',
-      scaleX: 0.5,
-      scaleY: 0.5,
+      scaleX: 1,
+      scaleY: 1,
       fontWeight: '',
-      hasRotatingPoint: true
+      hasRotatingPoint: true,
+      title: textString
     });
     this.extend(text, this.randomId());
     this.canvas.add(text);
     this.selectItemAfterAdded(text);
     this.textString = '';
-     this.updateLayers();
-  }
-   */
-    addText() {
-        const textString =  $('#text_canvas').val();
-        const text = new fabric.IText(textString, {
-            left: 10,
-            top: 10,
-            fontFamily: 'Arial',
-            angle: 0,
-            fill: '#000000',
-            scaleX: 1,
-            scaleY: 1,
-            fontWeight: '',
-            hasRotatingPoint: true,
-            title: textString
-        });
-        this.extend(text, this.randomId());
-        this.canvas.add(text);
-        this.selectItemAfterAdded(text);
-        this.textString = '';
 
-        this.updateLayers();
-    }
-
- /*  addText() {
-    let textString = $('#text_canvas').val()
-    let text = new fabric.IText(textString, {
-      left: 10,
-      top: 10,
-      fontFamily: 'helvetica',
-      angle: 0,
-      fill: '#000000',
-      scaleX: 0.5,
-      scaleY: 0.5,
-      fontWeight: '',
-      hasRotatingPoint: true
-    });
-    this.extend(text, this.randomId());
-    this.canvas.add(text);
-    this.selectItemAfterAdded(text);
-    this.textString = '';
-    this.updateLayers()
+    this.updateLayers();
   }
 
- */
+  /*  addText() {
+     let textString = $('#text_canvas').val()
+     let text = new fabric.IText(textString, {
+       left: 10,
+       top: 10,
+       fontFamily: 'helvetica',
+       angle: 0,
+       fill: '#000000',
+       scaleX: 0.5,
+       scaleY: 0.5,
+       fontWeight: '',
+       hasRotatingPoint: true
+     });
+     this.extend(text, this.randomId());
+     this.canvas.add(text);
+     this.selectItemAfterAdded(text);
+     this.textString = '';
+     this.updateLayers()
+   }
+ 
+  */
   //Block "Add images"
 
 
@@ -2340,16 +3344,146 @@ $('#popper').trigger('click')
     }
   }
 
-  chargerImage(){
+  chargerImage() {
     document.getElementById("input-image").click()
   }
 
- handleErrorUrl(){
-   this.url_errors = []
- }
+  handleErrorUrl() {
+    this.url_errors = []
+  }
   handleNationals() {
     this.nationals_errors = ''
   }
+
+  getCreateCreatives(): Promise<any> {
+    return new Promise(resolve => {
+      var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
+      var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
+      if (name == "") {
+        this.openSnackBarErrorImage("Nom de l'annonce obligatoire", "")
+        resolve("error")
+      } else if (url == "") {
+        this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide", "")
+        resolve("error")
+    
+      } else {
+        var self = this
+      
+        this.getWebsites(this.currentIdInputDisplay).then(res => {
+      
+          if (res != 'error') {
+            this.imagesUpload.push({
+              "name": name,
+              "src": self.canvas.toDataURL('png')
+            })
+            resolve("ok")
+        
+          } else {
+  
+          }
+        })
+      }
+    })
+  }
+
+
+  getCreateUpload(): Promise<any> {
+    return new Promise(resolve => {
+      var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
+      /*   //console.log(document.querySelector('.dz-preview')) */
+      /*  var el = document.querySelector('#block > div.card.white.no-b.paper-card > ngx-dropzone > ngx-dropzone-image-preview > img') */
+   
+      var selector = "#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
+      if (document.querySelector(selector) === null) {
+        this.openSnackBarErrorImage("Aucune image chargée !", "")
+        resolve("error")
+       
+      } else if (url == "") {
+           this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide !", "")
+          resolve("error")
+        } else {
+         
+         
+          this.getWebsites(this.currentIdInputDisplay).then(res => {
+            if (res != 'error') {
+           
+          
+           
+              var elements = document.querySelectorAll("#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview")
+              for (var i = 0; i < elements.length; i++) {
+                var image = elements[i].getElementsByTagName('img')[0]
+                var name = elements[i].getElementsByTagName('ngx-dropzone-label')[0].textContent
+                if (image.naturalWidth != parseInt(this.selectedWidth) || image.naturalHeight != parseInt(this.selectedHeight)) {
+                  this.openSnackBarErrorImage("Image " + name + " invalide !", "")
+                  resolve("error")
+                } else {
+                  this.imagesUpload.push({
+                    "name": name,
+                    "src": image.src
+                  })
+                  //console.log(this.imagesUpload)
+                  this.img_view_create_style['width'] = this.selectedWidth + 'px'
+                  this.img_view_create_style['height'] = this.selectedHeight + 'px'
+                  /*    $('#ad_image').attr("src", $(selector).find('img').attr("src"))
+                  this.ad_name = $("#"+this.currentIdInputName).val() */
+                }
+              }
+              resolve("ok")
+           
+           
+            
+            } else {
+              resolve("error")
+    
+            }
+          })
+        }
+     
+    
+    })
+  }
+
+  getInitCreative(): Promise<any>{
+    return new Promise(resolve => {
+          /*  var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "") */
+    var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
+    var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
+      var selector = "#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
+      
+      
+      if (name === '') {
+       this.openSnackBarErrorImage("Nom du visuel obligatoire !", "")
+        resolve("error")
+     } else {
+       
+        if (url == "") {
+      this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide !", "")
+        resolve("error")
+        } else {
+            this.getWebsites(this.currentIdInputDisplay).then(res => { 
+      
+        if (res != 'error') {
+          this.imagesUpload.push({
+            "name": name,
+            "src": this.canvas.toDataURL('png')
+          })
+        
+         
+          resolve("ok")
+          
+        /*   $('#ad_image').attr("src", self.canvas.toDataURL('png')) */
+          //this.ad_name = $("#").val()
+          
+        } else{
+          resolve("error")
+        }
+      })
+
+       }
+     }
+    })
+  }
+
   
   handleImageModal() {
     ////console.log(this.canvas.toDataURL('png'))
@@ -2411,13 +3545,73 @@ $('#popper').trigger('click')
       })
     }
   }
+
+
+  
+
+  getInitUpload(): Promise<any>{
+    return new Promise(resolve => {
+          /*  var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "") */
+    var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
+      var selector = "#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
+      
+      
+      if (document.querySelector(selector) === null) {
+       this.openSnackBarErrorImage("Aucune image chargée !", "")
+        resolve("error")
+     } else {
+       
+        if (url == "") {
+      this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide !", "")
+        resolve("error")
+       } else{
+         
+         
+        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+          if (res != 'error') {
+           
+          
+            /* var child_count = document.querySelector('#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone').childElementCount - 1 */
+             var elements = document.querySelectorAll(selector)
+            for (var i = 0; i < elements.length; i++){
+              var image = elements[i].getElementsByTagName('img')[0]
+              var name = elements[i].getElementsByTagName('ngx-dropzone-label')[0].textContent
+
+              //console.log(image)
+              //console.log(name)
+            //console.log(child_count)
+              if (image.naturalWidth != parseInt(this.selectedWidth) || image.naturalHeight != parseInt(this.selectedHeight)) {
+                this.openSnackBarErrorImage('Image '+name+' invalide !', "")
+                resolve("error")
+             
+              } else {
+                this.imagesUpload.push({
+                  "name": name,
+                  "src": image.src
+                })
+                resolve("ok")
+              }
+            } 
+           
+           
+            
+          } else{
+              resolve("error")
+          }
+        })
+       }
+     }
+    })
+  }
+
   handleImageUploadModal() {
 
     /*  var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "") */
     var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
   /*   //console.log(document.querySelector('.dz-preview')) */
   /*  var el = document.querySelector('#block > div.card.white.no-b.paper-card > ngx-dropzone > ngx-dropzone-image-preview > img') */
-    var selector = "#block > div.card.white.no-b.paper-card > ngx-dropzone > ngx-dropzone-image-preview"
+   
+    var selector = "#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
      if( document.querySelector(selector)===null){
         Swal.fire({
                     title: "Service Groupe d'annonce!",
@@ -2436,23 +3630,7 @@ $('#popper').trigger('click')
                   })
      } else {
        
-      /*  if (name == "") {
-          Swal.fire({
-                    title: "Service Groupe d'annonce!",
-                    text: "nom de l'annonce ne peut être vide ",
-                    type: 'error',
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'réessayer'
-                  }).then((result) => {
-                    if (result.value) {
-                    
-                    }else{
-                    
-                    }
-                  })
-       } else  */if (url == "") {
+   if (url == "") {
           Swal.fire({
                     title: "Service Groupe d'annonce!",
                     text: "Url de redirection de l'annonce ne peut être vide ",
@@ -2475,8 +3653,8 @@ $('#popper').trigger('click')
           if (res != 'error') {
            
           
-            var child_count = document.querySelector('#block > div.card.white.no-b.paper-card > ngx-dropzone').childElementCount - 1
-             var elements = document.querySelectorAll("#block > div.card.white.no-b.paper-card > ngx-dropzone  > ngx-dropzone-image-preview")
+            /* var child_count = document.querySelector('#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone').childElementCount - 1 */
+             var elements = document.querySelectorAll("#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview")
             for (var i = 0; i < elements.length; i++){
               var image = elements[i].getElementsByTagName('img')[0]
               var name = elements[i].getElementsByTagName('ngx-dropzone-label')[0].textContent
@@ -2524,7 +3702,92 @@ $('#popper').trigger('click')
      }
   }
 
+  getModifiedImage(): Promise<any>{
+    return new Promise(resolve => {
+       if (this.currentAdType === 'CREATIVE') {
+      this.new_image_content = ""
+         if ($("#" + this.currentIdInputName).val() === "") {
+         this.openSnackBarErrorImage("Nom de l'annonce obligatoire", "")
+          resolve('error')
+      } else {
+        this.new_image_content = JSON.stringify(this.canvas)
+        ////console.log(this.canvas.toDataURL('png'))
+        this.getWebsites(this.currentIdInputDisplay).then(res => {
+          if (res != 'error') {
+            this.img_view_create_style['width'] = this.currentAdSize[0]['width'] + 'px'
+            this.img_view_create_style['height'] = this.currentAdSize[0]['height'] + 'px'
+
+            this.MODIFIED_CREATIVE_IMAGE = this.canvas.toDataURL('png')
+            this.MODIFIED_IMAGE_CREATIVE_NAME = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
+            this.url_modify = $("#" + this.currentIdInputDisplay).val()
+              resolve("ok")
+        
+        
+          }
+        })
+    }
+      
+    
+   
+  }else {
+        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+          if (res != 'error') {
+            if (this.button_modify_image_upload === true) {
+              this.img_view_create_style['width']=this.currentAdSize[0]['width']+'px'
+              this.img_view_create_style['height'] = this.currentAdSize[0]['height'] + 'px'
+              this.MODIFIED_UPLOAD_IMAGE = this.currentImageUrl
+              this.MODIFIED_IMAGE_UPLOAD_NAME = this.currentAdName
+             /*  $('#ad_image_modified').attr("src", this.currentImageUrl)
+              $("#modified_name").text(this.currentAdName) */
+              this.url_modify = $("#" + this.currentIdInputDisplay).val()
+              resolve("ok")
+            } else if(this.button_modify_image_upload === false &&  document.querySelector("#button_modify_image_upload > mat-card-content > ngx-dropzone > ngx-dropzone-image-preview > img") !== null) {
+
+              var image = document.querySelector("#button_modify_image_upload > mat-card-content > ngx-dropzone > ngx-dropzone-image-preview").getElementsByTagName('img')
+        ////console.log(image)
+        if (image[0].naturalWidth != parseInt(this.currentAdSize[0]['width']) || image[0].naturalHeight != parseInt(this.currentAdSize[0]['height'])) {
+          this.openSnackBarErrorImage("Taille ou format de l'image in valide", "")
+          resolve("error")
+        } else {
+       this.img_view_create_style['width']=this.currentAdSize[0]['width']+'px'
+              this.img_view_create_style['height']=this.currentAdSize[0]['height']+'px'
+          this.MODIFIED_UPLOAD_IMAGE = image[0].src
+          this.MODIFIED_IMAGE_UPLOAD_NAME = document.querySelector("#button_modify_image_upload > mat-card-content > ngx-dropzone > ngx-dropzone-image-preview").getElementsByTagName('ngx-dropzone-label')[0].textContent
+        /*   $('#ad_image_modified').attr("src", image[0].src) */
+         /*  $("#modified_name").text(document.querySelector("#button_modify_image_upload > mat-card-content > ngx-dropzone > ngx-dropzone-image-preview").getElementsByTagName('ngx-dropzone-label')[0].textContent) */
+          this.url_modify = $("#" + this.currentIdInputDisplay).val()
+          resolve("ok")
+        }
+            } else if (this.button_modify_image_upload === false && document.querySelector("#button_modify_image_upload > mat-card-content > ngx-dropzone > ngx-dropzone-image-preview > img") === null) {
+              this.img_view_create_style['width']=this.currentAdSize[0]['width']+'px'
+              this.img_view_create_style['height']=this.currentAdSize[0]['height']+'px'
+            /*  $('#button_modal_modified').trigger('click') */
+              this.MODIFIED_UPLOAD_IMAGE = this.currentImageUrl
+              this.MODIFIED_IMAGE_UPLOAD_NAME = this.currentAdName
+          /*     $('#ad_image_modified').attr("src", this.currentImageUrl) */
+             /*  $("#modified_name").text(this.currentAdName) */
+              this.url_modify = $("#" + this.currentIdInputDisplay).val()
+              resolve("ok")
+            }
+       
+        
+        
+      } else{
+
+      }
+    })
+}
+    })
+  }
+
+  getModifiedCreatives():Promise<any>{
+    return new Promise(resolve => {
+      
+    })
+  }
+
   handleModifiedImage() {
+    
     if (this.currentAdType === 'CREATIVE') {
       this.new_image_content = ""
       if ($("#" + this.currentIdInputName).val() === "") {
@@ -2642,6 +3905,7 @@ $('#popper').trigger('click')
   storageUpload(image_name, src,size): Promise<any>{
     return new Promise(resolve => {
       var self = this
+      console.log("upload image in process")
         var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
    //console.log(src)
@@ -2656,7 +3920,7 @@ $('#popper').trigger('click')
         image_name.replace(" (image/png)", "")
                    imagesRef.putString(src.replace(value_replace, ''), 'base64', metadata).then(function (snapshot) {
              ////console.log('ok')
-       //console.log(self.imagesUpload)
+       console.log(self.imagesUpload)
       
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
@@ -2671,6 +3935,7 @@ $('#popper').trigger('click')
        
          self.promiseSave(self.ad_group_id, image_name.replace(" (image/png)", ""), self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(reponse => {
            if (reponse == "ok") {
+             console.log("save-success")
              resolve('ok')
            }
            
@@ -2820,7 +4085,420 @@ $('#popper').trigger('click')
     })
   }
 
-defineBudgetFromAccount() {
+
+  saveNewUploadAd(){
+    var self = this
+    var promesse = ""
+
+    this.getCreateUpload().then(res => {
+      if (res !== "error") {
+         var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
+        this.progresBarCreateImageUpload = true
+                for (var i = 0; i < this.imagesUpload.length; i++) {
+        if (i == this.imagesUpload.length - 1) {
+          /* this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
+            if (response == "ok") {
+                       Swal.fire({
+              title: 'Service visuel',
+              text: 'Opération éffectuée avec succès',
+              type: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.value) {
+                window.location.reload()
+              } else {
+                window.location.reload()
+              }
+            })
+                
+              }
+          })    */
+          this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response=>{
+            if (response !== "error") {
+              this.openSnackBarSuccessImage("Visuel(s) ajouté(s) avec succès !", "")
+              this.progresBarCreateImageUpload = false
+              setTimeout(()=>{
+                window.location.reload()
+              }, 1000)
+              
+            }
+          })
+        } else {
+           this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
+            promesse = response
+           })
+
+           if(promesse=="ok"){continue}
+        }
+        }
+
+      }
+    })
+  }
+
+
+    saveNewCreativeAd() {
+    var self = this
+  
+
+
+    this.getCreateCreatives().then(res => {
+      ////console.log(res)
+      if (res != 'error') {
+        this.progresBarCreateImageCreatives = true
+        
+        
+        var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
+        
+       
+
+        var storage = firebase.app().storage("gs://comparez.appspot.com/");
+    var storageRef = storage.ref();
+   
+    var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
+    var imagesRef = storageRef.child(imageRefStorage);
+    var metadata = {
+  contentType: 'image/png',
+};
+        imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+       ////console.log('ok')
+      
+       storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+   xhr.responseType = 'blob';
+   xhr.onload = function(event) {
+     var blob = xhr.response;
+   };
+   xhr.open('GET', url);
+         xhr.send();
+       
+         const image_content = JSON.stringify(self.canvas);
+         ////console.log(self.FINAL_ARRAY_TO_SEND)
+        self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
+          ////console.log('success')
+          ////console.log(res)
+          if (res != "error") {
+            self.progresBarCreateImageCreatives = false
+            self.openSnackBarSuccessImage('Visuel créé avec succès !', "")
+            setTimeout(() => {
+              window.location.reload()
+            }, 2000)
+            
+          
+          } else {
+            self.progresBarCreateImageCreatives = false
+            self.openSnackBarErrorImage('Opération échouée !', "")
+           
+            
+          }
+           
+          
+        })
+     })
+       
+     });  
+        
+      }
+    })
+  }
+
+
+  initAllTarget(): Promise<any> {
+    return new Promise(resolve => {
+      this.progressBarInit = true
+      this.message_create = "Paramétrage des emplacements en cours..."
+
+      this.initPlacement().then(res => {
+        if (res == "ok") {
+          this.message_create = "Emplacements définis avec succès !"
+          this.message_create = "Paramétrage du ciblage des âges en cours..."
+          this.initAgeTarget().then(res => {
+          
+            if (res == "ok") {
+              this.message_create = "Ciblage des âges défini avec succès !"
+              this.message_create = "Paramétrage du ciblage de genres en cours..."
+              this.initSexeTarget().then(res => {
+              
+                if (res == "ok") {
+                  this.message_create = "Ciblage de genres défini avec succès !"
+                  this.message_create = "Paramétrage du ciblage d'appareils en cours..."
+                  this.initDeviceTarget().then(res => {
+                    if(res == "ok"){
+                      this.message_create = "Ciblage d'appareils défini avec succès !"
+                      this.message_create = "Sauvegarde des éléments en cours...."
+                       resolve("ok")
+                    }
+                  })
+              }
+            })
+          }
+        })
+      }
+    })
+   })
+  }
+
+  initAllSteps() {
+    this.initAllTarget().then(response => {
+  
+      if (response != "error") {
+          this.initSaveAdOnFirebase().then(res => {
+                  if (res == "ok") {
+                    this.openSnackBar("Vous venez de créer votre première annonce définissez votre budget si vous ne l'aviez pas fait pour commencer à diffuser", "Fermer")
+                    setTimeout(()=>{
+                      document.getElementById("button_close_ad").click()
+                    },1000)
+                    }
+                })
+      }
+    })
+  
+}
+
+    initAllStepsUpload() {
+      this.getInitUpload().then(response=>{
+        if (response != "error") {
+        
+        this.initAllTarget().then(target => {
+           if (target == "ok") {
+              this.initSaveAdOnFirebase().then(res => {
+            if (res == "ok") {
+                    this.progressBarInit = false
+                    this.message_create = ""
+                    this.openSnackBar("Vous venez de créer votre première annonce définissez votre budget si vous ne l'aviez pas fait pour commencer à diffuser", "Fermer")
+                    setTimeout(()=>{
+                      window.location.reload()
+                    },2000)
+            } else {
+                    this.progressBarInit = false
+                    }
+                })
+           }
+         })
+      }
+    })
+  
+}
+
+  
+    initAllStepsCreative() {
+      this.getInitCreative().then(response=>{
+        if (response != "error") {
+        
+        this.initAllTarget().then(target => {
+           if (target == "ok") {
+              this.initSaveAdOnFirebase().then(res => {
+            if (res == "ok") {
+                    this.progressBarInit = false
+                    this.message_create = ""
+                    this.openSnackBar("Vous venez de créer votre première annonce définissez votre budget si vous ne l'aviez pas fait pour commencer à diffuser", "Fermer")
+                    setTimeout(()=>{
+                      window.location.reload()
+                    },2000)
+            } else {
+                    this.progressBarInit = false
+                    }
+                })
+           }
+         })
+      }
+    })
+  
+}
+
+  
+  initAgeTarget(): Promise<any>{
+    return new Promise(resolve => {
+       this.adGroupService.targetAge(this.idA, this.campagne_id, this.ad_group_id, this.ages).then(res => {
+        if (res == "ok") {
+          this.ages = []
+          this.isCiblageAge = false
+          this.isCreating = false
+          resolve("ok")
+          
+        } else {
+          resolve("error")
+        }
+      })
+    })
+  }
+
+   initSexeTarget(): Promise<any>{
+    return new Promise(resolve => {
+       this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
+        if (res == "ok") {
+          this.sexes = []
+         
+          resolve("ok")
+          
+        } else {
+          resolve("error")
+        }
+      })
+    })
+  }
+
+   initDeviceTarget(): Promise<any>{
+    return new Promise(resolve => {
+       this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
+        if (res == "ok") {
+          this.devices = []
+         
+          resolve("ok")
+          
+        } else {
+          resolve("error")
+        }
+      })
+    })
+  }
+
+  initPlacement(): Promise<any> {
+    return new Promise(resolve => {
+      var placement = []
+       /* this.isCreating = true */
+    placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
+     
+      this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
+        if (res == "ok") {
+       
+        
+          resolve("ok")
+        } else {
+          resolve('error')
+        }
+      })
+    })
+  }
+
+  setPlacement(): Promise<any> {
+    return new Promise(resolve => {
+      var placement = []
+    placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
+      
+      this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
+        if (res == "ok") {
+       
+        
+          resolve("ok")
+        } else {
+          resolve('error')
+        }
+      })
+    })
+  }
+
+
+
+
+  initSaveAdOnFirebase():Promise<any> {
+    return new Promise(resolve => {
+      this.isRoller = true
+      var promesse = ''
+      var image_name 
+      
+      this.getWebsites(this.currentIdInputDisplay).then(res => {
+        ////console.log(res)
+        if (res != 'error') {
+          var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
+          
+          
+          
+          if (!fabric.Canvas.supports('toDataURL')) {
+            //alert('This browser doesn\'t provide means to serialize canvas to an image');
+          } else {
+            var image_url = ""
+            var self = this
+            //this.ad_name = $("#"+this.currentIdInputName).val()
+            var image_name_firebase = this.ad_name +  new Date().getTime().toString()
+            if (this.is_upload_way === true) {
+              console.log("uploading")
+              console.log(this.imagesUpload)
+              console.log(this.imagesUpload.length)
+        for (var i = 0; i < this.imagesUpload.length; i++) {
+         /*  this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
+            promesse = response
+          }) */
+          console.log(`i: ${i}`)
+        if (i === this.imagesUpload.length - 1) {
+          this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
+            if (response == "ok") {
+                this.isRoller=false
+                     resolve("ok")
+                
+            } else {
+              resolve("error")
+              }
+          })   
+        } else {
+           this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
+            promesse = response
+           })
+
+           if(promesse=="ok"){continue}
+        }
+        }
+      } else {
+        var storage = firebase.app().storage("gs://comparez.appspot.com/");
+    var storageRef = storage.ref();
+   
+    var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
+    var imagesRef = storageRef.child(imageRefStorage);
+    var metadata = {
+  contentType: 'image/png',
+};
+        imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
+       ////console.log('ok')
+      
+       storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+   xhr.responseType = 'blob';
+   xhr.onload = function(event) {
+     var blob = xhr.response;
+   };
+   xhr.open('GET', url);
+         xhr.send();
+       
+         const image_content = JSON.stringify(self.canvas);
+         ////console.log(self.FINAL_ARRAY_TO_SEND)
+        self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
+          ////console.log('success')
+          ////console.log(res)
+          if (res != "error") {
+            
+            self.isRoller = false
+              resolve("ok")
+          } else {
+            self.isRoller = false
+            resolve('error')
+          }
+           
+          
+        })
+     })
+       
+     }); 
+      }
+
+      
+      
+       
+     
+     
+    
+    } 
+        
+      }
+    })
+   }) 
+   
+  }
+
+
+/* defineBudgetFromAccount() {
     var montant = parseInt($("#montant").val())
     var newAccountValue = this.accountValue - montant
     if (montant > this.accountValue || montant < 10000) {
@@ -2880,8 +4558,164 @@ defineBudgetFromAccount() {
       );
     }
   }
+
+  defineBudget() {
+    var self = this
+    var browser = ""
+      var redirect = ""
+        
+        this.notesService.detectDevice().then(res => {
+          browser = res
+           if (browser === "Opera") {
+        redirect = SERVER.opera
+      } else if (browser === "Chrome") {
+        redirect = SERVER.chrome
+      } else if(browser === "Safari") {
+        var current_browser_url = window.location.href
+        if (current_browser_url.includes("www")) {
+          redirect = SERVER.safari1
+        } else {
+          redirect = SERVER.safari2
+        }
+          }
+          if (this.montant < 10000) {
+         Swal.fire({
+          title: "Service budget",
+          text: "Montant invalide",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service budget",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else {
+      Swal.fire({
+        title: "Service budget",
+        html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+        cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+        cancelButtonText: "annuler"
+      }).then((result) => {
+        if (result.value) {
+            var self = this
+          this.isCreating = true
+                
+          var key = this.generate(100)
+          localStorage.setItem(key, this.budget_to_place.toString())
+          this.auth.updateUser(this.uid, {paymentKey: key})
+    
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: SERVER_URL+'/Budget/'+self.idA+"/"+self.campagne_id+"/"+self.budgetId+"/"+ self.montant+"/"+self.budget_to_place+"/"+self.dure_campagne+"/"+redirect,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+              self.isCreating = false
+              if (is_completed === true) {
+                 
+                
+                  //window.location.href = success_url; 
+                } else {
+                  self.isCreating = false
+                    //window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                ////console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                ////console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                //alert('erreur inconnu');
+                selector.prop('disabled', false);
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                ////console.log('non success response ', jsonResponse);
+                //alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+          
+        });
+    }, 500)
+        }
+      })
+      }
+    
+        })
+     
+    
+     
+    
+
+      
+      
+      
+    
+  } */
   
-  defineAmountAccountBeforeBudget() {
+ /*  defineAmountAccountBeforeBudget() {
      $('#button_modal_define_budget').trigger('click')
     var self = this
     this.montant = $("#montant").val()
@@ -2971,17 +4805,18 @@ defineBudgetFromAccount() {
       
       
     }
-  }
+  } */
   updateAdOnFirebase() {
 
     if (this.currentAdStatus == "") {
-      this.isRoller = true
+
+      
       var displayUrl = []
      var finalUrls = []
      var finalMobileUrls = []
      var finalAppUrls = []
-      var name =$("#modified_name").text()
-      var image = $('#ad_image_modified').attr("src")
+      var name =""
+      var image = ""
      var storage = firebase.app().storage("gs://comparez.appspot.com/");
       var storageRef = storage.ref();
    
@@ -2992,18 +4827,21 @@ defineBudgetFromAccount() {
    contentType: 'image/png',
   };
       var self = this
-      displayUrl.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
-
+      
       if (this.currentAdType === 'UPLOAD') {
-        ////console.log('upload')
-        ////console.log(image)
-        if (image.startsWith("https") == false) {
-            if (image.includes('data:image/png;base64,')) { 
+        
+        this.progresBarModifiedImageUpload = true
+        this.getModifiedImage().then(modified => {
+          if (modified !== 'error') {
+            var name =this.MODIFIED_IMAGE_UPLOAD_NAME
+      var image = this.MODIFIED_UPLOAD_IMAGE
+            displayUrl.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
+
+            if (image.startsWith("https") == false) {
+              if (image.includes('data:image/png;base64,')) { 
               name.replace('data:image/png;base64,', "")
               var replace = image.replace('data:image/png;base64,', "")
                                            imagesRef.putString(replace, 'base64', metadata).then(function (snapshot) {
-       ////console.log('ok')
-      
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -3027,39 +4865,18 @@ defineBudgetFromAccount() {
     }).then(res => {
           ////console.log('success')
           ////console.log(res)
-          self.isRoller = false
-      if(res=="ok"){
-         Swal.fire({
-        title: 'Modification du visuel',
-        text: 'Visuel modifié avec succès',
-        type: 'success',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {
-          self.currentFinalUrls=self.url_modify
-          setTimeout(()=>{
-            document.getElementById("closeModalViewModified").click()
-          }, 1000)
-          
-              }
-            })
+          if(res=="ok"){
+            self.progresBarModifiedImageUpload = false
+            self.openSnackBarSuccessImage("Visuel modifié avec succès !", "")
+            setTimeout(()=>{
+              window.location.reload()
+            }, 2000)
+            
       }
       
-        }).catch(err=>{
-           Swal.fire({
-              title: 'Modification du visuel',
-              text: 'Erreur Service !',
-              type: 'error',
-              showCancelButton: false,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {}
-            })
+    }).catch(err => {
+          self.progresBarModifiedImageUpload = false
+          self.openSnackBarErrorImage("Opération échouée !", "")
         
         })
      })
@@ -3094,38 +4911,17 @@ defineBudgetFromAccount() {
     }).then(res => {
           ////console.log('success')
           ////console.log(res)
-          self.isRoller = false
-      if(res=="ok"){
-         Swal.fire({
-        title: 'Modification du visuel',
-        text: 'Visuel modifié avec succès',
-        type: 'success',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {
-          setTimeout(()=>{
-            document.getElementById("closeModalViewModified").click()
-          }, 1000)
-          
-              }
-            })
+          if(res=="ok"){
+            self.progresBarModifiedImageUpload = false
+        self.openSnackBarSuccessImage("Visuel modifié avec succès !", "")
+        setTimeout(()=>{
+          window.location.reload()
+        }, 2000)
       }
       
-        }).catch(err=>{
-           Swal.fire({
-              title: 'Modification du visuel',
-              text: 'Erreur Service !',
-              type: 'error',
-              showCancelButton: false,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {}
-            })
+    }).catch(err => {
+          self.progresBarModifiedImageUpload = false
+        self.openSnackBarErrorImage("Opération échouée !", "")
         
         })
      })
@@ -3133,7 +4929,8 @@ defineBudgetFromAccount() {
      });
             }
 
-        } else {
+            } else {
+              
                 self.adsService.updateAd(self.id_ad_firebase, {
      
       ad_name: name,
@@ -3146,49 +4943,40 @@ defineBudgetFromAccount() {
     }).then(res => {
           ////console.log('success')
       ////console.log(res)
-      self.isRoller = false
-      if(res=="ok"){
-         Swal.fire({
-        title: 'Modification du visuel',
-        text: 'Visuel modifié avec succès',
-        type: 'success',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {
-          setTimeout(()=>{
-            document.getElementById("closeModalViewModified").click()
-          }, 1000)
-          
-              }
-            })
+    
+      if (res == "ok") {
+        self.progresBarModifiedImageUpload = false
+       self.openSnackBarSuccessImage("Visuel modifié avec succès !", "")
+       setTimeout(()=>{
+        window.location.reload()
+       }, 2000)
       }
       
     }).catch(err => {
-          self.isRoller = false
-           Swal.fire({
-              title: 'Modification du visuel',
-              text: 'Erreur Service !',
-              type: 'error',
-              showCancelButton: false,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {}
-            })
+        self.progresBarModifiedImageUpload = false
+            self.openSnackBarErrorImage("Opération échouée !", "")
         
         })
         }
+            
+          }
+        })
+        ////console.log('upload')
+        ////console.log(image)
+   
 
       } else {
             if (!fabric.Canvas.supports('toDataURL')) {
       //alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
     
-      //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
+              this.getModifiedImage().then(modified => {
+                if (modified !== "error") {
+                  this.progresBarModifiedImageCreative = true
+                  var image = this.MODIFIED_CREATIVE_IMAGE
+                  var name = this.MODIFIED_IMAGE_CREATIVE_NAME
+            displayUrl.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
+                    //$('#ad_image').attr("src", this.canvas.toDataURL('png'))
       //////console.log(this.canvas.toDataURL('png'))
       this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
       //////console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
@@ -3220,43 +5008,25 @@ defineBudgetFromAccount() {
           ////console.log('success')
           ////console.log(res)
         self.isRoller = false
-      if(res=="ok"){
-         Swal.fire({
-        title: 'Modification du visuel',
-        text: 'Visuel modifié avec succès',
-        type: 'success',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {
-          setTimeout(()=>{
-            document.getElementById("closeModalViewModified").click()
-          }, 1000)
-          
-              }
-            })
-      }
+      if (res == "ok") {
+        self.progresBarModifiedImageCreative = false
+        self.openSnackBarSuccessImage("Visuel modifié avec succès !", "")
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
+      } 
       
     }).catch(err => {
-          self.isRoller = false
-           Swal.fire({
-              title: 'Modification du visuel',
-              text: 'Erreur Service !',
-              type: 'error',
-              showCancelButton: false,
-              confirmButtonColor: '#26a69a',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {}
-            })
-        
+ 
+        self.progresBarModifiedImageCreative = false
+        self.openSnackBarSuccessImage("Opération échouée !", "")
+    
         })
      })
        
      }); 
+            }
+          })
       
        
      
@@ -3808,6 +5578,25 @@ defineBudgetFromAccount() {
 
   } */
 
+  publishOnAdwords(id, ad_group_id, ad_name, image_url, finalUrls, finalAppUrls, finalMobileUrls, size) {
+     this.spinnerPublish = true
+      this.adsService.addAd(id, ad_group_id, ad_name, image_url, finalUrls, finalAppUrls, finalMobileUrls, size).then(res => {
+        ////console.log('success')
+     ////console.log(res)
+     if (res != "error") {
+       this.spinnerPublish = false
+       this.successPublish = true
+       setTimeout(()=>{
+         this.successPublish = false
+       }, 2500)
+          
+     } else {
+       this.spinnerPublish = false
+       
+     }
+      })
+    }
+
   buildAd() {
 
     var self = this
@@ -3846,7 +5635,9 @@ if (this.budget === 0) {
      }
       })
    
-} 
+    } 
+    
+   
     
     
 /*      this.isCreating = true
@@ -4778,10 +6569,15 @@ if (this.budget === 0) {
         this.props.fill = this.getActiveStyle('fill', null);
     }
 
-    setFill(): void {
-        this.setActiveStyle('fill', this.props.fill, null);
+    setFill(fill): void {
+        this.setActiveStyle('fill', fill, null);
     }
 
+  handleChange(event){
+    console.log(event)
+    this.setFill(event)
+    
+  }
     getStroke(): void {
         this.props.stroke = this.getActiveStyle('stroke', null);
     }
@@ -4886,7 +6682,7 @@ if (this.budget === 0) {
     setFillColor(swatch: any): void {
         this.palettes.selected = swatch;
         this.props.fill = swatch.key;
-        this.setFill();
+        /* this.setFill(); */
     }
 
     // SYSTEM ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5376,7 +7172,10 @@ if (this.budget === 0) {
       if (result.value) {
         this.isCreating = true
         this.adsService.deleteAd(id).then(res => {
-          this.isCreating = false
+          if (res == "ok") {
+            
+            this.isCreating = false
+          }
         })
       }
     })
@@ -5664,7 +7463,7 @@ if (this.budget === 0) {
   }
   
   
-  defineBudget() {
+  /* defineBudget() {
     var self = this
    
       
@@ -5753,10 +7552,10 @@ if (this.budget === 0) {
       
       
     
-   }
+   } */
 
 
-   handleIfValide() {
+   /* handleIfValide() {
     ////console.log('keyup')
     $('#error_recharge').hide()
     var montant = $("#montant").val()
@@ -5773,8 +7572,8 @@ if (this.budget === 0) {
       
     }
    }
-  
-  handleIfBudgetToPlaceFromAccountIsValid() {
+   */
+ /*  handleIfBudgetToPlaceFromAccountIsValid() {
     $('#error_recharge').hide()
     var montant = parseInt($("#montant").val())
 
@@ -5805,9 +7604,44 @@ if (this.budget === 0) {
       
       
     }
+  } */
+   
+  handleSimulatedImpressionsCount() {
+    ////console.log('keyup')
+    $('#error_recharge').hide()
+    this.isSimulation = true
+    var montant = $("#montant").val()
+    if (montant == "" ) {
+    
+      this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      this.error_recharge = "Saisir un budget"
+       $('#error_recharge').show()
+    } else if (montant < MIN_BUDGET_VALUE) {
+        this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      this.error_recharge = "Budget doit être supérieur ou égal à 10 000 FCFA"
+      $('#error_recharge').show()
+    } else if (montant > MAX_BUDGET_VALUE) {
+         this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      this.error_recharge = "Budget indisponible"
+      $('#error_recharge').show()
+    } else{
+      this.my_gain = (20 * montant) / 100
+      this.budget_to_place = montant - this.my_gain
+      this.number_of_impressions_simulated = parseInt(((this.budget_to_place *1000) / 33.3).toString())
+      this.montant = montant
+      //var budget_to_place_in_dollar = budget_to_place * 550
+      
+      
+    }
   }
 
-   handleBudgetPlacement() {
+  /*  handleBudgetPlacement() {
      this.isAccountRechargement = false
      this.isPlacementBudgetFromAccount = false
     Swal.fire({
@@ -5826,8 +7660,8 @@ if (this.budget === 0) {
       })
     
     
-   }
-  handlePlaceBudgetFromSolde() {
+   } */
+  /* handlePlaceBudgetFromSolde() {
     this.isAccountRechargement = false
     this.isSetBudget = false
     Swal.fire({
@@ -5844,17 +7678,8 @@ if (this.budget === 0) {
           this.isPlacementBudgetFromAccount = true
          }
       })
-  }
+  } */
   
-   handleAccountRechargement() {
-   
-     this.modifyDate = false;
-     this.isSetBudget = false
-     this.isPlacementBudgetFromAccount = false;
-     this.isAccountRechargement = true
-    
-    
-  }
   parseDate(str) {
     var mdy = str.split('/');
     return new Date(mdy[2], mdy[1], mdy[0]);
@@ -5884,12 +7709,18 @@ if (this.budget === 0) {
   }
   CloseBudgetOperation() {
     this.isSetBudget = false
+    this.button_payments = true
+    this.modifyDate = true
   }
   ClosePlaceBudgetFromAccountValue() {
     this.isPlacementBudgetFromAccount = false
+    this.button_payments = true
+    this.modifyDate = true
   }
    CloseRechargeAccountOperation() {
-    this.isAccountRechargement = false
+     this.isAccountRechargement = false
+     this.button_payments = true
+     this.modifyDate = true
   }
   onEndDateChange(args) {
     ////console.log(args.value)
@@ -6636,7 +8467,7 @@ if (this.endDate == date || this.startDate == date) {
     document.getElementById("v-pills-add-ad-tab").click()
   }
  
-  handleSimulatedImpressionsCount() {
+/*   handleSimulatedImpressionsCount() {
     ////console.log('keyup')
     $('#error_recharge').hide()
     this.isSimulation = true
@@ -6660,7 +8491,7 @@ if (this.endDate == date || this.startDate == date) {
       
       
     }
-  }
+  } */
   
 
    addShape(shape): void {
@@ -6719,6 +8550,553 @@ if (this.endDate == date || this.startDate == date) {
         this.updateLayers();
     }
   
+  
+  
+  
+  
+  
+  
+  
+   handleIfValide() {
+    ////console.log('keyup')
+    $('#error_recharge').hide()
+    var montant = $("#montant").val()
+    if (montant < 20000) {
+    this.montant = 0
+      $('#error_recharge').show()
+    } else if(montant==""){
+    this.montant = 0
+       $('#error_recharge').show()
+    } else{
+     this.montant = montant
+      //var budget_to_place_in_dollar = budget_to_place * 550
+      
+      
+    }
+   }
+  
+  handleIfBudgetToPlaceFromAccountIsValid() {
+    $('#error_recharge').hide()
+    var montant = parseInt($("#montant").val())
+
+
+    if (montant > this.accountValue) {
+      this.montant = 0
+       this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      $('#error_recharge').show()
+    } else if(montant==null){
+      this.montant = 0
+      this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+       $('#error_recharge').show()
+    } else if(montant < 10000){
+       this.montant = 0
+       this.number_of_impressions_simulated = 0
+      this.my_gain = 0
+      this.budget_to_place = 0
+      $('#error_recharge').show()
+    }else{
+     this.my_gain = (20 * montant) / 100
+      this.budget_to_place = montant - this.my_gain
+      this.number_of_impressions_simulated = parseInt(((this.budget_to_place *1000) / 33.3).toString())
+      this.montant = montant
+      
+      
+    }
+  }
+
+   handleBudgetPlacement() {
+     
+    Swal.fire({
+        title: 'Service Campagne',
+        text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, Je confirme ces dates'
+      }).then((result) => {
+        if (result.value) {
+          this.isAccountRechargement = false
+     this.isPlacementBudgetFromAccount = false
+     this.button_payments = false
+          this.modifyDate = false
+          this.isSetBudget = true
+         }
+      })
+    
+    
+   }
+  handlePlaceBudgetFromSolde() {
+    this.isAccountRechargement = false
+    this.isSetBudget = false
+    this.button_payments = false
+    Swal.fire({
+        title: 'Service Campagne',
+        text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#26a69a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, Je confirme ces dates'
+      }).then((result) => {
+        if (result.value) {
+          this.modifyDate = false
+          this.isPlacementBudgetFromAccount = true
+         }
+      })
+  }
+  
+   handleAccountRechargement() {
+   
+     this.modifyDate = false;
+     this.isSetBudget = false
+     this.isPlacementBudgetFromAccount = false;
+     this.button_payments = false
+     this.isAccountRechargement = true
+    
+    
+  }
+  
+  defineBudget() {
+    var self = this
+
+        
+       this.getPlatform().then(res=>{
+         if (res == "ok") {
+                    if (this.montant < 10000) {
+         Swal.fire({
+          title: "Service budget",
+          text: "Montant invalide",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service budget",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else {
+      Swal.fire({
+        title: "Service budget",
+        html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+        cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+        cancelButtonText: "annuler"
+      }).then((result) => {
+        if (result.value) {
+            var self = this
+          this.isCreating = true
+                
+          var key = this.generate(100)
+          localStorage.setItem(key, this.budget_to_place.toString())
+          this.auth.updateUser(this.uid, {paymentKey: key})
+    
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: SERVER_URL+'/BudgetAds/'+self.budgetId+"/"+ self.montant+"/"+self.budget_to_place+"/"+self.dure_campagne+"/"+self.BROWSER_URL+"/"+self.DOMAIN,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+              self.isCreating = false
+              if (is_completed === true) {
+                 
+                
+                  //window.location.href = success_url; 
+                } else {
+                self.isCreating = false
+                 localStorage.remove(key)
+      this.auth.updateUser(this.uid, {paymentKey: ''})
+                    //window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                ////console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                ////console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                //alert('erreur inconnu');
+              selector.prop('disabled', false);
+               localStorage.remove(key)
+      this.auth.updateUser(this.uid, {paymentKey: ''})
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                ////console.log('non success response ', jsonResponse);
+                //alert(jsonResponse.errors);
+                selector.prop('disabled', false);
+                 localStorage.remove(key)
+      this.auth.updateUser(this.uid, {paymentKey: ''})
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+          
+        });
+    }, 500)
+        }
+      })
+      }
+         }
+       })
+     
+    
+     /*  $('#button_modal_define_budget').trigger('click') */
+    
+
+      
+      
+      
+    
+  }
+
+
+
+
+
+  defineBudgetFromAccount() {
+    var self = this
+    var montant = parseInt($("#montant").val())
+    var newAccountValue = this.accountValue - montant
+    if (montant > this.accountValue || montant < 10000) {
+      $('#error_recharge').show()
+    } else if (montant == null) {
+      $('#error_recharge').show()
+       
+    } else {
+      this.isCreating = true
+      this.isPlacementBudgetFromAccount = false
+      this.montant = montant
+         this.http.post(SERVER_URL+'/setBudgetFromAccount', {
+      'budgetId': this.budgetId,
+           'amount': this.budget_to_place,
+      'dure': this.dure_campagne,
+    })
+      .subscribe(
+        res => {
+          
+          if (res[0]['status'] == "ok") {
+            this.notesService.updateNote(this.idC, { budget: this.budget_to_place, dailyBudget: res[0]['dailyBudget'] }).then(res => {
+              
+              if (res == "ok") {
+                 
+                      this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
+                        
+                        if (res == "ok") {
+                          self.isCreating = false
+                          Swal.fire({
+                  title: 'Service Campagne!',
+                  text: 'Budget mis à jour.',
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  if (result.value) {
+                   window.location.reload()
+                  }else{
+                    window.location.reload()
+                  }
+                })
+                        } else {
+                          self.isCreating = false
+                        }
+              })
+              } else {
+                self.isCreating = false
+              }
+                 
+               })
+            
+          } else {
+            self.isCreating = false
+          }
+          
+          
+        },
+        err => {
+          Swal.fire({
+      title: 'Service Campagne!',
+      text: 'Erreur.',
+      type: 'error',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.value) {}
+    })
+        }
+      );
+    }
+  }
+
+  
+  getPlatform(): Promise<any>{
+    return new Promise(resolve => {
+      this.notesService.detectDevice().then(res => {
+          var browser = res
+        
+          
+          if (browser === "Opera") {
+           /*  redirect = SERVER.opera */
+            this.BROWSER_URL = window.location.href.replace(SERVER.protocol + SERVER.opera + "/#/ads/", "")
+            console.log(this.BROWSER_URL)
+            console.log(this.DOMAIN)
+            this.DOMAIN = SERVER.opera
+            resolve("ok")
+          } else if (browser === "Chrome") {
+           /*  redirect = SERVER.chrome */
+            this.BROWSER_URL = window.location.href.replace(SERVER.protocol.toString() + SERVER.chrome.toString() + "/#/ads/", "")
+            this.DOMAIN = SERVER.chrome
+            console.log(this.BROWSER_URL)
+            console.log(this.DOMAIN)
+            resolve("ok")
+          } else if (browser === "Safari") {
+            var current_browser_url = window.location.href
+            if (current_browser_url.includes("www")) {
+             /*  redirect = SERVER.safari1 */
+              this.BROWSER_URL = window.location.href.replace(SERVER.protocol + SERVER.safari1 + "/#/ads/", "")
+              this.DOMAIN = SERVER.safari1
+              console.log(this.BROWSER_URL)
+            console.log(this.DOMAIN)
+              resolve("ok")
+            } else {
+             /*  redirect = SERVER.safari2 */
+              this.BROWSER_URL = window.location.href.replace(SERVER.protocol + SERVER.safari2 + "/#/ads/", "")
+              this.DOMAIN = SERVER.safari2
+              console.log(this.BROWSER_URL)
+            console.log(this.DOMAIN)
+              resolve("ok")
+            }
+        }
+      })
+    })
+  }  
+
+  defineAmountAccountBeforeBudget() {
+
+        this.getPlatform().then(res => {
+          if (res == "ok") {
+                             this.montant = $("#montant").val()
+    if (this.montant < 20000) {
+      $('#error_recharge').show()
+    } else if (this.montant > 1000000) {
+       Swal.fire({
+          title: "Service rechargement",
+          text: "Montant trop élevé",
+          type: 'warning',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'réessayer '
+        }).then((result) => {
+          if (result.value) {
+          
+          }
+        })
+    } else{
+      
+
+       Swal.fire({
+          title: "Service rechargement",
+          html: "<span>Vous allez procéder au paiement dans quelques instant saisissez le <strong class='adafri font-weight-bold adafri-police-18'>#144#391#</strong> sur votre téléphone pour payer avec orange money<span>",
+          type: 'info',
+          showCancelButton: true,
+           confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+        confirmButtonText: 'Procéder au paiement',
+          cancelButtonText: "annuler"
+       }).then((result) => {
+         if (result.value) {
+              /* var crypt = this.cryptMoney(this.montant.toString()) */
+              this.isCreating = true
+       var key = this.generate(100)
+      localStorage.setItem(key, this.montant.toString())
+      this.auth.updateUser(this.uid, {paymentKey: key})
+     /*  var crypt = this.encrypted(this.montant.toString(), this.uid) */
+      $('#closeModalRecharge').trigger('click')
+      var self = this
+      setTimeout(function () {
+    
+        var btn = document.getElementById("budgetSet");
+        var selector = pQuery(btn);
+        (new PayExpresse({
+          item_id: 1,
+        })).withOption({
+            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudgetAds/'+ self.montant + "/"+self.BROWSER_URL+"/"+self.DOMAIN,
+            method: 'POST',
+            headers: {
+                "Accept": "application/json"
+          },
+       
+          
+            //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
+            prensentationMode: PayExpresse.OPEN_IN_POPUP,
+            didPopupClosed: function (is_completed, success_url, cancel_url) {
+              self.isCreating = false
+              if (is_completed === true) {
+                  //alert(success_url)
+                
+                  //window.location.href = success_url; 
+                } else {
+                self.isCreating = false
+               localStorage.remove(key)
+      this.auth.updateUser(this.uid, {paymentKey: ''})
+                    //window.location.href = cancel_url
+                }
+            },
+            willGetToken: function () {
+                ////console.log("Je me prepare a obtenir un token");
+                selector.prop('disabled', true);
+                //var ads = []
+
+
+            },
+            didGetToken: function (token, redirectUrl) {
+                ////console.log("Mon token est : " + token + ' et url est ' + redirectUrl);
+                selector.prop('disabled', false);
+            },
+            didReceiveError: function (error) {
+                //alert('erreur inconnu');
+              selector.prop('disabled', false);
+              self.isCreating = false
+              localStorage.remove(key)
+      this.auth.updateUser(this.uid, {paymentKey: ''})
+            },
+            didReceiveNonSuccessResponse: function (jsonResponse) {
+                ////console.log('non success response ', jsonResponse);
+                //alert(jsonResponse.errors);
+              selector.prop('disabled', false);
+              self.isCreating = false
+            }
+        }).send({
+            pageBackgroundRadianStart: '#0178bc',
+            pageBackgroundRadianEnd: '#00bdda',
+            pageTextPrimaryColor: '#333',
+            paymentFormBackground: '#fff',
+            navControlNextBackgroundRadianStart: '#608d93',
+            navControlNextBackgroundRadianEnd: '#28314e',
+            navControlCancelBackgroundRadianStar: '#28314e',
+            navControlCancelBackgroundRadianEnd: '#608d93',
+            navControlTextColor: '#fff',
+            paymentListItemTextColor: '#555',
+            paymentListItemSelectedBackground: '#eee',
+            commingIconBackgroundRadianStart: '#0178bc',
+            commingIconBackgroundRadianEnd: '#00bdda',
+            commingIconTextColor: '#fff',
+            formInputBackgroundColor: '#eff1f2',
+            formInputBorderTopColor: '#e3e7eb',
+            formInputBorderLeftColor: '#7c7c7c',
+            totalIconBackgroundRadianStart: '#0178bc',
+            totalIconBackgroundRadianEnd: '#00bdda',
+            formLabelTextColor: '#292b2c',
+            alertDialogTextColor: '#333',
+            alertDialogConfirmButtonBackgroundColor: '#0178bc',
+          alertDialogConfirmButtonTextColor: '#fff',
+          
+        });
+    }, 500)  
+         }
+       })
+
+
+      
+      
+      
+    }
+          }
+
+  
+
+        })
+   
+     
+
+  }
+  
+  
+  
+  
+  
+  
+  
 }
 
 
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog-overview-example-dialog.html',
+})
+export class DialogOverviewExampleDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}

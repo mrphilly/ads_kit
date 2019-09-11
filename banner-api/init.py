@@ -29,6 +29,7 @@ from ads_scripts.basic_operations.update_campaign_name import UpdateCampaignName
 from ads_scripts.basic_operations.update_campaign_name_and_status import UpdateCampaignNameAndStatus
 from ads_scripts.targeting.targeting_ages import TargetAge
 from ads_scripts.targeting.targeting_sexe import TargetSexe
+from ads_scripts.targeting.targeting_sexe_remove import TargetSexeRemove 
 from ads_scripts.targeting.target_location import TargetLocation
 from ads_scripts.targeting.update_location import UpdateLocation
 from ads_scripts.basic_operations.update_ad_group_status import UpdateAdGroupStatus
@@ -66,6 +67,8 @@ firebase = pyrebase.initialize_app(config)
 
 app = Flask(__name__)
 CORS(app)
+#REDIRECT_HTTPS = "http://"
+REDIRECT_HTTPS = "https://"
 URL_SERVER = "https://adafri.comparez.co"
 FRONT_END_URL = "https://www.adafri.com"
 #FRONT_END_URL = "http://localhost:4200"
@@ -530,6 +533,7 @@ def targetAge():
     request_last_ages = request.json['last_ages']
     ages = []
     last_ages = []
+    target = []
     
     for age in request_ages:
             ages.append(age['item_id'])
@@ -553,11 +557,12 @@ def targetAge():
     return jsonify(target)
    
    
-    return jsonify(target)
+
 
 @app.route("/targetGender", methods=["POST"])
 def targetGender():
-   
+    SEXES = ["10", "11", "20"]
+    target = []
     print(request.json['sexes'])
     print(request.json['last_genre'])
     ad_group_id_ = ''.join(request.json['ad_group_id']),
@@ -567,6 +572,7 @@ def targetGender():
     sexes = []
     last_genre = []
     
+    
     for sexe in request_sexes:
             sexes.append(sexe['item_id'])
     adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
@@ -575,8 +581,20 @@ def targetGender():
         for _last_genre_ in request_last_genre:
             genre = str(_last_genre_['item_id'])
             last_genre.append(genre)
+        """ for last, actual in zip(last_genre, sexes):
+            print('iterating')
+            print(last,actual)
+            if last == actual:
+                
+                sexes.remove(last) """
+        
         remove = RemoveTargetGender(adwords_client, ad_group_id, last_genre)
-        target = TargetSexe(adwords_client, ad_group_id, sexes)
+        if remove[0]["status"]=="ok":
+            print(len(sexes))
+            
+        
+            target = TargetSexe(adwords_client, ad_group_id, sexes)
+
        
 
     else:
@@ -585,6 +603,9 @@ def targetGender():
         target = TargetSexe(adwords_client, ad_group_id, sexes)
     sexes = []
     last_genre = []
+
+   
+
     
     return jsonify(target)
 
@@ -604,7 +625,7 @@ def setPlacement():
     ad_group_id = request.json['ad_group_id']
     placement = request.json['placement']
     last_placement = request.json['last_placement']
-    print(placement)
+    #print(placement)
   
     adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     placement = SetPlacement(adwords_client, ad_group_id, placement, last_placement)
@@ -999,6 +1020,123 @@ def rechargeAmountBeforeBudget(money=None, idC=None, redirect=None):
 
 
         return jsonify(req)
+
+
+
+
+@app.route("/updateBudgetAds/<budgetId>/<money>/<budget_to_place>/<dure>/<ad_name>/<idC>/<idA>/<ad_group_id>/<campaign_id>/<domain>", methods=['POST', 'GET'])
+def updateBudgetAds(budgetId=None, money=None,budget_to_place= None, dure=None, ad_name=None,  idC=None, idA=None, ad_group_id=None, campaign_id=None, domain=None):
+    print('success')
+    print(money)
+    adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    budget = UpdateBudget(adwords_client, budgetId, budget_to_place, dure)
+    return redirect(REDIRECT_HTTPS+domain+"/#/ads/"+ad_name+"/"+idC+"/"+idA+"/"+ad_group_id+"/"+campaign_id+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure))
+    """  return redirect(redirect+"/#/"+idC+"/"+str(campaign_id)+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure)) """
+
+
+
+@app.route('/BudgetAds/<budgetId>/<money>/<budget_to_place>/<dure>/<ad_name>/<idC>/<idA>/<ad_group_id>/<campaign_id>/<domain>', methods=['POST'])
+def payBudgetAds(budgetId=None, money=None, budget_to_place=None,  dure=None, ad_name=None, idC=None, idA=None, ad_group_id=None, campaign_id=None, domain=None):
+        """
+        Get payexpress token
+        """
+        print(dure)
+        print(money)
+        print(budgetId)
+        
+        url = 'https://payexpresse.com/api/payment/request-payment'
+        cancel_url = "http://www.google.com"
+        success_url = URL_SERVER+"/updateBudgetAds/"+budgetId + "/" +money+"/"+ budget_to_place+"/"+dure+"/"+ad_name+"/"+idC+"/"+idA+"/"+ad_group_id+"/"+campaign_id+"/"+domain
+        #cancel_url = "http://0.0.0.0:5009"
+        #success_url = "http://0.0.0.0:5009/?pay=ok"
+
+        #success_url = UpdateBudget(adwords_client, budgetId, money)
+        
+        amount_due = round(int(money))
+        print(money)
+        infos = {
+            'item_name':'Mon achat',
+            'item_price':amount_due,
+            'currency':'XOF',
+            'ref_command':time.time(),
+            'command_name':'Mon achat',
+            'env':'test',
+            'success_url': success_url,
+            'cancel_url':cancel_url
+        }
+
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
+        }
+
+        req = requests.post(url, data=infos, headers=headers)
+
+        req = req.json()
+    
+        print(req['success'])
+        
+        req['redirect_url'] = 'https://payexpresse.com/payment/checkout/' +req['token']
+        
+
+
+        return jsonify(req)
+
+
+
+@app.route('/rechargeAmountBeforeBudgetAds',  methods=['POST'])
+
+@app.route('/rechargeAmountBeforeBudgetAds/<money>/<ad_name>/<idC>/<idA>/<ad_group_id>/<campaign_id>/<domain>', methods=['POST'])
+
+def rechargeAmountBeforeBudgetAds(money=None, ad_name=None, idC=None, idA=None, ad_group_id=None, campaign_id=None, domain=None):
+        """
+        Get payexpress token
+        """
+        print(money)
+       
+     
+        url = 'https://payexpresse.com/api/payment/request-payment'
+        cancel_url = "http://www.google.com"
+        success_url =REDIRECT_HTTPS+domain+"/#/ads/"+ad_name+"/"+idC+"/"+idA+"/"+ad_group_id+"/"+campaign_id+"/rechargement"
+        #cancel_url = "http://0.0.0.0:5009"
+        #success_url = "http://0.0.0.0:5009/?pay=ok"
+
+        #success_url = UpdateBudget(adwords_client, budgetId, money)
+        
+        amount_due = round(int(money))
+        print(success_url)
+        infos = {
+            'item_name':'Mon achat',
+            'item_price':amount_due,
+            'currency':'XOF',
+            'ref_command':time.time(),
+            'command_name':'Mon achat',
+            'env':'test',
+            'success_url': success_url,
+            'cancel_url':cancel_url
+        }
+
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'API_KEY':"62ab48e65f7459fb4e7085211e73e9cfa7d399834f836308caa55bc110f2aec4",
+            'API_SECRET':"4d5fcd8fb7ad85e28a6ac6b87721fe16aa18cd35bc9a212d1dcdbe23f85fd85d",
+        }
+
+        req = requests.post(url, data=infos, headers=headers)
+
+        req = req.json()
+    
+        print(req['success'])
+        
+        
+        req['redirect_url'] = 'https://payexpresse.com/payment/checkout/' +req['token']
+        
+
+
+        return jsonify(req)
+
+
 
 
 @app.route('/rechargeAmountBeforeBudgetFromAd',  methods=['POST'])

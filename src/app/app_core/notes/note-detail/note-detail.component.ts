@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, Injectable, ViewChild, AfterViewInit } from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import {MatTableDataSource, MatPaginator} from '@angular/material';
 
 import * as $ from 'jquery';
 
@@ -10,7 +12,8 @@ import { Observable } from 'rxjs'
 import { AdGroupService } from '../ad-groupe.service'
 import { Ads } from '../ads.service'
 import Swal from 'sweetalert2'
-import {SERVER} from '../../../../environments/environment'
+import { SERVER } from '../../../../environments/environment'
+import {Note} from "../note.models"
 
 
 
@@ -18,14 +21,15 @@ import {SERVER} from '../../../../environments/environment'
   selector: 'note-detail',
   templateUrl: './note-detail.component.html',
   styleUrls: ['./note-detail.component.scss'],
+  
 })
   
 @Injectable()
 export class NoteDetailComponent implements OnInit {
-
-  @Input() note: any;
+ @ViewChild(MatPaginator) paginator: MatPaginator;
+  @Input() note: Observable<Note>;
    @Input()
-  notes: Observable<any[]>;
+  notes: any;
   user: any;
   goCampaign = false
  
@@ -47,6 +51,33 @@ export class NoteDetailComponent implements OnInit {
   listAdGroupId = []
   listAdId = []
   generalListDeletion = []
+  dataL : any;
+   displayedColumns = ['select', 'name', 'status', 'date de début', 'Budget', "Paramétrer"];
+  dataSource = new MatTableDataSource<Note>([])
+  selection = new SelectionModel<Note>(true, []);
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+isAllSelected() {
+  const numSelected = this.selection.selected.length;
+  console.log(this.selection.selected)
+  console.log(this.dataSource.data)
+   const numRows = this.dataSource.data.length 
+  console.log(numSelected)
+     return numSelected === numRows; 
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
 
   constructor(private notesService: NotesService, private router: Router, private adgroup_service: AdGroupService,private auth: AuthService, private adsService : Ads) { 
     
@@ -54,27 +85,37 @@ export class NoteDetailComponent implements OnInit {
     
     
   }
+
+
+  createNewcampaign(){
+    this.router.navigate(['createCampaign'], {skipLocationChange: true}) 
+  }
+  ngAfterViewInit() {
+   
+    
+    
+  
+  }
+
   ngOnInit() {
      this.auth.user.forEach(child=>{
        this.uid = child.uid
        this.email = child.email
        //console.log(child.uid)
-       this.notes = this.notesService.getListCampaign(child.uid);
-       this.notes.forEach(data => {
+       this.notes = this.notesService.getListCampaign(child.uid)
+       this.notes.subscribe(data => {
+         this.dataSource = new MatTableDataSource(data)
+         this.dataSource.paginator = this.paginator;
+       });
+      /*  this.notes.forEach(data => {
          if (data.length > 2) {
            this.display_visuel = false
-         }
-       })
-    })
-  
+         }v
+       }) */
+     })
+   
 }
-  addHeartToNote(val: number) {
-    if (this.note.id) {
-      this.notesService.updateNote(this.note.id, { hearts: val + 1 });
-    } else {
-      //console.error('Note missing ID!');
-    }
-  }
+ 
   createCampaign() {
   this.router.navigate(['createCampaign'])
    
@@ -562,6 +603,7 @@ export class NoteDetailComponent implements OnInit {
       })
     })
   }
+  
 
   goCampaignSettings(id: string,id_campagne: string, name: string, status: string, budget: any, budgetId: any, dailyBudget: any, numberOfDays: any) {
     //console.log(id + " " + id_campagne + " " + name + " " + status + " "+dailyBudget+" "+numberOfDays);
@@ -587,3 +629,36 @@ export class NoteDetailComponent implements OnInit {
     $("body").css("background-image", "url('')")
   } */
 }
+
+
+export interface Element {
+  name: string;
+  status: string;
+  startDateFrench: string;
+  endDateFrench: string;
+  budget: number;
+  budgetId: number
+}
+
+/* const ELEMENT_DATA: Element[] = [
+  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
+  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
+  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
+  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
+  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
+  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
+  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
+  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
+  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
+  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
+  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
+  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
+  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
+  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
+  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
+  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
+  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
+]; */

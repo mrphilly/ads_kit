@@ -37,7 +37,7 @@ AGE_RANGE_UNDETERMINED = '503999'
 AD_GROUP_ID = '72362966135'
 
 #Function for only target male ==> disable female et undetermined
-def TargetSexe(client, ad_group_id, sexes):
+def TargetSexeRemove(client, ad_group_id, sexes):
   result = []
 
       
@@ -54,7 +54,7 @@ def TargetSexe(client, ad_group_id, sexes):
         'AdGroupCriterionService', version = 'v201809')
   print('longueur')
   print(len(sexes))
-  if len(sexes) != len(SEXES):
+  if len(sexes) < 3:
     for sexe in sexes:
         if str(sexe) in SEXES:
           SEXES.remove(str(sexe)) 

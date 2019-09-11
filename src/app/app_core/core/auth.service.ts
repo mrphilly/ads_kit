@@ -134,7 +134,7 @@ export class AuthService {
       this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(credential => {
-        this.notify.update('Welcome new user!', 'success');
+
         return this.updateUserData(credential.user, username).then(res => {
           if (res == "ok") {
             resolve("ok")
@@ -162,11 +162,11 @@ export class AuthService {
         confirmButtonText: 'Ok'
       }).then((result) => {
         if (result.value) {
-              this.updateUserData(credential.user, "nameless");
+             
           response.push(credential.user)
           
         } else {
-              this.updateUserData(credential.user, "nameless");
+             
           response.push(credential.user)
           
         }
@@ -250,7 +250,7 @@ export class AuthService {
       uid: user.uid,
       email: user.email || null,
       displayName: user.displayName || username,
-      photoURL: user.photoURL || 'https://pecb.com/conferences/wp-content/uploads/2017/10/no-profile-picture.jpg',
+      photoURL: user.photoURL || 'assets/img/images/user.png',
       account_value: 0,
       paymentKey: ""
     };
