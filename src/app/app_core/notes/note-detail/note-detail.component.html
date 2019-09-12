@@ -234,7 +234,7 @@
       <mat-header-cell *matHeaderCellDef> Budget </mat-header-cell>
       <mat-cell *matCellDef="let element">
          <span class="adafri-police-14 d-none d-md-block font-weight-bold">{{(((element.budget*100)/80))}} XOF</span>
-                  <span class="adafri-police-12 d-md-none d-sm-block font-weight-bold">{{element.budget}} XOF</span>
+                  <span class="adafri-police-12 d-md-none d-sm-block font-weight-bold">{{(((element.budget*100)/80))}} XOF</span>
          </mat-cell>
     </ng-container>
      <ng-container matColumnDef="Paramétrer">

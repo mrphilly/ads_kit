@@ -1396,11 +1396,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.chooseBlock = false
     this.chooseAdSize = false
     this.illustration = false
+    $("#block").show()
+   /*  this.handleCreateUpload = true */
     /* this.loadScript('../../../../assets/js/app.js') */
     this.is_upload_way = true
     this.ad_type = "UPLOAD"
-    if (this.handleCreateUpload === false) {
-      this.handleCreateUpload = true
+     /* if (this.handleCreateUpload === false) {
        this.currentIdInputName = this.idOfAdNameCreateUpload
     this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
     setTimeout(() => {
@@ -1410,8 +1411,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }, 500)
     }else{
       this.handleCreateUpload = false
-    }
-   
+    } */
    
     
 
@@ -1419,7 +1419,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     
   }
   goBackFromUpload() {
-    if (this.handleCreateUpload === true) {
+   
+      $("#block").hide()
       this.isUpload = false
       this.is_upload_way = false
       this.ad_type = ""
@@ -1430,7 +1431,51 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.chooseAdSize = true
       this.illustration = true
 
-    }
+ 
+    
+  }
+
+   handleUploadBannerNew() {
+    this.chooseBlock = false
+    this.chooseAdSize = false
+    this.illustration = false
+    $("#blockNew").show()
+   /*  this.handleCreateUpload = true */
+    /* this.loadScript('../../../../assets/js/app.js') */
+    this.is_upload_way = true
+    this.ad_type = "UPLOAD"
+     /* if (this.handleCreateUpload === false) {
+       this.currentIdInputName = this.idOfAdNameCreateUpload
+    this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
+    setTimeout(() => {
+      $('html, body').animate({
+        scrollTop: $("#block").offset().top
+      }, 800);
+    }, 500)
+    }else{
+      this.handleCreateUpload = false
+    } */
+   
+    
+
+    
+    
+  }
+  goBackFromUploadNew() {
+   
+      $("#blockNew").hide()
+      this.isUpload = false
+      this.is_upload_way = false
+      this.ad_type = ""
+      this.currentIdInputName = ""
+      this.currentIdInputDisplay = ""
+      
+      this.chooseBlock = true
+      this.chooseAdSize = true
+      this.illustration = true
+
+ 
+    
   }
 
   goBackFromCreatives() {
@@ -7019,7 +7064,7 @@ if (this.budget === 0) {
 
   triggerImage() {
     $("#image").trigger("click")
-    $(".tools").css("display", "block")
+    
   }
 
   triggerFigure() {

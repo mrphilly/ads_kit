@@ -1926,15 +1926,15 @@
                     Choisir une option
              
                       <div class="button-row">
-                        <button mat-raised-button (click)="handleUploadBanner()">Charger un visuel</button>
+                        <button mat-raised-button (click)="handleUploadBannerNew()">Charger un visuel</button>
                         <button mat-raised-button  (click)="handleCreatives()">Créer un visuel</button>
   
   </div>
                    
                   </mat-card>
                 </mat-card>
-                <div  *ngIf="handleCreateUpload">
-                   <mat-card id="block">
+                <div id="blockNew" style="display: none">
+                   <mat-card>
                   <mat-card-header>
                     <mat-card-title><p class="adafri-police-14 font-weight-bold">Format: {{selectedWidth}}x{{selectedHeight}}</p></mat-card-title>
                   </mat-card-header>
@@ -1971,7 +1971,7 @@
                     </div>
                     <button mat-raised-button color="primary" *ngIf="!progressBarInit"  (click)="handleImageUploadModal()">Visualiser</button>
                      <button mat-raised-button class="adafri-background text-white" (click)="initAllStepsUpload()" *ngIf="!progressBarInit">sauvegarger</button>
-                    <button mat-raised-button color="accent"  (click)="goBackFromUpload()" *ngIf="!progressBarInit">Annuler</button>
+                    <button mat-raised-button color="accent"  (click)="goBackFromUploadNew()" *ngIf="!progressBarInit">Annuler</button>
                   </mat-card-actions>
                   
                 </mat-card>
@@ -2242,3 +2242,25 @@
       </div>
     </div>
  
+     <div class="col image-block draggable" style="display: none">
+                <div class="card b-0">
+                  <div class="card-body p-5">
+                    <div class="card">
+                      <div class="card-header">Upload image</div>
+                      <div class="card-body text-center">
+                        <img id="testImage" *ngIf="url" class="images-item-upload" [src]="url"
+                          (click)="addImageOnCanvas(url);">
+                        <input type="file" (change)="readUrl($event);" id="image">
+                        <br />
+                        <br />
+                        <div class="btn-group btn-group-justified" role="group" aria-small="...">
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeWhite(url);">
+                              <i class="fa fa-times" aria-d-none="true"></i> Remove</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
