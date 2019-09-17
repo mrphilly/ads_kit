@@ -450,6 +450,7 @@
                   <mat-card-content>
                      <mat-form-field class="d-block">
     <input matInput placeholder="Exemple: https://www.votresite.com"
+    
                             [id]="idOfDisplayUrlCreateUpload" required (keyup)="handleErrorUrl()">
                              <ng-container *ngIf="url_errors != []">
                             <div class="text-danger" *ngFor="let error of url_errors">
@@ -942,7 +943,7 @@
     </button>
   </ng-container>
   <ng-container *ngIf="row.status==='PAUSED'">
-    <button mat-menu-item (click)="changeAdStatus(row.id, row.adgroup_id, row.ad_id, row.status)">
+    <button mat-menu-item (click)="changeAdStatus(row.id, row.ad_group_id, row.ad_id, row.status)">
       <mat-icon >fiber_manual_record</mat-icon>
       <span>Activer</span>
     </button>
@@ -950,7 +951,7 @@
       <mat-icon>pause_circle_outline</mat-icon>
       <span>Désactiver</span>
     </button>
-     <button mat-menu-item (click)="removeAd(row.id, row.adgroup_id, row.ad_id)" color="warn">
+     <button mat-menu-item (click)="removeAd(row.id, row.ad_group_id, row.ad_id)" color="warn">
       <mat-icon>delete</mat-icon>
       <span>Supprimer</span>
     </button>
@@ -1744,10 +1745,10 @@
         </div>
          
       <div class="height-full text-center background-yellow-adafri p-0" *ngIf="number_ads==='0' && init_choose_ad_size!==true">
-        <mat-card class="adafri-background mat-elevation-z3">
+        <mat-card class="background-yellow-adafri mat-elevation-z3">
           
-          <img src="assets/img/images/banner.jpg" class="img-responsive" alt="Photo of a Shiba Inu" class="d-none d-md-inline-block">
-          <img  src="assets/img/images/banner.jpg" class="img-responsive" alt="Photo of a Shiba Inu" class="d-md-none d-sm-inline-block">
+          <img src="assets/img/images/placementad.png" class="img-responsive" alt="Photo of a Shiba Inu" class="d-none d-md-inline-block">
+          <img  src="assets/img/images/placementad.png" class="img-responsive" alt="Photo of a Shiba Inu" class="d-md-none d-sm-inline-block">
         </mat-card>
         
         <mat-card style="margin-top: 20px" class="background-yellow-adafri p-0 height-full" style="box-shadow: none">
@@ -1755,8 +1756,9 @@
               <p class="d-inline-block font-weight-bold">Paramétrez votre premier visuel</p>
             </mat-card-header>
 
-<mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper" class="background-yellow-adafri p-0">
+<mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper" class="background-yellow-adafri p-0 text-center">
   <mat-step [stepControl]="emplacement">
+<!--     <img src="assets/img/images/placementad.png" class="d-inline-block"> -->
     <form [formGroup]="emplacement">
       <ng-template matStepLabel>Emplacements</ng-template>
       <mat-card>
@@ -1927,7 +1929,7 @@
              
                       <div class="button-row">
                         <button mat-raised-button (click)="handleUploadBannerNew()">Charger un visuel</button>
-                        <button mat-raised-button  (click)="handleCreatives()">Créer un visuel</button>
+                        <button mat-raised-button  (click)="handleCreativesNew()">Créer un visuel</button>
   
   </div>
                    
@@ -1941,7 +1943,7 @@
                   <mat-card-content>
                      <mat-form-field class="d-block">
     <input matInput placeholder="Exemple: https://www.votresite.com"
-                            [id]="idOfDisplayUrlCreateUpload" required (keyup)="handleErrorUrl()">
+                            [id]="idOfDisplayUrlCreateUploadNew" required (keyup)="handleErrorUrl()">
                              <ng-container *ngIf="url_errors != []">
                             <div class="text-danger" *ngFor="let error of url_errors">
                               {{error.url}} {{error.text}}
@@ -1985,13 +1987,13 @@
                      <p class="adafri-police-14">Nom de l'annonce</p>
                      <mat-form-field class="d-block" style="margin-left: 20px">
     <input matInput placeholder="Nom visuel"
-                              [id]="idOfAdNameCreateCreatives"  required>
+                              [id]="idOfAdNameCreateCreativesNew"  required>
                             </mat-form-field>
                             <br>
                             <p class="adafri-police-14">Url de votre site</p>
                               <mat-form-field class="d-block" style="margin-left: 20px">
     <input matInput placeholder="Exemple: https://www.votresite.com"
-                            [id]="idOfDisplayUrlCreateCreatives" required (keyup)="handleErrorUrl()">
+                            [id]="idOfDisplayUrlCreateCreativesNew" required (keyup)="handleErrorUrl()">
                              <ng-container *ngIf="url_errors != []">
                             <div class="text-danger" *ngFor="let error of url_errors">
                               {{error.url}} {{error.text}}
@@ -2116,7 +2118,7 @@
                     </div>
                     <button mat-raised-button color="primary" *ngIf="!progressBarInit"  (click)="handleImageModal()">Visualiser</button>
                      <button mat-raised-button class="adafri-background text-white" (click)=" initAllStepsCreative()" *ngIf="!progressBarInit">sauvegarger</button>
-                    <button mat-raised-button color="accent"  (click)="goBackFromCreatives()" *ngIf="!progressBarInit">Annuler</button>
+                    <button mat-raised-button color="accent"  (click)="goBackFromCreativesNew()" *ngIf="!progressBarInit">Annuler</button>
                 
                 </mat-card-actions>
               </mat-card-content>

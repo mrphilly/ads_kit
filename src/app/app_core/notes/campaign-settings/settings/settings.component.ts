@@ -212,8 +212,9 @@ isAllSelected() {
         this.dataSourceList.data.forEach(row => this.selection.select(row));
   }
   private adGroupCollection: AngularFirestoreCollection<AdGroup>;
+  campaignFinish = false 
   budgetTable = [];
-dataSource: any;
+  dataSource: any;
   type: string;
   width: string;
   height: string;
@@ -529,6 +530,71 @@ getDateArray(start, end) {
     })
     })
   }
+
+  verifyIfCampaignStart(startDateFrench): Promise<any>{
+    return new Promise(resolve => {
+          var tabStart = startDateFrench.split("/")
+          var frenchDateStart = tabStart[2] + "-" + tabStart[1] + "-" + tabStart[0] 
+          var today_date = new Date().getDate()
+          var years = new Date().getFullYear()
+          var month = new Date().getMonth() + 1
+          new Date().valueOf()
+          if (month < 10 && today_date < 10) {
+            this.today =  years.toString() + "-0" + month.toString() + "-0" + today_date.toString()
+          } else if (month < 10 && today_date > 10) {
+            this.today = years.toString() + "-0" + month.toString() +"-"+ today_date.toString()
+          } else if (month > 10 && today_date < 10) {
+            this.today =  years.toString() + month.toString() + "-0" + today_date.toString()
+          } else {
+            this.today = years.toString() + "-"+ month.toString() +"-"+ today_date.toString()   
+          }
+          var now = new Date(this.today).setHours(0,0,0,0)
+      var start = new Date(frenchDateStart).setHours(0, 0, 0, 0)
+  
+          if (now === start) {
+            console.log('start today')
+            resolve("ok")
+          } else if (now > start) {
+            console.log("running")
+            resolve("ok")
+          } else if(now < start) {
+            console.log("not running")
+            resolve("ok")
+          }
+    })
+  }
+
+    verifyIfCampaignEnd(endDateFrench): Promise<any>{
+    return new Promise(resolve => {
+          var tabEnd = endDateFrench.split("/") 
+          var frenchDateEnd = tabEnd[2] + "-" + tabEnd[1] + "-" + tabEnd[0] 
+          var today_date = new Date().getDate()
+          var years = new Date().getFullYear()
+          var month = new Date().getMonth() + 1
+          new Date().valueOf()
+          if (month < 10 && today_date < 10) {
+            this.today =  years.toString() + "-0" + month.toString() + "-0" + today_date.toString()
+          } else if (month < 10 && today_date > 10) {
+            this.today = years.toString() + "-0" + month.toString() +"-"+ today_date.toString()
+          } else if (month > 10 && today_date < 10) {
+            this.today =  years.toString() + month.toString() + "-0" + today_date.toString()
+          } else {
+            this.today = years.toString() + "-"+ month.toString() +"-"+ today_date.toString()   
+          }
+          var now = new Date(this.today).setHours(0,0,0,0)
+          var end = new Date(frenchDateEnd).setHours(0, 0, 0, 0)
+          if (now === end) {
+            console.log('end today')
+            resolve("ok")
+          } else if (now > end) {
+            console.log("campaign ended")
+            resolve("ok")
+          } else if(now < end) {
+            console.log("campaign not ended")
+            resolve("ok")
+          }
+    })
+  }
   ngOnInit() {
 
     /*        L10n.load({
@@ -552,6 +618,7 @@ getDateArray(start, end) {
         res.forEach(data => {
           this.status = data['status']
           this.startDateFrench = data['startDateFrench']
+         
         this.endDateFrench = data['endDateFrench'] 
          this.dure_campagne = this.datediff(this.parseDate(data['startDateFrench']), this.parseDate(data['endDateFrench'] ))
         this.servingStatus = data['servingStatus']
@@ -572,8 +639,11 @@ getDateArray(start, end) {
             "fin": data['endDateFrench'] ,
             "budget": data['budget']
           }) */
-
-
+          this.verifyIfCampaignStart(this.startDateFrench)
+          this.verifyIfCampaignEnd(this.endDateFrench)
+          
+          
+        
         
         ////console.log(data['startDate'])
         var startDate = data['startDate'].slice(0,4)+"-"+ data['startDate'].slice(4,6)+"-"+ data['startDate'].slice(6,8)
@@ -831,9 +901,9 @@ var url = window.URL.createObjectURL(data);
 
 document.getElementById('download_link').setAttribute('href', url)  */
           }
+         
         })
    
-        
   }
 
     defineAmountAccount() {

@@ -13,6 +13,7 @@ import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask 
 import { MatSnackBar} from "@angular/material"
 
 declare const particlesJS: any
+declare var googleyolo: any;
 type UserFields = 'email' | 'password' | 'username';
 type FormErrors = { [u in UserFields]: string };
 @Component({
@@ -109,6 +110,18 @@ export class UserLoginComponent {
      
       
     })
+     const hintPromise = googleyolo.hint({
+       supportedAuthMethods: [
+          "https://accounts.google.com"
+       ],
+       supportedIdTokenProviders: [
+       {
+          uri: "https://accounts.google.com",
+          clientId: "AIzaSyCpC7FjiILozY9z5990DcnIw7IoJdA8E2g"
+       }
+      ]
+    });
+  
 
     /*     setTimeout(() => {
              particlesJS("particles-js", {

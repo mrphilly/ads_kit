@@ -200,7 +200,11 @@
           <td><p class="text-divider" style="margin-top: 10px"><span class="adafri-background text-white">Ou</span></p></td>
         </tr>
          <tr>
-          <td><button mat-fab color="warn" style="box-shadow: none" (click)="signInWithGoogle()" style="margin-top: 20px"><img src="assets/img/images/gmail.jpg" style="position: absolute; top: 0; right: 0"></button></td>
+          <td><!-- <button mat-fab color="warn" style="box-shadow: none" (click)="signInWithGoogle()" style="margin-top: 20px"><img src="assets/img/images/gmail.jpg" style="position: absolute; top: 0; right: 0"></button> -->
+             <a href="#" class="btn btn-sm btn-block btn-social gplus bg-danger text-white r-20" (click)="signInWithGoogle()">
+                            <i class="icon-google"></i> Connectez vous avec Gmail
+                        </a>
+        </td>
         </tr>
       </table>
     </form>
@@ -256,24 +260,25 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
         </div>
          
          <div class="col-md-4">
-            <img class="img-responsive" src="assets/img/images/etape4.jpg">
+            <img class="img-responsive" src="assets/img/images/etape 3_1.jpg">
         </div>
       </div>
    
   
   </div>
 
+<mat-card class="white" style="box-shadow: none"></mat-card>
 
-
-  <div class="card no-b d-none d-md-block"  style="width: 1200px; height: 315px">
+  <!-- <div class="card no-b d-none d-md-block"  style="width: 1200px; height: 315px">
     <img class="img-responsive" src="assets/img/images/reason.jpg">
   </div>
   <div class="card no-b d-md-none d-sm-block" >
     <img class="img-responsive" src="assets/img/images/reason.jpg">
   </div>
-
-   <div class="card no-b d-none d-md-block adafri-background">
-    <img class="img-responsive" src="assets/img/images/banner.jpg">
+ -->
+   <div class="card no-b d-none d-md-block adafri-background text-center">
+        <mat-card class="d-inline-block adafri-background text-center" style="box-shadow: none"><button mat-raised-button class="white adafri r-20 d-inline-block">Inscrivez-vous</button></mat-card><br>
+    <img class="img-responsive d-inline-block" src="assets/img/images/banner.jpg">
   </div>
   <div class="card no-b d-md-none d-sm-block" >
     <img class="img-responsive" src="assets/img/images/banner.jpg">

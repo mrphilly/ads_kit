@@ -67,12 +67,12 @@ firebase = pyrebase.initialize_app(config)
 
 app = Flask(__name__)
 CORS(app)
-#REDIRECT_HTTPS = "http://"
-REDIRECT_HTTPS = "https://"
-URL_SERVER = "https://adafri.comparez.co"
-FRONT_END_URL = "https://www.adafri.com"
-#FRONT_END_URL = "http://localhost:4200"
-#URL_SERVER = "http://127.0.0.1:5000"
+REDIRECT_HTTPS = "http://"
+#REDIRECT_HTTPS = "https://"
+#URL_SERVER = "https://adafri.comparez.co"
+#FRONT_END_URL = "https://www.adafri.com"
+FRONT_END_URL = "http://localhost:4200"
+URL_SERVER = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -224,14 +224,16 @@ def setBudgetFromAccount():
 
     #URL_SERVER+/updateBudgetA/hDxHvCnoc5sgwKZclltG/2078906359/6446768384/10000/8000/10
 
-@app.route("/updateBudgetA/<idC>/<campagne_id>/<budgetId>/<total>/<budget_to_place>/<dure>/<redirect>", methods=['POST', 'GET'])
-def updateBudgetA(idC=None, campagne_id=None, budgetId=None, total=None, budget_to_place= None, dure=None, redirect=None):
+@app.route("/updateBudgetA/<idC>/<campagne_id>/<budgetId>/<total>/<budget_to_place>/<dure>/<redirection>", methods=['POST', 'GET'])
+def updateBudgetA(idC=None, campagne_id=None, budgetId=None, total=None, budget_to_place= None, dure=None, redirection=None):
     print('success')
     print(total)
     adwords_client = googleads.adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     budget = UpdateBudget(adwords_client, budgetId, budget_to_place, dure)
-
-    return redirect(redirect+"/#/"+idC+"/"+str(campagne_id)+"/"+str(budget_to_place)+"/"+str(budget[0]['dailyBudget'])+"/"+str(dure))
+    print(type(budget[0]['dailyBudget']))
+    redirection =FRONT_END_URL + "/#/" + idC + "/" + campagne_id + "/" + budget_to_place + "/" + budget[0]['dailyBudget'] + "/" + dure
+    print(redirection)
+    return redirect((redirection), code=302)
 
 
 

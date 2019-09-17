@@ -67,7 +67,7 @@ const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
     DatePickerModule ,
     NgMultiSelectDropDownModule.forRoot(),
     NgxPicaModule,
-     NouisliderModule,
+    NouisliderModule,
     DndModule.forRoot(),
     NgbModule,
     FontPickerModule,

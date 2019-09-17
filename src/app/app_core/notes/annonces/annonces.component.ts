@@ -1,3 +1,4 @@
+import {MatTableDataSource, MatPaginator, MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {
   Component,
   OnInit,
@@ -5,7 +6,6 @@ import {
   ViewChild,
   Inject
 } from '@angular/core';
-import {Location} from '@angular/common';
 import {MatSidenav, MatDrawer} from '@angular/material/sidenav';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import {
@@ -16,7 +16,7 @@ import {
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
-import {MatTableDataSource, MatPaginator, MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {Location} from '@angular/common';
 
 import * as $ from 'jquery';
 
@@ -465,6 +465,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   idOfDisplayUrlCreateUpload = "displayUrl_create_upload"
   idOfAdNameCreateCreatives = "ad_name_create_creatives"
   idOfDisplayUrlCreateCreatives = "displayUrl_create_creatives"
+
+  idOfAdNameCreateUploadNew = "ad_name_create_upload_new"
+  idOfDisplayUrlCreateUploadNew = "displayUrl_create_upload_new"
+  idOfAdNameCreateCreativesNew = "ad_name_create_creatives_new"
+  idOfDisplayUrlCreateCreativesNew = "displayUrl_create_creatives_new"
   idOfAdNameModify = "ad_name_modifed"
   idOfDisplayModify = "displayUrl_modify"
   idOfAdNameInitUpload = "ad_name_init_upload"
@@ -1401,9 +1406,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     /* this.loadScript('../../../../assets/js/app.js') */
     this.is_upload_way = true
     this.ad_type = "UPLOAD"
+    this.currentIdInputName = this.idOfAdNameCreateUpload
+ this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
      /* if (this.handleCreateUpload === false) {
-       this.currentIdInputName = this.idOfAdNameCreateUpload
-    this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
     setTimeout(() => {
       $('html, body').animate({
         scrollTop: $("#block").offset().top
@@ -1444,9 +1449,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     /* this.loadScript('../../../../assets/js/app.js') */
     this.is_upload_way = true
     this.ad_type = "UPLOAD"
+    this.currentIdInputName = this.idOfAdNameCreateUploadNew
+ this.currentIdInputDisplay = this.idOfDisplayUrlCreateUploadNew
      /* if (this.handleCreateUpload === false) {
-       this.currentIdInputName = this.idOfAdNameCreateUpload
-    this.currentIdInputDisplay = this.idOfDisplayUrlCreateUpload
     setTimeout(() => {
       $('html, body').animate({
         scrollTop: $("#block").offset().top
@@ -1530,6 +1535,50 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
      
       this.currentIdInputName = this.idOfAdNameCreateCreatives
       this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
+
+      /*       setTimeout(function(){ 
+             
+             
+            }, 2000); */
+      $("#body > section > app-root > app-annonces > mat-sidenav-container > mat-sidenav-content > div > div > mat-card.lime.lighten-5.p-0.mat-card > mat-horizontal-stepper > div.mat-horizontal-content-container").css("padding", "0px !important")
+      setTimeout(function () {
+       
+        self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
+        self.isCreating = false
+         
+      }, 2500);
+    
+    
+      setTimeout(() => {
+        $('html, body').animate({
+          scrollTop: $("#blockCreateCreatives").offset().top
+        }, 800);
+      }, 1500)
+      this.canvasCreate = true
+    } else {
+      this.confirmClear()
+    }
+ 
+    
+
+
+  }
+   handleCreativesNew() {
+   
+    if (this.canvasModify === false) {
+      /*  var percentWidth = (parseInt(this.selectedWidth) * 100) / 16
+   var percentHeight = (parseInt(this.selectedHeight) * 100) / 16 */
+    
+      var self = this
+      this.chooseAdSize = false
+      this.illustration = false
+      this.handleCreateCanvas = true
+      this.isCreating = true
+      this.chooseBlock = false
+      this.ad_type = "CREATIVE"
+     
+      this.currentIdInputName = this.idOfAdNameCreateCreativesNew
+      this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreativesNew
 
       /*       setTimeout(function(){ 
              
@@ -3597,10 +3646,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   getInitUpload(): Promise<any>{
     return new Promise(resolve => {
           /*  var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "") */
-    var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
-      var selector = "#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
+      var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
       
+     // var selector = "#blockNew > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
       
+      var selector = "#blockNew > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
       if (document.querySelector(selector) === null) {
        this.openSnackBarErrorImage("Aucune image chargée !", "")
         resolve("error")
