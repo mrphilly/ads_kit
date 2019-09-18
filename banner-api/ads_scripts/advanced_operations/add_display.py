@@ -96,6 +96,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
       print(e)
   print(image_name)
   file_url = url_for('uploaded_file', filename=image_name, _external=True).replace("http://", "")
+  print(file_url)
   image_asset = {
       'xsi_type': 'ImageAsset',
       'imageData': urlopen("https://"+file_url).read(),
