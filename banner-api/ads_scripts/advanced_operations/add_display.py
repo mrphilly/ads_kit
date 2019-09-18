@@ -69,20 +69,20 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
   print(image_request.html) """
   print(url)
   tab = url.split('&')
-  print(type(url))
+  #print(type(url))
   image_request = session__.get(tab[0], headers=headers, verify=True)
   #print(tab[0])
   #image_asset = BytesIO(urlopen(tab[0]).read())
   image_asset = image_request.content
-  print(image_asset)
+  #print(image_asset)
 
   # Create the image asset.
   try:
     source = tinify.tinify.tinify.from_url(url)
-    print(source)
+    #print(source)
     resized_image = source.resize(method="fit", width=int(width), height=int(height))
     data = resized_image.to_file(image_ref_on_file)
-    print(sys.getsizeof(data))
+    #print(sys.getsizeof(data))
     #print(data)
   except:
     try:
@@ -94,6 +94,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
       #print(data)
     except Exception as e:
       print(e)
+  console.log(image_name)
   image_asset = {
       'xsi_type': 'ImageAsset',
       'imageData': urlopen(url_for('uploaded_file', filename=image_name, _external=True)).read(),
@@ -109,7 +110,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
 
   # Create the asset and return the ID.
   result = asset_service.mutate([operation])
-  print(result)
+  #print(result)
   """ print(sys.getsizeof(result['value'][0]['fullSizeInfo']['imageUrl']))
   response = tinify.tinify.tinify.get_client().request('POST', '/shrink', {"source": {"url":result['value'][0]['fullSizeInfo']['imageUrl'] }})
   resultat = response.content.decode("utf-8") 
