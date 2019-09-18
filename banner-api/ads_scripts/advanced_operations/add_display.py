@@ -97,7 +97,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
   print(image_name)
   image_asset = {
       'xsi_type': 'ImageAsset',
-      'imageData': urlopen(url_for('uploaded_file', filename=image_name, _external=True)).read(),
+      'imageData': urlopen(url_for('uploaded_file', filename=image_name)).read(),
       # This field is optional, and if provided should be unique.
       # 'assetName': 'Image asset ' + str(uuid.uuid4()),
   }
