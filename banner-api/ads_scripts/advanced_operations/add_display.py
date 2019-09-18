@@ -95,11 +95,10 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
     except Exception as e:
       print(e)
   print(image_name)
-  file_url = url_for('uploaded_file', filename=image_name, _external=True).replace("http://", "")
-  print(file_url)
+  file_url = url_for('uploaded_file', filename=image_name, _external=True)
   image_asset = {
       'xsi_type': 'ImageAsset',
-      'imageData': urlopen("https://"+file_url).read(),
+      'imageData': urlopen(file_url).read(),
       # This field is optional, and if provided should be unique.
       # 'assetName': 'Image asset ' + str(uuid.uuid4()),
   }
