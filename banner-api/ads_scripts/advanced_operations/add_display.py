@@ -94,7 +94,7 @@ def UploadImageAsset(client, url, image_ref_on_file, image_name, width, height):
       #print(data)
     except Exception as e:
       print(e)
-  console.log(image_name)
+  print(image_name)
   image_asset = {
       'xsi_type': 'ImageAsset',
       'imageData': urlopen(url_for('uploaded_file', filename=image_name, _external=True)).read(),
