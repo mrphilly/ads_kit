@@ -932,7 +932,7 @@ def rechargeAmount(money=None, key=None, redirect=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = redirect+"/#/success/solde"
+        success_url = REDIRECT_HTTPS+redirect+"/#/success/solde"
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -985,7 +985,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None, redirect=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = "https://"+redirect+"/#/success_budget/"+idC
+        success_url = REDIRECT_HTTPS+redirect+"/#/success_budget/"+idC
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 
@@ -1045,6 +1045,8 @@ def payBudgetAds(budgetId=None, money=None, budget_to_place=None,  dure=None, ad
         print(dure)
         print(money)
         print(budgetId)
+        print(idC)
+        print("campaign firebase")
         
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
@@ -1087,7 +1089,6 @@ def payBudgetAds(budgetId=None, money=None, budget_to_place=None,  dure=None, ad
 
 
 
-@app.route('/rechargeAmountBeforeBudgetAds',  methods=['POST'])
 
 @app.route('/rechargeAmountBeforeBudgetAds/<money>/<ad_name>/<idC>/<idA>/<ad_group_id>/<campaign_id>/<domain>', methods=['POST'])
 

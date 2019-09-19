@@ -3301,7 +3301,7 @@ if (this.endDate == date || this.startDate == date) {
   
   defineAmountAccountBeforeBudget() {
 
-    var self = this
+
     var browser = ""
       var redirect = ""
         

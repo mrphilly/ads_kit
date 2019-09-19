@@ -480,6 +480,22 @@ getFormValidationErrors() {
     });
 
   }
+  goToSignUp() {
+    if (this.newUser === false) {
+      
+      $('html, body').animate({
+            scrollTop: $("#inscription").offset().top
+          }, 1000)
+    } else {
+      this.newUser = false
+      setTimeout(() => {
+        $('html, body').animate({
+              scrollTop: $("#inscription").offset().top
+            }, 1000)
+        
+      })
+    }
+  }
 
   signup() {
     if (this.inscription.valid) {

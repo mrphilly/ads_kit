@@ -70,8 +70,8 @@
         <mat-toolbar-row class="justify-content-between"> 
                 <img src="assets/img/images/newlogo.png" class="flaot-left" style="width: 10%;">
                 <div class="button-row float-right">
-<button mat-stroked-button class="adafri-background text-white r-20"  *ngIf="!newUser" (click)="toggleForm()">Connexion</button>
-<button mat-stroked-button class="adafri-background text-white r-20"  *ngIf="newUser" (click)="toggleForm()">Inscription</button>
+<button mat-stroked-button class="adafri-background text-white r-20"  *ngIf="newUser" (click)="toggleForm()">Connexion</button>
+<button mat-stroked-button class="adafri-background text-white r-20"  *ngIf="!newUser" (click)="toggleForm()">Inscription</button>
 </div>
   </mat-toolbar-row>
     </mat-toolbar>
@@ -106,7 +106,7 @@
         </div>
         
 
-<mat-card class="example-card white float-left d-none d-md-block" *ngIf="!newUser" style="margin-top: 12%">
+<mat-card class="example-card white float-left adafri-background" *ngIf="newUser" style="margin-top: 12%">
   <mat-card-header>
 
     <mat-card-subtitle class="text-center">
@@ -117,7 +117,7 @@
   <mat-card-content class="text-center">
   
    
-    <form class="example-form d-inline-block" [formGroup]="inscription" (ngSubmit)="signup()">
+    <form class="example-form d-inline-block" id="inscription" [formGroup]="inscription" (ngSubmit)="signup()">
       
       <table class="example-full-width" cellspacing="0">
            <tr>
@@ -149,7 +149,17 @@
   </mat-form-field></td>
         </tr>
          <tr>
-          <td class="text-center"> <button mat-raised-button class="adafri-background text-white" type="submit" [disabled]="button_signup" *ngIf="!progressBarSignup">Inscription</button> <mat-spinner [diameter]="20" color="primary" class="d-inline-block" *ngIf="progressBarSignup"></mat-spinner></td>
+          <td class="text-center"> <button mat-raised-button class="white adafri r-20" type="submit" [disabled]="button_signup" *ngIf="!progressBarSignup">Inscription</button> <mat-spinner [diameter]="20" color="primary" class="d-inline-block" *ngIf="progressBarSignup"></mat-spinner></td>
+        </tr>
+         <tr style="margin-top: 20px">
+          <td><p class="text-divider" style="margin-top: 10px"><span class="adafri-background text-white">Ou</span></p></td>
+        </tr>
+         <tr>
+          <td>
+             <a href="#" class="btn btn-sm btn-block btn-social gplus bg-danger text-white r-20" (click)="signInWithGoogle()">
+                            <i class="icon-google"></i> Inscrivez vous avec Gmail
+                        </a>
+        </td>
         </tr>
          
       </table>
@@ -157,7 +167,7 @@
   </mat-card-content>
 </mat-card>   
         
-<mat-card class="example-card float-left adafri-background" style="margin-top: 12%;"  *ngIf="newUser">
+<mat-card class="example-card float-left adafri-background" style="margin-top: 12%;"  *ngIf="!newUser">
   <mat-card-header>
    <!--  <mat-card-title class="text-white text-blac">Connexion</mat-card-title> -->
     <mat-card-subtitle class="text-center">
@@ -196,16 +206,16 @@
          <tr>
           <td> <button mat-raised-button class="white r-20 adafri" type="submit" *ngIf="!progressBarLogin">Connexion</button><mat-spinner [diameter]="20" color="primary" class="d-inline-block" *ngIf="progressBarLogin"></mat-spinner></td>
         </tr>
-         <tr style="margin-top: 20px">
+        <!--  <tr style="margin-top: 20px">
           <td><p class="text-divider" style="margin-top: 10px"><span class="adafri-background text-white">Ou</span></p></td>
         </tr>
          <tr>
-          <td><!-- <button mat-fab color="warn" style="box-shadow: none" (click)="signInWithGoogle()" style="margin-top: 20px"><img src="assets/img/images/gmail.jpg" style="position: absolute; top: 0; right: 0"></button> -->
+          <td>
              <a href="#" class="btn btn-sm btn-block btn-social gplus bg-danger text-white r-20" (click)="signInWithGoogle()">
                             <i class="icon-google"></i> Connectez vous avec Gmail
                         </a>
         </td>
-        </tr>
+        </tr> -->
       </table>
     </form>
   </mat-card-content>
@@ -277,7 +287,7 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
   </div>
  -->
    <div class="card no-b d-none d-md-block adafri-background text-center">
-        <mat-card class="d-inline-block adafri-background text-center" style="box-shadow: none"><button mat-raised-button class="white adafri r-20 d-inline-block">Inscrivez-vous</button></mat-card><br>
+        <mat-card class="d-inline-block adafri-background text-center" style="box-shadow: none"><button mat-raised-button class="white adafri r-20 d-inline-block" (click)="goToSignUp()">Inscrivez-vous</button></mat-card><br>
     <img class="img-responsive d-inline-block" src="assets/img/images/banner.jpg">
   </div>
   <div class="card no-b d-md-none d-sm-block" >

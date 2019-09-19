@@ -1,11 +1,5 @@
+import {Location} from '@angular/common';
 import {MatTableDataSource, MatPaginator, MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  Inject
-} from '@angular/core';
 import {MatSidenav, MatDrawer} from '@angular/material/sidenav';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import {
@@ -16,7 +10,13 @@ import {
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
-import {Location} from '@angular/common';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  Inject
+} from '@angular/core';
 
 import * as $ from 'jquery';
 
@@ -8998,8 +8998,8 @@ if (this.endDate == date || this.startDate == date) {
            /*  redirect = SERVER.opera */
             this.BROWSER_URL = window.location.href.replace(SERVER.protocol + SERVER.opera + "/#/ads/", "")
             console.log(this.BROWSER_URL)
-            console.log(this.DOMAIN)
             this.DOMAIN = SERVER.opera
+            console.log(this.DOMAIN)
             resolve("ok")
           } else if (browser === "Chrome") {
            /*  redirect = SERVER.chrome */
@@ -9080,7 +9080,7 @@ if (this.endDate == date || this.startDate == date) {
         (new PayExpresse({
           item_id: 1,
         })).withOption({
-            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudgetAds/'+ self.montant + "/"+self.BROWSER_URL+"/"+self.DOMAIN,
+            requestTokenUrl: SERVER_URL+'/rechargeAmountBeforeBudgetAds/'+ self.montant + "/"+encodeURI(self.BROWSER_URL)+"/"+self.DOMAIN,
             method: 'POST',
             headers: {
                 "Accept": "application/json"
@@ -9097,8 +9097,8 @@ if (this.endDate == date || this.startDate == date) {
                   //window.location.href = success_url; 
                 } else {
                 self.isCreating = false
-               localStorage.remove(key)
-      this.auth.updateUser(this.uid, {paymentKey: ''})
+              /*  localStorage.remove(key)
+      this.auth.updateUser(this.uid, {paymentKey: ''}) */
                     //window.location.href = cancel_url
                 }
             },
@@ -9117,8 +9117,8 @@ if (this.endDate == date || this.startDate == date) {
                 //alert('erreur inconnu');
               selector.prop('disabled', false);
               self.isCreating = false
-              localStorage.remove(key)
-      this.auth.updateUser(this.uid, {paymentKey: ''})
+            /*   localStorage.remove(key)
+      this.auth.updateUser(this.uid, {paymentKey: ''}) */
             },
             didReceiveNonSuccessResponse: function (jsonResponse) {
                 ////console.log('non success response ', jsonResponse);
