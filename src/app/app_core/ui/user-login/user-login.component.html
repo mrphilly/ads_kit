@@ -1,7 +1,7 @@
 
 
 <ng-template #isConnected>
-    
+
   <main>
        <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
        <div id="particles-js">
@@ -20,42 +20,42 @@
              <div class="col-md-6"  style="float: right; border-radius: 20px;">
                <div class="row">
                  <div class="col-md-12">
-       
+
                    <img [src]="photoUrl" alt="" style="width:35%; border-radius: 200px" id="photoProfile" (click)="triggerUpload()">
-                   
-                   
+
+
                      <!-- <h5 class="adafri-police text-white" style="margin-top: 60px">Bienvenue</h5>
                                          <h5 class="adafri-police text-white" style="margin-top: 20px">{{email}}</h5> -->
-                      
-       
-                           
-                                        
-                                         
+
+
+
+
+
                  </div>
-             
+
                </div>
                <br>
                <br>
                <div class="row">
                 <div class="col-md-12">
                   <div class="text-center justify-content-between">
-                        
-       
+
+
                             <img class='img-responsive animated pulse fast infinite d-none d-md-block' style="border-radius: 400px;  position: absolute; left: -100px" src="assets/img/images/play.png" (click)="go()">
                              <img class='img-responsive animated pulse fast infinite d-md-none d-sm-block' style="border-radius: 400px;" src="assets/img/images/play.png" (click)="go()">
-          
-                    
-        
+
+
+
          </div>
                 </div>
-                
+
                </div>
            </div>
            </div>
-           
-            
-       
-               
+
+
+
+
            </div>
 
        </div>
@@ -67,7 +67,7 @@
 <div class="paper-card p-0 white" *ngIf="!(auth.user | async); else isConnected">
     <mat-toolbar>
 
-        <mat-toolbar-row class="justify-content-between"> 
+        <mat-toolbar-row class="justify-content-between">
                 <img src="assets/img/images/newlogo.png" class="flaot-left" style="width: 10%;">
                 <div class="button-row float-right">
 <button mat-stroked-button class="adafri-background text-white r-20"  *ngIf="newUser" (click)="toggleForm()">Connexion</button>
@@ -78,47 +78,47 @@
  <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
 <div class="login-block height-full"  style="background:url(assets/img/images/fond-sombre.png) no-repeat left bottom; background-size: cover
 ">
-    
-	
 
-     
+
+
+
 
   <div class="row">
-       
+
     <div class="col-md-6 text-center" >
-         
+
         <div class="d-none d-md-inline d-sm-none" >
-               
+
             <div class="d-flex justify-content-between">
                                  <div class="white shadow" style="width: 300px; height: 10px">
-                                    
+
                                  </div>
                                  <div  style="margin-top: -5px;">
                                      <h5 class="text-white font-weight-bold" style="font-family: 'soleil', sans-serif ">
                                        Vos publicités google et Facebook payables par mobile money !</h5>
-                                    
+
                                  </div>
                              </div>
-                             <div class="text-center"><img class="img-responsive float-right" src="assets/img/init.png" style="width: 15%; position: absolute; top: 40%; right: -5%"></div> 
+                             <div class="text-center"><img class="img-responsive float-right" src="assets/img/init.png" style="width: 15%; position: absolute; top: 40%; right: -5%"></div>
         </div>
           <a class="ct-btn-scroll d-none d-md-block ct-js-btn-scroll animated pulse infinite" href="#section2"><img alt="Arrow Down Icon" src="https://www.solodev.com/assets/anchor/arrow-down.png"></a>
                   <a class="ct-btn-scroll1 d-md-none d-sm-block ct-js-btn-scroll animated pulse infinite" href="#section2"><img alt="Arrow Down Icon" src="https://www.solodev.com/assets/anchor/arrow-down.png"></a>
         </div>
-        
+
 
 <mat-card class="example-card white float-left adafri-background" *ngIf="newUser" style="margin-top: 12%">
   <mat-card-header>
 
     <mat-card-subtitle class="text-center">
       <img src="assets/img/images/newlogo.png" class="d-inline-block" style="width: 35%;">
-      
+
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content class="text-center">
-  
-   
+
+
     <form class="example-form d-inline-block" id="inscription" [formGroup]="inscription" (ngSubmit)="signup()">
-      
+
       <table class="example-full-width" cellspacing="0">
            <tr>
           <td>
@@ -126,14 +126,14 @@
              <input matInput placeholder="Nom d'utilisateur" formControlName="username" required>
                <mat-icon matSuffix>user</mat-icon>
                  <mat-error>{{formErrors.username}}</mat-error>
-   
+
   </mat-form-field>
           </td>
         </tr>
         <tr>
           <td>
             <mat-form-field class="example-full-width">
-          
+
     <input matInput placeholder="Email" formControlName="email" required>
       <mat-icon matSuffix>email</mat-icon>
     <mat-error>{{formErrors.email}}</mat-error>
@@ -161,12 +161,12 @@
                         </a>
         </td>
         </tr>
-         
+
       </table>
     </form>
   </mat-card-content>
-</mat-card>   
-        
+</mat-card>
+
 <mat-card class="example-card float-left adafri-background" style="margin-top: 12%;"  *ngIf="!newUser">
   <mat-card-header>
    <!--  <mat-card-title class="text-white text-blac">Connexion</mat-card-title> -->
@@ -177,21 +177,21 @@
   <mat-card-content class="text-center">
   <!--   <img class="img-responsive float-left" src="assets/img/adafri.png" style="width: 30%; margin-top: 20px"> -->
 
-   
+
     <form class="example-form d-inline-block" [formGroup]="connexion" (ngSubmit)="login()">
       <table class="example-full-width" cellspacing="0">
            <tr>
           <td>
-          
+
           </td>
         </tr>
         <tr>
           <td>
             <mat-form-field class="example-full-width">
-          
+
     <input matInput placeholder="Email" formControlName="email" required>
       <mat-icon matSuffix>email</mat-icon>
-      
+
     <mat-error>{{formErrors.email}}</mat-error>
             </mat-form-field>
           </td>
@@ -254,13 +254,13 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
 <h2 class="text-wrap"></h2>
         </div>
         <div class="card-body text-center">
-            <span class="adafri-police text-wrap" style="font-size: 16px">Ad’Afri est simple d’utilisation. 
+            <span class="adafri-police text-wrap" style="font-size: 16px">Ad’Afri est simple d’utilisation.
 
 </span>
         </div>
     </div> -->
  <div class="card no-b"  style="margin-top: 20px">
- 
+
       <div class="row">
         <div class="col-md-4">
             <img class="img-responsive" src="assets/img/images/etape1.jpg">
@@ -268,13 +268,13 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
          <div class="col-md-4">
             <img class="img-responsive" src="assets/img/images/etape2.jpg">
         </div>
-         
+
          <div class="col-md-4">
             <img class="img-responsive" src="assets/img/images/etape 3_1.jpg">
         </div>
       </div>
-   
-  
+
+
   </div>
 
 <mat-card class="white" style="box-shadow: none"></mat-card>
@@ -294,9 +294,9 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
     <img class="img-responsive" src="assets/img/images/banner.jpg">
   </div>
 </div>
- 
- 
-   
+
+
+
 
    <!--  <div class="limiter">
       <div class="container-login100">
@@ -320,7 +320,7 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
         </div>
       </div>
     </div>  -->
-   
+
 </div>
 <div *ngIf="isCreating">
   <app-spinner-overlay [message]="message"></app-spinner-overlay>

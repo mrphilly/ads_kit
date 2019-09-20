@@ -1,5 +1,5 @@
 <!--  <div class="animatedParent animateOnce p-0 bg-white text-center paper-card" style="box-shadow: none"  *ngIf="!_showCampaignSettings_">
-  
+
 <div class="row d-flex bd-highlight no-gutters">
 <div class="col-md-12 text-center grey lighten-4">
  <button mat-fab class="adafri-background"><i class="icon-add"></i></button></th>
@@ -12,18 +12,18 @@
                                     </tr>
                                     <tr class="white" *ngFor="let note of notes | async">
                                         <td class="text-center" style="width: 30px">
-                                          
+
                                           <div class="dropdown text-center" *ngIf="!isRoller">
     <button type="button" class="btn btn-sm white dropdown-toggle float-left box-popup box text-black-50" style="box-shadow: none;" data-toggle="dropdown">
-      <i class="icon-pause_circle_filled" *ngIf="note?.status==='PAUSED'"></i> 
-       <i class="icon-circle text-success adafri-police-12"  *ngIf="note?.status==='ENABLED'"></i> 
-     
+      <i class="icon-pause_circle_filled" *ngIf="note?.status==='PAUSED'"></i>
+       <i class="icon-circle text-success adafri-police-12"  *ngIf="note?.status==='ENABLED'"></i>
+
     </button>
     <div class="dropdown-menu no-b shadow">
       <a class="dropdown-item adafri-police-14 cursor" style="cursor: pointer"  (click)="updateCampaign(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget)"><i class="icon-circle text-success"></i> Modifier</a>
       <a class="dropdown-item text-danger adafri-police-14 cursor" style="cursor: pointer" (click)="deleteCampaign(note?.id, note?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
     </div>
-   
+
   </div>
                                         </td>
                                         <td class="text-center">
@@ -52,7 +52,7 @@
                     </tbody>
                     </table>
                     </div>
-                    
+
                     </div>
                     </div>
 
@@ -74,18 +74,18 @@
                                     </tr>
                                     <tr class="white" *ngFor="let note of notes | async">
                                         <td class="text-center p-0">
-                                          
+
                                           <div class="dropdown text-center" *ngIf="!isRoller">
     <button type="button" class="btn btn-sm white dropdown-toggle float-left box-popup box text-black-50" style="box-shadow: none;" data-toggle="dropdown">
-      <i class="icon-pause_circle_filled" *ngIf="note?.status==='PAUSED'"></i> 
-       <i class="icon-circle text-success adafri-police-12"  *ngIf="note?.status==='ENABLED'"></i> 
-     
+      <i class="icon-pause_circle_filled" *ngIf="note?.status==='PAUSED'"></i>
+       <i class="icon-circle text-success adafri-police-12"  *ngIf="note?.status==='ENABLED'"></i>
+
     </button>
     <div class="dropdown-menu no-b shadow">
       <a class="dropdown-item adafri-police-12 cursor" style="cursor: pointer"  (click)="updateCampaign(note?.id, note?.id_campagne, note?.name, note?.status, note?.budget)"><i class="icon-circle text-success"></i> Modifier</a>
       <a class="dropdown-item text-danger adafri-police-12 cursor" style="cursor: pointer" (click)="deleteCampaign(note?.id, note?.id_campagne)"><i class="icon-delete"></i> Supprimmer</a>
     </div>
-   
+
   </div>
                                         </td>
                                         <td class="text-center p-0">
@@ -114,14 +114,14 @@
                     </tbody>
                     </table>
                     </div>
-                    
+
                     </div>
                     </div>
-                   
+
                     </div>
-                    
-                     
-                    
+
+
+
 
 
 
@@ -137,16 +137,16 @@
               </div>
               <div class="paper-card p-10 background-yellow-adafri text-center height-full" style="box-shadow: none">
                   <div class="example-header d-flex">
-           
+
     <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Rechercher une campagne">
     </mat-form-field>
-   
-    <button mat-fab (click)="createNewcampaign()" class="adafri-background text-white" matTooltip="Créer une nouvelle campagne" matTooltipPosition="left">
+
+    <button mat-fab (click)="createNewcampaign()" class="adafri-background text-white" matTooltip="Créer une nouvelle campagne" matTooltipPosition="left" style="box-shadow: none">
     <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
   </button>
   </div>
- 
+
   <mat-card class="p-0" style="margin-top: 10px;" style="box-shadow: none">
 <mat-table #table [dataSource]="dataSource">
 
@@ -169,9 +169,9 @@
       <mat-header-cell *matHeaderCellDef >
         Actions
       </mat-header-cell>
-      
+
       <mat-cell *matCellDef="let row">
-        
+
        <button mat-icon-button [matMenuTriggerFor]="menu">
   <mat-icon>more_vert</mat-icon>
 
@@ -187,7 +187,7 @@
       <span>Supprimer</span>
     </button>
   </ng-container>
-   
+
 </mat-menu>
       </mat-cell>
     </ng-container>
@@ -216,7 +216,7 @@
     <ng-container matColumnDef="date de début">
       <mat-header-cell *matHeaderCellDef> Dates </mat-header-cell>
       <mat-cell *matCellDef="let element"> <span class="adafri-police-14 d-none d-md-block">Du: {{element.startDateFrench}}</span>
-       <span class="adafri-police-12 d-md-none d-sm-block">Du: {{element.startDateFrench}}</span> 
+       <span class="adafri-police-12 d-md-none d-sm-block">Du: {{element.startDateFrench}}</span>
          <span class="adafri-police-14 d-none d-md-block">Au: {{element.endDateFrench}}</span>
            <span class="adafri-police-12 d-md-none d-sm-block">Au: {{element.endDateFrench}}</span>
        </mat-cell>
@@ -240,7 +240,7 @@
      <ng-container matColumnDef="Paramétrer">
       <mat-header-cell *matHeaderCellDef> <mat-icon>build</mat-icon> </mat-header-cell>
       <mat-cell *matCellDef="let element">   <!-- <button mat-raised-button color="accent" class="adafri-police-14 d-none d-md-block" (click)="goCampaignSettings(element.id, element.id_campagne, element.name, element.status, element.budget, element.budgetId, element.dailyBudget, element.numberOfDays)">Configurer</button>
-      <button mat-raised-button color="accent" class="adafri-police-12 d-md-none d-sm-block" (click)="goCampaignSettings(element.id, element.id_campagne, element.name, element.status, element.budget, element.budgetId, element.dailyBudget, element.numberOfDays)">Configurer</button> --> 
+      <button mat-raised-button color="accent" class="adafri-police-12 d-md-none d-sm-block" (click)="goCampaignSettings(element.id, element.id_campagne, element.name, element.status, element.budget, element.budgetId, element.dailyBudget, element.numberOfDays)">Configurer</button> -->
        <button mat-mini-fab class="text-white adafri-background r-20"  style="box-shadow: none" (click)="goCampaignSettings(element.id, element.id_campagne, element.name, element.status, element.budget, element.budgetId, element.dailyBudget, element.numberOfDays)"><mat-icon>forward</mat-icon></button>
     <!--    <button mat-mini-fab color="accent" (click)="goCampaignSettings(element.id, element.id_campagne, element.name, element.status, element.budget, element.budgetId, element.dailyBudget, element.numberOfDays)"><i class="icon-settings2"></i></button> -->
       </mat-cell>
@@ -263,6 +263,6 @@
   <br>
 
               </div>
-     
+
             </div>
             </div>

@@ -51,7 +51,7 @@ import * as Notify from '../../../../assets/js/notify'
 import { MccColorPickerItem, MccColorPickerService } from 'material-community-components'
 
 import {Annonces} from '../annonces.models'
-/* 
+/*
 import Swal from 'sweet//alert2'
 import { Ads } from '../ads.service'
 import {AdGroupService} from '../ad-groupe.service' */
@@ -155,9 +155,9 @@ const MIN_BUDGET_VALUE = 9999
   templateUrl: './annonces.component.html',
   styleUrls: ['./annonces.component.css']
 })
-  
 
-  
+
+
 export class AnnoncesComponent implements OnInit, AfterViewInit {
   message_create = ""
   message_init_upload = ""
@@ -227,7 +227,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.opened = true
     }
   }
-  
+
   chooseBudgetOptions() {
     if (this.chooseOptionsBudget === false) {
       this.chooseOptionsBudget = true
@@ -236,19 +236,19 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }
   }
   /*  handleAccountRechargement() {
-   
+
     this.modifyDate = false;
      this.isSetBudget = false
      this.isPlacementBudgetFromAccount = false;
      this.button_payments = false
      this.isAccountRechargement = true
-    
-    
+
+
   } */
 
   handleErrorBudget() {
     $('#error_budget').hide()
-    
+
   }
 
   handleListeCampaign() {
@@ -278,16 +278,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }
     console.log(this.SELECTED_PLACEMENT)
     /*  if (event.option._selected === true) {
-      
+
      } else {
        for (var i = 0; i < this.SELECTED_PLACEMENT.length; i++){
            event.source.selectedOptions.selected.map(item => {
-   
+
           var result = item.value
              if (this.SELECTED_PLACEMENT[i]['item_id'] === result.item_id) {
                this.SELECTED_PLACEMENT[i].splice(i, 1)
            }
-         
+
            })
           console.log(this.SELECTED_PLACEMENT)
        }
@@ -303,7 +303,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                     if (this.SELECTED_PLACEMENT[i][j] ==  event.source.selectedOptions.selected.map(item => item.value)) {
             this.SELECTED_PLACEMENT[i].splice(j, 1)
             console.log(this.SELECTED_PLACEMENT)
-    
+
           }
                  }
         }
@@ -397,8 +397,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   get animation(): string {
     return this.form.get('animation').value;
   }
-  
-  
+
+
   close(reason: string) {
     this.reason = reason;
     this.sidenav.close();
@@ -434,7 +434,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       'required': "Nom du visuel obligatoire",
       'name': 'Saisissez un nom valide',
     },
-    
+
 
     'finalUrls': {
       'required': 'Url de redirection requise.',
@@ -486,7 +486,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   is_creative_way = false
   img_view_create_style: Object = { 'width': '100px', 'height': '100px' }
   canvas_style: Object = { 'width': '', 'height': '', 'border-color': 'rgb(233, 216, 216);' }
-  
+
   chooseBlock = false
   chooseAdSize = true
   selectedWidth: any
@@ -665,7 +665,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     '#6666FF',
   ];
 
-  
+
 
   textDial: FormGroup;
   items: MccColorPickerItem[] = [
@@ -679,7 +679,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   isSideNavOpen = true
 
   constructor(private notesService: NotesService, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private adGroupService: AdGroupService, private adsService: Ads, private cpService: ColorPickerService, private fb: FormBuilder, private router: Router, private mccColorPickerService: MccColorPickerService, public snackBar: MatSnackBar, private location: Location, public dialog: MatDialog) {
- 
+
   }
   reset(): void {
     this.mccColorPickerService.resetUseColors();
@@ -831,33 +831,33 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     { "name": "Rectangle", "width": "300", "height": "250", "id": "MediumRectangle", "isSpecial": true, "img": "https://dummyimage.com/300x250/000/fff" },
     { "name": "Rectangle Large", "width": "336", "height": "280", "id": "LargeRectangle", "isSpecial": true, "img": "https://dummyimage.com/336x280/000/fff" },
     { "name": "Horizontal Medium", "width": "728", "height": "90", "id": "Leaderboard", "isSpecial": true, "img": "https://dummyimage.com/728x90/000/fff" },
-     
 
-    
+
+
     /* {"name": "Vertical", "width": "320", "height": "50", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"}, */
-    
+
   ]
   AD_TYPES_SPECIAL_2 = [
     { "name": "Vertical Medium", "width": "160", "height": "600", "id": "Wideskyscraper", "isSpecial": true, "img": "https://dummyimage.com/160x600/000/fff" },
     { "name": "Carré", "width": "250", "height": "250", "id": "Square", "isSpecial": true, "img": "https://dummyimage.com/250x250/000/fff" },
     { "name": "Demi page", "width": "300", "height": "600", "id": "LargeSkyscraper", "isSpecial": true, "img": "https://dummyimage.com/300x600/000/fff" },
 
-    
+
     /* {"name": "Vertical", "width": "320", "height": "50", "id": "Skyscraper", "img": "https://dummyimage.com/120x600/000/fff"}, */
-    
+
   ]
   AD_TYPES_NOSPECIAL_1 = [
     { "name": "Horizontal", "width": "468", "height": "60", "id": "Banner", "isSpecial": false, "img": "https://dummyimage.com/468x60/000/fff" },
     { "name": "Vertical", "width": "120", "height": "600", "id": "Skyscraper", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
     { "name": "Rectangle Vertical", "width": "240", "height": "400", "id": "RV", "isSpecial": false, "img": "https://dummyimage.com/120x600/000/fff" },
-   
+
   ]
   AD_TYPES_NOSPECIAL_2 = [
-   
+
     { "name": "Horizontal Large", "width": "970", "height": "90", "id": "LargerLeaderboard", "isSpecial": false, "img": "https://dummyimage.com/970x90/000/fff" },
     { "name": "Big Panneau", "width": "970", "height": "250", "id": "BigPanneau", "isSpecial": false, "img": "https://dummyimage.com/970x250/000/fff" },
     { "name": "Petit carré", "width": "200", "height": "200", "id": "Smallsquare", "isSpecial": false, "img": "https://dummyimage.com/200x100/000/fff" }
-   
+
   ]
   NATIONALS_WEBSITES = [
     [1, "infos", "dakarbuzz.net", "http://dakarbuzz.net"],
@@ -892,7 +892,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     [30, "infos", "exclusif.net", "http://exclusif.net"],
     [31, "infos", "senegaldirect.net", "http://senegaldirect.net"]
   ]
-  
+
   INTERNATIONALS_WEBSITES = [
     [1, "sport ", "footmercato.net", "http://www.footmercato.net"],
     [2, "infos", "lexpress.fr", "http://www.lexpress.fr"],
@@ -911,7 +911,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     [15, "infos", "skyrock.com", "http://skyrock.com"],
     [16, "infos", "leparisien.fr", "http://leparisien.fr"],
   ]
-  
+
   SITES_ANNONCES = [
     [1, "annonces", "deals.jumia.sn", "http://deals.jumia.sn"],
     [2, "annonces", "expat-dakar.com", "http://expat-dakar.com"],
@@ -930,22 +930,22 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     [9, "App", "Flashlight ", "https://play.google.com/store/apps/details?id=com.splendapps.torch"],
     [10, "App", "Photo Lock App ", "https://play.google.com/store/apps/details?id=vault.gallery.lock"]
   ]
-  
+
   onSelect(event) {
     //console.log(event);
     this.files.push(...event.addedFiles);
     //console.log(this.files)
   }
- 
+
   onRemove(event) {
     //console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
 
   model: any = {};
-  
+
   public canvas: any;
- 
+
 
   public Direction: any = {
     LEFT: 0,
@@ -1051,10 +1051,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     'circle': { key: 'circle', text: 'Cercle', icon: 'icon-radio_button_unchecked' },
     'polygon': { key: 'polygon', text: 'Polygone', icon: 'icon-crop_square' }
   };
- 
+
   public urlName = '';
-   
- 
+
+
   public selectedSize: any = null;
   public sizes: any = [
     { width: 640, height: 480 },
@@ -1079,19 +1079,19 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
   go() {
     window.location.replace(REDIRECT_URL)
-   
+
     /*  this.router.navigate(['/']) */
   }
-  
+
   handleCanvas(width: number, height: number) {
-        
-   
+
+
     this.canvas = new fabric.Canvas('canvas', {
       hoverCursor: 'pointer',
       selection: true,
       selectionBorderColor: 'black',
       preserveObjectStacking: true,
-        
+
     });
 
     this.loadPalette();
@@ -1171,16 +1171,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.canvas.setHeight(height);
     this.canva_state = true
     ////console.log('handled')
-   
+
   }
 
 
-   
+
 
 
   ngAfterViewInit() {
- 
-   
+
+
     this.route.params.subscribe(params => {
       if (params["name"] !== undefined && params['idC'] !== undefined && params['idA'] !== undefined && params['ad_group_id'] !== undefined && params['campaign_id'] !== undefined && params['type'] !== undefined) {
         ////console.log(params)
@@ -1212,12 +1212,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   this.getNotificationId(this.uid).then(res => {
                     this.auth.updateNotification
                       (res, { notification: "" }).then(() => {
-                  
+
                         this.isCreating = false
                         localStorage.removeItem(paymentKey)
                         this.openSnackBar("Nouveau solde de compte " + new_value.toString(), "Merci!")
                          this.router.navigate(["/ads", params["name"],params['idC'], params['idA'], params['ad_group_id'], params['campaign_id']  ])
-                      
+
                       })
                   })
                 }
@@ -1225,16 +1225,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             }
           })
         }
-        
-     
+
+
       }else if (params["name"] !== undefined && params['idC'] !== undefined && params['idA'] !== undefined && params['ad_group_id'] !== undefined && params['campaign_id'] !== undefined && params['budget'] !== undefined && params['dailyBudget'] !== undefined && params['numberOfDays'] !== undefined) {
             this.isCreating = true
             var idC = params['idC']
 
-        
+
             var dailyBudget = params['dailyBudget']
             var numberOfDays = params['numberOfDays']
-        
+
             this.getCurrentUserCredentials().then(credentials => {
               var paymentKey = credentials[0]['paymentKey']
               var montant = localStorage.getItem(paymentKey)
@@ -1249,9 +1249,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   this.openSnackBar("Budget de la campagne mis à jour avec succès", "Merci")
 
                        this.router.navigate(["/ads", params["name"],params['idC'], params['idA'], params['ad_group_id'], params['campaign_id']  ])
-                       
+
                 })
-          
+
               }
             })
             // In a real app: dispatch action to load the details here.
@@ -1266,15 +1266,15 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       if (child.length > 0) {
         this.number_ads = child.length.toString()
         this.isNull = true
-        
-        
+
+
       } else {
         this.list_ad = false
         this._init_ad = true
         this.number_ads = "0"
         this.isNull = false
-       
-          
+
+
       }
 
       if (this.isNull === false) {
@@ -1286,19 +1286,19 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           this.currentIdInputName = this.idOfAdNameCreateCreatives
         }
       }
-      
+
 
     })
-    
-   
+
+
     /*   $('html, body').animate({
           scrollTop: $("#v-pills-tabContent").offset().top
         }, 1000); */
 
-   
+
 
   }
- 
+
   scrollDownToChoose() {
     //console.log("click")
     /* this.confirmClear().then(res => { */
@@ -1310,22 +1310,22 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }, 500)
     /*   } */
     /*  }) */
-   
-  
+
+
   }
-  
+
   toggleModifyUploadImage() {
     this.button_modify_image_upload = false
     $("#button_modify_image_upload").show()
   }
-  
+
   closeModifyUploadImage() {
     $("#button_modify_image_upload").hide()
     this.button_modify_image_upload = true
   }
 
   checkAdType(img, width, height, url, name) {
-    
+
     ////console.log('click on img')
     ////console.log(img)
     if (this.element_checked == "") {
@@ -1333,7 +1333,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.element_checked = "#" + img
       this.selectedWidth = width
       this.selectedHeight = height
-     
+
       this.illustration = true
       this.illustrationUrl = url
       this.selectedAdType = name
@@ -1343,7 +1343,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         }, 800);
       }, 500)
       this.chooseAdType()
-      
+
     } else {
       this.illustration = false
       $(this.element_checked).toggleClass('check')
@@ -1370,10 +1370,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           isFound = true;
         }
       }
-  
+
       if (!isFound) {
         var dynamicScripts = [src];
-  
+
         for (var i = 0; i < dynamicScripts.length; i++) {
           let node = document.createElement('script');
           node.src = dynamicScripts[i];
@@ -1382,20 +1382,20 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           node.charset = 'utf-8';
           document.getElementsByTagName('body')[0].appendChild(node);
         }
-  
+
       }
     } */
   goBackSelectSize() {
     this.chooseBlock = false
     this.chooseAdSize = true
-   
+
   }
   loadScript(src) {
     var script = document.createElement("script");
     script.type = "text/javascript";
     document.getElementsByTagName("body")[0].appendChild(script);
     script.src = src;
-    
+
   }
   handleUploadBanner() {
     this.chooseBlock = false
@@ -1417,27 +1417,27 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }else{
       this.handleCreateUpload = false
     } */
-   
-    
 
-    
-    
+
+
+
+
   }
   goBackFromUpload() {
-   
+
       $("#block").hide()
       this.isUpload = false
       this.is_upload_way = false
       this.ad_type = ""
       this.currentIdInputName = ""
       this.currentIdInputDisplay = ""
-      
+
       this.chooseBlock = true
       this.chooseAdSize = true
       this.illustration = true
 
- 
-    
+
+
   }
 
    handleUploadBannerNew() {
@@ -1460,27 +1460,27 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }else{
       this.handleCreateUpload = false
     } */
-   
-    
 
-    
-    
+
+
+
+
   }
   goBackFromUploadNew() {
-   
+
       $("#blockNew").hide()
       this.isUpload = false
       this.is_upload_way = false
       this.ad_type = ""
       this.currentIdInputName = ""
       this.currentIdInputDisplay = ""
-      
+
       this.chooseBlock = true
       this.chooseAdSize = true
       this.illustration = true
 
- 
-    
+
+
   }
 
   goBackFromCreatives() {
@@ -1509,22 +1509,22 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         this.currentIdInputDisplay = ""
         this.canvasCreate = false
       }
-             
+
     })
-    
 
 
 
-   
-    
+
+
+
   }
-  
+
   handleCreatives() {
-   
+
     if (this.canvasModify === false) {
       /*  var percentWidth = (parseInt(this.selectedWidth) * 100) / 16
    var percentHeight = (parseInt(this.selectedHeight) * 100) / 16 */
-    
+
       var self = this
       this.chooseAdSize = false
       this.illustration = false
@@ -1532,23 +1532,23 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.isCreating = true
       this.chooseBlock = false
       this.ad_type = "CREATIVE"
-     
+
       this.currentIdInputName = this.idOfAdNameCreateCreatives
       this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreatives
 
-      /*       setTimeout(function(){ 
-             
-             
+      /*       setTimeout(function(){
+
+
             }, 2000); */
       $("#body > section > app-root > app-annonces > mat-sidenav-container > mat-sidenav-content > div > div > mat-card.lime.lighten-5.p-0.mat-card > mat-horizontal-stepper > div.mat-horizontal-content-container").css("padding", "0px !important")
       setTimeout(function () {
-       
+
         self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
         self.isCreating = false
-         
+
       }, 2500);
-    
-    
+
+
       setTimeout(() => {
         $('html, body').animate({
           scrollTop: $("#blockCreateCreatives").offset().top
@@ -1558,17 +1558,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     } else {
       this.confirmClear()
     }
- 
-    
+
+
 
 
   }
    handleCreativesNew() {
-   
+
     if (this.canvasModify === false) {
       /*  var percentWidth = (parseInt(this.selectedWidth) * 100) / 16
    var percentHeight = (parseInt(this.selectedHeight) * 100) / 16 */
-    
+
       var self = this
       this.chooseAdSize = false
       this.illustration = false
@@ -1576,23 +1576,23 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.isCreating = true
       this.chooseBlock = false
       this.ad_type = "CREATIVE"
-     
+
       this.currentIdInputName = this.idOfAdNameCreateCreativesNew
       this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreativesNew
 
-      /*       setTimeout(function(){ 
-             
-             
+      /*       setTimeout(function(){
+
+
             }, 2000); */
       $("#body > section > app-root > app-annonces > mat-sidenav-container > mat-sidenav-content > div > div > mat-card.lime.lighten-5.p-0.mat-card > mat-horizontal-stepper > div.mat-horizontal-content-container").css("padding", "0px !important")
       setTimeout(function () {
-       
+
         self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
         self.isCreating = false
-         
+
       }, 2500);
-    
-    
+
+
       setTimeout(() => {
         $('html, body').animate({
           scrollTop: $("#blockCreateCreatives").offset().top
@@ -1602,8 +1602,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     } else {
       this.confirmClear()
     }
- 
-    
+
+
 
 
   }
@@ -1617,8 +1617,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
        scrollTop: $("#blockChoisir").offset().top
      }, 800);
    }, 500) */
-    
- 
+
+
   }
   reload() {
     return 'reload'
@@ -1664,19 +1664,19 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         this.notificationAccountValue = value.notification
       }
     })
-      
-    
+
+
     /* this.route.params.subscribe(params => {
       var name = params['name']
       var idC = params['idC']
       var idA = params['idA']
       var adgroupid = params['ad_group_id']
       var campaignid = params['campaign_id']
-      
-    
+
+
     })
      */
-    
+
 
     // get references to the html canvas element & its context
     // this.canvas.on('mouse:down', (e) => {
@@ -1688,13 +1688,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     })
 
 
-    
+
     //setup front side canvas
     this.ads = this.adsService.getListAd(this.ad_group_id)
     this.ads.forEach(child => {
 
       if (child.length > 0) {
-       
+
 
         this.number_ads = child.length
         this.isNull = true
@@ -1710,9 +1710,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         this.showSideBar = true
         this.route.params.subscribe(params => {
           //alert('ok')
-  
+
           if (typeof (params['budget']) == "undefined") {
-  
+
             this.ad_group_name = params['name']
             this.campagne_id = params['campaign_id']
             this.ad_group_id = params['ad_group_id']
@@ -1721,7 +1721,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             this.auth.user.subscribe(data => {
               this.uid = data.uid
               this.email = data.email
-     
+
               this.accountValue = data.account_value
               this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
                 ////console.log(res)
@@ -1740,48 +1740,48 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   this.populations = res['ages']
                   this.appareils = res['devices']
                   this.placement = res['placement']
-       
-        
-      
+
+
+
                 })
-         
+
                 if (this.isNull == true) {
                   //alert(this.placement.toString().length )
                   if (this.placement.toString().length == 0 || this.genres.toString().length == 0 || this.populations.toString().length == 0 || this.appareils.toString().length == 0) {
-        
+
                     if (this.budget > 0) {
 
                       this.isDone = true
-        
-  
+
+
                     }
                   } else {
                     this.isDone = false
-    
+
                   }
                 }
               })
             })
-          } 
-     
+          }
+
 
 
         })
-    
-    
 
 
-      
-  
+
+
+
+
         this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
           this.status = res['status']
           this.genres = res['sexes']
           this.populations = res['ages']
           this.appareils = res['devices']
           this.placement = res['placement']
-     
-      
-   
+
+
+
         })
 
         this.dropdownListAges = [{
@@ -1857,17 +1857,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         }
 
         for (let i = 0; i < this.INTERNATIONALS_WEBSITES.length; i++) {
-      
+
           this.dropdownListInternationalsWebsites.push({
             item_id: this.INTERNATIONALS_WEBSITES[i][3],
             item_text: this.INTERNATIONALS_WEBSITES[i][2]
-      
+
           }
           );
         }
 
         for (let i = 0; i < this.SITES_ANNONCES.length; i++) {
-      
+
           this.dropdownListAdsWebsites.push({
             item_id: this.SITES_ANNONCES[i][3],
             item_text: this.SITES_ANNONCES[i][2]
@@ -1876,7 +1876,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         }
 
         for (let i = 0; i < this.APP_MOBILES.length; i++) {
-      
+
           this.dropdownListApps.push({
             item_id: this.APP_MOBILES[i][3],
             item_text: this.APP_MOBILES[i][2]
@@ -1971,17 +1971,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           searchPlaceholderText: 'Rechercher',
 
         };
-        
+
       } else {
         this.showBudgetStatusBar = false
-       
+
         this.number_ads = "0"
         this.route.params.subscribe(params => {
           //alert('ok')
-          
-  
+
+
           if (typeof (params['budget']) == "undefined") {
-  
+
             this.ad_group_name = params['name']
             this.campagne_id = params['campaign_id']
             this.ad_group_id = params['ad_group_id']
@@ -1990,7 +1990,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             this.auth.user.subscribe(data => {
               this.uid = data.uid
               this.email = data.email
-     
+
               this.accountValue = data.account_value
               this.notesService.getSingleCampaignWithId(data.uid, this.campagne_id).then(res => {
                 ////console.log(res)
@@ -2009,48 +2009,48 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   this.populations = res['ages']
                   this.appareils = res['devices']
                   this.placement = res['placement']
-       
-        
-      
+
+
+
                 })
-         
+
                 if (this.isNull == true) {
                   //alert(this.placement.toString().length )
                   if (this.placement.toString().length == 0 || this.genres.toString().length == 0 || this.populations.toString().length == 0 || this.appareils.toString().length == 0) {
-        
+
                     if (this.budget > 0) {
 
                       this.isDone = true
-        
-  
+
+
                     }
                   } else {
                     this.isDone = false
-    
+
                   }
                 }
               })
             })
-          } 
-     
+          }
+
 
 
         })
-    
-    
 
 
-      
-  
+
+
+
+
         this.adgroups = this.adGroupService.getAdGroup(this.idA).valueChanges().subscribe(res => {
           this.status = res['status']
           this.genres = res['sexes']
           this.populations = res['ages']
           this.appareils = res['devices']
           this.placement = res['placement']
-     
-      
-   
+
+
+
         })
 
         this.dropdownListAges = [{
@@ -2126,17 +2126,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         }
 
         for (let i = 0; i < this.INTERNATIONALS_WEBSITES.length; i++) {
-      
+
           this.dropdownListInternationalsWebsites.push({
             item_id: this.INTERNATIONALS_WEBSITES[i][3],
             item_text: this.INTERNATIONALS_WEBSITES[i][2]
-      
+
           }
           );
         }
 
         for (let i = 0; i < this.SITES_ANNONCES.length; i++) {
-      
+
           this.dropdownListAdsWebsites.push({
             item_id: this.SITES_ANNONCES[i][3],
             item_text: this.SITES_ANNONCES[i][2]
@@ -2145,7 +2145,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         }
 
         for (let i = 0; i < this.APP_MOBILES.length; i++) {
-      
+
           this.dropdownListApps.push({
             item_id: this.APP_MOBILES[i][3],
             item_text: this.APP_MOBILES[i][2]
@@ -2251,23 +2251,23 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           genreControl: ['', Validators.required],
           deviceControl: ['', Validators.required]
         });
-       
+
         this.form = this.fb.group({
           direction: ['right'],
           open: [false],
           spin: [true],
           mouse_hover: [false],
           animation: ['scale'],
-      
+
         });
-        
-       
-          
+
+
+
       }
 
     })
 
-    
+
     this.getAdsPolicy(this.ad_group_id).then(res => {
       if (res != "error") {
         var promesse = ""
@@ -2288,15 +2288,15 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             continue
           }
         }
-        
+
       }
     })
- 
 
 
 
-    
-   
+
+
+
 
 
   }
@@ -2317,9 +2317,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           "account_value": data.account_value,
           "paymentKey": data.paymentKey
         })
-          
+
         resolve(response)
-          
+
       })
     })
   }
@@ -2327,19 +2327,19 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
-      
+
     });
   }
   openSnackBarErrorImage(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 3000,
-      
+
     });
   }
   openSnackBarSuccessImage(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 3000,
-      
+
     });
   }
   promiseReturnAdIsOk(ad_id, data): Promise<any> {
@@ -2374,13 +2374,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         .subscribe(
           res => {
             //console.log(typeof(res))
-      
+
             //console.log(res)
-        
+
             var arr = [];
             for (var key in res) {
               //console.log(res.valueOf)
-        
+
               if (res.hasOwnProperty(key)) {
                 //console.log(key)
                 //console.log(`key ${key} data: ${res[key]}`)
@@ -2393,7 +2393,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 //console.log(ad_id)
                 //console.log(combinedApprovalStatus)
                 //console.log(policy)
-    
+
                 infos.push({
                   "ad_id": ad_id,
                   "combinedApprovalStatus": combinedApprovalStatus,
@@ -2406,9 +2406,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             };
             resolve(infos)
 
-         
-          
-          
+
+
+
           },
           err => {
             resolve("error")
@@ -2419,7 +2419,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
 
   buildForm() {
-   
+
     this.adForm = this.fb.group({
       'name': ['', [
         Validators.required,
@@ -2430,7 +2430,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         Validators.minLength(6),
         Validators.maxLength(45),
       ]],
-    
+
     });
     this.adForm.valueChanges.subscribe((data) => this.onValueChanged(data));
     this.onValueChanged(); // reset validation messages
@@ -2442,11 +2442,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       resolve(true)
     })
   }
-  
+
 
   // Updates validation state on form changes.
   onValueChanged(data?: any) {
-    
+
     if (!this.adForm) { return; }
     const form = this.adForm;
     for (const field in this.formErrors) {
@@ -2507,7 +2507,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }
   }
   handleToggleGender() {
-    
+
     this.isAge = true
     this.isPlacement = true
     this.isDevice = true
@@ -2537,7 +2537,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.isGender = true
     this.isAge = true
     this.isPlacement = true
-    
+
     if (this.isDevice == false) {
       this.isDevice = true
 
@@ -2557,7 +2557,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
   popperClick() {
     $('#popper').trigger('click')
-   
+
   }
 
   triggerEmplacement() {
@@ -2567,7 +2567,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         scrollTop: $("#v-pills-placement-tab").offset().top
       }, 800);
     }, 500)
-     
+
   }
   triggerCiblage() {
     document.getElementById('v-pills-ciblage-ads-tab').click()
@@ -2578,18 +2578,18 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }, 500)
   }
   async toggleListAd() {
-    
+
     this.isEditor = false
     this.ads = this.adsService.getListAd(this.ad_group_id)
     this.list_ad = true
     this.currentEditor = false
     this.isAdBlock = false
-   
+
     $("#blockUploadModified").css({ 'display': 'none' })
-   
+
     /*  if (this.list_ad == true) {
        this.list_ad = false
-       
+
      } else {
        this.list_ad = true
      } */
@@ -2606,53 +2606,53 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }else{
       this.list_ad = false
     } */
-    
+
     if (this.isEditor == false) {
-      
+
       this.isEditor = true
       if (this.canva_state == false) {
         this.isCreating = true
-        
+
         /*    this.isEditor = true
-        setTimeout(function(){ 
-          
+        setTimeout(function(){
+
           self.resetPanels()
-          
+
         }, 2000); */
-  
+
         setTimeout(function () {
-         
+
           self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
           self.isCreating = false
-         
+
         }, 2000);
       } else {
         self.isCreating = true
         setTimeout(function () {
-         
+
           self.canvas.clear()
-         
+
         }, 2000);
         setTimeout(function () {
-         
+
           self.handleCanvas(parseInt(self.selectedWidth), parseInt(self.selectedHeight))
           self.isCreating = false
         }, 2000);
-       
+
       }
-      
+
     } else {
       this.isEditor = false
     }
-   
-   
+
+
   }
 
   openAddCiblageGenre() {
     this.isCiblageGenre = true;
     this.genreForm = this.fb.group({
       genre: ['', Validators.required],
-         
+
     });
 
   }
@@ -2660,7 +2660,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.isCiblageDevices = true;
     this.deviceForm = this.fb.group({
       device: ['', Validators.required],
-         
+
     });
   }
   targetGender() {
@@ -2675,7 +2675,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           this.openSnackBar("Cible de genre effectué avec succès !", "ok")
         }
       })
-      
+
     }
 
     /*  this.isCreating = true
@@ -2691,7 +2691,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
          confirmButtonText: 'Ok'
        }).then((result) => {
          if (result.value) {}
- 
+
        })
      } else {
        this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
@@ -2699,15 +2699,15 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
            this.sexes = []
            this.isCreating = false
            this.isCiblageGenre = false
-           
+
          }else{
            this.isCreating=false
          }
        })
- 
+
      } */
   }
-  
+
   removePlacement() {
     var promesse = ""
     let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -2720,7 +2720,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         submitColor: "warn",
         cancelColor: "primary"
       }
-      
+
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -2731,7 +2731,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         for (var i = 0; i <= this.SELECTED_PLACEMENT.length - 1; i++) {
           (function (ind) {
             setTimeout(function () {
-         
+
               if (ind === self.SELECTED_PLACEMENT.length - 1) {
                 self.promiseRemoveSingleForMultiple(self.SELECTED_PLACEMENT[ind]['criterion_id'])
                   .then(res => {
@@ -2743,7 +2743,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   })
                 console.log('It was the last one');
               } else {
-            
+
                 console.log(ind);
                 self.promiseRemoveSingleForMultiple(self.SELECTED_PLACEMENT[ind]['criterion_id'])
               }
@@ -2753,9 +2753,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         /* Fiddle : http://jsfiddle
                 for (var i = 0; i < this.SELECTED_PLACEMENT.length; i++){
                   console.log(this.SELECTED_PLACEMENT[i])
-        
+
                   if (i === this.SELECTED_PLACEMENT.length - 1) {
-                
+
                        this.promiseRemoveSingleForMultiple(this.SELECTED_PLACEMENT[i]['criterion_id'])
                       .then(res => {
                       if (res != "error") {
@@ -2764,30 +2764,30 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                           this.openSnackBar("Emplacement(s) supprimé(s) avec succès", "ok")
                       }
                      })
-         
-                   
+
+
                   } else {
-                 
+
                       this.promiseRemoveSingleForMultiple(this.SELECTED_PLACEMENT[i]['criterion_id'])
                         .then(res => {
                           promesse=res
                         })
                     if(promesse=="ok"){continue}
-                  
-               
-                    
-                   
-                     
-                  
+
+
+
+
+
+
                   }
-        
+
                 } */
 
 
       }
-     
+
     });
-     
+
 
     /* Swal.fire({
         title: 'Emplacement',
@@ -2822,7 +2822,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
               this.isCreating = false
             }
           })
-          
+
         } else {
           this.isCreating = false
         }
@@ -2876,13 +2876,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       })
     } else {
       placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
-     
+
       this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
         if (res == "ok") {
-       
+
            this.isPlacement = true
         this.isCreating = false
- 
+
         }
       })
     } */
@@ -2892,7 +2892,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     ////console.log(this.devices)
 
     if (this.deviceForm.valid) {
-         
+
       this.spinnerTargetDevice = true
       this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
         if (res == "ok") {
@@ -2902,7 +2902,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           this.openSnackBar("Cible d'appareil effectué avec succès !", "")
         }
       })
-      
+
     }
     /*  this.isCreating = true
      if (this.devices.length == 0) {
@@ -2924,13 +2924,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
              this.isCreating = false
          this.isCiblageDevices = false
            this.devices = []
-           
+
          }
        }).then(res => {
-       
- 
+
+
        })
- 
+
      } */
   }
 
@@ -2957,7 +2957,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.isCiblageAge = true;
     this.ageForm = this.fb.group({
       age: ['', Validators.required],
-         
+
     });
 
 
@@ -2976,9 +2976,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         }
       })
 
-   
+
     } else {
-      
+
     }
     /*  this.isCreating = true
      if (this.ages.length == 0) {
@@ -3000,12 +3000,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
            this.ages = []
            this.isCiblageAge = false
            this.isCreating = false
-           
+
          }
        }).then(res => {
- 
+
        })
- 
+
      } */
   }
 
@@ -3058,7 +3058,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     ////console.log(this.ages)
   }
 
-  
+
 
   onNationalsWebsitesSelect(event) {
     /*  this.nationals_errors = ''
@@ -3128,7 +3128,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     ////console.log(this.internationals_websites)
   }
   onInternationalsWebsitesSelectAll(items: any) {
-    
+
     this.internationals_websites = []
     this.internationals_websites = items
     ////console.log(this.internationals_websites)
@@ -3145,7 +3145,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
   }
   onInternationalsWebsitesDeSelectAll() {
     this.internationals_websites = []
-   
+
   }
 
   onAdsWebsitesSelect(event) {
@@ -3166,7 +3166,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       }
       console.log(this.ads_websites)
       console.log(event.source.value, event.source.selected);
-          
+
     }
     ////console.log(this.ads_websites)
   }
@@ -3174,7 +3174,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.ads_websites = []
     this.ads_websites = items
     ////console.log(this.ads_websites);
-    
+
   }
   onAdsWebsitesDeSelect(item: any) {
     ////console.log(item)
@@ -3329,8 +3329,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           scrollTop: $("#collapseAge").offset().top
         }, 800);
       }, 500)
-    
-      
+
+
     }
   }
   scrollToGenderBlockTarget() {
@@ -3341,7 +3341,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           scrollTop: $("#collapseGenre").offset().top
         }, 800);
       }, 500)
-      
+
     }
 
   }
@@ -3421,7 +3421,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
      this.textString = '';
      this.updateLayers()
    }
- 
+
   */
   //Block "Add images"
 
@@ -3459,21 +3459,21 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       } else if (url == "") {
         this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide", "")
         resolve("error")
-    
+
       } else {
         var self = this
-      
+
         this.getWebsites(this.currentIdInputDisplay).then(res => {
-      
+
           if (res != 'error') {
             this.imagesUpload.push({
               "name": name,
               "src": self.canvas.toDataURL('png')
             })
             resolve("ok")
-        
+
           } else {
-  
+
           }
         })
       }
@@ -3486,23 +3486,23 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
       /*   //console.log(document.querySelector('.dz-preview')) */
       /*  var el = document.querySelector('#block > div.card.white.no-b.paper-card > ngx-dropzone > ngx-dropzone-image-preview > img') */
-   
+
       var selector = "#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
       if (document.querySelector(selector) === null) {
         this.openSnackBarErrorImage("Aucune image chargée !", "")
         resolve("error")
-       
+
       } else if (url == "") {
            this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide !", "")
           resolve("error")
         } else {
-         
-         
+
+
           this.getWebsites(this.currentIdInputDisplay).then(res => {
             if (res != 'error') {
-           
-          
-           
+
+
+
               var elements = document.querySelectorAll("#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview")
               for (var i = 0; i < elements.length; i++) {
                 var image = elements[i].getElementsByTagName('img')[0]
@@ -3523,17 +3523,17 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 }
               }
               resolve("ok")
-           
-           
-            
+
+
+
             } else {
               resolve("error")
-    
+
             }
           })
         }
-     
-    
+
+
     })
   }
 
@@ -3543,31 +3543,31 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
     var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
       var selector = "#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
-      
-      
+
+
       if (name === '') {
        this.openSnackBarErrorImage("Nom du visuel obligatoire !", "")
         resolve("error")
      } else {
-       
+
         if (url == "") {
       this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide !", "")
         resolve("error")
         } else {
-            this.getWebsites(this.currentIdInputDisplay).then(res => { 
-      
+            this.getWebsites(this.currentIdInputDisplay).then(res => {
+
         if (res != 'error') {
           this.imagesUpload.push({
             "name": name,
             "src": this.canvas.toDataURL('png')
           })
-        
-         
+
+
           resolve("ok")
-          
+
         /*   $('#ad_image').attr("src", self.canvas.toDataURL('png')) */
           //this.ad_name = $("#").val()
-          
+
         } else{
           resolve("error")
         }
@@ -3578,10 +3578,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     })
   }
 
-  
+
   handleImageModal() {
     ////console.log(this.canvas.toDataURL('png'))
-    
+
     var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
     var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
     if (name == "") {
@@ -3595,9 +3595,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                  confirmButtonText: 'réessayer'
                }).then((result) => {
                  if (result.value) {
-                 
+
                  }else{
-                 
+
                  }
                })
     } else if (url == "") {
@@ -3611,61 +3611,61 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                  confirmButtonText: 'réessayer'
                }).then((result) => {
                  if (result.value) {
-                 
+
                  }else{
-                 
+
                  }
                })
     } else {
       var self = this
-      
-      this.getWebsites(this.currentIdInputDisplay).then(res => { 
-      
+
+      this.getWebsites(this.currentIdInputDisplay).then(res => {
+
         if (res != 'error') {
           this.imagesUpload.push({
             "name": name,
             "src": self.canvas.toDataURL('png')
           })
-        
-         
+
+
           $('#button_modal_init').trigger('click')
-          
+
         /*   $('#ad_image').attr("src", self.canvas.toDataURL('png')) */
           //this.ad_name = $("#").val()
-          
+
         } else{
-  
+
         }
       })
     }
   }
 
 
-  
+
 
   getInitUpload(): Promise<any>{
     return new Promise(resolve => {
           /*  var name = $("#" + this.currentIdInputName).val().replace(/\s/g, "") */
       var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
-      
+
      // var selector = "#blockNew > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
-      
+
       var selector = "#blockNew > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
       if (document.querySelector(selector) === null) {
        this.openSnackBarErrorImage("Aucune image chargée !", "")
         resolve("error")
      } else {
-       
+
         if (url == "") {
       this.openSnackBarErrorImage("Url de redirection de l'annonce ne peut être vide !", "")
         resolve("error")
        } else{
-         
-         
-        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+
+
+        this.getWebsites(this.currentIdInputDisplay).then(res => {
           if (res != 'error') {
-           
-          
+
+
             /* var child_count = document.querySelector('#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone').childElementCount - 1 */
              var elements = document.querySelectorAll(selector)
             for (var i = 0; i < elements.length; i++){
@@ -3678,7 +3678,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
               if (image.naturalWidth != parseInt(this.selectedWidth) || image.naturalHeight != parseInt(this.selectedHeight)) {
                 this.openSnackBarErrorImage('Image '+name+' invalide !', "")
                 resolve("error")
-             
+
               } else {
                 this.imagesUpload.push({
                   "name": name,
@@ -3686,10 +3686,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 })
                 resolve("ok")
               }
-            } 
-           
-           
-            
+            }
+
+
+
           } else{
               resolve("error")
           }
@@ -3705,7 +3705,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     var url = $("#" + this.currentIdInputDisplay).val().replace(/\s/g, "")
   /*   //console.log(document.querySelector('.dz-preview')) */
   /*  var el = document.querySelector('#block > div.card.white.no-b.paper-card > ngx-dropzone > ngx-dropzone-image-preview > img') */
-   
+
     var selector = "#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview"
      if( document.querySelector(selector)===null){
         Swal.fire({
@@ -3718,13 +3718,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                     confirmButtonText: 'réessayer'
                   }).then((result) => {
                     if (result.value) {
-                    
+
                     }else{
-                    
+
                     }
                   })
      } else {
-       
+
    if (url == "") {
           Swal.fire({
                     title: "Service Groupe d'annonce!",
@@ -3736,18 +3736,18 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                     confirmButtonText: 'réessayer'
                   }).then((result) => {
                     if (result.value) {
-                    
+
                     }else{
-                    
+
                     }
                   })
        } else{
-         
-         
-        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+
+
+        this.getWebsites(this.currentIdInputDisplay).then(res => {
           if (res != 'error') {
-           
-          
+
+
             /* var child_count = document.querySelector('#block > mat-card > mat-card-content:nth-child(3) > mat-card > ngx-dropzone').childElementCount - 1 */
              var elements = document.querySelectorAll("#block > mat-card-content:nth-child(3) > mat-card > ngx-dropzone > ngx-dropzone-image-preview")
             for (var i = 0; i < elements.length; i++){
@@ -3768,9 +3768,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                      confirmButtonText: 'Ok'
                    }).then((result) => {
                      if (result.value) {
-                     
+
                      }else{
-                     
+
                      }
                    })
               } else {
@@ -3785,12 +3785,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 /*    $('#ad_image').attr("src", $(selector).find('img').attr("src"))
                 this.ad_name = $("#"+this.currentIdInputName).val() */
               }
-            } 
-           
-           
-            
+            }
+
+
+
           } else{
-    
+
           }
         })
        }
@@ -3816,16 +3816,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             this.MODIFIED_IMAGE_CREATIVE_NAME = $("#" + this.currentIdInputName).val().replace(/\s/g, "")
             this.url_modify = $("#" + this.currentIdInputDisplay).val()
               resolve("ok")
-        
-        
+
+
           }
         })
     }
-      
-    
-   
+
+
+
   }else {
-        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+        this.getWebsites(this.currentIdInputDisplay).then(res => {
           if (res != 'error') {
             if (this.button_modify_image_upload === true) {
               this.img_view_create_style['width']=this.currentAdSize[0]['width']+'px'
@@ -3864,9 +3864,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
               this.url_modify = $("#" + this.currentIdInputDisplay).val()
               resolve("ok")
             }
-       
-        
-        
+
+
+
       } else{
 
       }
@@ -3877,12 +3877,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
   getModifiedCreatives():Promise<any>{
     return new Promise(resolve => {
-      
+
     })
   }
 
   handleModifiedImage() {
-    
+
     if (this.currentAdType === 'CREATIVE') {
       this.new_image_content = ""
       if ($("#" + this.currentIdInputName).val() === "") {
@@ -3896,9 +3896,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           confirmButtonText: 'réessayer'
         }).then((result) => {
           if (result.value) {
-                 
+
           } else {
-                 
+
           }
         })
       } else {
@@ -3913,16 +3913,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             $("#modified_name").text($("#" + this.currentIdInputName).val().replace(/\s/g, ""))
             this.url_modify = $("#" + this.currentIdInputDisplay).val()
 
-        
-        
+
+
           }
         })
     }
-      
-    
-   
+
+
+
   }else {
-        this.getWebsites(this.currentIdInputDisplay).then(res => { 
+        this.getWebsites(this.currentIdInputDisplay).then(res => {
           if (res != 'error') {
         //alert(this.button_modify_image_upload)
             if (this.button_modify_image_upload === true) {
@@ -3947,9 +3947,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                  confirmButtonText: 'Ok'
                }).then((result) => {
                  if (result.value) {
-                 
+
                  }else{
-                 
+
                  }
                })
         } else {
@@ -3968,35 +3968,35 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
               $("#modified_name").text(this.currentAdName)
               this.url_modify = $("#"+this.currentIdInputDisplay).val()
             }
-       
-        
-        
+
+
+
       } else{
 
       }
     })
 }
 
-    
+
   }
-  
+
 
   promiseSave(ad_group_id, image_name, uid, url, image_content, FINAL_ARRAY_TO_SEND, size, ad_type): Promise<any>{
     return new Promise(resolve => {
       this.adsService.saveAdOnFirebase(ad_group_id, image_name, uid, url, image_content, FINAL_ARRAY_TO_SEND, size, ad_type).then(res => {
         if (res == "ok") {
           resolve("ok")
-         
+
        }
 
-         
-         
-          
+
+
+
         })
   })
 }
 
-  
+
   storageUpload(image_name, src,size): Promise<any>{
     return new Promise(resolve => {
       var self = this
@@ -4016,7 +4016,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                    imagesRef.putString(src.replace(value_replace, ''), 'base64', metadata).then(function (snapshot) {
              ////console.log('ok')
        console.log(self.imagesUpload)
-      
+
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -4025,26 +4025,26 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    };
    xhr.open('GET', url);
          xhr.send();
-       
+
          const image_content = "";
-       
+
          self.promiseSave(self.ad_group_id, image_name.replace(" (image/png)", ""), self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(reponse => {
            if (reponse == "ok") {
              console.log("save-success")
              resolve('ok')
            }
-           
+
         })
       })
-      
-    }); 
+
+    });
       } else {
         value_replace = "data:image/jpeg;base64,"
         image_name.replace(" (image/jpeg)", "")
                    imagesRef.putString(src.replace(value_replace, ''), 'base64', metadata).then(function (snapshot) {
              ////console.log('ok')
        //console.log(self.imagesUpload)
-      
+
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -4053,38 +4053,38 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    };
    xhr.open('GET', url);
          xhr.send();
-       
+
          const image_content = "";
-       
+
          self.promiseSave(self.ad_group_id, image_name.replace(" (image/jpeg)", ""), self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(reponse => {
            if (reponse == "ok") {
              resolve('ok')
            }
-           
+
         })
       })
-      
-    }); 
+
+    });
       }
 
 
-    
+
   })
   }
-  
+
 
   saveAdOnFirebase() {
-    
+
     this.isRoller = true
     var promesse = ''
-     var image_name 
+     var image_name
 
     this.getWebsites(this.currentIdInputDisplay).then(res => {
       ////console.log(res)
       if (res != 'error') {
         var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
-        
-       
+
+
 
     if (!fabric.Canvas.supports('toDataURL')) {
       //alert('This browser doesn\'t provide means to serialize canvas to an image');
@@ -4116,9 +4116,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 window.location.reload()
               }
             })
-                
+
               }
-          })   
+          })
         } else {
            this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
             promesse = response
@@ -4130,7 +4130,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       } else {
         var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
-   
+
     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
     var imagesRef = storageRef.child(imageRefStorage);
     var metadata = {
@@ -4138,7 +4138,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 };
         imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
        ////console.log('ok')
-      
+
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -4147,35 +4147,35 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    };
    xhr.open('GET', url);
          xhr.send();
-       
+
          const image_content = JSON.stringify(self.canvas);
          ////console.log(self.FINAL_ARRAY_TO_SEND)
         self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
           ////console.log('success')
           ////console.log(res)
           if (res != "error") {
-            
+
             self.isRoller = false
               window.location.reload(true)
           } else {
             self.isRoller = false
           }
-           
-          
+
+
         })
      })
-       
-     }); 
+
+     });
       }
 
-      
-      
-       
-     
-     
-    
-    } 
-        
+
+
+
+
+
+
+    }
+
       }
     })
   }
@@ -4208,7 +4208,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 window.location.reload()
               }
             })
-                
+
               }
           })    */
           this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response=>{
@@ -4218,7 +4218,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
               setTimeout(()=>{
                 window.location.reload()
               }, 1000)
-              
+
             }
           })
         } else {
@@ -4237,22 +4237,22 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
     saveNewCreativeAd() {
     var self = this
-  
+
 
 
     this.getCreateCreatives().then(res => {
       ////console.log(res)
       if (res != 'error') {
         this.progresBarCreateImageCreatives = true
-        
-        
+
+
         var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
-        
-       
+
+
 
         var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
-   
+
     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
     var imagesRef = storageRef.child(imageRefStorage);
     var metadata = {
@@ -4260,7 +4260,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 };
         imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
        ////console.log('ok')
-      
+
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -4269,7 +4269,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    };
    xhr.open('GET', url);
          xhr.send();
-       
+
          const image_content = JSON.stringify(self.canvas);
          ////console.log(self.FINAL_ARRAY_TO_SEND)
         self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
@@ -4281,21 +4281,21 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
               window.location.reload()
             }, 2000)
-            
-          
+
+
           } else {
             self.progresBarCreateImageCreatives = false
             self.openSnackBarErrorImage('Opération échouée !', "")
-           
-            
+
+
           }
-           
-          
+
+
         })
      })
-       
-     });  
-        
+
+     });
+
       }
     })
   }
@@ -4311,12 +4311,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           this.message_create = "Emplacements définis avec succès !"
           this.message_create = "Paramétrage du ciblage des âges en cours..."
           this.initAgeTarget().then(res => {
-          
+
             if (res == "ok") {
               this.message_create = "Ciblage des âges défini avec succès !"
               this.message_create = "Paramétrage du ciblage de genres en cours..."
               this.initSexeTarget().then(res => {
-              
+
                 if (res == "ok") {
                   this.message_create = "Ciblage de genres défini avec succès !"
                   this.message_create = "Paramétrage du ciblage d'appareils en cours..."
@@ -4338,7 +4338,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
   initAllSteps() {
     this.initAllTarget().then(response => {
-  
+
       if (response != "error") {
           this.initSaveAdOnFirebase().then(res => {
                   if (res == "ok") {
@@ -4350,13 +4350,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                 })
       }
     })
-  
+
 }
 
     initAllStepsUpload() {
       this.getInitUpload().then(response=>{
         if (response != "error") {
-        
+
         this.initAllTarget().then(target => {
            if (target == "ok") {
               this.initSaveAdOnFirebase().then(res => {
@@ -4375,14 +4375,14 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
          })
       }
     })
-  
+
 }
 
-  
+
     initAllStepsCreative() {
       this.getInitCreative().then(response=>{
         if (response != "error") {
-        
+
         this.initAllTarget().then(target => {
            if (target == "ok") {
               this.initSaveAdOnFirebase().then(res => {
@@ -4401,10 +4401,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
          })
       }
     })
-  
+
 }
 
-  
+
   initAgeTarget(): Promise<any>{
     return new Promise(resolve => {
        this.adGroupService.targetAge(this.idA, this.campagne_id, this.ad_group_id, this.ages).then(res => {
@@ -4413,7 +4413,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           this.isCiblageAge = false
           this.isCreating = false
           resolve("ok")
-          
+
         } else {
           resolve("error")
         }
@@ -4426,9 +4426,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
        this.adGroupService.targetGenre(this.idA, this.campagne_id, this.ad_group_id, this.sexes).then(res => {
         if (res == "ok") {
           this.sexes = []
-         
+
           resolve("ok")
-          
+
         } else {
           resolve("error")
         }
@@ -4441,9 +4441,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
        this.adGroupService.targetDevices(this.idA, this.campagne_id, this.ad_group_id, this.devices).then(res => {
         if (res == "ok") {
           this.devices = []
-         
+
           resolve("ok")
-          
+
         } else {
           resolve("error")
         }
@@ -4456,11 +4456,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       var placement = []
        /* this.isCreating = true */
     placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
-     
+
       this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
         if (res == "ok") {
-       
-        
+
+
           resolve("ok")
         } else {
           resolve('error')
@@ -4473,11 +4473,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     return new Promise(resolve => {
       var placement = []
     placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
-      
+
       this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
         if (res == "ok") {
-       
-        
+
+
           resolve("ok")
         } else {
           resolve('error')
@@ -4493,15 +4493,15 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     return new Promise(resolve => {
       this.isRoller = true
       var promesse = ''
-      var image_name 
-      
+      var image_name
+
       this.getWebsites(this.currentIdInputDisplay).then(res => {
         ////console.log(res)
         if (res != 'error') {
           var size = [{'width': this.selectedWidth, 'height': this.selectedHeight}]
-          
-          
-          
+
+
+
           if (!fabric.Canvas.supports('toDataURL')) {
             //alert('This browser doesn\'t provide means to serialize canvas to an image');
           } else {
@@ -4523,11 +4523,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             if (response == "ok") {
                 this.isRoller=false
                      resolve("ok")
-                
+
             } else {
               resolve("error")
               }
-          })   
+          })
         } else {
            this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
             promesse = response
@@ -4539,7 +4539,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       } else {
         var storage = firebase.app().storage("gs://comparez.appspot.com/");
     var storageRef = storage.ref();
-   
+
     var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString()+ ".png"
     var imagesRef = storageRef.child(imageRefStorage);
     var metadata = {
@@ -4547,7 +4547,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 };
         imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
        ////console.log('ok')
-      
+
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -4556,40 +4556,40 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    };
    xhr.open('GET', url);
          xhr.send();
-       
+
          const image_content = JSON.stringify(self.canvas);
          ////console.log(self.FINAL_ARRAY_TO_SEND)
         self.adsService.saveAdOnFirebase(self.ad_group_id, self.ad_name, self.uid, url, image_content, self.FINAL_ARRAY_TO_SEND, size, self.ad_type).then(res => {
           ////console.log('success')
           ////console.log(res)
           if (res != "error") {
-            
+
             self.isRoller = false
               resolve("ok")
           } else {
             self.isRoller = false
             resolve('error')
           }
-           
-          
+
+
         })
      })
-       
-     }); 
+
+     });
       }
 
-      
-      
-       
-     
-     
-    
-    } 
-        
+
+
+
+
+
+
+    }
+
       }
     })
-   }) 
-   
+   })
+
   }
 
 
@@ -4600,7 +4600,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       $('#error_recharge').show()
     } else if (montant == null) {
       $('#error_recharge').show()
-       
+
     } else {
       this.isRoller = true
       this.isPlacementBudgetFromAccount = false
@@ -4615,7 +4615,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           ////console.log(res)
            this.notesService.updateNote(this.idC, { budget: this.budget_to_place , dailyBudget: res[0]['dailyBudget']}).then(() => {
              this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
-               
+
                Swal.fire({
                  title: 'Service Campagne!',
                  text: 'Budget mis à jour.',
@@ -4632,10 +4632,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                  }
                })
              })
-                
+
               })
-          
-          
+
+
         },
         err => {
           Swal.fire({
@@ -4658,7 +4658,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     var self = this
     var browser = ""
       var redirect = ""
-        
+
         this.notesService.detectDevice().then(res => {
           browser = res
            if (browser === "Opera") {
@@ -4684,7 +4684,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           confirmButtonText: 'réessayer '
         }).then((result) => {
           if (result.value) {
-          
+
           }
         })
     } else if (this.montant > 1000000) {
@@ -4698,7 +4698,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           confirmButtonText: 'réessayer '
         }).then((result) => {
           if (result.value) {
-          
+
           }
         })
     } else {
@@ -4715,13 +4715,13 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         if (result.value) {
             var self = this
           this.isCreating = true
-                
+
           var key = this.generate(100)
           localStorage.setItem(key, this.budget_to_place.toString())
           this.auth.updateUser(this.uid, {paymentKey: key})
-    
+
       setTimeout(function () {
-    
+
         var btn = document.getElementById("budgetSet");
         var selector = pQuery(btn);
         (new PayExpresse({
@@ -4732,16 +4732,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             headers: {
                 "Accept": "application/json"
           },
-       
-          
+
+
             //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
             prensentationMode: PayExpresse.OPEN_IN_POPUP,
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                 
-                
-                  //window.location.href = success_url; 
+
+
+                  //window.location.href = success_url;
                 } else {
                   self.isCreating = false
                     //window.location.href = cancel_url
@@ -4791,25 +4791,25 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             alertDialogTextColor: '#333',
             alertDialogConfirmButtonBackgroundColor: '#0178bc',
           alertDialogConfirmButtonTextColor: '#fff',
-          
+
         });
     }, 500)
         }
       })
       }
-    
-        })
-     
-    
-     
-    
 
-      
-      
-      
-    
+        })
+
+
+
+
+
+
+
+
+
   } */
-  
+
  /*  defineAmountAccountBeforeBudget() {
      $('#button_modal_define_budget').trigger('click')
     var self = this
@@ -4817,12 +4817,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     if (this.montant < 20000) {
       $('#error_recharge').show()
     } else {
-      
+
       $('#closeModalRecharge').trigger('click')
       var self = this
       this.isCreating = true
       setTimeout(function () {
-    
+
         var btn = document.getElementById("budgetSet");
         var selector = pQuery(btn);
         (new PayExpresse({
@@ -4833,16 +4833,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             headers: {
                 "Accept": "application/json"
           },
-       
-          
+
+
             //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
             prensentationMode: PayExpresse.OPEN_IN_POPUP,
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
                   //alert(success_url)
-                
-                  //window.location.href = success_url; 
+
+                  //window.location.href = success_url;
                 } else {
                   self.isCreating = false
                     //window.location.href = cancel_url
@@ -4892,20 +4892,20 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             //alertDialogTextColor: '#333',
             //alertDialogConfirmButtonBackgroundColor: '#0178bc',
           //alertDialogConfirmButtonTextColor: '#fff',
-          
+
         });
     }, 500)
 
-      
-      
-      
+
+
+
     }
   } */
   updateAdOnFirebase() {
 
     if (this.currentAdStatus == "") {
 
-      
+
       var displayUrl = []
      var finalUrls = []
      var finalMobileUrls = []
@@ -4914,7 +4914,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       var image = ""
      var storage = firebase.app().storage("gs://comparez.appspot.com/");
       var storageRef = storage.ref();
-   
+
       var imageRefStorage = this.uid + "/" + this.ad_name + new Date().getTime().toString() + ".png"
       ////console.log(imageRefStorage)
      var imagesRef = storageRef.child(imageRefStorage);
@@ -4922,9 +4922,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    contentType: 'image/png',
   };
       var self = this
-      
+
       if (this.currentAdType === 'UPLOAD') {
-        
+
         this.progresBarModifiedImageUpload = true
         this.getModifiedImage().then(modified => {
           if (modified !== 'error') {
@@ -4933,7 +4933,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             displayUrl.push(this.FINAL_ARRAY_TO_SEND[0]['content'])
 
             if (image.startsWith("https") == false) {
-              if (image.includes('data:image/png;base64,')) { 
+              if (image.includes('data:image/png;base64,')) {
               name.replace('data:image/png;base64,', "")
               var replace = image.replace('data:image/png;base64,', "")
                                            imagesRef.putString(replace, 'base64', metadata).then(function (snapshot) {
@@ -4946,10 +4946,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    xhr.open('GET', url);
          xhr.send();
          self.currentImageUrl = url
-       
+
         const image_content = JSON.stringify(self.canvas);
         self.adsService.updateAd(self.id_ad_firebase, {
-     
+
       ad_name: name,
       url_image: url,
       displayUrl: displayUrl[0],
@@ -4966,23 +4966,23 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             setTimeout(()=>{
               window.location.reload()
             }, 2000)
-            
+
       }
-      
+
     }).catch(err => {
           self.progresBarModifiedImageUpload = false
           self.openSnackBarErrorImage("Opération échouée !", "")
-        
+
         })
      })
-       
+
      });
             } else {
               name.replace('data:image/jpeg;base64,', "")
               var replace = image.replace('data:image/jpeg;base64,', "")
                                            imagesRef.putString(replace, 'base64', metadata).then(function (snapshot) {
        ////console.log('ok')
-      
+
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -4992,10 +4992,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    xhr.open('GET', url);
          xhr.send();
          self.currentImageUrl = url
-       
+
         const image_content = JSON.stringify(self.canvas);
         self.adsService.updateAd(self.id_ad_firebase, {
-     
+
       ad_name: name,
       url_image: url,
       displayUrl: displayUrl[0],
@@ -5013,21 +5013,21 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           window.location.reload()
         }, 2000)
       }
-      
+
     }).catch(err => {
           self.progresBarModifiedImageUpload = false
         self.openSnackBarErrorImage("Opération échouée !", "")
-        
+
         })
      })
-       
+
      });
             }
 
             } else {
-              
+
                 self.adsService.updateAd(self.id_ad_firebase, {
-     
+
       ad_name: name,
       url_image: image,
       displayUrl: displayUrl[0],
@@ -5038,7 +5038,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     }).then(res => {
           ////console.log('success')
       ////console.log(res)
-    
+
       if (res == "ok") {
         self.progresBarModifiedImageUpload = false
        self.openSnackBarSuccessImage("Visuel modifié avec succès !", "")
@@ -5046,25 +5046,25 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         window.location.reload()
        }, 2000)
       }
-      
+
     }).catch(err => {
         self.progresBarModifiedImageUpload = false
             self.openSnackBarErrorImage("Opération échouée !", "")
-        
+
         })
         }
-            
+
           }
         })
         ////console.log('upload')
         ////console.log(image)
-   
+
 
       } else {
             if (!fabric.Canvas.supports('toDataURL')) {
       //alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
-    
+
               this.getModifiedImage().then(modified => {
                 if (modified !== "error") {
                   this.progresBarModifiedImageCreative = true
@@ -5077,7 +5077,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       //////console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
       imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
        ////console.log('ok')
-      
+
        storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
    xhr.responseType = 'blob';
@@ -5087,10 +5087,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    xhr.open('GET', url);
          xhr.send();
          self.currentImageUrl = url
-       
+
         const image_content = JSON.stringify(self.canvas);
         self.adsService.updateAd(self.id_ad_firebase, {
-     
+
       ad_name: name,
       url_image: url,
       image_content: image_content,
@@ -5109,43 +5109,43 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           window.location.reload()
         }, 2000)
-      } 
-      
+      }
+
     }).catch(err => {
- 
+
         self.progresBarModifiedImageCreative = false
         self.openSnackBarSuccessImage("Opération échouée !", "")
-    
+
         })
      })
-       
-     }); 
+
+     });
             }
           })
-      
-       
-     
-     
-    
-    } 
+
+
+
+
+
+    }
       }
-    
+
     } else {
 
 
-      
+
       var name = $('#ad_name_modify').val()
       var data_to_send = []
       this.getModifiedWebsites().then(res => {
         ////console.log(res)
         if (res != "error") {
           ////console.log(this.compareObjectsUrls(this.tabUpdatedCurrentFinalUrls, this.finalUrls))
-          
+
           ////console.log(this.tabUpdatedCurrentFinalUrls)
           ////console.log(this.finalUrls)
           //var previous_content = JSON.parse(this.image_content)
       //var update_content = JSON.parse(this.new_image_content)
-  
+
       //var comparaison_content = this.compareObjects(update_content, previous_content)
       var comparaison_url =  this.compareObjectsUrls(this.newfinalUrls, this.finalUrls)
           if (comparaison_url === true && name === this.ad_name) {
@@ -5159,8 +5159,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
               confirmButtonText: 'Ok'
             }).then((result) => {
               if (result.value) {
-               
-          
+
+
               }
             })
           } else if (comparaison_url === false && name === this.ad_name) {
@@ -5184,12 +5184,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   "fieldFirebase": "ad_name",
                   "content": this.currentAdName
                 }
-                
+
                 )
 
                 this.removeAdBeforeUpdate(this.id_ad_firebase, this.ad_group_id, this.ad_id).then(res=>{
                   if (res != "error") {
-                    
+
                     this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.currentAdName, this.currentImageUrl, this.tabUpdatedCurrentFinalUrls, [], [], this.currentAdSize).then(res => {
                            if (res != "error") {
                              this.isRoller = false
@@ -5206,8 +5206,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
          setTimeout(()=>{
           document.getElementById("closeModalViewModified").click()
          }, 1000)
-             
-                
+
+
                 } else {
                   this.isRoller = false
                   setTimeout(()=>{
@@ -5227,9 +5227,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             }).then((result) => {
                 if (result.value) {
                 this.isRoller = false
-         
-             
-                
+
+
+
                 } else {
                   this.isRoller = false
               }
@@ -5239,9 +5239,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                   }
                 })
 
-                
-             
-                
+
+
+
               } else {
                 this.isRoller =false
               }
@@ -5267,10 +5267,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                    "fieldFirebase": "finalUrls",
                   "content": this.finalUrls
                 })
-               
+
                 this.removeAdBeforeUpdate(this.id_ad_firebase, this.ad_group_id, this.ad_id).then(res=>{
                   if (res != "error") {
-                    
+
                     this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, name, this.currentImageUrl, this.finalUrls, [], [], this.currentAdSize).then(res => {
                            if (res != "error") {
                      Swal.fire({
@@ -5284,9 +5284,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             }).then((result) => {
                 if (result.value) {
                 this.isRoller = false
-         
-             
-                
+
+
+
                 } else {
                   this.isRoller = false
               }
@@ -5303,9 +5303,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             }).then((result) => {
                 if (result.value) {
                 this.isRoller = false
-         
-             
-                
+
+
+
                 } else {
                   this.isRoller = false
               }
@@ -5314,8 +5314,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                     })
                   }
                 })
-             
-                
+
+
                 } else {
                   this.isRoller = false
               }
@@ -5342,12 +5342,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                       "field": "finalUrls",
                       "fieldFirebase": "finalUrls",
                       "content": this.newfinalUrls
-                    
+
                       })
 
                 this.removeAdBeforeUpdate(this.id_ad_firebase, this.ad_group_id, this.ad_id).then(res=>{
                   if (res != "error") {
-                    
+
                     this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, name, this.currentImageUrl, this.tabUpdatedCurrentFinalUrls, [], [], this.currentAdSize).then(res => {
                            if (res != "error") {
                      Swal.fire({
@@ -5361,9 +5361,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             }).then((result) => {
                 if (result.value) {
                 this.isRoller = false
-         
-             
-                
+
+
+
                 } else {
                   this.isRoller = false
               }
@@ -5380,9 +5380,9 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
             }).then((result) => {
                 if (result.value) {
                 this.isRoller = false
-         
-             
-                
+
+
+
                 } else {
                   this.isRoller = false
               }
@@ -5391,8 +5391,8 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
                     })
                   }
                 })
-             
-                
+
+
               }else{
                 this.isRoller =false
               }
@@ -5400,12 +5400,12 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       }
         }
       })
-      
-       
-      
-     
+
+
+
+
     }
-     
+
   }
 
 
@@ -5418,7 +5418,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     var metadata = {
   contentType: 'image/png',
 };
-    
+
     if (!fabric.Canvas.supports('toDataURL')) {
       //alert('This browser doesn\'t provide means to serialize canvas to an image');
       resolve('error')
@@ -5433,7 +5433,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       //////console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
       imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function (snapshot) {
         ////console.log('ok')
-      
+
         storage.ref().child(imageRefStorage).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
           xhr.responseType = 'blob';
@@ -5443,16 +5443,16 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
           xhr.open('GET', url);
           xhr.send();
           self.currentImageUrl = url
-        
+
           resolve('ok')
-       
+
         });
-      
-      })  
-     
-     
-    
-    } 
+
+      })
+
+
+
+    }
    })
   }
 
@@ -5553,7 +5553,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 	// Compare the length of the length of the two items
 	var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
     var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
-  
+
 	if (value.length !== other.length) return false;
 
   // Compare two items
@@ -5626,7 +5626,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
  /*  saveImage() {
     this.saveCanvasToJSON()
     const image_content = JSON.stringify(this.canvas);
-   
+
     this.getWebsites().then(res => {
       ////console.log(res)
       if (res != 'error') {
@@ -5638,11 +5638,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     var metadata = {
   contentType: 'image/png',
 };
-    
+
     if (!fabric.Canvas.supports('toDataURL')) {
       //alert('This browser doesn\'t provide means to serialize canvas to an image');
     } else {
-    
+
       this.ad_name = $("#"+this.idOfAdName).val()
       var image_name = this.ad_name +  new Date().getTime().toString()
       $('#ad_image').attr("src", this.canvas.toDataURL('png'))
@@ -5650,26 +5650,26 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
       this.canvas.toDataURL('png').replace('data:image/png;base64,', '')
       ////console.log(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''))
      imagesRef.putString(this.canvas.toDataURL('png').replace('data:image/png;base64,', ''), 'base64', metadata).then(function(snapshot) {
-         
+
        ////console.log('Uploaded a base64 string!');
-       
-     }); 
-      
+
+     });
+
       this.adsService.addAd(this.ad_group_id, this.ad_name, this.uid, imageRefStorage, image_content, this.FINAL_ARRAY_TO_SEND).then(res => {
         ////console.log('success')
         ////console.log(res)
       })
-       
-     
-     
-    
-    } 
-        
+
+
+
+
+    }
+
       }
     })
-    
-    
-    
+
+
+
 
   } */
 
@@ -5684,10 +5684,10 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
        setTimeout(()=>{
          this.successPublish = false
        }, 2500)
-          
+
      } else {
        this.spinnerPublish = false
-       
+
      }
       })
     }
@@ -5696,7 +5696,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
     var self = this
 if (this.budget === 0) {
-       
+
         Swal.fire({
           title: "Service Visuel",
           text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
@@ -5708,11 +5708,11 @@ if (this.budget === 0) {
         }).then((result) => {
           if (result.value) {
             this.notesService.getSingleCampaignWithId(this.uid, this.campagne_id).then(res => {
-              
+
               this.router.navigate(["/edit",res['name'], this.idC , this.campagne_id ]).then(() => {
             })
             })
-     
+
           }
         })
 } else {
@@ -5723,18 +5723,18 @@ if (this.budget === 0) {
      if (res != "error") {
        this.isCreating = false
        window.location.reload(true)
-          
+
      } else {
        this.isCreating = false
-       
+
      }
       })
-   
-    } 
-    
-   
-    
-    
+
+    }
+
+
+
+
 /*      this.isCreating = true
    this.adsService.addAd(this.id_ad_firebase, this.ad_group_id, this.ad_name, this.image_url, this.finalUrls, this.finalAppUrls, this.finalMobileUrls, this.currentAdSize).then(res => {
         ////console.log('success')
@@ -5742,16 +5742,16 @@ if (this.budget === 0) {
      if (res != "error") {
        this.isCreating = false
        window.location.reload(true)
-          
+
      } else {
        this.isCreating = false
-       
+
      }
       }) */
-   
-    
-    
-/* 
+
+
+
+/*
    */
   }
   setHttp(link) {
@@ -5761,22 +5761,22 @@ if (this.budget === 0) {
     return link;
 }
   checkIfIsEmptyFinalUrls(item_id: string): Promise<any> {
-    
+
     return new Promise(resolve => {
        var urls_destination = []
       var urls = $('#'+item_id).val()
-  
+
       if (urls.toString() != '') {
-    
+
            /*  if (urls.includes(',')) {
       var tab = urls.toString().split(',')
       tab.pop()
-    
+
       for (let i = 0; i < tab.length; i++) {
-        
+
         ////console.log(`urls ${tab}`)
         ////console.log(`actuelle url ${tab[i]}`)
-     
+
         if (this.validURL(tab[i]) == true) {
           ////console.log(tab[i] + ' est valide')
           var url = this.setHttp(tab[i])
@@ -5796,11 +5796,11 @@ if (this.budget === 0) {
         }
     }
     } else {
-  
+
     } */
                     var check = this.validURL(urls)
-             
-      
+
+
       if (check === true) {
         ////console.log(urls + " valide")
           var url = this.setHttp(urls)
@@ -5825,25 +5825,25 @@ if (this.budget === 0) {
           "text": "Url de destination ne peut être vide"
         })
       }
-      
+
 
 
 
    })
-    
+
   }
-  
+
 
   checkIfIsEmptyModifiedFinalUrls(): Promise<any> {
-    
+
     return new Promise(resolve => {
        var urls_destination = []
       var urls = $('#finalUrlsmodify').val()
       //alert(urls)
       if (urls !== '') {
            var check = this.validURL(urls)
-             
-      
+
+
       if (check === true) {
         ////console.log(urls + " valide")
           var url = this.setHttp(urls)
@@ -5869,21 +5869,21 @@ if (this.budget === 0) {
           "text": "Url de destination ne peut être vide"
         })
       }
-      
+
 
 
 
    })
-    
+
   }
-  
- 
 
 
-  
+
+
+
   getWebsites(item_id: string): Promise<any> {
     return new Promise(resolve => {
-      
+
       this.FINAL_ARRAY_TO_SEND = []
 
       if ($('#' + this.currentIdInputName).val() == "") {
@@ -5893,50 +5893,50 @@ if (this.budget === 0) {
         var mobile_apps = this.apps
      this.checkIfIsEmptyFinalUrls(item_id).then(res => {
               if (res != 'error') {
-         
-               
+
+
                 resolve(res)
               }else{
-                
+
                 resolve('error')
-                
+
               }
               })
       }
-     
+
     })
-  
-    
-   
+
+
+
   }
 
   getModifiedWebsites(): Promise<any> {
     return new Promise(resolve => {
-      
+
       this.FINAL_ARRAY_TO_SEND = []
-     
+
       var mobile_apps = this.apps
    this.checkIfIsEmptyModifiedFinalUrls().then(res => {
             if (res != 'error') {
-       
-            
+
+
               resolve(res)
             }else{
-              
+
               resolve('error')
-              
+
             }
             })
     })
-  
-    
-   
+
+
+
   }
 
 
   /*   getWebsites(): Promise<any> {
     return new Promise(resolve => {
-      
+
       this.FINAL_ARRAY_TO_SEND = []
       var nationals = this.nationals_websites
       var internationals = this.internationals_websites
@@ -5951,27 +5951,27 @@ if (this.budget === 0) {
               this.checkIfIsEmptyMobileApps(mobile_apps)
               resolve(res)
             }else{
-              
+
               resolve('error')
-              
+
             }
             })
-           
-         
+
+
         } else {
           this.nationals_errors = "Site national obligatoire !"
           resolve('error')
         }
       })
     })
-  
-    
-   
+
+
+
   } */
   public onSubmitCustomer() {
     //alert('Your information has been submitted successfully. :-)\n\n' + JSON.stringify(this.model))
   }
-  
+
 
   handleKeyPress(key, event): void {
         switch (key) {
@@ -6090,7 +6090,7 @@ if (this.budget === 0) {
 
   toolbarChange() {
     document.querySelector('#tool').classList.remove("btn-group-vertical")
-    
+
      document.querySelector('#tool').classList.add("btn-group")
   }
 
@@ -6134,18 +6134,18 @@ if (this.budget === 0) {
         this.canvas.setWidth(this.size.width);
         this.canvas.setHeight(this.size.height);
     }
-  
+
   oppendCurrentEditor():Promise <any>{
     return new Promise(resolve => {
       if (this.currentEditor ===true) {
-       
+
         this.currentEditor = false
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "annuler la modification"
-      
+
       } else {
-        
-     
+
+
          this.currentEditor = true
         this.iconEditor = "icon-chevron-down"
         this.text_modify = "modifier"
@@ -6157,16 +6157,16 @@ if (this.budget === 0) {
   toggleCurrentUploadBlock() {
 
     if (this.currentAdStatus.toString() === '') {
-      
+
       if ($("#blockUploadModified").css('display') === 'none') {
-         
+
         $("#blockUploadModified").css({ 'display': 'block' })
         this.isUploadModified = true
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "Annuler la modification"
         this.currentIdInputName = this.idOfAdNameNotPublishUpload
         this.currentIdInputDisplay = this.idOfDisplayUrlNotPublishUpload
-        
+
       } else {
         $("#blockUploadModified").css({ 'display': 'none' })
         this.iconEditor = "icon-chevron-down"
@@ -6177,19 +6177,19 @@ if (this.budget === 0) {
       }
     } else {
       if (this.modifyPublishAd===false) {
-         
+
       this.modifyPublishAd=true
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "Annuler la modification"
-        
+
       } else {
          this.modifyPublishAd=true
         this.iconEditor = "icon-chevron-down"
         this.text_modify = "modifier"
       }
-      
+
     }
-    
+
   }
 
   /* confirmClear(): Promise<any>{
@@ -6213,7 +6213,7 @@ if (this.budget === 0) {
       //donothing
     }
   }
-  
+
   toggleCurrentEditor() {
     if (this.canvasCreate === false) {
       var self = this
@@ -6226,52 +6226,52 @@ if (this.budget === 0) {
         this.iconEditor = "icon-chevron-down"
         this.text_modify = "modifier"
         this.currentIdInputName = ""
-        this.currentIdInputDisplay = ""      
+        this.currentIdInputDisplay = ""
       } else {
-        
+
       this.canvasModify=true
          this.currentEditor = true
         this.iconEditor = "icon-chevron-up"
         this.text_modify = "annuler la modification"
          self.isCreating= true
-       setTimeout(function(){ 
-       
+       setTimeout(function(){
+
        self.handleCanvas(parseInt(self.currentAdSize[0]['width']), parseInt(self.currentAdSize[0]['height']))
-       
+
        }, 2000);
-        setTimeout(function(){ 
+        setTimeout(function(){
         self.loadCanvasFromJSON()
         self.isCreating = false
         }, 2000);
            this.currentIdInputName = this.idOfAdNameNotPublishCreatives
         this.currentIdInputDisplay = this.idOfdisplayUrlNotPublishCreatives
-    
+
          setTimeout(() => {
    $('html, body').animate({
         scrollTop: $("#blockModifyCreatives").offset().top
       }, 800);
     }, 1500)
-  
+
       }
- 
+
     } else {
       this.confirmClear()
     }
-   
+
     }
-    
+
  /*    if (this.currentEditor == true) {
       this.currentEditor = false
       this.iconEditor = "icon-chevron-down"
-      
+
     }else{
       this.currentEditor = true
       this.iconEditor = "icon-chevron-up"
 
-      
-    
+
+
     } */
-  
+
 
     /**
      * Size - apply preset to canvas
@@ -6365,7 +6365,7 @@ if (this.budget === 0) {
         }
     }
 
-   
+
     /**
      * Image - Clears custom user image selection/file handler
      *
@@ -6506,7 +6506,7 @@ if (this.budget === 0) {
      * @returns {number}
      */
   randomId(): number {
-  
+
   /*   if (this.canva_state == false) {
           this.handleCanvas()
     } */
@@ -6671,7 +6671,7 @@ if (this.budget === 0) {
   handleChange(event){
     console.log(event)
     this.setFill(event)
-    
+
   }
     getStroke(): void {
         this.props.stroke = this.getActiveStyle('stroke', null);
@@ -6870,7 +6870,7 @@ if (this.budget === 0) {
        }else{
          resolve("ok")
        }
-         
+
       })
     }
 
@@ -6914,7 +6914,7 @@ if (this.budget === 0) {
             } else if (this.canvasModify === true) {
               this.canvasModify=false
            }
-         
+
           }
         })
   }
@@ -7008,12 +7008,12 @@ if (this.budget === 0) {
      *
      */
  loadCanvasFromJSON(): void {
-      
+
         const CANVAS = localStorage.getItem('ffFabricQuicksave');
     ////console.log(typeof(CANVAS))
     ////console.log(typeof(this.currentCanvasContent))
         // and load everything from the same json
-       
+
         this.canvas.loadFromJSON(this.currentCanvasContent, () => {
 
             // making sure to render canvas at the end
@@ -7114,7 +7114,7 @@ if (this.budget === 0) {
 
   triggerImage() {
     $("#image").trigger("click")
-    
+
   }
 
   triggerFigure() {
@@ -7134,7 +7134,7 @@ if (this.budget === 0) {
     var imageAspectRatio = image.width / image.height;
     var canvasAspectRatio = canvas.width / canvas.height;
    var renderableHeight, renderableWidth, xStart, yStart;
-   
+
    /* var AspectRatio = new Object(); */
    var AspectRatio = []
     // If image's aspect ratio is less than canvas's we fit on height
@@ -7168,18 +7168,18 @@ if (this.budget === 0) {
      "startX": xStart,
      "startY": yStart
    })
-   
+
     return AspectRatio;
 }
 
   get pattern() {
     return this.adForm.get('pattern');
   }
- 
+
   onChangePattern() {
     this.pattern.patchValue(this.pattern.value);
   }
- 
+
 
   validURL(str) {
   var pattern = new RegExp('^(https:\\/\\/)?'+ // protocol
@@ -7190,7 +7190,7 @@ if (this.budget === 0) {
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(str);
   }
-  
+
    isUrl(s) {
    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
    return regexp.test(s);
@@ -7268,7 +7268,7 @@ if (this.budget === 0) {
         this.isCreating = true
         this.adsService.deleteAd(id).then(res => {
           if (res == "ok") {
-            
+
             this.isCreating = false
           }
         })
@@ -7343,19 +7343,19 @@ if (this.budget === 0) {
           res => {
             ////console.log(res)
             if (res[0]['status'] == "ok") {
-              
+
               resolve('ok')
             }
           }
             )
-              
-        
-   
+
+
+
     })
   }
 
   goAdSettings(id_ad_firebase: string, ad_name: string, ad_group_id: string, ad_id: string, status: string, image_url: string, finalUrls: any, finalAppUrls: any, finalMobileUrls:any,  image_content: any, referenceId: any, size: any, ad_type: any) {
-    
+
     this.isAdBlock = true
     this.isEditor = false
     this.list_ad = false
@@ -7375,10 +7375,10 @@ if (this.budget === 0) {
     this.referenceId = referenceId
     this.currentAdSize = size
     this.currentAdType = ad_type
-    
+
     this.currentIdInputName = this.idOfAdNameModify
     this.currentIdInputDisplay = this.idOfDisplayModify
-    
+
     this.iconEditor = "icon-chevron-down"
     setTimeout(() => {
       $('html, body').animate({
@@ -7391,24 +7391,24 @@ if (this.budget === 0) {
       this.currentFinalUrls = ""
     } else if(finalUrls.length == 1) {
       this.currentFinalUrls = finalUrls[0].toString()
-      
+
     } else{
        for (let i = 0; i < finalUrls.length - 1; i++) {
-         
+
         ////console.log(finalUrls)
         ////console.log(finalUrls[i])
         this.currentFinalUrls += finalUrls[i].toString() + ","
-      
+
       }
     }
-    
+
 
   }
 
   publish() {
     var jQuery = $
 if (this.budget === 0) {
-       
+
         Swal.fire({
           title: "Service Visuel",
           text: "Le budget de votre campagne est insuffisant définissez le pour comment à diffuser",
@@ -7424,7 +7424,7 @@ if (this.budget === 0) {
         })
 } else {
  jQuery('#button_modal_define_budget').trigger('click')
-   
+
 }
 }
 
@@ -7454,7 +7454,7 @@ if (this.budget === 0) {
           confirmButtonText: 'réessayer '
         }).then((result) => {
           if (result.value) {
-          
+
           }
         })
     } else{
@@ -7475,7 +7475,7 @@ if (this.budget === 0) {
           if (result.value) {
                  this.isCreating = true
       setTimeout(function () {
-    
+
         var btn = document.getElementById("amountSet");
         var selector = pQuery(btn);
         (new PayExpresse({
@@ -7486,15 +7486,15 @@ if (this.budget === 0) {
             headers: {
                 "Accept": "application/json"
           },
-       
-          
+
+
             //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
             prensentationMode: PayExpresse.OPEN_IN_POPUP,
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-               
-                  //window.location.href = success_url; 
+
+                  //window.location.href = success_url;
                 } else {
                   self.isCreating = false
                     //window.location.href = cancel_url
@@ -7544,31 +7544,31 @@ if (this.budget === 0) {
             alertDialogTextColor: '#333',
             alertDialogConfirmButtonBackgroundColor: '#0178bc',
           alertDialogConfirmButtonTextColor: '#fff',
-          
+
         });
     }, 500)
           }
         })
 
 
-      
-      
-      
+
+
+
     }
   }
-  
-  
+
+
   /* defineBudget() {
     var self = this
-   
-      
+
+
       $('#button_modal_define_budget').trigger('click')
-      var self = this 
+      var self = this
     this.isCreating = true
     var url = SERVER_URL+'/payBudget/' + self.montant + "/" + self.budget_to_place + "/" + self.budgetId + "/" + self.idC + "/" + self.dure_campagne + "/" + self.ad_group_name + "/" + self.idA + "/" + self.ad_group_id + "/" + self.campagne_id + "/" + self.id_ad_firebase
     //alert(url)
       setTimeout(function () {
-    
+
         var btn = document.getElementById("budgetSet");
         var selector = pQuery(btn);
         (new PayExpresse({
@@ -7579,16 +7579,16 @@ if (this.budget === 0) {
             headers: {
                 "Accept": "application/json"
           },
-       
-          
+
+
             //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
             prensentationMode: PayExpresse.OPEN_IN_POPUP,
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                 
-                
-                  //window.location.href = success_url; 
+
+
+                  //window.location.href = success_url;
                 } else {
                   self.isCreating = false
                     //window.location.href = cancel_url
@@ -7639,14 +7639,14 @@ if (this.budget === 0) {
             //alertDialogTextColor: '#333',
             //alertDialogConfirmButtonBackgroundColor: '#0178bc',
           //alertDialogConfirmButtonTextColor: '#fff',
-          
+
         });
     }, 500)
 
-      
-      
-      
-    
+
+
+
+
    } */
 
 
@@ -7663,8 +7663,8 @@ if (this.budget === 0) {
     } else{
      this.montant = montant
       //var budget_to_place_in_dollar = budget_to_place * 550
-      
-      
+
+
     }
    }
    */
@@ -7696,18 +7696,18 @@ if (this.budget === 0) {
       this.budget_to_place = montant - this.my_gain
       this.number_of_impressions_simulated = (this.budget_to_place *1000) / 33.3
       this.montant = montant
-      
-      
+
+
     }
   } */
-   
+
   handleSimulatedImpressionsCount() {
     ////console.log('keyup')
     $('#error_recharge').hide()
     this.isSimulation = true
     var montant = $("#montant").val()
     if (montant == "" ) {
-    
+
       this.number_of_impressions_simulated = 0
       this.my_gain = 0
       this.budget_to_place = 0
@@ -7731,8 +7731,8 @@ if (this.budget === 0) {
       this.number_of_impressions_simulated = parseInt(((this.budget_to_place *1000) / 33.3).toString())
       this.montant = montant
       //var budget_to_place_in_dollar = budget_to_place * 550
-      
-      
+
+
     }
   }
 
@@ -7753,8 +7753,8 @@ if (this.budget === 0) {
           this.isSetBudget = true
          }
       })
-    
-    
+
+
    } */
   /* handlePlaceBudgetFromSolde() {
     this.isAccountRechargement = false
@@ -7774,7 +7774,7 @@ if (this.budget === 0) {
          }
       })
   } */
-  
+
   parseDate(str) {
     var mdy = str.split('/');
     return new Date(mdy[2], mdy[1], mdy[0]);
@@ -7785,9 +7785,9 @@ if (this.budget === 0) {
     // Round to nearest whole number to deal with DST.
     return Math.round((second-first)/(1000*60*60*24));
  }
-  
- 
- 
+
+
+
   OpenModifyDateCampaign() {
     this.modifyDate = true
     this.isSetBudget = false
@@ -7821,27 +7821,27 @@ if (this.budget === 0) {
     ////console.log(args.value)
     if (args.value != undefined) {
       this.newEndDate = args.value.toString()
-      
+
     } else {
       this.newEndDate = ""
     }
-  
+
     }
-  
+
   onStartDateChange(args) {
     ////console.log(args.value)
     if (args.value != undefined) {
       this.newStartDate = args.value.toString()
       ////console.log(this.newStartDate)
-      
+
     } else {
       this.newStartDate = ""
     }
       }
   updateCampaignDate() {
-    
+
     var parsed = JSON.parse(JSON.stringify(MONTH))
-    
+
     var tabStart = this.startDateFrench.split("/")
     var tabEnd = this.endDateFrench.split("/")
     var frenchDateStart = tabStart[2] + "-" + tabStart[1] + "-" + tabStart[0]
@@ -7862,10 +7862,10 @@ if (this.budget === 0) {
       this.today =  years.toString() + month.toString() + "-0" + today_date.toString()
     } else {
       this.today = years.toString() + "-"+ month.toString() +"-"+ today_date.toString()
-      
+
     }
     var date = new Date();
-    
+
     if (this.newEndDate == "" && this.newStartDate == "") {
       Swal.fire({
         title: 'Service Campagne',
@@ -7898,7 +7898,7 @@ if (this.budget === 0) {
       }).then((result) => {
         if (result.value) {
           if (new Date(frenchDateStart) < date) {
-                
+
             Swal.fire({
               title: 'Service Campagne',
               text: 'campagne déjà commencé Vous ne pouver plus modifier la date de début',
@@ -7909,11 +7909,11 @@ if (this.budget === 0) {
               confirmButtonText: 'Confirmer'
             }).then((result) => {
               if (result.value) {
-             
+
               }
             })
           } else if (new Date(frenchDateEnd) < date) {
-            
+
             Swal.fire({
               title: 'Service Campagne',
               text: 'Campagne déjà arrivée à terme',
@@ -7949,7 +7949,7 @@ if (this.budget === 0) {
             }).then((result) => {
               if (result.value) { }
             })
-              
+
           } else {
             if (new Date(date_start_check) > new Date()) {
               Swal.fire({
@@ -7970,12 +7970,12 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
-            
+
             } else if (date_start_check == this.today) {
-              
+
               Swal.fire({
                 title: 'Service Campagne',
                 text: "Campagne commence aujourd'hui",
@@ -7994,7 +7994,7 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
             } else if (new Date(date_start_check) > new Date(frenchDateEnd)) {
@@ -8008,8 +8008,8 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-          
-          
+
+
                 }
               })
             } else if (date_start_check == frenchDateEnd) {
@@ -8023,8 +8023,8 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-          
-          
+
+
                 }
               })
             } else {
@@ -8041,19 +8041,19 @@ if (this.budget === 0) {
                 if (result.value) { }
               })
             }
-      
- 
+
+
           }
-          
+
         }
       }
-    
+
       )
-      
+
     } else if (this.newStartDate == "" && this.newEndDate != "") {
-    
+
       var DATE_END = this.newEndDate.split(' ')
-     
+
       var DATE_ELEMENT_END = parsed[0][DATE_END[1]]
       var _day_end = DATE_END[2]
       var _month_end = DATE_ELEMENT_END.number
@@ -8082,11 +8082,11 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-          
-          
+
+
                 }
               })
-    } else if (new Date(frenchDateEnd) == date) { 
+    } else if (new Date(frenchDateEnd) == date) {
       Swal.fire({
                 title: 'Service Campagne',
                 text: "Cette campagne se termine aujourd'hui, vous voulez prolonger sa date de fin",
@@ -8097,7 +8097,7 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok, prolonger'
       }).then((result) => {
                 this.modifyDate = false
-                
+
                 this.isRoller = true
                 if (result.value) {
                    this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
@@ -8106,7 +8106,7 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
     } else {
@@ -8121,11 +8121,11 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  
-          
+
+
                 }
               })
-      
+
             } else if (date_end_check== this.today) {
                 Swal.fire({
                 title: 'Service Campagne',
@@ -8137,7 +8137,7 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 this.modifyDate = false
-                
+
                 this.isRoller = true
                 if (result.value) {
                    this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
@@ -8146,10 +8146,10 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
-         
+
       } else if (new Date(date_end_check) < new Date(frenchDateStart)) {
             Swal.fire({
                 title: 'Service Campagne',
@@ -8161,12 +8161,12 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  
-          
+
+
                 }
               })
       } else if (date_end_check==frenchDateStart) {
-      
+
               Swal.fire({
                 title: 'Service Campagne',
                 text: "Date de début et date de fin ne peuvent être définies à la même date",
@@ -8177,8 +8177,8 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  
-          
+
+
                 }
               })
       } else{
@@ -8192,7 +8192,7 @@ if (this.budget === 0) {
                 confirmButtonText: 'Oui, sûr!'
               }).then((result) => {
                 this.modifyDate = false
-                
+
                 this.isRoller = true
                 if (result.value) {
                    this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
@@ -8201,17 +8201,17 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
       }
-      
- 
+
+
     }
         }
       })
-     
-      
+
+
     } else {
       var DATE_START = this.newStartDate.split(' ')
       var DATE_ELEMENT_START = parsed[0][DATE_START[1]]
@@ -8223,7 +8223,7 @@ if (this.budget === 0) {
       var date_start_check = `${_years_start}-${_month_start}-${_day_start}`
 
        var DATE_END = this.newEndDate.split(' ')
-     
+
       var DATE_ELEMENT_END = parsed[0][DATE_END[1]]
       var _day_end = DATE_END[2]
       var _month_end = DATE_ELEMENT_END.number
@@ -8266,7 +8266,7 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok, changer'
               }).then((result) => {
                  this.modifyDate = false
-                
+
                 this.isRoller = true
                 if (result.value) {
                    this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
@@ -8275,10 +8275,10 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
-    } else if (frenchDateEnd == this.today) { 
+    } else if (frenchDateEnd == this.today) {
         Swal.fire({
                 title: 'Service Campagne',
                 text: "Cette campagne se termine aujourd'hui, vous pouvez prolonger sa date de fin",
@@ -8289,7 +8289,7 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok, prolonger'
               }).then((result) => {
                 this.modifyDate = false
-                
+
                 this.isRoller = true
                 if (result.value) {
                    this.notesService.updateEndDate(this.idC, this.campagne_id, date_end, this.UpdatedEndDate).then(res=>{
@@ -8298,7 +8298,7 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
       } else {
@@ -8321,12 +8321,12 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
-               
+
               })
-        
-     
+
+
       }else if (new Date(date_start_check) < new Date()  && new Date(date_end_check) > new Date()) {
         Swal.fire({
           title: 'Service Campagne',
@@ -8338,8 +8338,8 @@ if (this.budget === 0) {
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.value) {
-                  
-          
+
+
           }
         })
       }else if(new Date(date_end_check) < new Date()){
@@ -8353,12 +8353,12 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  
-          
+
+
                 }
               })
       } else if (new Date(date_start_check) > new Date(date_end_check)) {
-   
+
          Swal.fire({
                 title: 'Service Campagne',
                 text: "date de début ne peut être après la date de fin",
@@ -8369,12 +8369,12 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  
-          
+
+
                 }
               })
       } else if (date_start_check==this.today && date_end_check != this.today) {
-    
+
        Swal.fire({
                 title: 'Service Campagne',
                 text: "Campagne va commencer aujourd'hui",
@@ -8393,11 +8393,11 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
       }else if (date_end_check == this.today) {
-        
+
           Swal.fire({
                 title: 'Service Campagne',
                 text: "Impossible de finir une campagne qui n'a pas commencé à diffuser",
@@ -8408,12 +8408,12 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  
-          
+
+
                 }
               })
       } else if (date_end_check==date_start_check) {
-      
+
           Swal.fire({
                 title: 'Service Campagne',
                 text: "Date de début et date de fin ne peuvent être définies à la même date",
@@ -8424,11 +8424,11 @@ if (this.budget === 0) {
                 confirmButtonText: 'Ok'
               }).then((result) => {
                 if (result.value) {
-                  
-          
+
+
                 }
               })
-      
+
         } else {
            Swal.fire({
                 title: 'Service Campagne',
@@ -8448,32 +8448,32 @@ if (this.budget === 0) {
                        this.modifyDate = true
                      }
                    })
-          
+
                 }
               })
-      
+
       }
-      
- 
+
+
     }
     }
-    
-    
-   
 
 
 
-    
-  
-   
-    
 
-   
+
+
+
+
+
+
+
+
     /* var today_date = new Date().getDate()
     var today_day = new Date().getDay()
     var years = new Date().getFullYear()
     var month = new Date().getMonth() + 1
-    
+
     if (month < 10 && today_date < 10) {
       this.today = "0" + today_date.toString() + "/0" + month.toString() + "/" + years.toString()
     } else if (month < 10 && today_date > 10) {
@@ -8493,11 +8493,11 @@ if (this.budget === 0) {
   }
 
 
-  
+
   setStartDate(): Promise<any> {
     return new Promise(resolve => {
       var DATE = this.newStartDate.split(' ')
-  
+
     var parsed = JSON.parse(JSON.stringify(MONTH))
     var DATE_ELEMENT = parsed[0][DATE[1]]
     var day = DATE[2]
@@ -8513,23 +8513,23 @@ if (this.startDate == date || this.endDate == date) {
      /*    ////console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
       ////console.log(`end date from me: ${date}`)  */
        resolve('error')
-        
+
       } else {
   this.notesService.updateStartDate(this.idC, this.campagne_id, date, this.UpdatedStartDate)
   ////console.log(this.idC)
-          
+
         resolve('ok')
       }
     })
-    
-  
-    
+
+
+
   }
 
   setEndDate(): Promise<any> {
     return new Promise(resolve => {
       var DATE = this.newEndDate.split(' ')
-  
+
     var parsed = JSON.parse(JSON.stringify(MONTH))
     var DATE_ELEMENT = parsed[0][DATE[1]]
     var day = DATE[2]
@@ -8545,7 +8545,7 @@ if (this.endDate == date || this.startDate == date) {
      /*    ////console.log(`start date from firebase: ${value['startDate']} end date from firebase: ${value['endDate']}`)
       ////console.log(`end date from me: ${date}`)  */
           resolve('error')
-          
+
 
       } else {
         this.notesService.updateEndDate(this.idC, this.campagne_id, date, this.UpdatedEndDate)
@@ -8561,7 +8561,7 @@ if (this.endDate == date || this.startDate == date) {
   /*  this.init_choose_ad_size = true */
     document.getElementById("v-pills-add-ad-tab").click()
   }
- 
+
 /*   handleSimulatedImpressionsCount() {
     ////console.log('keyup')
     $('#error_recharge').hide()
@@ -8583,11 +8583,11 @@ if (this.endDate == date || this.startDate == date) {
       this.number_of_impressions_simulated = (this.budget_to_place *1000) / 33.3
       this.montant = montant
       //var budget_to_place_in_dollar = budget_to_place * 550
-      
-      
+
+
     }
   } */
-  
+
 
    addShape(shape): void {
         let add: any;
@@ -8644,14 +8644,14 @@ if (this.endDate == date || this.startDate == date) {
         this.selectItemAfterAdded(add);
         this.updateLayers();
     }
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
    handleIfValide() {
     ////console.log('keyup')
     $('#error_recharge').hide()
@@ -8665,11 +8665,11 @@ if (this.endDate == date || this.startDate == date) {
     } else{
      this.montant = montant
       //var budget_to_place_in_dollar = budget_to_place * 550
-      
-      
+
+
     }
    }
-  
+
   handleIfBudgetToPlaceFromAccountIsValid() {
     $('#error_recharge').hide()
     var montant = parseInt($("#montant").val())
@@ -8698,13 +8698,13 @@ if (this.endDate == date || this.startDate == date) {
       this.budget_to_place = montant - this.my_gain
       this.number_of_impressions_simulated = parseInt(((this.budget_to_place *1000) / 33.3).toString())
       this.montant = montant
-      
-      
+
+
     }
   }
 
    handleBudgetPlacement() {
-     
+
     Swal.fire({
         title: 'Service Campagne',
         text: "Vous allez placer un budget pour votre campagne, veuillez vous assurez que les dates de début et de fins sont définies aux dates voulues",
@@ -8722,8 +8722,8 @@ if (this.endDate == date || this.startDate == date) {
           this.isSetBudget = true
          }
       })
-    
-    
+
+
    }
   handlePlaceBudgetFromSolde() {
     this.isAccountRechargement = false
@@ -8744,22 +8744,22 @@ if (this.endDate == date || this.startDate == date) {
          }
       })
   }
-  
+
    handleAccountRechargement() {
-   
+
      this.modifyDate = false;
      this.isSetBudget = false
      this.isPlacementBudgetFromAccount = false;
      this.button_payments = false
      this.isAccountRechargement = true
-    
-    
+
+
   }
-  
+
   defineBudget() {
     var self = this
 
-        
+
        this.getPlatform().then(res=>{
          if (res == "ok") {
                     if (this.montant < 10000) {
@@ -8773,7 +8773,7 @@ if (this.endDate == date || this.startDate == date) {
           confirmButtonText: 'réessayer '
         }).then((result) => {
           if (result.value) {
-          
+
           }
         })
     } else if (this.montant > 1000000) {
@@ -8787,7 +8787,7 @@ if (this.endDate == date || this.startDate == date) {
           confirmButtonText: 'réessayer '
         }).then((result) => {
           if (result.value) {
-          
+
           }
         })
     } else {
@@ -8804,13 +8804,13 @@ if (this.endDate == date || this.startDate == date) {
         if (result.value) {
             var self = this
           this.isCreating = true
-                
+
           var key = this.generate(100)
           localStorage.setItem(key, this.budget_to_place.toString())
           this.auth.updateUser(this.uid, {paymentKey: key})
-    
+
       setTimeout(function () {
-    
+
         var btn = document.getElementById("budgetSet");
         var selector = pQuery(btn);
         (new PayExpresse({
@@ -8821,16 +8821,16 @@ if (this.endDate == date || this.startDate == date) {
             headers: {
                 "Accept": "application/json"
           },
-       
-          
+
+
             //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
             prensentationMode: PayExpresse.OPEN_IN_POPUP,
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
-                 
-                
-                  //window.location.href = success_url; 
+
+
+                  //window.location.href = success_url;
                 } else {
                 self.isCreating = false
                  localStorage.remove(key)
@@ -8886,7 +8886,7 @@ if (this.endDate == date || this.startDate == date) {
             alertDialogTextColor: '#333',
             alertDialogConfirmButtonBackgroundColor: '#0178bc',
           alertDialogConfirmButtonTextColor: '#fff',
-          
+
         });
     }, 500)
         }
@@ -8894,15 +8894,15 @@ if (this.endDate == date || this.startDate == date) {
       }
          }
        })
-     
-    
-     /*  $('#button_modal_define_budget').trigger('click') */
-    
 
-      
-      
-      
-    
+
+     /*  $('#button_modal_define_budget').trigger('click') */
+
+
+
+
+
+
   }
 
 
@@ -8917,7 +8917,7 @@ if (this.endDate == date || this.startDate == date) {
       $('#error_recharge').show()
     } else if (montant == null) {
       $('#error_recharge').show()
-       
+
     } else {
       this.isCreating = true
       this.isPlacementBudgetFromAccount = false
@@ -8929,14 +8929,14 @@ if (this.endDate == date || this.startDate == date) {
     })
       .subscribe(
         res => {
-          
+
           if (res[0]['status'] == "ok") {
             this.notesService.updateNote(this.idC, { budget: this.budget_to_place, dailyBudget: res[0]['dailyBudget'] }).then(res => {
-              
+
               if (res == "ok") {
-                 
+
                       this.auth.updateUser(this.uid, {account_value: newAccountValue }).then(res => {
-                        
+
                         if (res == "ok") {
                           self.isCreating = false
                           Swal.fire({
@@ -8961,14 +8961,14 @@ if (this.endDate == date || this.startDate == date) {
               } else {
                 self.isCreating = false
               }
-                 
+
                })
-            
+
           } else {
             self.isCreating = false
           }
-          
-          
+
+
         },
         err => {
           Swal.fire({
@@ -8987,13 +8987,13 @@ if (this.endDate == date || this.startDate == date) {
     }
   }
 
-  
+
   getPlatform(): Promise<any>{
     return new Promise(resolve => {
       this.notesService.detectDevice().then(res => {
           var browser = res
-        
-          
+
+
           if (browser === "Opera") {
            /*  redirect = SERVER.opera */
             this.BROWSER_URL = window.location.href.replace(SERVER.protocol + SERVER.opera + "/#/ads/", "")
@@ -9028,7 +9028,7 @@ if (this.endDate == date || this.startDate == date) {
         }
       })
     })
-  }  
+  }
 
   defineAmountAccountBeforeBudget() {
 
@@ -9048,11 +9048,11 @@ if (this.endDate == date || this.startDate == date) {
           confirmButtonText: 'réessayer '
         }).then((result) => {
           if (result.value) {
-          
+
           }
         })
     } else{
-      
+
 
        Swal.fire({
           title: "Service rechargement",
@@ -9074,7 +9074,7 @@ if (this.endDate == date || this.startDate == date) {
       $('#closeModalRecharge').trigger('click')
       var self = this
       setTimeout(function () {
-    
+
         var btn = document.getElementById("budgetSet");
         var selector = pQuery(btn);
         (new PayExpresse({
@@ -9085,16 +9085,16 @@ if (this.endDate == date || this.startDate == date) {
             headers: {
                 "Accept": "application/json"
           },
-       
-          
+
+
             //prensentationMode   :   PayExpresse.OPEN_IN_POPUP,
             prensentationMode: PayExpresse.OPEN_IN_POPUP,
             didPopupClosed: function (is_completed, success_url, cancel_url) {
               self.isCreating = false
               if (is_completed === true) {
                   //alert(success_url)
-                
-                  //window.location.href = success_url; 
+
+                  //window.location.href = success_url;
                 } else {
                 self.isCreating = false
               /*  localStorage.remove(key)
@@ -9150,33 +9150,33 @@ if (this.endDate == date || this.startDate == date) {
             alertDialogTextColor: '#333',
             alertDialogConfirmButtonBackgroundColor: '#0178bc',
           alertDialogConfirmButtonTextColor: '#fff',
-          
+
         });
-    }, 500)  
+    }, 500)
          }
        })
 
 
-      
-      
-      
+
+
+
     }
           }
 
-  
+
 
         })
-   
-     
+
+
 
   }
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
 }
 
 

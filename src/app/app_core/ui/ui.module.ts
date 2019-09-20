@@ -33,15 +33,15 @@ import { TermsComponent } from './terms/terms.component'
     UserProfileComponent,
     UserFormComponent,
     SsrPageComponent,
-    
-   
+
+
     SpinnerOverlayComponent,
-    
-   
+
+
     TermsComponent,
-      
-   
- 
+
+
+
   ],
   exports: [
     MainNavComponent,
