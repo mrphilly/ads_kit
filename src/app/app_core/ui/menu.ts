@@ -1,49 +1,16 @@
 export const ModulesList = [{
   label: 'Campagne',
+  icon: 'add',
+  id: "add_campaign",
   children: [{
-   /*  label: 'Ajouter une campagne',
-    children: [{
-      label: 'Liste des campagnes'
-    }, {
-      label: 'User 6'
-    }, {
-      label: 'User 7'
-    }] */
-  }, {
-    label: 'User 2',
-    children: [{
-      label: 'User 8'
-    }, {
-      label: 'User 9'
-    }, {
-      label: 'User 10'
-    }]
-  }, {
-    label: 'User 3'
-  }, {
-    label: 'User 4'
+      label: 'Lancer un nouvelle campagne',
+    icon: 'launch'
   }]
 }, {
-  label: 'Management',
+    label: 'Liste des campagnes',
+    icon: 'list',
+  id: "show_campaign",
   children: [{
-    label: 'Management 1',
-    children: [{
-      label: 'Management 2'
-    }, {
-      label: 'Management 3'
-    }, {
-      label: 'Management 4'
-    }]
-  }]
-}, {
-  label: 'Admin',
-  children: [{
-    label: 'Admin 1'
-  }, {
-    label: 'Admin 2'
-  }, {
-    label: 'Admin 3'
-  }, {
-    label: 'Admin 4'
-  }]
+    label: 'Liste de mes campagnes',
+    icon: 'view_array'
 }];

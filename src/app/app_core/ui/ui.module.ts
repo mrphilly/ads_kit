@@ -19,11 +19,13 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { TermsComponent } from './terms/terms.component'
 
 
+import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+
 
 
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule, MatButtonModule, MatCheckboxModule,MatFormFieldModule,MatTableModule,MatInputModule,MatIconModule,MatChipsModule,MatCardModule,MatExpansionModule, MatListModule,MatMenuModule, MatPaginatorModule,MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule,MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule ,MatDatepickerModule,],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule, MatButtonModule, MatCheckboxModule,MatFormFieldModule,MatTableModule,MatInputModule,MatIconModule,MatChipsModule,MatCardModule,MatExpansionModule, MatListModule,MatMenuModule, MatPaginatorModule,MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule,MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule ,MatDatepickerModule,ScrollDispatchModule],
   declarations: [
     UserLoginComponent,
     HomePageComponent,
@@ -42,6 +44,7 @@ import { TermsComponent } from './terms/terms.component'
 
 
 
+
   ],
   exports: [
     MainNavComponent,
@@ -49,6 +52,7 @@ import { TermsComponent } from './terms/terms.component'
     NotificationMessageComponent,
     UserProfileComponent,
     UserFormComponent,
+
       ]
 })
 export class UiModule {}

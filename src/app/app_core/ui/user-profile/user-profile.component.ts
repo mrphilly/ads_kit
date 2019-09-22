@@ -80,22 +80,12 @@ export class UserProfileComponent {
   }
 
   buttonEnter(trigger) {
-   if(this.prevButtonTrigger && this.prevButtonTrigger != trigger){
-        this.prevButtonTrigger.closeMenu();
-        this.prevButtonTrigger = trigger;
+    setTimeout(() => {
+      this.prevButtonTrigger = trigger;
         this.isMatMenuOpen = false;
         this.isMatMenu2Open = false;
         trigger.openMenu()
-      }
-      else if (!this.isMatMenuOpen) {
-        this.enteredButton = true;
-        this.prevButtonTrigger = trigger
-        trigger.openMenu()
-      }
-      else {
-        this.enteredButton = true;
-        this.prevButtonTrigger = trigger
-      }
+   }, 100)
   }
 
   buttonLeave(trigger, button) {

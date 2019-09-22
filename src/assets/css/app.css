@@ -1155,3 +1155,8 @@ mat-card{
 .box-shadow-none{
     box-shadow: none !important;
 }
+button:focus {outline:0 !important;}
+
+.max-width-menu{
+    max-width: 300px !important
+}
