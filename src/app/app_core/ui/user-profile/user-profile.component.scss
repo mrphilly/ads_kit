@@ -504,3 +504,44 @@ button.launch:focus {
 cursor: pointer;
 background-color: #FABD44;
 }
+
+.p-scroll{
+  font-size: 13px;
+  line-height: 22px;
+}
+
+.menu {
+  width: 200px;
+  background: #ffffff;
+  position: fixed;
+  margin-left: 20px;
+  margin-top: 20px;
+
+  .content-scroll {
+
+
+    h4 {
+      display: block;
+      text-align: center;
+    }
+
+    .li-scroll {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 23px;
+
+      a {
+        cursor: pointer;
+
+        &.focused {
+          font-weight: 600;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.mat-card-scroll {
+  margin-left: 230px;
+}

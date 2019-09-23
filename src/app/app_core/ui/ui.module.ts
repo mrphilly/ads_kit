@@ -22,10 +22,14 @@ import { TermsComponent } from './terms/terms.component'
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 
 
+import { NotesService } from './notes.service';
+import { AdGroupService } from './ad-groupe.service'
+import { Ads } from './ads.service'
+import {MccScrollspyModule, MccScrollspyService} from 'material-community-components'
 
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule, MatButtonModule, MatCheckboxModule,MatFormFieldModule,MatTableModule,MatInputModule,MatIconModule,MatChipsModule,MatCardModule,MatExpansionModule, MatListModule,MatMenuModule, MatPaginatorModule,MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule,MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule ,MatDatepickerModule,ScrollDispatchModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule, MatButtonModule, MatCheckboxModule,MatFormFieldModule,MatTableModule,MatInputModule,MatIconModule,MatChipsModule,MatCardModule,MatExpansionModule, MatListModule,MatMenuModule, MatPaginatorModule,MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule,MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule ,MatDatepickerModule,ScrollDispatchModule, MccScrollspyModule],
   declarations: [
     UserLoginComponent,
     HomePageComponent,
@@ -46,6 +50,7 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 
 
   ],
+  providers: [NotesService, AdGroupService, Ads, MccScrollspyService],
   exports: [
     MainNavComponent,
     LoadingSpinnerComponent,
