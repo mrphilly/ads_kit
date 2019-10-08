@@ -66,7 +66,7 @@ TermsComponent,
 
 
   ],
-  providers: [NotesService, AdGroupService, Ads, MccScrollspyService, /* { provide:MatDatepickerIntl, useValue: getDatePickerIntl()},  {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},  { provide: DateAdapter, useClass: AppDateAdapter }, {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},  {provide: MAT_DATE_LOCALE, useValue: 'fr-fr'} */],
+  providers: [NotesService, AdGroupService, Ads,/* { provide:MatDatepickerIntl, useValue: getDatePickerIntl()},  {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},  { provide: DateAdapter, useClass: AppDateAdapter }, {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},  {provide: MAT_DATE_LOCALE, useValue: 'fr-fr'} */],
   exports: [
     MainNavComponent,
     LoadingSpinnerComponent,
