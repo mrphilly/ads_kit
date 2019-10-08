@@ -11,7 +11,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
-import { MccScrollspyService, MccScrollspyItemDirective } from 'material-community-components';
+import { MccScrollspyService } from 'material-community-components';
 
 import { ModulesList } from '../menu';
 import { NotesService } from '../notes.service';
@@ -808,7 +808,7 @@ export class UserProfileComponent implements OnInit, OnDestroy{
   displayedColumns = ['select', 'name', 'status', 'date de début', 'Budget', "Paramétrer"];
   dataSource = new MatTableDataSource<Note>([])
   selection = new SelectionModel<Note>(true, []);
-    items: MccScrollspyItemDirective[];
+ 
 
   private _subscription: Subscription;
   
@@ -1101,10 +1101,7 @@ isAllSelected() {
        }) */
      })
 
-       this._subscription = this.mccScrolspyService.group('My Scrollspy').subscribe(items => {
-      this.items = items;
-      this.changeDetectorRef.detectChanges();
-    });
+     
    
   }
    onNationalsWebsitesSelect(event) {
