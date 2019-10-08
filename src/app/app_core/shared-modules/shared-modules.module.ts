@@ -10,6 +10,7 @@ import { PageprincipaleComponent } from './pageprincipale/pageprincipale.compone
 import { UserManagementComponent } from './user-management/user-management.component';
 import { InscriptionConfirmComponent } from './inscription-confirm/inscription-confirm.component';
 import { getFrenchPaginatorIntl, getDatePickerIntl } from './MatPaginatorTranslate'
+import {MccScrollspyModule, MccScrollspyService, MccTimerPickerModule} from 'material-community-components'
 /* import {UiModule} from '../ui/ui.module' */
 
 @NgModule({
@@ -19,6 +20,8 @@ import { getFrenchPaginatorIntl, getDatePickerIntl } from './MatPaginatorTransla
     BrowserAnimationsModule,
     MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatTableModule, MatInputModule, MatIconModule, MatChipsModule, MatCardModule, MatExpansionModule, MatListModule, MatMenuModule, MatPaginatorModule, MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule, MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatDatepickerModule,
     MatRadioModule,
+    MccTimerPickerModule,
+     MccScrollspyModule,
     FormsModule,
     ReactiveFormsModule,
      HttpClientModule

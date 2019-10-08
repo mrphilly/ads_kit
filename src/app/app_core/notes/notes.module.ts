@@ -54,7 +54,7 @@ import { WTimeDialogComponent } from './w-time-dialog/w-time-dialog.component'
 import { WClockComponent } from './w-clock/w-clock.component'
 import { WMatTimePickerComponent } from './w-mat-timepicker/w-mat-timepicker.component'
 import { WTimeComponent } from './w-time/w-time.component'
-import { MccScrollspyModule, MccScrollspyService, MccTimerPickerModule } from 'material-community-components'
+import { MccScrollspyService, } from 'material-community-components'
 import {SharedModulesModule} from '../shared-modules/shared-modules.module'
 import { getFrenchPaginatorIntl, getDatePickerIntl } from './MatPaginatorTranslate'
  import {APP_DATE_FORMATS, AppDateAdapter} from './datepicker-format'
@@ -87,7 +87,7 @@ SharedModulesModule,
     SidebarModule,
     TreeViewModule,
     BrowserAnimationsModule,
-   MccScrollspyModule,MccColorPickerModule.forRoot({
+   MccColorPickerModule.forRoot({
       empty_color: 'transparent',
         used_colors: ['#000000', '#FFF555']
     }),

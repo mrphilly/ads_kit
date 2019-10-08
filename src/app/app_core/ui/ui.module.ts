@@ -21,7 +21,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AdGroupService } from './ad-groupe.service'
 import { Ads } from './ads.service'
-import {MccScrollspyModule, MccScrollspyService, MccTimerPickerModule, MccScrollspyItemDirective} from 'material-community-components'
+
 import { getFrenchPaginatorIntl, getDatePickerIntl } from './MatPaginatorTranslate'
 import { TermsComponent } from './terms/terms.component'
 import { APP_DATE_FORMATS, AppDateAdapter } from './datepicker-format'
@@ -32,10 +32,10 @@ import { WTimeComponent } from './w-time/w-time.component'
 import { NotesModule} from "../notes/notes.module"
 
 import {SharedModulesModule} from '../shared-modules/shared-modules.module' 
-
+import {MccScrollspyService} from 'material-community-components'
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule, /* MatButtonModule, MatCheckboxModule,MatFormFieldModule,MatTableModule,MatInputModule,MatIconModule,MatChipsModule,MatCardModule,MatExpansionModule, MatListModule,MatMenuModule, MatPaginatorModule,MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule,MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule ,MatDatepickerModule, MatRadioModule, MatRippleModule,MatNativeDateModule, */ NotesModule, ScrollDispatchModule, MccScrollspyModule , MccTimerPickerModule, SharedModulesModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule, /* MatButtonModule, MatCheckboxModule,MatFormFieldModule,MatTableModule,MatInputModule,MatIconModule,MatChipsModule,MatCardModule,MatExpansionModule, MatListModule,MatMenuModule, MatPaginatorModule,MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule,MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule ,MatDatepickerModule, MatRadioModule, MatRippleModule,MatNativeDateModule, */ NotesModule, ScrollDispatchModule,SharedModulesModule],
   declarations: [
     UserLoginComponent,
     HomePageComponent,
@@ -52,7 +52,7 @@ TermsComponent,
     WTimeDialogComponent,
     WClockComponent,
     WTimeComponent,
-     MccScrollspyItemDirective 
+ 
  
 
 
