@@ -21,7 +21,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AdGroupService } from './ad-groupe.service'
 import { Ads } from './ads.service'
-import {MccScrollspyModule, MccScrollspyService, MccTimerPickerModule} from 'material-community-components'
+import {MccScrollspyModule, MccScrollspyService, MccTimerPickerModule, MccScrollspyItemDirective} from 'material-community-components'
 import { getFrenchPaginatorIntl, getDatePickerIntl } from './MatPaginatorTranslate'
 import { TermsComponent } from './terms/terms.component'
 import { APP_DATE_FORMATS, AppDateAdapter } from './datepicker-format'
@@ -66,7 +66,7 @@ TermsComponent,
 
 
   ],
-  providers: [NotesService, AdGroupService, Ads,/* { provide:MatDatepickerIntl, useValue: getDatePickerIntl()},  {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},  { provide: DateAdapter, useClass: AppDateAdapter }, {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},  {provide: MAT_DATE_LOCALE, useValue: 'fr-fr'} */],
+  providers: [NotesService, AdGroupService, Ads, MccScrollspyService, MccScrollspyItemDirective /* { provide:MatDatepickerIntl, useValue: getDatePickerIntl()},  {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},  { provide: DateAdapter, useClass: AppDateAdapter }, {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},  {provide: MAT_DATE_LOCALE, useValue: 'fr-fr'} */],
   exports: [
     MainNavComponent,
     LoadingSpinnerComponent,
