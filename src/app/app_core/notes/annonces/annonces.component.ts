@@ -1,5 +1,11 @@
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  Inject
+} from '@angular/core';
 import {Location} from '@angular/common';
-import {MatTableDataSource, MatPaginator, MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {MatSidenav, MatDrawer} from '@angular/material/sidenav';
 import {AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import {
@@ -10,13 +16,7 @@ import {
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  Inject
-} from '@angular/core';
+import {MatTableDataSource, MatPaginator, MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import * as $ from 'jquery';
 
@@ -1445,23 +1445,11 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     this.chooseAdSize = false
     this.illustration = false
     $("#blockNew").show()
-   /*  this.handleCreateUpload = true */
-    /* this.loadScript('../../../../assets/js/app.js') */
     this.is_upload_way = true
     this.ad_type = "UPLOAD"
     this.currentIdInputName = this.idOfAdNameCreateUploadNew
  this.currentIdInputDisplay = this.idOfDisplayUrlCreateUploadNew
-     /* if (this.handleCreateUpload === false) {
-    setTimeout(() => {
-      $('html, body').animate({
-        scrollTop: $("#block").offset().top
-      }, 800);
-    }, 500)
-    }else{
-      this.handleCreateUpload = false
-    } */
-
-
+    
 
 
 
@@ -1566,9 +1554,6 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
    handleCreativesNew() {
 
     if (this.canvasModify === false) {
-      /*  var percentWidth = (parseInt(this.selectedWidth) * 100) / 16
-   var percentHeight = (parseInt(this.selectedHeight) * 100) / 16 */
-
       var self = this
       this.chooseAdSize = false
       this.illustration = false
@@ -1579,11 +1564,6 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
 
       this.currentIdInputName = this.idOfAdNameCreateCreativesNew
       this.currentIdInputDisplay = this.idOfDisplayUrlCreateCreativesNew
-
-      /*       setTimeout(function(){
-
-
-            }, 2000); */
       $("#body > section > app-root > app-annonces > mat-sidenav-container > mat-sidenav-content > div > div > mat-card.lime.lighten-5.p-0.mat-card > mat-horizontal-stepper > div.mat-horizontal-content-container").css("padding", "0px !important")
       setTimeout(function () {
 
@@ -2856,36 +2836,6 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         this.openSnackBar("Eplacements définis avec succès", "")
       }
     })
-    /* var self = this
-    var placement = []
-
-    this.isCreating = true
-    if (this.nationals_websites.length == 0) {
-      this.isCreating = false
-      Swal.fire({
-        title: 'Ciblage',
-        text: 'Séléctionner au moins un site national',
-        type: 'warning',
-        showCancelButton: false,
-        confirmButtonColor: '#26a69a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.value) {}
-
-      })
-    } else {
-      placement.push(this.nationals_websites, this.internationals_websites, this.ads_websites)
-
-      this.adGroupService.targetPlacement(this.idA, this.campagne_id, this.ad_group_id, placement).then(res => {
-        if (res == "ok") {
-
-           this.isPlacement = true
-        this.isCreating = false
-
-        }
-      })
-    } */
   }
 
   targetDevices() {
@@ -2980,33 +2930,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
     } else {
 
     }
-    /*  this.isCreating = true
-     if (this.ages.length == 0) {
-       this.isCreating = false
-       Swal.fire({
-         title: 'Ciblage',
-         text: 'Aucun genre séléctionné',
-         type: 'error',
-         showCancelButton: false,
-         confirmButtonColor: '#26a69a',
-         cancelButtonColor: '#d33',
-         confirmButtonText: 'Ok'
-       }).then((result) => {
-         if (result.value) {}
-       })
-     } else {
-       this.adGroupService.targetAge(this.idA, this.campagne_id, this.ad_group_id, this.ages).then(res => {
-         if (res == "ok") {
-           this.ages = []
-           this.isCiblageAge = false
-           this.isCreating = false
 
-         }
-       }).then(res => {
-
-       })
-
-     } */
   }
 
   goProfile() {
@@ -4191,26 +4115,7 @@ export class AnnoncesComponent implements OnInit, AfterViewInit {
         this.progresBarCreateImageUpload = true
                 for (var i = 0; i < this.imagesUpload.length; i++) {
         if (i == this.imagesUpload.length - 1) {
-          /* this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response => {
-            if (response == "ok") {
-                       Swal.fire({
-              title: 'Service visuel',
-              text: 'Opération éffectuée avec succès',
-              type: 'success',
-              showCancelButton: false,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok'
-            }).then((result) => {
-              if (result.value) {
-                window.location.reload()
-              } else {
-                window.location.reload()
-              }
-            })
-
-              }
-          })    */
+        
           this.storageUpload(this.imagesUpload[i]['name'], this.imagesUpload[i]['src'], size).then(response=>{
             if (response !== "error") {
               this.openSnackBarSuccessImage("Visuel(s) ajouté(s) avec succès !", "")
@@ -5767,37 +5672,6 @@ if (this.budget === 0) {
       var urls = $('#'+item_id).val()
 
       if (urls.toString() != '') {
-
-           /*  if (urls.includes(',')) {
-      var tab = urls.toString().split(',')
-      tab.pop()
-
-      for (let i = 0; i < tab.length; i++) {
-
-        ////console.log(`urls ${tab}`)
-        ////console.log(`actuelle url ${tab[i]}`)
-
-        if (this.validURL(tab[i]) == true) {
-          ////console.log(tab[i] + ' est valide')
-          var url = this.setHttp(tab[i])
-          urls_destination.push(url)
-          this.FINAL_ARRAY_TO_SEND.push({
-          "lib": "finalUrls",
-          "content": urls_destination
-          })
-           resolve('ok')
-        } else {
-          this.url_errors.push({
-            "url": tab[i],
-            "text": "est une url invalide"
-          })
-          ////console.log(tab[i] + " est invalide")
-          resolve('error')
-        }
-    }
-    } else {
-
-    } */
                     var check = this.validURL(urls)
 
 

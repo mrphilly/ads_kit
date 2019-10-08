@@ -39,6 +39,7 @@ AD_GROUP_ID = '72362966135'
 #Function for only target male ==> disable female et undetermined
 def RemoveSinglePlacement(client, ad_group_id,criterion):
   result = []
+  print(criterion)
   #print(placement)
   ad_group_criteria = []
   ad_group_criterion_service = client.GetService(

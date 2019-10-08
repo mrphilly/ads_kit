@@ -1,68 +1,74 @@
 
 
-<ng-template #isConnected>
 
-  <main>
-       <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
-       <div id="particles-js">
-           <div  class="height-full text-center " style="background:url(assets/img/images/bureau.jpg) no-repeat left bottom; background-size:cover;">
-           <div class="row">
-             <div class="col-md-6 text-center d-none d-md-block">
-                <h1 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h1>
-                <br>
-                <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
-             </div>
-             <div class="col-md-6 text-center d-md-none d-sm-block">
-                <h4 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h4>
-                <br>
-                <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
-             </div>
-             <div class="col-md-6"  style="float: right; border-radius: 20px;">
-               <div class="row">
-                 <div class="col-md-12">
+<ng-template #isConnected >
 
-                   <img [src]="photoUrl" alt="" style="width:35%; border-radius: 200px" id="photoProfile" (click)="triggerUpload()">
-
-
-                     <!-- <h5 class="adafri-police text-white" style="margin-top: 60px">Bienvenue</h5>
-                                         <h5 class="adafri-police text-white" style="margin-top: 20px">{{email}}</h5> -->
-
-
-
-
-
+    <main>
+         <a onclick="topFunction()" id="myBtn" class="btn-fab btn-fab-md adafri-background" title="Go to top"><i class="icon-caret-up"></i></a>
+         <div id="particles-js">
+             <div  class="height-full text-center " style="background:url(assets/img/images/bureau.jpg) no-repeat left bottom; background-size:cover;">
+             <div class="row">
+               <div class="col-md-6 text-center d-none d-md-block">
+                  <h1 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h1>
+                  <br>
+                  <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
+               </div>
+               <div class="col-md-6 text-center d-md-none d-sm-block">
+                  <h4 class="text-white d-inline-block adafri-police" style="margin-top: 20px;">Bienvenue {{email}}</h4>
+                  <br>
+                  <h5 class="text-white adafri-police d-inline-block" style="margin-top: 20px;">Votre solde est de: {{accountValue}} CFA</h5>
+               </div>
+               <div class="col-md-6"  style="float: right; border-radius: 20px;">
+                 <div class="row">
+                   <div class="col-md-12">
+  
+                     <img [src]="photoUrl" alt="" style="width:35%; border-radius: 200px" id="photoProfile" (click)="triggerUpload()">
+  
+  
+                       <!-- <h5 class="adafri-police text-white" style="margin-top: 60px">Bienvenue</h5>
+                                           <h5 class="adafri-police text-white" style="margin-top: 20px">{{email}}</h5> -->
+  
+  
+  
+  
+  
+                   </div>
+  
                  </div>
-
-               </div>
-               <br>
-               <br>
-               <div class="row">
-                <div class="col-md-12">
-                  <div class="text-center justify-content-between">
-
-
-                            <img class='img-responsive animated pulse fast infinite d-none d-md-block' style="border-radius: 400px;  position: absolute; left: -100px" src="assets/img/images/play.png" (click)="go()">
-                             <img class='img-responsive animated pulse fast infinite d-md-none d-sm-block' style="border-radius: 400px;" src="assets/img/images/play.png" (click)="go()">
-
-
-
+                 <br>
+                 <br>
+                 <div class="row">
+                  <div class="col-md-12">
+                    <div class="text-center justify-content-between">
+  
+  
+                              <img class='img-responsive animated pulse fast infinite d-none d-md-block' style="border-radius: 400px;  position: absolute; left: -100px" src="assets/img/images/play.png" (click)="go()">
+                               <img class='img-responsive animated pulse fast infinite d-md-none d-sm-block' style="border-radius: 400px;" src="assets/img/images/play.png" (click)="go()">
+  
+  
+  
+           </div>
+                  </div>
+  
+                 </div>
+             </div>
+             </div>
+  
+  
+  
+  
+             </div>
+  
          </div>
-                </div>
-
-               </div>
-           </div>
-           </div>
-
-
+      <!-- #primary -->
+  </main>
+  
+  </ng-template>
+  
 
 
-           </div>
 
-       </div>
-    <!-- #primary -->
-</main>
 
-</ng-template>
 
 <div class="paper-card p-0 white" *ngIf="!(auth.user | async); else isConnected">
     <mat-toolbar>
@@ -206,6 +212,16 @@
          <tr>
           <td> <button mat-raised-button class="white r-20 adafri" type="submit" *ngIf="!progressBarLogin">Connexion</button><mat-spinner [diameter]="20" color="primary" class="d-inline-block" *ngIf="progressBarLogin"></mat-spinner></td>
         </tr>
+        <br>
+        <button class="btn"> 
+            <a class="adafri-background text-white"  (click)="openDialog()">Mot de passe oublie?</a>
+        </button>
+
+        <button class="btn"> 
+            <a class="adafri-background text-white"  (click)="openDialogusername()">change username?</a>
+        </button>
+            
+          
         <!--  <tr style="margin-top: 20px">
           <td><p class="text-divider" style="margin-top: 10px"><span class="adafri-background text-white">Ou</span></p></td>
         </tr>
@@ -330,3 +346,139 @@ Nous optimisons vos emplacements et vos enchères en fonction de la demande jour
 
 <input type="file" (change)="upload($event)" accept=".png,.jpg" class="d-none" id="file">
 <div class="control-sidebar-bg shadow white fixed"></div>
+
+<ol>
+  <li>
+    <mat-form-field>
+      <input matInput  name="animal"  [(ngModel)]="this.getemail.email" placeholder="entrez votre mail">
+    </mat-form-field>
+  </li>
+  <!-- <li>
+    <button mat-raised-button (click)="openDialog()">Pick one</button>
+  </li> -->
+  <!-- <li *ngIf="animal">
+    You chose: <i>{{animal}}</i>
+  </li> -->
+</ol>
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Mail Verification</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+     
+      
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-primary" (click)=" logout()">fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- for connexion -->
+<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Mail Verification</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body ">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-md-6 offset-md-3">
+                    <br><br><br>
+                      <img src="assets/img/images/newlogo.png" alt="" width="450px;">
+
+                  </div>
+                  
+                </div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <h1 class="text-center adafri-police-14">veuillez validez votre compte <br> Le lien de vaidation vous a ete envoye.</h1>
+
+  
+                    </div>
+                    
+                  </div>
+
+          </div>
+         
+          .
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+          <button type="button"   class="btn btn-primary" (click)=" logout()">fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- modal for reseting a password -->
+
+
+  
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+      <div class="modal-body">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-md-6 offset-md-3">
+                    <br><br><br>
+                      <img src="assets/img/adafri.png" alt="" width="450px;">
+
+                  </div>
+                  
+              </div>
+              <div class="row">
+                  <div class=" col-md-8 offset-md-2">
+                    <form>
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Veuillez entrez votre mail:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="email" [(ngModel)]="this.getemail.email">
+                      </div>
+                    <!-- <div class="form-group">
+                      <label for="message-text" class="col-form-label">Message:</label>
+                      <textarea class="form-control" id="message-text"></textarea>
+                    </div> -->
+                     
+                    </form>
+                </div>
+              </div>
+              <div class="row">
+                
+                <div class="col-md-8 offset-md-4">
+                  
+                        <button type="button" class="adafri-background text-white r-20 mat-stroked-button ng-star-inserted" (click)="resetPassword()">Reinitialiser</button>
+                </div>
+              </div>
+              
+          </div>
+
+        
+       
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+

@@ -62,21 +62,23 @@ export class NotesService implements OnInit {
   
   }
 
-  campaignVerification(user_id: string, name: string) {
-     return new Promise(resolve => {
-      setTimeout(() => {
-        this.afs.collection('notes', (ref) => ref.where('owner', '==', `${user_id}`).where('name', '==', `${name}`)).snapshotChanges().subscribe(data => {
+campaignVerification(user_id: string, name: string):Promise<number> {
+  
+       return new Promise(resolve => {
+    
+        this.afs.collection('notes', (ref) => ref.where('owner', '==', `${user_id}`).where('name', '==', `${name}`)).valueChanges().subscribe(data => {
           this.item = data
           resolve(data.length)
       })
-      }, 2000);
+     
     });
+  
   }
 
 
 
     
-  async addNewCampaign(email: string, user_id: string, name: string): Promise<any> {
+  async addNewCampaign(email: string, user_id: string, name: string, url: string): Promise<any> {
  
     return await new Promise(resolve => {
       this.campaignVerification(user_id, name).then(value => {
@@ -97,7 +99,7 @@ export class NotesService implements OnInit {
           if (res['status'] == "ok") {
             ////console.log(res)
             ////console.log(res['startDateFrench'])
-              this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res=>{
+              this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId'], url).then(res=>{
             Swal.fire({
               html: '<span class="adafri-police-16">Félicitations <span class="adafri adafri-police-16 font-weight-bold" >'+ this.currentUser+'</span> la campagne <span class="adafri adafri-police-16 font-weight-bold" >'+ name+'</span> a été ajoutée</span>',
              
@@ -180,18 +182,13 @@ export class NotesService implements OnInit {
   }
 
   
-  
-  async addCampaign(email: string, user_id: string, name: string): Promise<any> {
- 
-    return await new Promise(resolve => {
-      this.campaignVerification(user_id, name).then(value => {
-      ////console.log(`promise result: ${value}`)
-
-      if (`${value}` == '0') {
-        
-        this.http.post(SERVER_URL+'/addCampaign', {
+  newCampaign(email: string,  name: string, startDate: any, endDate: any, url: string): Promise<any>{
+    return new Promise(resolve => {
+              this.http.post(SERVER_URL+'/addCampaign', {
        'email': email,
-       'campaign_name': name
+                'campaign_name': name,
+                'startDate': startDate,
+       'endDate': endDate
     })
       .subscribe(
         res => {
@@ -200,28 +197,24 @@ export class NotesService implements OnInit {
           if (res['status'] == "ok") {
         
             ////console.log(res['startDateFrench'])
-            this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res1 => {
+            this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId'], url).then(res1 => {
               if (res1 == "ok") {
-                //console.log('from campaign service')
-                //console.log("campaign created with name "+ name)
-                //console.log(res)
-                //console.log(res["id"])
-                //console.log(user_id)
+        
                      this.PromiseGetCampaignSanpchot(res['id'].toString(), name).then(single => {
-                //console.log('getting single campaign credentials')
-                //console.log(single)
+          
                 var response = []
                 response.push({
                   "id": single['id'],
                   "campaign_id": res['id']
                 })
-                //console.log(response)
+     
                 resolve(response)
       
                 })
               }
          })
           } else {
+            console.log(res)
              Swal.fire({
           title: 'Ajouter une nouvelle campagne',
           text: 'Erreur Service',
@@ -243,6 +236,7 @@ export class NotesService implements OnInit {
           
         },
         err => {
+         
           Swal.fire({
           title: 'Ajouter une nouvelle campagne',
           text: 'Erreur Service',
@@ -261,6 +255,18 @@ export class NotesService implements OnInit {
           })
         }
       );
+    })
+  }
+  
+  async addCampaign(email: string, user_id: string, name: string): Promise<any> {
+ 
+    return await new Promise(resolve => {
+/*       this.campaignVerification(user_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+
+      if (`${value}` == '0') {
+        
+
 
       } else{
         Swal.fire({
@@ -281,7 +287,7 @@ export class NotesService implements OnInit {
           })
         
       }
-    })
+    }) */
     })
    
   } 
@@ -396,12 +402,12 @@ export class NotesService implements OnInit {
       return new Promise(resolve => {
       this.getCampaignZones(campaign_id, name).then(value => {
       ////console.log(`promise result: ${value}`)
-
+        console.log(location)
       
         
         this.http.post(SERVER_URL+'/targetLocation', {
        'campaign_id': campaign_id,
-       'location_id': location[0].item_id
+       'location_id': location.item_id
     })
       .subscribe(
         res => {
@@ -446,6 +452,341 @@ export class NotesService implements OnInit {
     })
     })
    
+  }
+
+
+      adsSchedule(id: string, campaign_id: string, name: string, schedule: any): Promise<any> {
+ 
+      return new Promise(resolve => {
+      this.getCampaignSchedules(campaign_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+
+      
+        
+        this.http.post(SERVER_URL+'/adsShedule', {
+       'campaign_id': campaign_id,
+       'schedule': schedule
+    })
+      .subscribe(
+        res => {
+          ////console.log(`res from location backend: ${res}`)
+          if(res!==undefined){
+            console.log(res)
+            console.log(schedule)
+            console.log(id)
+             this.updateNote(id, { adsSchedules: schedule, adsSchedulesCriterion: res }).then(res => {
+            if (res == "ok") {
+              resolve('ok')
+            }
+          })
+          }
+        },
+        err => {
+          Swal.fire({
+          title: 'Heure de diffusion',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+                 resolve('ok')
+            }else{
+   resolve('ok')
+            }
+          })
+        }
+      );
+
+  
+    })
+    })
+   
+  }
+
+    modifyAdsSchedule(id: string, campaign_id: string, name: string, schedule: any, last_criterion: string): Promise<any> {
+ 
+      return new Promise(resolve => {
+      this.getCampaignSchedulesCriterion(campaign_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+      
+        if (value !== null) {
+        var last_schedule = value
+      console.log(last_criterion)
+          console.log(last_schedule[0])
+          console.log(last_schedule[1])
+          console.log(schedule)
+        
+          console.log(last_schedule)
+        
+        this.http.post(SERVER_URL+'/updateAdsShedule', {
+       'campaign_id': campaign_id,
+          'schedule': schedule,
+       'last_criterion': last_criterion
+    })
+      .subscribe(
+        res => {
+          ////console.log(`res from location backend: ${res}`)
+          if(res[0]['status']==="ok"){
+            console.log(res)
+            console.log(schedule)
+            console.log(id)
+            this.scheduleReplace(value, last_criterion).then(replace => { 
+              if (replace[0]['status'] === "ok") {
+                var data = replace[0]['data']
+                console.log(res[0])
+                data.push(res[0])
+                console.log(data)
+                this.updateNote(id, { adsSchedules: data, adsSchedulesCriterion: data }).then(update => {
+               if (update == "ok") {
+                 resolve('ok')
+               }
+             })
+                
+              }
+            })
+          }
+        },
+        err => {
+          Swal.fire({
+          title: 'Heure de diffusion',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value) {
+                 resolve('ok')
+            }else{
+                resolve('ok')
+            }
+          })
+        }
+      ); 
+
+     }
+  
+    })
+    })
+   
+  }
+
+      AddAdsSchedule(id: string, campaign_id: string, name: string, schedule: any): Promise<any> {
+ 
+      return new Promise(resolve => {
+      this.getCampaignSchedulesCriterion(campaign_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+      
+        if (value !== null) {
+        var last_schedule = value
+ 
+          console.log(last_schedule[0])
+          console.log(last_schedule[1])
+          console.log(schedule)
+        
+          console.log(last_schedule)
+        
+        this.http.post(SERVER_URL+'/adsShedule', {
+       'campaign_id': campaign_id,
+          'schedule': schedule,
+    
+    })
+      .subscribe(
+        res => {
+          ////console.log(`res from location backend: ${res}`)
+          if(res!==undefined){
+            console.log(res)
+            console.log(schedule)
+            console.log(id)
+            console.log(last_schedule.concat(res[0]))
+            if (value.length > 0) {
+              this.updateNote(id, { adsSchedules: last_schedule.concat(res[0]), adsSchedulesCriterion: last_schedule.concat(res[0]) }).then(update => {
+                 if (update === "ok") {
+                   resolve('ok')
+                 }
+               })
+              
+            } else {
+                 this.updateNote(id, { adsSchedules: res, adsSchedulesCriterion: res}).then(update => {
+                 if (update === "ok") {
+                   resolve('ok')
+                 }
+               })
+            }
+          }
+        },
+        err => {
+          Swal.fire({
+          title: 'Heure de diffusion',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value) {
+                 resolve('ok')
+            }else{
+                resolve('ok')
+            }
+          })
+        }
+      ); 
+
+     }
+  
+    })
+    })
+   
+  }
+
+      removeAdsSchedule(id: string, campaign_id: string, name: string): Promise<any> {
+ 
+      return new Promise(resolve => {
+      this.getCampaignSchedulesCriterion(campaign_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+      
+        if (value !== null) {
+        var last_schedule = value
+    
+          console.log(last_schedule[0])
+          console.log(last_schedule[1])
+         
+        
+          console.log(last_schedule)
+        
+        this.http.post(SERVER_URL+'/removeAdsSchedule', {
+       'campaign_id': campaign_id,
+          'schedule': value,
+    })
+      .subscribe(
+        res => {
+          ////console.log(`res from location backend: ${res}`)
+          if (res[0]['status'] === "ok") {
+              this.updateNote(id, { adsSchedules: [], adsSchedulesCriterion: []}).then(update => {
+                 if (update === "ok") {
+                   resolve('ok')
+                 }
+               })
+        
+            
+          }
+        },
+        err => {
+          Swal.fire({
+          title: 'Heure de diffusion',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){
+              resolve("ok")
+            }else{
+              resolve("ok")
+            }
+          })
+        }
+      ); 
+
+     }
+  
+    })
+    })
+   
+  }
+
+    removeSingleAdsSchedule(id: string, campaign_id: string, name: string, schedule: any): Promise<any> {
+ 
+      return new Promise(resolve => {
+      this.getCampaignSchedulesCriterion(campaign_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+      
+        if (value !== null) {
+        var last_schedule = value
+    
+          console.log(last_schedule[0])
+          console.log(last_schedule[1])
+         var updated_schedule = []
+        
+          console.log(last_schedule)
+        
+        this.http.post(SERVER_URL+'/removeSingleAdsSchedule', {
+       'campaign_id': campaign_id,
+          'schedule': schedule,
+    })
+      .subscribe(
+        res => {
+          ////console.log(`res from location backend: ${res}`)
+          if (res[0]['status'] === "ok") {
+               this.scheduleReplace(last_schedule, schedule[0]['criterion_id']).then(replace => { 
+              if (replace[0]['status'] === "ok") {
+                var data = replace[0]['data']
+                updated_schedule.push(data)
+                this.updateNote(id, { adsSchedules: data, adsSchedulesCriterion: data }).then(update => {
+               if (update == "ok") {
+                 resolve('ok')
+               }
+             })
+                
+              }
+            })
+        
+            
+          }
+        },
+        err => {
+          Swal.fire({
+          title: 'Heure de diffusion',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){
+              resolve("ok")
+            }else{
+              resolve("ok")
+            }
+          })
+        }
+      ); 
+
+     }
+  
+    })
+    })
+   
+  }
+  scheduleReplace(last_schedule:any, last_criterion: any):Promise<any>{
+    return new Promise(resolve => {
+      var data = []
+       for (var i = 0; i < last_schedule.length; i++){
+              if (last_schedule[i]['criterion_id'].toString() === last_criterion.toString()) {
+                last_schedule.splice(i, 1); 
+                data.push({
+                  "status": "ok",
+               "data": last_schedule    
+                })
+                 resolve(data)
+              }
+      }
+     
+    })
   }
   getListCampaign(uid: any) {
    
@@ -615,6 +956,28 @@ export class NotesService implements OnInit {
           resolve(el[0]['zones'])
         })
       }, 2000);
+    });
+  }
+    getCampaignSchedules(campaign_id: string, name: string) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
+            ////console.log(el[0]['zones'])
+          resolve(el[0]['adsSchedules'])
+        })
+      }, 2000);
+    });
+  }
+
+    getCampaignSchedulesCriterion(campaign_id: string, name: string) :Promise<any>{
+    return new Promise(resolve => {
+     this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
+            ////console.log(el[0]['zones'])
+       console.log('schedule')
+       console.log(el[0]['adsSchedulesCriterion'])
+          resolve(el[0]['adsSchedulesCriterion'])
+        })
     });
   }
   
@@ -799,7 +1162,7 @@ parseDate(str) {
     return Math.round((second-first)/(1000*60*60*24));
  }
 
-  prepareSaveCampaign(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string, budgetId: any): Note {
+  prepareSaveCampaign(id: any, name: string, status: string, startDate: string, endDate: string, startDateFrench: string, endDateFrench: string, servingStatus: string, budgetId: any, url: string): Note {
     
     const userDoc = this.afs.doc(`users/${this.uid}`);
       const newCampaign = {
@@ -816,7 +1179,9 @@ parseDate(str) {
         budget: 0, 
         dailyBudget: 0,
         numberOfDays: this.datediff(this.parseDate(startDateFrench), this.parseDate(endDateFrench)),
-      budgetId: budgetId,
+        budgetId: budgetId,
+        ad_group_id_firebase: "",
+      ad_group_id: 0,
         zones: [],
        ages: [],
       sexes: [],
@@ -826,9 +1191,12 @@ parseDate(str) {
     criterion_sexes: [],
     criterion_devices: [],
         criterion_placement: [],
+        adsSchedules: [],
+        adsSchedulesCriterion: [],
         impressions: 0,
         clicks: 0,
         costs: 0,
+        finalUrl: url,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: userDoc.ref,
       owner: this.uid,  
@@ -862,10 +1230,11 @@ parseDate(str) {
       return this.getNote(id).update(data);
   }
 
-  async createCampaign(id_campagne: any, name: string, status: string, startDate: string,endDate: string, startDateFrench: string, endDateFrench: string, servingSatus: string, budgetId: any): Promise<any> {
+  async createCampaign(id_campagne: any, name: string, status: string, startDate: string,endDate: string, startDateFrench: string, endDateFrench: string, servingSatus: string, budgetId: any, url): Promise<any> {
     return await new Promise(resolve => {
-      this.note = this.prepareSaveCampaign(id_campagne, name, status, startDate, endDate, startDateFrench, endDateFrench, servingSatus, budgetId);
+      this.note = this.prepareSaveCampaign(id_campagne, name, status, startDate, endDate, startDateFrench, endDateFrench, servingSatus, budgetId, url);
       const docRef = this.notesCollection.add(this.note);
+    
       resolve("ok")
       
     })

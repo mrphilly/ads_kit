@@ -1,0 +1,36 @@
+  <mat-card class="profile-card adafri-background">
+  <header>
+
+    <a target="_blank" href="#">
+      <img [src]="photoURL" class="hoverZoomLink">
+    </a>
+
+    <h1>
+            {{username}}
+          </h1>
+    <h2>
+            {{email}}
+          </h2>
+
+  </header>
+  
+ <mat-card-actions>
+   <!--   <div class="example-button-row text-center">
+  <button mat-stroked-button  class="d-inline-block adafri r-20 box-shadow-none" (click)="openDialogusername()">Modifier le nom d'utilisateur</button>
+<br>
+<br>
+   <button mat-stroked-button  class="d-inline-block adafri r-20 box-shadow-none" (click)="openDialogusername()">Modifier le mot de passe</button>
+</div> -->
+<ul class="profile-social-links">
+    <li>
+      <button mat-button>Modifier le nom d'utilisateur</button>
+      
+    </li>
+    <li>
+        <button mat-button>Modifier le mot de passe</button>
+      
+    </li>
+    
+  </ul>
+ </mat-card-actions>
+</mat-card>

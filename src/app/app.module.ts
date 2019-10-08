@@ -41,7 +41,8 @@ import { NotesModule } from './app_core/notes/notes.module';
 import { UiModule } from './app_core/ui/ui.module';
  import { NgNetworkStatusModule } from 'ng-network-status'; // <-- HERE
 
-import {FIREBASE_CREDENTIALS} from '../environments/environment'
+import {FIREBASE_CREDENTIALS} from '../environments/environment';
+
 
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, TimeSeries);
@@ -64,6 +65,7 @@ firebase.initializeApp(FIREBASE_CREDENTIALS)
 @NgModule({
   declarations: [
     AppComponent,
+ 
   
 
     

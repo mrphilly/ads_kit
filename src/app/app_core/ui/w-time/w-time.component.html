@@ -1,0 +1,36 @@
+<mat-card class="w-time box-shadow-none" >
+    <mat-card-header class="adafri-background text-center">
+        <div class="w-timepicker-selected-time">
+          <span [class]="currentView === VIEW_HOURS ? 'active': ''" (click)="setCurrentView(VIEW_HOURS)">{{ formatHour() }}:</span>
+          <span [class]="currentView === VIEW_MINUTES ? 'active': ''" (click)="setCurrentView(VIEW_MINUTES)">{{ formatMinute() }}</span>
+      </div>
+      <div   class="w-timepicker-selected-ampm" *ngIf="userTime.format === 12" style="position: absolute;
+    right: 0;
+    left: 55%;
+    display: flex;
+    flex-direction: column;">
+          <span (click)="setMeridien('AM')" [class]="userTime.meriden === 'AM' ? 'active' : ''">AM</span>
+          <span (click)="setMeridien('PM')" [class]="userTime.meriden === 'PM' ? 'active' : ''">PM</span>
+      </div>
+    </mat-card-header>
+  <!-- mat-toolbar [color]="color" class="fixed text-center w-timepicker-time-container" style="height: max-content;width: max-content">
+      
+      
+
+  </mat-toolbar> -->
+
+<mat-card-content class="p-0">
+<w-clock [color]="color" class="w-animation-zoom" [userTime]="userTime" (userTimeChange)="emituserTimeChange($event)" [(currentView)]="currentView" (viewChange)="setCurrentView($event)" style="margin-top: 90px;"></w-clock>
+</mat-card-content>
+<mat-card-actions class="p-0">
+<button mat-button (click)="revert()">{{revertLabel}}</button>
+          <button mat-button [color]="color" (click)="submit()">{{submitLabel}}</button>
+</mat-card-actions>
+ <!--  <div  class="w-time-content">
+      
+
+      <div >
+          
+      </div>
+  </div> -->
+</mat-card>

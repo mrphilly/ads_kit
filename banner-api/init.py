@@ -53,7 +53,9 @@ from ads_scripts.targeting.target_age_level_campaign import TargetAgeLevelCampai
 from ads_scripts.targeting.remove_single_placemnet import RemoveSinglePlacement
 from ads_scripts.reporting.download_criteria_report_with_awql import get_campaign_report_performance
 from ads_scripts.campaign_management.get_all_disapproved_ads import getPolicySummurry
-
+from ads_scripts.targeting.target_adshedule import AdShedule
+from ads_scripts.targeting.update_adshedule import UpdateAdShedule
+from ads_scripts.targeting.delete_adshedule import DeleteAllAdShedule
 import pyrebase
 config = {
       "apiKey": "AIzaSyC_cYQskL_dKhkt-aQ1ayHt8ia2NQYEHTs",
@@ -395,7 +397,18 @@ def updateCampaignEndDate():
     update = UpdateCampaignEndDate(adwords_client, campaign_id, endDate)
     return jsonify(update)
 
-
+@app.route("/updateCampaignStatus", methods=["POST"])
+def updateCamapaignStatus():
+    response = []
+    campaign_id = request.json['campaign_id']
+    status = request.json['status']
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    update = UpdateCampaignStatus(adwords_client, campaign_id, status)
+    response.append({
+                "id": update[0]['id'],
+                "status": update[0]['status'],
+    })
+    return jsonify(response)
 
 @app.route("/updateCampaign", methods=["POST"])
 def updateCampaign():
@@ -445,8 +458,16 @@ def campagne():
     try:
         name = request.json['campaign_name']
         email = request.json['email']
+        startDate = request.json['startDate']
+        endDate = request.json['endDate']
         adwords_client = adwords.AdWordsClient.LoadFromStorage("./googleads.yaml")
-        campagne = add_campaign(adwords_client, name + " " + email)
+        print(name)
+        print(email)
+        print(startDate)
+        print(endDate)
+        #print(add_campaign(adwords_client, name + " " + email, startDate, endDate))
+        campagne = add_campaign(adwords_client, name + " " + email, startDate, endDate)
+        print(campagne)
        
         response = {
                 "status": "ok",
@@ -529,8 +550,9 @@ def deleteAdGroup():
 def targetAge():
     print(request.json['ages'])
     print(request.json['last_ages'])
-    ad_group_id_ = ''.join(request.json['ad_group_id']),
-    ad_group_id = ''.join(ad_group_id_)
+    #ad_group_id_ = ''.join(request.json['ad_group_id']),
+    #ad_group_id = ''.join(ad_group_id_)
+    ad_group_id = request.json['ad_group_id']
     request_ages = request.json['ages']
     request_last_ages = request.json['last_ages']
     ages = []
@@ -567,8 +589,9 @@ def targetGender():
     target = []
     print(request.json['sexes'])
     print(request.json['last_genre'])
-    ad_group_id_ = ''.join(request.json['ad_group_id']),
-    ad_group_id = ''.join(ad_group_id_)
+    #ad_group_id_ = ''.join(request.json['ad_group_id']),
+    #ad_group_id = ''.join(ad_group_id_)
+    ad_group_id = request.json['ad_group_id']
     request_sexes = request.json['sexes']
     request_last_genre = request.json['last_genre']
     sexes = []
@@ -621,6 +644,32 @@ def targetLocation():
     location = TargetLocation(adwords_client, campaign_id, location)
     return jsonify(location)
 
+@app.route("/adsShedule", methods=["POST"])
+def adsSheduleTarget():
+    campaign_id = request.json['campaign_id']
+    schedule = request.json['schedule']
+    
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    schedule_result = AdShedule(adwords_client, campaign_id, schedule)
+    return jsonify(schedule_result)
+
+@app.route("/removeAdsSchedule", methods=["POST"])
+def removeAdsSheduleTarget():
+    campaign_id = request.json['campaign_id']
+    schedule = request.json['schedule']
+    
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    remove = DeleteAllAdShedule(adwords_client, campaign_id, schedule)
+    return jsonify(remove)
+
+@app.route("/removeSingleAdsSchedule", methods=["POST"])
+def removeSingleAdsSheduleTarget():
+    campaign_id = request.json['campaign_id']
+    schedule = request.json['schedule']
+    
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    remove = DeleteAllAdShedule(adwords_client, campaign_id, schedule)
+    return jsonify(remove)
 
 @app.route("/setPlacement", methods=["POST"])
 def setPlacement():
@@ -632,6 +681,20 @@ def setPlacement():
     adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     placement = SetPlacement(adwords_client, ad_group_id, placement, last_placement)
     return jsonify(placement)
+
+
+@app.route("/updateAdsShedule", methods=["POST"])
+def updateAdsSheduleTarget():
+    campaign_id = request.json['campaign_id']
+    schedule = request.json['schedule']
+    last_criterion = request.json['last_criterion']
+    print(schedule)
+    print(last_criterion)
+    adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
+    update_schedule_result = UpdateAdShedule(adwords_client, campaign_id, schedule, last_criterion)
+    return jsonify(update_schedule_result)
+
+
 
 
 @app.route("/targetDevices", methods=["POST"])
@@ -735,10 +798,11 @@ def makeAds():
                 final = ""            
               
             #try:
+                campagne = []
                 adwords_client = adwords.AdWordsClient.LoadFromStorage("./googleads.yaml")
                 CAMPAIGN = get_campaign_with_email(adwords_client, TAB[0]['email'])
                 if CAMPAIGN == []:
-                    campagne = add_campaign(adwords_client, TAB[0]['email'])
+                    #campagne = add_campaign(adwords_client, TAB[0]['email'])
                     groupe_annonce = add_ad_groups(adwords_client, campagne[0]['id'], campagne[0]['name'])
                     add_responsive_display_ad(adwords_client, str(groupe_annonce[0]['id']), TAB[0]['img'], TAB[0]['titre'], TAB[0]['description'], "Comparateur")
                     
@@ -974,9 +1038,9 @@ def rechargeAmount(money=None, key=None, redirect=None):
 
 @app.route('/rechargeAmountBeforeBudget',  methods=['POST'])
 
-@app.route('/rechargeAmountBeforeBudget/<money>/<idC>/<redirect>', methods=['POST'])
+@app.route('/rechargeAmountBeforeBudget/<money>/<id>/<campaign_name>/<idC>/<redirect>', methods=['POST'])
 
-def rechargeAmountBeforeBudget(money=None, idC=None, redirect=None):
+def rechargeAmountBeforeBudget(money=None, id=None, campaign_name=None, idC=None, redirect=None):
         """
         Get payexpress token
         """
@@ -985,7 +1049,7 @@ def rechargeAmountBeforeBudget(money=None, idC=None, redirect=None):
      
         url = 'https://payexpresse.com/api/payment/request-payment'
         cancel_url = "http://www.google.com"
-        success_url = REDIRECT_HTTPS+redirect+"/#/success_budget/"+idC
+        success_url = REDIRECT_HTTPS+redirect+"/#/edit/"+campaign_name+"/"+idC+"/"+id+"/success"
         #cancel_url = "http://0.0.0.0:5009"
         #success_url = "http://0.0.0.0:5009/?pay=ok"
 

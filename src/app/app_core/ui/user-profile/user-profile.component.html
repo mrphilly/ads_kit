@@ -3,7 +3,7 @@
 <!-- User NOT logged in -->
 
 
-  <!-- h3>Howdy, GUEST</h3>
+  <!-- h6>Howdy, GUEST</h6>
   <p class="card-text">Login to get started...</p>
   <button class="button" routerLink="/login">Login</button>
 </ng-template>
@@ -11,7 +11,7 @@
 
 <ng-template #authenticated>
   <div *ngIf="auth.user | async as user">
-    <h3>Howdy, {{ user.displayName }}</h3>
+    <h6>Howdy, {{ user.displayName }}</h6>
     <img class="card-img-top" [src]="user.photoURL || 'https://api.adorable.io/avatars/109/fire.png'" style="width: 100px; height: 100px; border-radius: 400px">
     <p class="text-truncate">UID: {{ user.uid }}</p>
     <button class="button" (click)="logout()">Logout</button>
@@ -21,112 +21,34 @@
 
 
     <!--navbar-->
-
-<mat-drawer-container
-    class="example-container height-full p-0">
-  <mat-drawer mode="side" #matDrawer opened="opened" class="adafri-background height-full p-0 text-center" style="width: max-content" >
-   
-    <mat-icon class="d-inline-block text-black" style="margin-top: 30px">menu</mat-icon>
-    <div style="width: max-content; margin-top: 50px">
-<mat-list style="margin-top: 20%" class="p-0" >
-
-  <mat-list-item matLine *ngFor="let menuItem of modulesList" class="p-0" #button class="adafri-background text-black box-shadow-none " style="cursor: pointer" (click)="buttonEnter(levelOneTrigger, menuItem.id)" [matMenuTriggerFor]="levelOne" #levelOneTrigger="matMenuTrigger" [id]="menuItem.id">
-     <mat-icon class="text-black">{{menuItem.icon}}</mat-icon>
-     <mat-menu #levelOne="matMenu" direction="right" xPosition="before" class="adafri-background p-0 max-width-menu adafri">
-   <!--     <mat-list>
-  <mat-list-item (mouseenter)="menuenter()" (mouseleave)="menuLeave(levelOneTrigger, button)">
-    <mat-icon>{{childL1.icon}}</mat-icon>
-  </mat-list-item>
-</mat-list> -->
-
-      <span (mouseenter)="menuenter()" (mouseleave)="menuLeave(levelOneTrigger, button)">
-      <ng-container *ngFor="let childL1 of menuItem.children">
-         <button mat-menu-item *ngIf="!childL1.children" (click)="actionClicked(childL1.action)">  <mat-icon>{{childL1.icon}}</mat-icon>
-           <span class="adafri-police-14">{{childL1.label}}</span></button>
-        <ng-container *ngIf="childL1.children && childL1.children.length > 0">
-          <li mat-menu-item #levelTwoTrigger="matMenuTrigger" [matMenuTriggerFor]="levelTwo">
-            <span class="icon fa" [ngClass]="childL1.icon"></span>
-            <span>{{childL1.label}}</span>
-          </li>
-
-          <mat-menu #levelTwo="matMenu">
-            <span (mouseenter)="menu2enter()" (mouseleave)="menu2Leave(levelOneTrigger,levelTwoTrigger, button)">
-            <ng-container *ngFor="let childL2 of childL1.children">
-              <li class="p-0" mat-menu-item>
-                <a class="nav-link">{{childL2.label}}
-                  <i *ngIf="childL2.icon" [ngClass]="childL2.icon"></i>
-                </a>
-              </li>
-            </ng-container>
-            </span>
-          </mat-menu>
-        </ng-container>
-      </ng-container>
-      </span>
-    </mat-menu>
-  </mat-list-item>
-
-</mat-list>
-    </div>
-
-  </mat-drawer>
-
-    <mat-drawer-content class="progress-width height-full">
-      <div class="sticky mat-elevation-z4">
+                <div class="sticky mat-elevation-z4">
         <!-- <div class="navbar navbar-expand d-flex justify-content-between bd-navbar green lighten-3 shadow">
              -->
              <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white" style="height: 70px">
 
+                  <!--   <button mat-mini-fab  class="white box-shadow-none" (click)="openMenuLabel()">
+     <mat-icon class="d-inline-block text-black">menu</mat-icon>
 
-
-                  <img class="d-none d-md-block " src="assets/img/images/newlogo.png" style="width: 15%" (click)="go()">
+   </button> -->
+ 
+                  <img class="d-none d-md-block " src="assets/img/images/newlogo.png" style="width: 15%;" (click)="go()">
                   <img class="d-md-none d-sm-block" src="assets/img/images/newlogo.png" style="width: 20%;" (click)="go()">
 
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
-        <li  style="margin-top: 15px; cursor: pointer" class="d-none d-md-block">
-           <button mat-button mat class="adafri"><mat-icon>add</mat-icon>Nouvelle campagne</button>
-        </li>
-         <li style="margin-top: 3px">
-            <a class="nav-link adafri-police-16 font-weight-bold" title="Argent disponible dans votre compte">
-                <i class="icon-money-bag"></i> {{accountValue}} CFA
-            </a>
-        </li>
-         <li class="dropdown custom-dropdown notifications-menu" style="margin-top: 5px">
-            <a href="#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
-                <i class="icon-notifications_none text-black-50"></i>
-                <span class="badge adafri-background badge-mini rounded-circle text-white">{{numberOfNotifications}}</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right">
-                <li class="header">Vous avez {{numberOfNotifications}} notification(s)</li>
-                <li>
-
-                    <ul class="menu no-b">
-                        <li class="no-b white text-center">
-
-                              <a href="#" *ngIf="accountValue !==0">
-                                <i class="icon icon-data_usage text-danger"></i>Aucune Notification pour le moment
-                            </a>
-                           <a class="adafri-police-12 text-danger" *ngIf="accountValue ===0">
-                                <i class="icon icon-data_usage text-danger"></i>Votre solde est vide
-                            </a>
-
-                              <button mat-raised-button class="adafri-background text-white" data-toggle="modal" data-target="#modalRechargement">Charger mon compte</button>
-
-                        </li>
-                        <li class="no-b white text-center">
-
-                        </li>
-
-
-                    </ul>
-                </li>
-
-            </ul>
-        </li>
-
-        <button mat-button [matMenuTriggerFor]="userMenu" style="box-shadow: none; box-sizing: none">  <figure class="avatar">
-                  <img [src]='photoURL'>
+        
+          <button mat-raised-button class="adafri-background text-white r-20 box-shadow-none d-none d-md-block"(click)="toggleCreateCampaign()"><mat-icon>add</mat-icon>Nouvelle campagne</button>
+            <button mat-raised-button class="white box-shadow-none" style="margin-top: -5px" disableRipple="true">
+          <img src="assets/img/images/coins.svg" style="width: 24px; height: 24px">  {{accountValue}} CFA
+        </button>
+         
+        
+           <button mat-mini-fab class="white box-shadow-none" style="margin-top: -5px">
+             <span class="badge adafri-background badge-mini rounded-circle text-white">{{numberOfNotifications}}</span>
+              <img src="assets/img/images/bell.svg" style="width: 24px; height: 24px">
+            </button>
+        <button mat-button [matMenuTriggerFor]="userMenu" style="box-shadow: none; box-sizing: none; margin-top: -5px" class="d-none d-md-block">{{email}}  <figure class="avatar">
+                  <img [src]='photoURL' style="position: absolute; top: 0; bottom: 0">
                 </figure></button>
 <mat-menu #userMenu="matMenu" class="adafri-background">
   <button mat-menu-item (click)="goProfile()">
@@ -135,7 +57,7 @@
   </button>
   <button mat-menu-item (click)="auth.signOut()">
     <mat-icon>subdirectory_arrow_left</mat-icon>
-    <span>DÃ©connexion</span>
+    <span>Déconnexion</span>
   </button>
 
 
@@ -143,42 +65,73 @@
     </ul>
 </div>
         </div>
+        
+        <!--  -->
+      </div>
 
+<mat-drawer-container
+    class="example-container height-full p-0 paper-card background-yellow-adafri">
+    <mat-drawer mode="side" #matDrawer opened="opened" class="fixed adafri-background height-full p-0 text-center" style="width: min-content;" >
+  
+    <div style="width: max-content; margin-top: 100px" class="p-0">
+<mat-list style="margin-top: 30%" class="p-0" >
+
+  <mat-list-item matLine *ngFor="let menuItem of modulesList" class="p-0">
+ <button mat-mini-fab #buttonT class="adafri-background text-white box-shadow-none" style="cursor: pointer" (mouseenter)="buttonEnter(levelOneTrigger, buttonT)"  [matMenuTriggerFor]="levelOne" #levelOneTrigger="matMenuTrigger" [id]="menuItem.id">
+      <mat-icon class="text-white">{{menuItem.icon}}</mat-icon>
+
+    </button>
+
+     <!--  <p mat-line *ngIf="showMenuLabel"> {{menuItem.label}} </p>  -->
+     <mat-menu #levelOne="matMenu" direction="right" xPosition="before" class="adafri-background p-0 max-width-menu adafri" style="z-index: 1000">
+
+      <span (mouseleave)="menuLeave(levelOneTrigger, buttonT)">
+      <ng-container *ngFor="let childL1 of menuItem.children">
+         <button mat-menu-item *ngIf="!childL1.children" (click)="actionClicked(childL1.action)">  <mat-icon class="text-white">{{childL1.icon}}</mat-icon>
+           <span class="adafri-police-14 text-white">{{childL1.label}}</span></button>
+      </ng-container>
+      </span>
+    </mat-menu>
+  </mat-list-item>
+
+</mat-list>
+<button mat-mini-fab [matMenuTriggerFor]="userMenuSide" style="box-shadow: none; box-sizing: none" class="adafri-background d-md-none d-sm-block"><figure class="avatar">
+                  <img [src]='photoURL'>
+                </figure></button>
+<mat-menu #userMenuSide="matMenu" class="adafri-background">
+  <button mat-menu-item (click)="goProfile()">
+    <mat-icon>face</mat-icon>
+    <span>Profile</span>
+  </button>
+  <button mat-menu-item (click)="auth.signOut()">
+    <mat-icon>subdirectory_arrow_left</mat-icon>
+    <span>Déconnexion</span>
+  </button>
+
+
+</mat-menu>
     </div>
+    
+
+  </mat-drawer>
+
+    <mat-drawer-content class="progress-width height-full background-yellow-adafri">
+            
           <div class="paper-card no-b height-full" style="box-shadow: none" *ngIf="profile">
-        <mat-card class="profile-card adafri-background">
-  <header>
-
-    <a target="_blank" href="#">
-      <img [src]="photoURL" class="hoverZoomLink">
-    </a>
-
-    <h1>
-            {{username}}
-          </h1>
-    <h2>
-            {{email}}
-          </h2>
-
-  </header>
- <mat-card-actions>
-     <div class="example-button-row text-center">
-  <button mat-stroked-button  class="d-inline-block adafri r-20 box-shadow-none">Modifier le profile</button>
-</div>
- </mat-card-actions>
-</mat-card>
+      <app-user></app-user>
     </div>
                 <div class="height-full background-yellow-adafri" style="box-shadow: none" *ngIf="listCampaign">
               <div class="paper-card text-center p-0 background-yellow-adafri no-b" style="box-shadow: none">
-               <div class="text-center background-yellow-adafri" style="margin-top: 70px">
- <!-- <img class="img-responsive d-inline-block" src="assets/img/images/banner.jpg"> -->
+               <div class="text-center background-yellow-adafri" style="margin-top: 10%">
+     <img class="img-responsive d-inline-block" src="assets/img/images/digital-campaign.svg" style="width: 100px; height: 100px">
                 <h1>Toutes les campagnes</h1>
               </div> 
-              <div class="paper-card p-10 background-yellow-adafri text-center height-full" style="box-shadow: none">
-                  <div class="example-header d-flex">
+              <div class="paper-card p-10 background-yellow-adafri text-center height-full" style="box-shadow: none;">
+                  <div class="example-header text-center" style="width: 100%">
 
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Rechercher une campagne">
+    <mat-form-field class="d-inline-block">
+      <input matInput (keyup)="applyFilter($event.target.value)" value="Rechercher une campagne" style="font-size: 14px;" (click)="erase()" id="rechercher">
+       <span matPrefix><img src="assets/img/images/search.svg" style="width: 24px; height: 24px">&nbsp;</span>
     </mat-form-field>
 
     <button mat-fab (click)="createNewcampaign()" class="adafri-background text-white d-md-none d-sm-block" matTooltip="Créer une nouvelle campagne" matTooltipPosition="left" style="box-shadow: none">
@@ -219,6 +172,7 @@
       <mat-header-cell *matHeaderCellDef>Campagne</mat-header-cell>
       <mat-cell *matCellDef="let element">
         <span class="adafri-police-14 d-none d-md-block"> {{element.name}}</span>
+    
          <span class="adafri-police-12 d-md-none d-sm-block"> {{element.name}}</span>
         </mat-cell>
     </ng-container>
@@ -259,7 +213,7 @@
              (click)="selection.toggle(row)">
     </mat-row>
   </mat-table>
-  <mat-paginator #paginator
+  <mat-paginator #paginator style="background: whitesmoke"
                  [pageSize]="10"
                  [pageSizeOptions]="[1, 5, 10, 20]"
                  [showFirstLastButtons]="false">
@@ -274,120 +228,9 @@
 
             </div>
             </div>
-          <div class="height-full text-center" *ngIf="createCampaign">
-<div class="menu mat-elevation-z3">
-  <div class="content-scroll p-10">
-    <h4>Créer une campagne</h4>
+          <div class="paper-card p-0 height-full text-center background-yellow-adafri" *ngIf="createCampaign">
+            <app-create-campaign></app-create-campaign>
 
-    <ul>
-      <li *ngFor="let item of items" class="li-scroll">
-        <a (click)="scrollTo(item.id)" [ngClass]="{'focused': item.focus}">{{ item.label }} </a>
-      </li>
-    </ul>
-  </div>
-</div>
-
-<mat-card class="mat-card-scroll d-inline-block">
-  <mat-card-content mccScrollspyGroup="My Scrollspy">
-    <h3 mccScrollspyItem [label]="'Nom'">Nom de la campagne</h3>
-   
-    <div class="col-md-12 white text-center">
-            <form class="example-form" [formGroup]="campaign" (ngSubmit)="verifyCampaign()">
-                <mat-card class="d-inline-block text-center box-shadow-none">
-                <mat-card-content>
-  <mat-form-field class="example-full-width text-black" >
-    <input matInput [(ngModel)]="new_name" placeholder="Nom de la campagne" id="campagne" formControlName="campaign" (keyup)=" removeErrorsCampaign()">
-  </mat-form-field>
-  <br>
-  <span class="text-success">{{message_valid_name}} <span class="mdi mdi-check-decagram text-success" style="font-size: 24px" *ngIf="is_new_name_valid"></span></span>
-  <span class="text-danger">{{message_invalid_name}}</span>
-
-</mat-card-content>
-<mat-card-actions class="text-center">
- 
-     
-     <mat-progress-bar mode="indeterminate" class="teal" *ngIf="progressBarAddCampaign"></mat-progress-bar>
-    <button mat-raised-button class="teal text-white r-20" type="submit"  *ngIf="!progressBarAddCampaign && !is_new_name_valid">Valider le nom</button>
-    <!--  <button mat-raised-button color="warn"  *ngIf="!progressBarAddCampaign" (click)="go()">Retour</button> -->
-</mat-card-actions>
-</mat-card>
-</form>
-          
-        </div>
-
-    <h3 mccScrollspyItem [label]="'Zones ciblées'">Ciblage de zone</h3>
-     <mat-card class="box-shadow-none">
-  
-      <mat-card-content class="text-center">
-      <form [formGroup]="location">
-          <mat-form-field>
-  <mat-select placeholder="Zones"
-             formControlName="zone" [(ngModel)]="zones" required>
-           <!--    <mat-select-trigger>
-       <span *ngIf="zones?.length===1" class="example-additional-selection">
-
-        {{zones[0].item_text}}
-      </span>
-    
-    </mat-select-trigger> -->
- 
-    <mat-option *ngFor="let zone of dropdownListZones" (onSelectionChange)="onZoneSelect($event)" [value]="{'item_id': zone.item_id, 'item_text': zone.item_text}">{{zone.item_text}}</mat-option>
-
-  </mat-select>
-</mat-form-field>
-      </form>
-      </mat-card-content>
-    </mat-card>
-    <h3 mccScrollspyItem>Budget de la campagne</h3>
-    <button mat-button (click)="sendPaymentInfos()">Open Intouch</button>
-
-    <h3 mccScrollspyItem>Terminer</h3>
-    <p>Praesent vel interdum leo. Nulla non massa consequat, fringilla nisi aliquet, vehicula lectus. In ultricies felis in
-      orci aliquet viverra. Curabitur accumsan sapien lacus, quis lacinia elit sollicitudin feugiat. Sed neque leo, auctor
-      vel tempus sit amet, dictum id neque. Nunc quis est sed leo lobortis faucibus in et nulla. Mauris sapien magna, vulputate
-      maximus arcu id, varius sagittis lacus.</p>
-    <p>Ut erat nibh, euismod eu sollicitudin elementum, bibendum eget ipsum. In bibendum urna a nisi placerat vulputate. Praesent
-      hendrerit in urna maximus maximus. Mauris mattis odio non lorem sagittis mollis. Integer blandit, nisl hendrerit facilisis
-      ornare, massa velit placerat libero, at venenatis lorem lorem fermentum libero. Vestibulum ante ipsum primis in faucibus
-      orci luctus et ultrices posuere cubilia Curae; Sed congue ultricies quam a tempor. Pellentesque vulputate sit amet
-      est nec imperdiet. Nam consequat feugiat ex, a iaculis dui finibus sed. Suspendisse vehicula vel nibh non iaculis.
-      Duis non congue magna, eget aliquet arcu.</p>
-    <p>Duis ut fermentum lectus, at volutpat tellus. Duis erat ex, vulputate tincidunt vehicula non, placerat nec dolor. Etiam
-      rutrum, elit ac tristique ultricies, dui arcu auctor sapien, quis efficitur urna velit porta sapien. Vivamus nec venenatis
-      nisl, nec faucibus augue. Morbi faucibus egestas congue. Vivamus convallis eu est quis cursus. Vivamus quam lectus,
-      sodales sed egestas vel, blandit eu sem. Donec quam ex, scelerisque in arcu at, maximus pretium enim.</p>
-    <p>Mauris consequat leo ut metus commodo, eget sollicitudin sapien vulputate. Praesent sit amet ornare magna. Phasellus
-      porta odio at volutpat efficitur. Suspendisse sodales faucibus ipsum, non suscipit diam euismod et. Sed interdum nisl
-      quis erat lobortis ullamcorper. Proin sed molestie sapien, non pretium leo. Fusce at maximus velit. Fusce egestas eros
-      quis lorem dapibus accumsan. Sed suscipit turpis nec eros dictum, id blandit turpis finibus. Praesent tempus eget ligula
-      quis congue. Pellentesque id fermentum mi. Pellentesque bibendum mi enim, sit amet finibus quam rutrum quis. Vivamus
-      fringilla, nisi sed auctor fringilla, quam massa varius sem, in suscipit nisi augue sed nisi.</p>
-
-    <!-- <h3 mccScrollspyItem>Curabitur</h3>
-    <p>Curabitur eu pellentesque augue. Vestibulum at magna vel mi egestas hendrerit. Sed maximus nunc massa, id eleifend neque
-      fringilla eu. Sed vitae euismod ante, id feugiat tortor. Nunc risus ex, viverra dignissim dictum eget, mattis sit amet
-      orci. Nam ullamcorper eros quis augue efficitur sollicitudin. Aliquam vitae fermentum leo. Integer eget diam lobortis
-      nulla mollis faucibus quis at diam.</p>
-    <p>Nam est est, tincidunt et felis nec, porttitor feugiat massa. Donec pulvinar erat eget elit ullamcorper hendrerit. Donec
-      tempor lorem augue, vitae mattis nisi auctor vel. Proin vel felis a dolor congue fringilla ut a dui. Nulla dignissim
-      egestas velit. Maecenas ac turpis malesuada, malesuada justo ac, sagittis mauris. Curabitur commodo eget massa nec
-      dapibus. Sed sed lectus id enim dictum lobortis. Cras interdum ipsum sem, non rutrum velit porta sit amet. Donec id
-      nisi magna. Suspendisse vel arcu nec odio volutpat varius nec vel lacus. Curabitur molestie lectus ut congue dignissim.
-      Quisque pharetra vel neque vel dapibus. Cras neque felis, consequat vitae fringilla ac, fringilla in ex. Nullam bibendum
-      viverra lobortis. Morbi viverra in dolor eget fringilla.</p>
-    <p>In hac habitasse platea dictumst. Vestibulum finibus pellentesque magna et porta. Nam accumsan placerat erat sed vestibulum.
-      In facilisis nisl id arcu sodales vestibulum. Quisque ullamcorper consequat odio eget viverra. Pellentesque mollis
-      purus nec lectus efficitur, vitae laoreet dui dictum. Vestibulum mattis quam nec suscipit viverra. Praesent a odio
-      ut arcu egestas porttitor. Nam vitae blandit diam. Proin scelerisque orci eu bibendum tincidunt. Praesent malesuada
-      vitae ex ac scelerisque. Pellentesque nec rutrum velit. Sed ullamcorper diam vel urna cursus aliquam.</p>
-    <p>Vivamus id pharetra nisl. Sed maximus, neque faucibus malesuada venenatis, risus leo pellentesque velit, a venenatis
-      augue leo ut augue. Sed ut blandit nisi, sed mattis massa. Cras sed gravida mauris. Duis blandit magna in arcu blandit
-      venenatis. Ut eget euismod urna. Vestibulum a augue sed augue malesuada pretium. Aliquam sit amet orci eu diam dictum
-      mattis. Duis vulputate velit et purus sodales tincidunt. Maecenas tristique sapien vitae luctus egestas. Sed nec molestie
-      metus. Fusce sollicitudin auctor consequat. Praesent faucibus orci in urna fermentum, fermentum venenatis massa pellentesque.
-      Mauris vestibulum vitae sem placerat euismod.</p> -->
-  </mat-card-content>
-</mat-card>
           </div>
     </mat-drawer-content>
 </mat-drawer-container>

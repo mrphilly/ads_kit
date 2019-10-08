@@ -1033,7 +1033,14 @@ list-group-item.active {
    /*  background-color: #008582 !important */
 }
 
+.adafri-background-opacity{
+   background-color: rgba(133, 245, 143, 0.4);
+/* background: rgba(196, 229, 199, 0.4);
+color: rgba(196, 229, 199, 0.4); */
+}
+
 .adafri-police{
+    
     font-family:  Roboto,"Helvetica Neue",sans-serif !important;
         -webkit-font-smoothing: antialiased;
 
@@ -1055,44 +1062,44 @@ list-group-item.active {
     font-size: 14px !important
 }
 .adafri-police-18{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 18px !important;
 }
 .adafri-police-16{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 16px !important;
 }
 
 .adafri-police-22{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 22px !important;
 }
 .adafri-police-24{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 24px !important;
 }
 .adafri-police-26{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 26px !important;
 }
 .adafri-police-28{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 28px !important;
 }
 .adafri-police-30{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 30px !important;
 }
 .adafri-police-32{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 32px !important;
 }
 .adafri-police-34{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 34px !important;
 }
 .adafri-police-36{
-    font-family: "merriweather", serif !important;
+    font-family: "Helvetica Neue", sans-serif !important;
     font-size: 36px !important;
 }
 .border-grey{
@@ -1160,3 +1167,76 @@ button:focus {outline:0 !important;}
 .max-width-menu{
     max-width: 300px !important
 }
+
+
+.example-container {
+     /*  display: flex;
+      flex-direction: column;
+
+      flex-basis: 300px; */
+    }
+
+    .mat-table {
+      overflow: auto;
+     /* border: 1px solid rgba(0,0,0,.12); */
+     padding: 0px;
+    }
+
+     .mat-cell{
+   /*  border-right: 1px solid rgba(0,0,0,.12); */
+    align-self: stretch;
+    text-align: center;
+  padding-top: 20px;
+  
+
+
+    }
+    
+   /*    mat-header-row:after{
+    border-bottom: 2px solid black;
+  }  */
+     .mat-header-cell{
+  /*   border-right: 1px solid rgba(0,0,0,.12); */
+    align-self: stretch;
+    text-align: center;
+    padding-top: 20px;
+    border-bottom: 2px solid #80868b;
+    border-bottom-width: 100%;
+  
+
+
+    }
+.mat-column-select{
+     /* border-right: 2px solid black;  */
+}
+.mat-checkbox-inner-container, .mat-pseudo-checkbox {
+    width: 15px !important;
+    height: 15px !important;
+    
+    border-radius: 2px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+    .mat-column-position{
+    border-right: 1px solid grey;
+    align-self: stretch;
+    text-align: center;
+
+    }
+    .mat-column-weight{
+    border-right: 1px solid grey;
+    align-self: stretch;
+    text-align: center;
+
+    } 
+    .mat-column-symbol{
+
+    text-align: center;
+    align-self: stretch;
+    }
+   .mat-column-weight{
+       align-self: stretch;
+    }
+    body{
+        overflow-x: hidden !important;
+    }

@@ -94,7 +94,7 @@ export class AdGroupService {
   }
 
  getAdGroupPlacement(campaign_id: number, ad_group_id: number): Promise<any> {
- /*   //console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`) */
+ console.log(`campaign_id: ${campaign_id} ad_group_id: ${ad_group_id}`) 
    
    return new Promise(resolve => {
    
@@ -168,10 +168,10 @@ export class AdGroupService {
       }, 2000);
     });
   }
- async targetGenre(id: string, campaign_id: string, ad_group_id: any,  genre: any): Promise<any> {
+ async targetGenre(id: string, campaign_id: number, ad_group_id: number,  genre: any): Promise<any> {
    return new Promise(resolve => {
      var genre_legnth = genre.length;
-   this.getAdGroupGenre(parseInt(campaign_id), parseInt(ad_group_id)).then(value => {
+   this.getAdGroupGenre(campaign_id, ad_group_id).then(value => {
   
     // //console.log(`value:`)
     // //console.log(value)
@@ -263,11 +263,11 @@ export class AdGroupService {
 
   
 
-  async targetPlacement(id: string, campaign_id: string, ad_group_id: string,  placement: any): Promise<any> {
+  async targetPlacement(id: string, campaign_id: number, ad_group_id: number,  placement: any): Promise<any> {
     return new Promise(resolve => {
       console.log(placement)
      var genre_legnth = placement.length[0];
-    this.getAdGroupPlacement(parseInt(campaign_id), parseInt(ad_group_id)).then(value => {
+    this.getAdGroupPlacement(campaign_id, ad_group_id).then(value => {
       
     
         this.http.post(SERVER_URL+'/setPlacement', {
@@ -369,10 +369,10 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
   }
 
 
-  async targetAge(id: string, campaign_id: string, ad_group_id: any,  age: any): Promise<any> {
+  async targetAge(id: string, campaign_id: number, ad_group_id: number,  age: any): Promise<any> {
 
     return new Promise(resolve => {
-      this.getAdGroupAge(parseInt(campaign_id), parseInt(ad_group_id)).then(value => {
+      this.getAdGroupAge(campaign_id,ad_group_id).then(value => {
   
     // //console.log(`value:`)
     // //console.log(value)
@@ -528,6 +528,78 @@ async targetDevices(id: string, campaign_id: string, ad_group_id: any,  devices:
     })
   } */
 
+  newAdGroupCampaign(campaign_id: any, name: string): Promise<any>{
+    return new Promise(resolve => {
+       
+        this.http.post(SERVER_URL+'/addAdGroup', {
+       'ad_group_name': name,
+       'campaign_id': campaign_id
+    })
+      .subscribe(
+        res => {
+         // //console.log(`add group ${res}`)
+          if (res['status'] == "ok") {
+            var id= res['id']
+            this.createAdGroup(campaign_id, res['name'], res['status_adgroup'], res['id']).then(res => {
+              if (res == "ok") {
+                //console.log(res)
+                this.PromiseGetAdGroup(campaign_id, id.toString()).then(adgroup => {
+                  //console.log(adgroup)
+                  if (adgroup !== null) {
+                    var response = []
+                    response.push({
+                      "id": adgroup['id'],
+                      "ad_group_id": id
+                    })
+                    resolve(response)
+                    
+                  }
+               })
+            }
+         })
+          } else {
+             Swal.fire({
+          title: 'Ajouter un nouveau groupe',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+              resolve('error')
+          } else {
+             resolve('error')
+            }
+          })
+         }
+        
+         
+          
+        },
+        err => {
+          Swal.fire({
+          title: 'Ajouter un nouveau groupe',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+           buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+               resolve('error')
+          } else {
+             resolve('error')
+            }
+          })
+        }
+      );
+    })
+  }
 
   async addAdGroup(campaign_id: any, user_id: string, name: string): Promise<any> {
    // //console.log(`User id: ${user_id}`)

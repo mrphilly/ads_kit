@@ -1,0 +1,56 @@
+p-scroll{
+  font-size: 13px;
+  line-height: 22px;
+}
+
+.menu {
+  width: 300px;
+  background: #ffffff;
+  position: fixed;
+  margin-left: 20px;
+  margin-top: 20px;
+
+  .content-scroll {
+
+
+    h4 {
+      display: block;
+      text-align: center;
+    }
+
+    .li-scroll {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 23px;
+      color: black;
+
+      a {
+        cursor: pointer;
+
+        &.focused {
+          font-weight: 600;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.mat-card-scroll {
+  margin-left: 20%;
+}
+
+#valid::hover{
+  background: teal;
+  color: white
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+.schedule-check {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}

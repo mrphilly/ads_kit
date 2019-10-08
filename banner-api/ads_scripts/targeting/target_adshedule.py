@@ -36,47 +36,59 @@ from googleads import adwords
 
 
 
-def AdShedule(client, campaign_id, location):
+def AdShedule(client, campaign_id, schedule):
   # Initialize appropriate service.
   INFOS = []
+  print(schedule)
   campaign_criterion_service = client.GetService(
       'CampaignCriterionService', version='v201809')
 
   # Create locations. The IDs can be found in the documentation or retrieved
   # with the LocationCriterionService.
-  i = 0
-  criteria = []
+ 
   
-  target = {
-          'xsi_type': 'AdSchedule',
-          'dayOfWeek': [],
-          'startHour': '',
-          'startMinute': '',
-          'endHour': '',
-          'endMinute': '',
-  }
-  criteria.append(target)
-  
-  operations = []
-  for criterion in criteria:
-    operations.append({
+
+# Creates an operation to add an AdSchedule for each day of the week in the
+# list.
+  for day in schedule:
+    operations = [{
         'operator': 'ADD',
         'operand': {
             'campaignId': campaign_id,
-            'criterion': criterion
+            'criterion': {
+                'xsi_type': 'AdSchedule',
+                'dayOfWeek': day['dayEN'],
+                # Start at 8:45 A.M.
+                'startHour': day['startHour'],
+                'startMinute': day['startMinute'],
+                # End at 7:45 P.M.
+                'endHour': day['endHour'],
+                'endMinute': day['endMinute'],
+            },
+            # Run at normal bid rates.
+            'bidModifier': 1.0
         }
-    })
+    }]
+    print(operations)
 
-  # Make the mutate request.
-  result = campaign_criterion_service.mutate(operations)
+    result = campaign_criterion_service.mutate(operations)
 
   # Display the resulting campaign criteria.
-  for campaign_criterion in result['value']:
-    INFOS.append({
+    for campaign_criterion in result['value']:
+        INFOS.append({
+        "id": day['id'],
+        "dayEN": day['dayEN'],
+        "dayFR": day['dayFR'],
+        "startHour": day['startHour'],
+        "startMinute": day['startMinute'],
+        "endHour": day['endHour'],
+        "endMinute": day['endMinute'],
+        "start_hour_text": day["start_hour_text"],
+        "end_hour_text": day["end_hour_text"],
         "criterion_id": campaign_criterion['criterion']['id'],
         "criterion_type":  campaign_criterion['criterion']['type']
-    })
-    print ('Campaign criterion with campaign id "%s", criterion id "%s", '
+        })
+        print ('Campaign criterion with campaign id "%s", criterion id "%s", '
            'and type "%s" was added.'
            % (campaign_criterion['campaignId'],
               campaign_criterion['criterion']['id'],

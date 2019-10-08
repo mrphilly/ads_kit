@@ -65,7 +65,7 @@ def CreateSharedBudget(client, name):
   return response['value'][0]
 
 
-def add_campaign(client, name):
+def add_campaign(client, name, startDate, endDate):
   INFOS = []
   # Initialize appropriate services.
   campaign_service = client.GetService('CampaignService', version='v201809')
@@ -90,11 +90,9 @@ def add_campaign(client, name):
                
           },
           
-          
-          'startDate':  (datetime.datetime.now() +
-                      datetime.timedelta(10)).strftime('%Y%m%d'),
-          'endDate': (datetime.datetime.now() +
-                      datetime.timedelta(20)).strftime('%Y%m%d'),
+         
+          'startDate':  startDate,
+          'endDate':  endDate,
           # Note that only the budgetId is required
           'budget': {
               'budgetId': budget_id

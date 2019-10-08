@@ -1,4 +1,5 @@
 export class Annonces {
+  id?: any;
   ad_id?: any;
   ad_group_id?: any;
   ad_name?: any;

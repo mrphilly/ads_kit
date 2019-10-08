@@ -1,0 +1,140 @@
+
+
+<!-- debut premiere partie pour l'interface de reinitialisation du mot de passe -->
+<div class="container-fluid" *ngIf="data.changepassword">
+  <div class="alert alert-danger text-center height col-md-12" *ngIf="this.isemailNotvalid">
+      <span>Veuillez saisir un email valide</span>
+  </div>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <br>
+        <img src="assets/img/adafri.png" alt="" width="450px;">
+
+    </div>  
+      
+  </div>
+  <div class="row">
+    <div class=" col-md-12 ">
+      <form >
+        <div class="form-group"  [ngClass]="{'error':this.isemailNotvalid}">
+          <mat-form-field>
+            <input matInput  name="animal"  [(ngModel)]="this.getemail.email" placeholder="entrez votre mail">
+          </mat-form-field>
+          
+        </div>
+
+     
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+                
+    <div class="col-md-8 offset-md-2">
+        <mat-chip  class="adafri-background text-white r-20 mat-stroked-button ng-star-inserted" selected="true" (click)="resetPassword()">Reinitialiser</mat-chip>
+    </div>
+  </div>
+</div>
+<!-- fin de l'interface de reinitialisation -->
+
+<!-- debut de l'interface pour la reinitialisation du no, d'utilisateur -->
+<mat-card class="box-shadow-none"  *ngIf="data.changeusername">
+
+<mat-card-content class="text-center" style="margin-top: 3%">
+    <div class="text-center d-inline-block" style="width: 100%">
+      <img src="assets/img/adafri.png" style="width: 35%" class="d-inline-block">
+      <hr>
+      <button mat-raised-button class="white box-shadow-none d-inline-block" disableRipple="true">Modifier le nom d'utilisateur</button>
+  </div>
+ <form [formGroup]="changeUsername" class="d-inline-block" style="margin-top: 1%">
+       
+          <mat-form-field>
+            <span matPrefix><mat-icon>email</mat-icon></span>
+            <input matInput  name="email" formControlName="email"  [(ngModel)]="this.getName.email">
+             <mat-hint align="end">Addresse email</mat-hint>
+             {{changeUsername.get('email').status}}
+               <mat-error *ngIf="changeUsername.get('email').status === 'INVALID'">Addresse email invalide</mat-error>
+               <mat-error *ngIf="changeUsername.get('email').hasError('required')">Addresse email obligatoire !</mat-error>
+                
+          </mat-form-field>
+          <mat-form-field>
+            <span matPrefix><img src="assets/img/images/user-name.svg" style="width: 18px; height: 18px"></span>
+            <input matInput  name="name" formControlName="username"  >
+            <mat-hint align="end">Nouveau nom</mat-hint>
+            <mat-error *ngIf="this.isNameExist">Addresse email obligatoire !</mat-error>
+          </mat-form-field>
+       
+      </form>
+</mat-card-content>
+<mat-card-actions>
+  <div class="text-center" style="width: 100%">
+    <button mat-raised-button class="adafri-background text-white" (click)="resetName()"><mat-icon class="text-white">edit</mat-icon>changer</button>
+  </div>
+</mat-card-actions>
+<!--   <div class="alert alert-danger text-center height col-md-12" *ngIf="this.isNameExist">
+    <span>Ce nom existe deja</span>
+  </div>
+  <div class="alert alert-danger text-center height col-md-12" *ngIf="this.isemailNotvalid">
+    <span>Veuillez saisir votre nom</span>
+  </div>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <br>
+      
+    </div>  
+ </div>
+
+  <div class="row">
+    <div class=" col-md-12 ">
+     
+    </div>
+  </div> -->
+ <!--  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <mat-chip  class="adafri-background text-white r-20 mat-stroked-button ng-star-inserted" selected="true" (click)="resetName()">changer</mat-chip>
+    </div>
+  </div> -->
+</mat-card>
+<!-- fin partie de l'interface de changement du username -->
+
+
+<!-- confirmation du changement du username -->
+<div class="container-fluid"  *ngIf="this.updateNameOk">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <br><br><br>
+      <img src="assets/img/images/newlogo.png" alt="" width="450px;">
+    </div>              
+  </div>
+  <div class="row">
+    <div class="col-md-12 ">
+      <h1 class="text-center adafri-police-14">Nom modifie avec succes.</h1>
+    </div>
+  </div>
+    
+</div>
+
+
+<!-- envoie du mail de reinitialisation -->
+<div class="container-fluid"  *ngIf="this.isMailSend">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <br><br><br>
+        <img src="assets/img/images/newlogo.png" alt="" width="450px;">
+      </div>              
+    </div>
+    <div class="row">
+      <div class="col-md-12 ">
+        <h1 class="text-center adafri-police-14">Un mail d'initialisation de mot de passe vous a ete envoye.</h1>
+      </div>
+    </div>
+      
+  </div>
+      
+        
+        
+            
+      .
+    
+
+

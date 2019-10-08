@@ -18,7 +18,7 @@ const routes: Routes = [
 
   { path: 'login', component: UserLoginComponent },
 
-  { path: '', component: NotesListComponent, canActivate: [AuthGuard] },
+  { path: '', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'CampaignList', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'createCampaign', component: CreateCampaignComponent, canActivate: [AuthGuard]},
   { path: 'UserProfile', component: UserProfileComponent, canActivate: [AuthGuard] },
@@ -26,7 +26,8 @@ const routes: Routes = [
   { path: 'terms', component: TermsComponent },
   { path: ':money', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'defineBudget/:idBC', component: NotesListComponent, canActivate: [AuthGuard] },
-   { path: 'edit/:name/:id/:id_campagne', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'edit/:name/:id/:id_campagne', component: SettingsComponent, canActivate: [AuthGuard] },
+   { path: 'edit/:name/:id/:id_campagne/:message', component: SettingsComponent, canActivate: [AuthGuard], pathMatch: 'full' },
   /* { path: 'new_rechargement/:key_recharge_account', component: NotesListComponent, canActivate: [AuthGuard] }, */
  /*  { path: 'account_pay/:id_campaign_to_recharge', component: NotesListComponent, canActivate: [AuthGuard] }, */
   

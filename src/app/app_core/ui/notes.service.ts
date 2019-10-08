@@ -182,18 +182,13 @@ campaignVerification(user_id: string, name: string):Promise<number> {
   }
 
   
-  
-  async addCampaign(email: string, user_id: string, name: string): Promise<any> {
- 
-    return await new Promise(resolve => {
-      this.campaignVerification(user_id, name).then(value => {
-      ////console.log(`promise result: ${value}`)
-
-      if (`${value}` == '0') {
-        
-        this.http.post(SERVER_URL+'/addCampaign', {
+  newCampaign(email: string,  name: string, startDate: any, endDate: any): Promise<any>{
+    return new Promise(resolve => {
+              this.http.post(SERVER_URL+'/addCampaign', {
        'email': email,
-       'campaign_name': name
+                'campaign_name': name,
+                'startDate': startDate,
+       'endDate': endDate
     })
       .subscribe(
         res => {
@@ -204,26 +199,22 @@ campaignVerification(user_id: string, name: string):Promise<number> {
             ////console.log(res['startDateFrench'])
             this.createCampaign(res['id'], name, res['status_campaign'], res['startDate'], res['endDate'], res['startDateFrench'], res['endDateFrench'], res['servingStatus'], res['budgetId']).then(res1 => {
               if (res1 == "ok") {
-                //console.log('from campaign service')
-                //console.log("campaign created with name "+ name)
-                //console.log(res)
-                //console.log(res["id"])
-                //console.log(user_id)
+        
                      this.PromiseGetCampaignSanpchot(res['id'].toString(), name).then(single => {
-                //console.log('getting single campaign credentials')
-                //console.log(single)
+          
                 var response = []
                 response.push({
                   "id": single['id'],
                   "campaign_id": res['id']
                 })
-                //console.log(response)
+     
                 resolve(response)
       
                 })
               }
          })
           } else {
+            console.log(res)
              Swal.fire({
           title: 'Ajouter une nouvelle campagne',
           text: 'Erreur Service',
@@ -245,6 +236,7 @@ campaignVerification(user_id: string, name: string):Promise<number> {
           
         },
         err => {
+         
           Swal.fire({
           title: 'Ajouter une nouvelle campagne',
           text: 'Erreur Service',
@@ -263,6 +255,18 @@ campaignVerification(user_id: string, name: string):Promise<number> {
           })
         }
       );
+    })
+  }
+  
+  async addCampaign(email: string, user_id: string, name: string): Promise<any> {
+ 
+    return await new Promise(resolve => {
+/*       this.campaignVerification(user_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+
+      if (`${value}` == '0') {
+        
+
 
       } else{
         Swal.fire({
@@ -283,7 +287,7 @@ campaignVerification(user_id: string, name: string):Promise<number> {
           })
         
       }
-    })
+    }) */
     })
    
   } 
@@ -398,12 +402,12 @@ campaignVerification(user_id: string, name: string):Promise<number> {
       return new Promise(resolve => {
       this.getCampaignZones(campaign_id, name).then(value => {
       ////console.log(`promise result: ${value}`)
-
+        console.log(location)
       
         
         this.http.post(SERVER_URL+'/targetLocation', {
        'campaign_id': campaign_id,
-       'location_id': location[0].item_id
+       'location_id': location.item_id
     })
       .subscribe(
         res => {
@@ -417,6 +421,69 @@ campaignVerification(user_id: string, name: string):Promise<number> {
         err => {
           Swal.fire({
           title: 'Ciblage',
+          text: 'Erreur Service',
+          type: 'error',
+          showCancelButton: false,
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        }
+      );
+
+     /*  } else{
+        Swal.fire({
+          title: 'Ciblage',
+          text: 'Erreur service1',
+          type: 'error',
+          showCancelButton: false,
+             buttonsStyling: true,
+      confirmButtonClass: "btn btn-sm white text-black-50 r-20 border-grey",
+      cancelButtonClass: "btn btn-sm white text-danger r-20 border-red",
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.value){}
+          })
+        
+      } */
+    })
+    })
+   
+  }
+
+
+      adsSchedule(id: string, campaign_id: string, name: string, schedule: any): Promise<any> {
+ 
+      return new Promise(resolve => {
+      this.getCampaignSchedules(campaign_id, name).then(value => {
+      ////console.log(`promise result: ${value}`)
+
+      
+        
+        this.http.post(SERVER_URL+'/adsShedule', {
+       'campaign_id': campaign_id,
+       'schedule': schedule
+    })
+      .subscribe(
+        res => {
+          ////console.log(`res from location backend: ${res}`)
+          if(res!==undefined){
+            console.log(res)
+            console.log(schedule)
+            console.log(id)
+             this.updateNote(id, { adsSchedules: schedule, adsSchedulesCriterion: res }).then(res => {
+            if (res == "ok") {
+              resolve('ok')
+            }
+          })
+          }
+        },
+        err => {
+          Swal.fire({
+          title: 'Heure de diffusion',
           text: 'Erreur Service',
           type: 'error',
           showCancelButton: false,
@@ -615,6 +682,17 @@ campaignVerification(user_id: string, name: string):Promise<number> {
           this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
             ////console.log(el[0]['zones'])
           resolve(el[0]['zones'])
+        })
+      }, 2000);
+    });
+  }
+    getCampaignSchedules(campaign_id: string, name: string) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+       
+          this.afs.collection('notes', (ref) => ref.where('name', '==', `${name}`).where('owner', '==', this.uid).where('id_campagne', '==', parseInt(`${campaign_id}`))).valueChanges().subscribe(el => {
+            ////console.log(el[0]['zones'])
+          resolve(el[0]['adsSchedules'])
         })
       }, 2000);
     });
@@ -818,7 +896,9 @@ parseDate(str) {
         budget: 0, 
         dailyBudget: 0,
         numberOfDays: this.datediff(this.parseDate(startDateFrench), this.parseDate(endDateFrench)),
-      budgetId: budgetId,
+        budgetId: budgetId,
+        ad_group_id_firebase: "",
+      ad_group_id: 0,
         zones: [],
        ages: [],
       sexes: [],
@@ -828,6 +908,8 @@ parseDate(str) {
     criterion_sexes: [],
     criterion_devices: [],
         criterion_placement: [],
+        adsSchedules: [],
+        adsSchedulesCriterion: [],
         impressions: 0,
         clicks: 0,
         costs: 0,
@@ -868,6 +950,7 @@ parseDate(str) {
     return await new Promise(resolve => {
       this.note = this.prepareSaveCampaign(id_campagne, name, status, startDate, endDate, startDateFrench, endDateFrench, servingSatus, budgetId);
       const docRef = this.notesCollection.add(this.note);
+    
       resolve("ok")
       
     })

@@ -101,11 +101,10 @@ private basePath = '/uploads';
     });
   }
 
-  getListAd(ad_group_id: string) {
-   //console.log(parseInt(ad_group_id))
-   var id = parseInt(ad_group_id)
-   
- return this.afs.collection('ads', (ref) => ref.where('ad_group_id','==',`${id}`)).snapshotChanges().pipe(
+  getListAd(ad_group_id: number) {
+   //console.log(parseInt(ad_group_id)) 
+    console.log(ad_group_id)
+ return this.afs.collection('ads', (ref) => ref.where('ad_group_id','==',ad_group_id)).snapshotChanges().pipe(
       map((actions) => {
         return actions.map((a) => {
           const data = a.payload.doc.data();
@@ -150,13 +149,13 @@ private basePath = '/uploads';
       this.annonceVerification(ad_name, ad_group_id).then(value => {
       //console.log(`promise result: ${value}`)
       
-      if (`${value}` == '0') {
+     /*  if (`${value}` == '0') { */
         
         this.http.post(SERVER_URL+'/addAd', {
        'ad_group_id': ad_group_id,
           'url_image': image_url,
           'ad_name': ad_name,
-          'finalUrls': finalUrls,
+          'finalUrls': [finalUrls],
           'finalAppUrls': finalAppUrls,
           'finalMobileUrls': finalMobileUrls,
           'width': size[0]['width'].toString(),
@@ -208,7 +207,7 @@ private basePath = '/uploads';
         }
       );
 
-      } else{
+     /*  } else{
         Swal.fire({
           title: 'Ajouter une nouvelle annonce',
           text: "Il éxiste déjà une annonce portant une des données renseignées !",
@@ -226,7 +225,7 @@ private basePath = '/uploads';
             }
           })
         
-      }
+      } */
     })
     })
    

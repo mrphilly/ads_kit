@@ -1,26 +1,25 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
+  Router,
   ActivatedRoute
 } from '@angular/router';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { SidebarComponent, TreeViewComponent } from '@syncfusion/ej2-angular-navigations';
 
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
 import { NotesService } from '../notes.service';
 import { AuthService } from '../../core/auth.service';
-import { NoteDetailComponent } from '../note-detail/note-detail.component'
-import { AdGroupService } from '../ad-groupe.service'
-import Swal from 'sweetalert2'
-import * as $ from 'jquery'
-import * as moment from 'moment'
-import { SERVER } from '../../../../environments/environment'
-import { Router } from '@angular/router'
-import * as CryptoJS from 'crypto-js'
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
-import {MatSnackBar} from "@angular/material"
+import { MatSnackBar } from "@angular/material"
+import Swal from 'sweetalert2'
+import { AdGroupService } from '../ad-groupe.service'
+import { SERVER } from '../../../../environments/environment'
+import { NoteDetailComponent } from '../../notes/note-detail/note-detail.component'
+import { CryptoJS } from 'crypto-js'
+import * as $ from 'jquery'
 declare const particlesJS: any; 
 
 declare const pQuery: any
@@ -953,8 +952,8 @@ encrypted(text, password){
       ////console.log(name)
       ////console.log(status)
       
-      this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus, budgetId
-      ).then(res => {
+      this.notesService.createCampaign(id, name, status, startDate, endDate, startDateFrench, endDateFrench, servingStatus, budgetId,
+      "dhjsgdsghfgh").then(res => {
      
         if (res != "error") {
           this.getCampaignIdFirebase(id, name).then(single => {

@@ -1,35 +1,331 @@
-    
- <div class="container-fluid pt-5 background-yellow-adafri" >
-           <div class="height-full paper-card text-center" style="box-shadow: none">
-                 <div class="row">
-        <div class="col-md-12 background-yellow-adafri text-center">
-            <form class="example-form" [formGroup]="campaign" (ngSubmit)="addCampaign()">
-                <mat-card class="d-inline-block text-center mat-elevation-z10">
-            
-                           
+   <div class="paper-card p-0 height-full text-center background-yellow-adafri box-shadow-none">
+            <mat-card class="box-shadow-none background-yellow-adafri height-full">
+             <!--  <mat-card-header class="d-inline-block adafri-background text-white p-0">
+                <mat-toolbar class="d-inline-block adafri-background text-white">Créer une campagne</mat-toolbar>
 
-                   
-                            <img class="img-responsive d-inline-block" style="width: 50%" src="assets/img/init.png">
-               
+              </mat-card-header> -->
+              <mat-card-content>
+                <mat-card class="menu background-yellow-adafri">
+  <div class="content-scroll p-10">
+     <button mat-raised-button class="background-yellow-adafri box-shadow-none"> <img src="assets/img/images/campaign.svg" style="width: 24px; height: 24px" > Etapes de création</button>
+    <ul>
+      <li *ngFor="let item of items" class="li-scroll text-black" style="text-align: left">
+        <a (click)="scrollTo(item.id)" [ngClass]="{'focused': item.focus, 'color': 'black'}" class="font-weight-bolder">{{ item.label }} </a>
+      </li>
+    </ul>
+  </div>
+</mat-card>
+
+<mat-card class="mat-card-scroll d-inline-block height-full p-0" >
+  <mat-card-header class="p-0 adafri-background">
+    <mat-toolbar class="adafri-background text-white">Créer une campagne</mat-toolbar>
+  </mat-card-header>
+  <mat-card-content mccScrollspyGroup="My Scrollspy">
+    <button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'1. Nom de la camapagne'"> <img src="assets/img/images/021-promote.svg" style="width: 24px; height: 24px" > 1. Nom de la campagne</button>
+    <!-- <h6 mccScrollspyItem style="margin-top: 20px" [label]="'1. Nom de la camapagne'">1. Nom de la campagne -->
+   
+    <div class="col-md-12 white text-center">
+            <form class="example-form" [formGroup]="campaign" (ngSubmit)="verifyCampaign()">
+                <mat-card class="d-inline-block text-center box-shadow-none">
+                 <!--  <mat-card-header class="text-center">
+       <div class="text-center" style="width: 100%;">
+         <img src="assets/img/images/021-promote.svg" style="width: 50px; height: 50px" class="d-inline-block" >
+       </div>
+      </mat-card-header> -->
                 <mat-card-content>
-                    <p class="font-weight-bold text-black">Créer une campagne publicitaire</p>
   <mat-form-field class="example-full-width text-black" >
-    <input matInput [(ngModel)]="new_name" placeholder="Nom de la campagne" id="campagne" formControlName="campaign">
+    <input matInput [(ngModel)]="new_name" placeholder="Nom de la campagne" id="campagne" formControlName="campaign" (keyup)=" removeErrorsCampaign()">
+    <span matSuffix><span class="mdi mdi-check-decagram text-success" style="font-size: 24px" *ngIf="is_new_name_valid"></span><mat-spinner *ngIf="progressBarAddCampaign" diameter="20"></mat-spinner></span>
   </mat-form-field>
+  <br>
+<!--   <span class="text-success">{{message_valid_name}} </span> -->
+  <span class="text-danger">{{message_invalid_name}}</span>
+  <br>
+  <button mat-stroked-button class="r-20 box-shadow-none adafri" id="valid" type="submit"  *ngIf="!progressBarAddCampaign && !is_new_name_valid">Valider le nom</button>
 
 </mat-card-content>
-<mat-card-actions class="text-center">
-    <p class="text-black">{{message_to_show}}</p>
-     <mat-progress-bar mode="indeterminate" class="teal" *ngIf="progressBarAddCampaign"></mat-progress-bar>
-    <button mat-raised-button class="teal text-white" type="submit" *ngIf="!progressBarAddCampaign">Créer</button>
-     <button mat-raised-button color="warn"  *ngIf="!progressBarAddCampaign" (click)="go()">Retour</button>
-</mat-card-actions>
+
 </mat-card>
 </form>
-          
-        </div>
-                   
-                     
+
+<button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'2.Page sponsorisée'"> <img src="assets/img/images/promote.svg" style="width: 24px; height: 24px" > 2. Page sponsorisée</button>
+    <!-- <h6 mccScrollspyItem style="margin-top: 20px" [label]="'1. Nom de la camapagne'">1. Nom de la campagne -->
+    </div>
+   
+    <div class="col-md-12 white text-center">
+      <form class="example-form" [formGroup]="urlForm">
+              <mat-card class="d-inline-block text-center box-shadow-none">
+               <!--  <mat-card-header class="text-center">
+     <div class="text-center" style="width: 100%;">
+       <img src="assets/img/images/021-promote.svg" style="width: 50px; height: 50px" class="d-inline-block" >
      </div>
-        </div>
-</div>
+    </mat-card-header> -->
+              <mat-card-content>
+<mat-form-field class="example-full-width text-black" >
+  <input matInput [(ngModel)]="finalUrlCampaign" placeholder="Url de la page" (keyup)="getUrlMatch()" formControlName="url">
+  <span matSuffix><span class="mdi mdi-check-decagram text-success" style="font-size: 24px" *ngIf="urlPromoteValid"></span><mat-spinner *ngIf="progressBarVerifyUrl" diameter="20"></mat-spinner></span>
+</mat-form-field>
+<br>
+<!--   <span class="text-success">{{message_valid_name}} </span> -->
+<span class="text-danger" *ngIf="urlFinalError">Url invalide</span>
+<br>
+ <!--  <button mat-stroked-button class="r-20 box-shadow-none adafri" id="valid" *ngIf="!progressBarVerifyUrl && urlForm.valid && urlPromoteValid" >Vérifier l'url</button>
+ -->
+</mat-card-content>
+
+</mat-card>
+</form>
+      </div>
+
+          
+        <button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'3. Dates de la campagne'"> <img src="assets/img/images/calendar.svg" style="width: 24px; height: 24px" > 3. Dates de la campagne</button>
+         
+     <mat-card class="box-shadow-none">
+      <mat-card-content class="text-center">
+        <form [formGroup]="dateFormStart">
+           <mat-form-field>
+    <input matInput [matDatepicker]="dpStart" placeholder="Date de début" formControlName="start" [(ngModel)]="startDateFrenchModel" (dateChange)="dateStartChange($event)" [min]="minDateStart" [max]="maxDateStart" >
+    <mat-datepicker-toggle matSuffix [for]="dpStart"></mat-datepicker-toggle>
+    <mat-datepicker #dpStart [disabled]="datePickerStartDisabled" ></mat-datepicker>
+  </mat-form-field>
+  <br>
+        </form>
+         <form [formGroup]="dateFormEnd">
+           <mat-form-field>
+    <input matInput [matDatepicker]="dpEnd" placeholder="Date de fin" formControlName="end" [(ngModel)]="endDateFrenchModel"  [min]="minDateEnd" [max]="maxDateEnd" (dateChange)="dateEndChange($event)" >
+    <mat-datepicker-toggle matSuffix [for]="dpEnd"></mat-datepicker-toggle>
+    <mat-datepicker #dpEnd [disabled]="datePickerEndDisabled"></mat-datepicker>
+  </mat-form-field>
+  <br>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'4. Zone Géographique'"> <img src="assets/img/images/map-location.svg" style="width: 24px; height: 24px" > 4. Zone Géographique</button>
+     <mat-card class="box-shadow-none">
+      <mat-card-content class="text-center">
+      <form [formGroup]="location">
+          <mat-form-field>
+  <mat-select placeholder="Zones"
+             formControlName="zone" [(ngModel)]="zones" [disabled]="zoneSelectDisabled" required>
+ 
+    <mat-option *ngFor="let zone of dropdownListZones" (onSelectionChange)="onZoneSelect($event)" [value]="{'item_id': zone.item_id, 'item_text': zone.item_text}">{{zone.item_text}}</mat-option>
+
+  </mat-select>
+</mat-form-field>
+      </form>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'5. Emplacements de la campagne'"> <img src="assets/img/images/036-www.svg" style="width: 24px; height: 24px" > 5. Emplacements de la campagne</button>
+     
+     <mat-card class="box-shadow-none">
+      <mat-card-content class="text-center">
+      <form [formGroup]="emplacement">
+ 
+      <mat-card  class="box-shadow-none">
+        <mat-card-content class="justify-content-between">
+          <mat-form-field >
+  <mat-select #nationals placeholder="Sites nationaux" formControlName="nationalWeb"  [(ngModel)]="national_websites"  [disabled]="placementSelectDisabled" required multiple>
+   <mat-select-trigger>
+         <span *ngIf="national_websites?.length===1" class="example-additional-selection">
+
+        {{national_websites[0].item_text}}
+      </span>
+      <span *ngIf="national_websites?.length > 1" class="example-additional-selection">
+       {{national_websites[0].item_text}} (+{{national_websites.length - 1}} autres)
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let site of NATIONALS_WEBSITES" (onSelectionChange)="onNationalsWebsitesSelect($event)" [value]="{'item_id': site[3], 'item_text': site[2]}">{{site[2]}}</mat-option>
+
+  </mat-select>
+
+</mat-form-field>
+  <mat-form-field>
+   <mat-select placeholder="Sites internationnaux" #internationals [(ngModel)]="international_websites" formControlName="internationalWeb" [disabled]="placementSelectDisabled" multiple>
+    <mat-select-trigger>
+         <span *ngIf="international_websites?.length===1" class="example-additional-selection">
+
+        {{international_websites[0].item_text}}
+      </span>
+      <span *ngIf="international_websites?.length > 1" class="example-additional-selection">
+       {{international_websites[0].item_text}} (+{{international_websites.length - 1}} autres)
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let site of INTERNATIONALS_WEBSITES" [value]="{'item_id': site[3], 'item_text': site[2]}" (onSelectionChange)="onInternationalsWebsitesSelect($event)">{{site[2]}}</mat-option>
+  </mat-select>
+</mat-form-field>
+ <mat-form-field>
+   <mat-select placeholder="Sites d'annonces" [disabled]="placementSelectDisabled" #adsWeb formControlName="adWeb" [(ngModel)]="ads_websites"  multiple>
+     <mat-select-trigger>
+         <span *ngIf="ads_websites?.length===1" class="example-additional-selection">
+
+        {{ads_websites[0].item_text}}
+      </span>
+      <span *ngIf="ads_websites?.length > 1" class="example-additional-selection">
+       {{ads_websites[0].item_text}} (+{{ads_websites.length - 1}} autres)
+      </span>
+    </mat-select-trigger>
+    <mat-option (onSelectionChange)="onAdsWebsitesSelect($event)" *ngFor="let site of SITES_ANNONCES" [value]="{'item_id': site[3], 'item_text': site[2]}">{{site[2]}}</mat-option>
+  </mat-select>
+</mat-form-field>
+        </mat-card-content>
+      </mat-card>
+      <div>
+
+      </div>
+    </form>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'6. Options de ciblages'"> <img src="assets/img/images/019-network.svg" style="width: 24px; height: 24px" > 6. Options de ciblages</button>
+     <mat-card class="box-shadow-none">
+      <mat-card-content class="text-center">
+         <form [formGroup]="ciblageControl">
+     
+      <mat-form-field>
+   <mat-select placeholder="Tranches d'ages" #age formControlName="ageControl" [(ngModel)]="ages" multiple required [disabled]="targetingSelectDisabled">
+    <mat-select-trigger>
+       <span *ngIf="ages?.length===1" class="example-additional-selection">
+
+        {{ages[0].item_text}}
+      </span>
+      <span *ngIf="ages?.length > 1" class="example-additional-selection">
+       {{ages[0].item_text}} (+{{ages.length - 1}} autres)
+      </span>
+    </mat-select-trigger>
+    <mat-option (onSelectionChange)="onAgeSelect($event)" *ngFor="let age of dropdownListAges" [value]="{'item_id': age.item_id, 'item_text': age.item_text}">{{age.item_text}}</mat-option>
+  </mat-select>
+</mat-form-field>
+ <mat-form-field>
+   <mat-select placeholder="Genres ciblés" #sexe formControlName="genreControl" [(ngModel)]="sexes" multiple required [disabled]="targetingSelectDisabled">
+    <mat-select-trigger>
+       <span *ngIf="sexes?.length===1" class="example-additional-selection">
+
+        {{sexes[0].item_text}}
+      </span>
+      <span *ngIf="sexes?.length > 1" class="example-additional-selection">
+       {{sexes[0].item_text}} (+{{sexes.length - 1}} autres)
+      </span>
+    </mat-select-trigger>
+    <mat-option (onSelectionChange)="onSexeSelect($event)" *ngFor="let sexe of dropdownListGenres" [value]="{'item_id': sexe.item_id, 'item_text': sexe.item_text}">{{sexe.item_text}}</mat-option>
+  </mat-select>
+</mat-form-field>
+ <mat-form-field>
+   <mat-select placeholder="Appareils ciblés" #device formControlName="deviceControl" [(ngModel)]="devices" multiple required [disabled]="targetingSelectDisabled">
+    <mat-select-trigger>
+       <span *ngIf="devices?.length===1" class="example-additional-selection">
+
+        {{devices[0].item_text}}
+      </span>
+      <span *ngIf="devices?.length > 1" class="example-additional-selection">
+       {{devices[0].item_text}} (+{{devices.length - 1}} autres)
+      </span>
+    </mat-select-trigger>
+    <mat-option (onSelectionChange)="onDevicesSelect($event)" *ngFor="let device of dropdownListDevices" [value]="{'item_id': device.item_id, 'item_text': device.item_text}">{{device.item_text}}</mat-option>
+  </mat-select>
+</mat-form-field>
+      <div style="box-shadow: none">
+      
+      </div>
+    </form>
+      </mat-card-content>
+    </mat-card>
+      <button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'7. Heures de diffusion'"> <img src="assets/img/images/alarm-clock.svg" style="width: 24px; height: 24px" > 7. Heures de diffusion</button>
+     <mat-card class="box-shadow-none">
+      <mat-card-content class="text-center">
+     <section class="schedule-check">
+      <label class="example-margin">Choisir:</label>
+      <mat-radio-group [(ngModel)]="schedulecheck" (change)="scheduleChange($event)" [disabled]="adScheduleChoiceDisabled">
+        <mat-radio-button class="example-margin" color="primary" value="24/7" >24/7</mat-radio-button>
+        <mat-radio-button class="example-margin" color="primary" value="custom">Personnaliser</mat-radio-button>
+      </mat-radio-group>
+    </section>
+<ng-container *ngIf="showSchedule"> 
+
+  <form [formGroup]="daySchedule" >
+ 
+    <mat-form-field>
+<mat-select placeholder="Jours" #selectDay
+       formControlName="day" [(ngModel)]="daysSchedule" required [disabled]="adScheduleSelectDayDisabled">
+  
+
+<mat-option *ngFor="let day of DAYS_CAMPAIGN" (onSelectionChange)="onDaySelect($event)" [value]="{'item_id': day.id, 'item_text_french': day.item_text_french, 'item_text_english': day.item_text_english}">{{day.item_text_french}}</mat-option>
+
+</mat-select>
+
+</mat-form-field>De
+<mat-form-field>
+<mat-select placeholder="Heure de début"
+       formControlName="startHour" [(ngModel)]="startHourSelected" required  [disabled]="adScheduleSelectStartHourDisabled">
+  
+
+<mat-option *ngFor="let hour of SCHEDULE" (onSelectionChange)="onStartHourSelect($event)" [value]="{'item_id': hour.text, 'hour': hour.hour, 'minute': hour.minute}">{{hour.text}}</mat-option>
+
+</mat-select>
+</mat-form-field>?
+<mat-form-field>
+<mat-select placeholder="Heure de fin"
+       formControlName="endHour" [(ngModel)]="endHourSelected" required  [disabled]="adScheduleSelectEndHourDisabled">
+  
+
+<mat-option *ngFor="let hour of endScheduleTab" (onSelectionChange)="onEndHourSelect($event)" [value]="{'item_id': hour.text, 'hour': hour.hour, 'minute': hour.minute}" [disabled]="hour.disabled">{{hour.text}}</mat-option>
+
+</mat-select>
+</mat-form-field>
+<button mat-mini-fab color="primary" class="float-rignt" *ngIf="daySchedule.valid" (click)="addSingleSchedule()"><mat-icon>add</mat-icon></button>
+</form>
+
+
+
+<mat-card class="" *ngIf="SCHEDULE_DATA.length>0">
+   <mat-table #tableSCHEDULE [dataSource]="SCHEDULE_DATA">
+    <ng-container matColumnDef="day">
+      <mat-header-cell *matHeaderCellDef> Jour </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.dayFR}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="start">
+      <mat-header-cell *matHeaderCellDef> Heure de début </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.start_hour_text}} </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="end">
+      <mat-header-cell *matHeaderCellDef> Heure de fin </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.end_hour_text}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef> Effacer </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <button mat-mini-fab class="white text-danger box-shadow-none" (click)="deleteSCHEDULE(element.id, element.dayFR, element.dayEN)"><mat-icon class="text-danger">delete</mat-icon></button> </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsSchedule"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnsSchedule;"></mat-row>
+  </mat-table>
+</mat-card>
+
+
+
+
+</ng-container>
+
+      <!--   <w-mat-timepicker color="primary" [(userTime)]="exportTime"></w-mat-timepicker>
+   -->
+      
+
+      </mat-card-content>
+    </mat-card>
+     <mat-progress-bar mode="determinate" [value]="addCampaignProgessBarValue" class="teal" *ngIf="progressBarAddingCampaign"></mat-progress-bar>
+    <button mat-raised-button  class="adafri-background text-white r-20 box-shadow-none d-inline-block" *ngIf="campaign.valid && emplacement.valid && dateFormStart.valid && dateFormEnd.valid && ciblageControl.valid && !progressBarAddingCampaign && scheduleValid && urlPromoteValid" (click)="addCampaign()"><mat-icon>add</mat-icon>Soumettre la campagne</button>
+  <!--   <button mat-raised-button class="white box-shadow-none" mccScrollspyItem [label]="'7. Budget de la campagne'"> <img src="assets/img/images/budget.svg" style="width: 24px; height: 24px" > 7. Budget de la campagne</button> -->
+    
+    
+
+    
+  </mat-card-content>
+</mat-card>
+              </mat-card-content>
+          </mat-card>
+
+          </div>

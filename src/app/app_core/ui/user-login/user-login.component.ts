@@ -8,9 +8,13 @@ import { database } from 'firebase';
 
 import { AuthService } from '../../core/auth.service';
 import Swal from 'sweetalert2'
-import * as $ from 'jquery'
+ import * as $ from 'jquery' 
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage'
 import { MatSnackBar} from "@angular/material"
+import { MatDialog } from '@angular/material/dialog';
+import { UserManagementComponent } from '../../shared-modules/user-management/user-management.component';
+/* import { InscriptionConfirmComponent } from '../inscription-confirm/inscription-confirm.component'; */
+
 
 declare const particlesJS: any
 declare var googleyolo: any;
@@ -44,6 +48,12 @@ export class UserLoginComponent {
   button_login = false
   progressBarSignup = false
   progressBarLogin = false
+  isEmailVerified;
+  user:firebase.User
+  getemail;
+  isSignUp;
+  isSignIn;
+  
 
   formErrors: FormErrors = {
     'email': '',
@@ -74,7 +84,7 @@ export class UserLoginComponent {
   
 
  
-  constructor(private fb: FormBuilder,public auth: AuthService,
+  constructor(private fb: FormBuilder,public auth: AuthService,public dialog: MatDialog,
     private router: Router, private afs: AngularFirestore, private afStorage: AngularFireStorage, private snackBar: MatSnackBar) { 
     this.afs.collection('users').valueChanges().forEach(data => {
        this.userList = data
@@ -93,7 +103,7 @@ export class UserLoginComponent {
     
     this.buildFormInscription()
     this.auth.user.forEach(value => {
-      var jQuery = $
+      // var jQuery = $
       //console.log(value)
       if (value!=null) {
         this.displayName = value.displayName
@@ -103,12 +113,7 @@ export class UserLoginComponent {
         this.email = value.email
       
       }
-
-     
   
-      
-     
-      
     })
      const hintPromise = googleyolo.hint({
        supportedAuthMethods: [
@@ -238,6 +243,10 @@ export class UserLoginComponent {
 
 
 /* ---- stats.js config ---- */
+
+this.getemail={
+  email:''
+}
     
   }
   
@@ -480,6 +489,10 @@ getFormValidationErrors() {
     });
 
   }
+
+ 
+
+
   goToSignUp() {
     if (this.newUser === false) {
       
@@ -496,6 +509,19 @@ getFormValidationErrors() {
       })
     }
   }
+
+  // showDialog():void{
+  //   let dialog = this.dialog.open(InscriptionConfirmComponent ,{
+  //     width: '300px',
+  //     // data: { name: this.name, animal: this.animal }
+  //   });
+
+  //   dialog.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed');
+  //     this.auth.signOut()
+  //   });
+  // }
+ 
 
   signup() {
     if (this.inscription.valid) {
@@ -515,13 +541,19 @@ getFormValidationErrors() {
      
       
     }
+   
     if (this.usernameOk === true) {
         
       this.auth.emailSignUp(this.inscription.value['username'], this.inscription.value['email'], this.inscription.value['password']).then(res => {
+  
         if (res == "ok") {
-          
-          this.progressBarSignup = false;
-         this.openSnackBar("Inscription terminée avec succès", "")
+
+              
+              this.auth.showDialog()
+              
+              this.progressBarSignup = false;
+              this.openSnackBar("Inscription terminée avec succès", "")
+              // this.showDialog()        
         }
       });
     } else {
@@ -532,32 +564,28 @@ getFormValidationErrors() {
     
   
   }
+verifyUser(email:string):Promise<any>{
+  return new Promise(resolve=>{
+    
+this.auth.getUserCredential(email).then(response=>{
+  console.log(response)
+ resolve(response)
+
+})
+  })
+}
 
   login() {
+    // var jquery = $
     if (this.connexion.valid) {
-       this.progressBarLogin = true
-    this.auth.emailLogin(this.connexion.value['email'], this.connexion.value['password']).then(res => {
+      this.progressBarLogin = true
+       this.auth.emailLogin(this.connexion.value['email'], this.connexion.value['password']).then(res => {
       
       if (res.toString() != "") {
 
         this.progressBarLogin=false
         this.openSnackBar("Vous êtes maintenant connecté !", "")
-     /*    Swal.fire({
-            title: 'Authentification',
-            text: '',
-            type: 'success',
-            showCancelButton: false,
-            confirmButtonColor: '#26a69a',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ok'
-          }).then((result) => {
-            if (result.value) {
-              
-            } else {
-              
-            }
-
-          }) */
+    
           
       }else{
          this.progressBarLogin=false
@@ -565,6 +593,8 @@ getFormValidationErrors() {
    
       
     });
+
+    
    }
   }
   listenError() {
@@ -574,10 +604,34 @@ getFormValidationErrors() {
     }
   }
 
-  resetPassword() {
-    this.auth.resetPassword(this.userForm.value['email'])
-      .then(() => this.passReset = true);
+  
+
+  openDialog(): void {
+    this.auth.changepassword = true
+    let dialogRef = this.dialog.open(UserManagementComponent ,{
+      width: '300px',
+      data: { changepassword: this.auth.changepassword }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getemail.email = result;
+    });
   }
+  openDialogusername(): void {
+    this.auth.changeusername = true
+    let dialogRef = this.dialog.open(UserManagementComponent ,{
+      width: '300px',
+      data: { changeusername: this.auth.changeusername }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getemail.email = result;
+    });
+  }
+
+ 
 
   afterSignIn() {
     // Do after login stuff here, such router redirects, toast messages, etc.
@@ -656,6 +710,7 @@ getFormValidationErrors() {
   logout() {
     this.auth.signOut()
   }
+  
 
   
 

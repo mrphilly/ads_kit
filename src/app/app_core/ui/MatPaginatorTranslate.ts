@@ -33,6 +33,7 @@ export function getFrenchPaginatorIntl() {
 export function getDatePickerIntl() {
   const datepicker = new MatDatepickerIntl();
   
+  
    
   return datepicker;
 }

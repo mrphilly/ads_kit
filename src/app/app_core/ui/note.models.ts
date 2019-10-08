@@ -30,6 +30,10 @@ export class Note {
     dueDate?: any;
     createdAt?: any;
     createdBy?: any;
+    adsSchedules?: any;
+    adsSchedulesCriterion?: any;
+    ad_group_id?: any;
+    ad_group_id_firebase?: any;
     owner?:any
     
   

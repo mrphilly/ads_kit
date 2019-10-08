@@ -28,7 +28,7 @@ import { NotesService } from '../notes.service'
 @Component({
   selector: 'app-campaign-settings',
   templateUrl: './campaign-settings.component.html',
-  styleUrls: ['./campaign-settings.component.css']
+  styleUrls: ['./campaign-settings.component.scss']
 })
 export class CampaignSettingsComponent implements OnInit {
 
@@ -61,6 +61,7 @@ export class CampaignSettingsComponent implements OnInit {
       this.uid = value.uid
       this.email = value.email
     })
+    
 
   }
   toggleEditor() {
