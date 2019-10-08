@@ -33,7 +33,7 @@ import { NotesModule} from "../notes/notes.module"
 
 import {SharedModulesModule} from '../shared-modules/shared-modules.module' 
 import { MccScrollspyService } from 'material-community-components'
-import {MccScrollspyItemDirective} from './scrollspy.directives'
+import {MccScrollspyItemDirective, MccScrollspyGroupDirective} from './scrollspy.directives'
 
 @NgModule({
   imports: [CommonModule, RouterModule, ReactiveFormsModule, NgbModule, FormsModule, /* MatButtonModule, MatCheckboxModule,MatFormFieldModule,MatTableModule,MatInputModule,MatIconModule,MatChipsModule,MatCardModule,MatExpansionModule, MatListModule,MatMenuModule, MatPaginatorModule,MatToolbarModule, MatSidenavModule, MatGridListModule, MatStepperModule, MatSelectModule,MatSnackBarModule, MatProgressBarModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule ,MatDatepickerModule, MatRadioModule, MatRippleModule,MatNativeDateModule, */ NotesModule, ScrollDispatchModule,SharedModulesModule],
@@ -53,7 +53,8 @@ TermsComponent,
     WTimeDialogComponent,
     WClockComponent,
     WTimeComponent,
- MccScrollspyItemDirective
+    MccScrollspyItemDirective,
+ MccScrollspyGroupDirective
  
 
 
