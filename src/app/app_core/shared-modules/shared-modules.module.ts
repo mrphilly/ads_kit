@@ -39,7 +39,8 @@ import {MccScrollspyModule, MccScrollspyService, MccTimerPickerModule} from 'mat
     MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
-     HttpClientModule],
+    HttpClientModule,
+  MccScrollspyModule],
   entryComponents: [
       
     PageprincipaleComponent,
