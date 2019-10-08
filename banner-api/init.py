@@ -69,8 +69,8 @@ firebase = pyrebase.initialize_app(config)
 
 app = Flask(__name__)
 CORS(app)
-REDIRECT_HTTPS = "http://"
-#REDIRECT_HTTPS = "https://"
+#REDIRECT_HTTPS = "http://"
+REDIRECT_HTTPS = "https://"
 URL_SERVER = "https://adafri.comparez.co"
 FRONT_END_URL = "https://www.adafri.com"
 #FRONT_END_URL = "http://localhost:4200"
