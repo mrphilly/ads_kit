@@ -268,7 +268,7 @@ export class SettingsComponent {
   dataSourceList = new MatTableDataSource<AdGroup>([])
   selection = new SelectionModel<AdGroup>(true, []);
   selection_schedule = new SelectionModel<CRITERION_SCHEDULE>(true, []);
-
+  openedSideNav = true
 loadProgress = false
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
@@ -443,7 +443,14 @@ isAllSelected() {
   };
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
-
+  toggleSideNav() {
+    console.log('toggle')
+    if(this.openedSideNav===true){
+      this.openedSideNav=false
+    }else{
+      this.openedSideNav = true
+    }
+  }
 
   DAYS = [
      {

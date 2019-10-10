@@ -7,7 +7,7 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
@@ -877,8 +877,11 @@ export class CreateCampaignComponent implements OnInit {
   }
   toggleForms():Promise<any>{
     return new Promise(resolve => {
-        this.campaign = this.fb.group({
-           campaign: ['', Validators.required],
+      this.campaign = this.fb.group({
+         campaign:  new FormControl(null, [
+            Validators.required,Validators.maxLength(30), Validators.minLength(5)
+        ]),
+        
          
         });
        this.urlForm = this.fb.group({
@@ -1587,8 +1590,14 @@ export class CreateCampaignComponent implements OnInit {
                  
                  this.initAllTarget(campaign['id'], adgroup['id'], campaign['campaign_id'], adgroup['ad_group_id']).then(res => {
                   if(res=="ok"){
-                    this.openSnackBar("<mat-icon>edit<mat-icon>","Campagne ajoutée avec succès!")
-                    window.location.reload()
+                    this.openSnackBar("Campagne ajoutée avec succès!", "")
+                    this.router.navigate(['/edit', this.new_name, campaign['id'], campaign['campaign_id']]).then(res => {
+                      if (res === true) {
+                        window.location.reload()
+                        
+                      }
+                      
+                    })
                   } else {
                     this.progressBarAddingCampaign = false
                   }

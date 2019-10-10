@@ -726,6 +726,7 @@ def updateLocation():
     print(location)
     adwords_client = adwords.AdWordsClient.LoadFromStorage('./googleads.yaml')
     location = UpdateLocation(adwords_client, campaign_id, previous_location, location)
+    print(location)
     return jsonify(location)
 
 @app.route("/targetAgeLevelCampaign", methods=["POST"])

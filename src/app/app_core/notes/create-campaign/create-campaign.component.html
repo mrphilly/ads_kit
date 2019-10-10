@@ -21,7 +21,7 @@
     <!-- <h6 mccScrollspyItem style="margin-top: 20px" [label]="'1. Nom de la camapagne'">1. Nom de la campagne -->
    
     <div class="col-md-12 white text-center">
-            <form class="example-form" [formGroup]="campaign" (ngSubmit)="verifyCampaign()">
+            <form class="example-form" [formGroup]="campaign" (ngSubmit)="verifyCampaign()" novalidate>
                 <mat-card class="d-inline-block text-center box-shadow-none">
                  <!--  <mat-card-header class="text-center">
        <div class="text-center" style="width: 100%;">
@@ -29,13 +29,16 @@
        </div>
       </mat-card-header> -->
                 <mat-card-content>
-  <mat-form-field class="example-full-width text-black" >
-    <input matInput [(ngModel)]="new_name" placeholder="Nom de la campagne" id="campagne" formControlName="campaign" (keyup)=" removeErrorsCampaign()">
+                 
+
+  <mat-form-field class="example-full-width text-black" hintLabel="Max 30 caractères">
+    <input matInput #name [(ngModel)]="new_name" placeholder="Nom de la campagne" id="campagne" formControlName="campaign" minlength="5" maxlength="30" (keyup)="verifyCampaign()">
     <span matSuffix><span class="mdi mdi-check-decagram text-success" style="font-size: 24px" *ngIf="is_new_name_valid"></span><mat-spinner *ngIf="progressBarAddCampaign" diameter="20"></mat-spinner></span>
+     <mat-hint align="end">{{name.value?.length || 0}}/30</mat-hint>
   </mat-form-field>
   <br>
 <!--   <span class="text-success">{{message_valid_name}} </span> -->
-  <span class="text-danger">{{message_invalid_name}}</span>
+  <span class="text-danger adafri-police-10 position-absolute font-weight-bolder" style="left: 8%; top: 40%">{{message_invalid_name}}</span>
   <br>
   <button mat-stroked-button class="r-20 box-shadow-none adafri" id="valid" type="submit"  *ngIf="!progressBarAddCampaign && !is_new_name_valid">Valider le nom</button>
 
@@ -63,7 +66,7 @@
 </mat-form-field>
 <br>
 <!--   <span class="text-success">{{message_valid_name}} </span> -->
-<span class="text-danger" *ngIf="urlFinalError">Url invalide</span>
+<span class="text-danger adafri-police-10 font-weight-bolder position-absolute" *ngIf="urlFinalError" style="left: 8%; top: 40%">Url invalide</span>
 <br>
  <!--  <button mat-stroked-button class="r-20 box-shadow-none adafri" id="valid" *ngIf="!progressBarVerifyUrl && urlForm.valid && urlPromoteValid" >Vérifier l'url</button>
  -->

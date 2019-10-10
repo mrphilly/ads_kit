@@ -811,12 +811,20 @@ export class UserProfileComponent implements OnInit, OnDestroy{
  
 
   private _subscription: Subscription;
-  
+  openedSideNav = true
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
+    toggleSideNav() {
+
+    if(this.openedSideNav===true){
+      this.openedSideNav=false
+    }else{
+      this.openedSideNav = true
+    }
+  } 
   erase() {
     var input = $("#rechercher").val()
     if ( input == "Rechercher une campagne") {

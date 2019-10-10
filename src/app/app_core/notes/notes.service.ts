@@ -804,26 +804,26 @@ campaignVerification(user_id: string, name: string):Promise<number> {
     
   
   }
-  updateTargetLocation(id: string, campaign_id: string, name: string, location: any) {
+  async updateTargetLocation(id: string, campaign_id: string, name: string, location: any) {
  
-    return this.getCampaignZones(campaign_id, name).then(value => {
+    return await this.getCampaignZones(campaign_id, name).then(value => {
       
-
-      ////console.log(`promise result: ${value['item_id']}`)
-      ////console.log(`location id from me ${location[0].item_id}`)
-      ////console.log(`location id from firestore ${value[0].item_id}`)
-      
-      
+      console.log(value)
+      if (value['criterion_id'] !== "") {
+         
         this.http.post(SERVER_URL+'/updateLocation', {
           'campaign_id': campaign_id,
-          'previous_location': value[0]['item_id'],
+          'previous_location': value['item_id'],
           'location_id': location[0].item_id
        
     })
       .subscribe(
         res => {
+          if (res[0]['criterion_id'] !== "") {
+            this.updateNote(id, {zones: location[0] })
+            
+          }
           ////console.log(`res from location backend: ${res}`)
-          this.updateNote(id, {zones: location })
         },
         err => {
           Swal.fire({
@@ -840,6 +840,12 @@ campaignVerification(user_id: string, name: string):Promise<number> {
           })
         }
       );
+      }
+      ////console.log(`promise result: ${value['item_id']}`)
+      ////console.log(`location id from me ${location[0].item_id}`)
+      ////console.log(`location id from firestore ${value[0].item_id}`)
+      
+     
 
      /*  } else{
         Swal.fire({
