@@ -51,6 +51,7 @@ const REDIRECT_URL = SERVER.url_redirect
 export class CreateCampaignComponent implements OnInit {
   @ViewChild('tableSCHEDULE') tableSCHEDULE: MatTable<SCHEDULE_INTERFACE>;
   @ViewChild('selectDays') selectDays: MatSelect
+  columnsSchedule = ["day","start","end", "delete"]
   finalUrlCampaign = ""
   urlFinalError = false
   urlPromoteValid = false
@@ -1302,7 +1303,7 @@ export class CreateCampaignComponent implements OnInit {
       }
     }
     
-   /*  this.tableSCHEDULE.renderRows() */
+     this.tableSCHEDULE.renderRows() 
     this.currentDaySelectedFR = ""
      this.currentDaySelectedEN = ""
      this.currentStartHourText = ""

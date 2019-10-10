@@ -21,7 +21,7 @@
 <br>
    <button mat-stroked-button  class="d-inline-block adafri r-20 box-shadow-none" (click)="openDialogusername()">Modifier le mot de passe</button>
 </div> -->
-<ul class="profile-social-links">
+<ul class="profile-social-links" *ngIf="isConnectWithMailAndPassword">
     <li>
       <button mat-button>Modifier le nom d'utilisateur</button>
       
@@ -30,6 +30,14 @@
         <button mat-button>Modifier le mot de passe</button>
       
     </li>
+    
+  </ul>
+  <ul class="profile-social-links" *ngIf="!isConnectWithMailAndPassword">
+    <li>
+      <button mat-button disabled="true" color="warn">Compte google</button>
+      
+    </li>
+    
     
   </ul>
  </mat-card-actions>

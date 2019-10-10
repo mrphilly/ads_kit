@@ -1,11 +1,7 @@
    <div class="paper-card p-0 height-full text-center background-yellow-adafri box-shadow-none">
             <mat-card class="box-shadow-none background-yellow-adafri height-full">
-             <!--  <mat-card-header class="d-inline-block adafri-background text-white p-0">
-                <mat-toolbar class="d-inline-block adafri-background text-white">Créer une campagne</mat-toolbar>
-
-              </mat-card-header> -->
               <mat-card-content>
-                <mat-card class="menu background-yellow-adafri">
+                <mat-card class="menu background-yellow-adafri d-none d-md-block">
   <div class="content-scroll p-10">
      <button mat-raised-button class="background-yellow-adafri box-shadow-none"> <img src="assets/img/images/campaign.svg" style="width: 24px; height: 24px" > Etapes de création</button>
     <ul>
@@ -275,7 +271,7 @@
 
 
 
-<mat-card class="" *ngIf="SCHEDULE_DATA.length>0">
+<mat-card class="">
    <mat-table #tableSCHEDULE [dataSource]="SCHEDULE_DATA">
     <ng-container matColumnDef="day">
       <mat-header-cell *matHeaderCellDef> Jour </mat-header-cell>

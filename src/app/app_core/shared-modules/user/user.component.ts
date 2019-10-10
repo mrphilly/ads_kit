@@ -15,6 +15,7 @@ export class UserComponent implements OnInit {
   email = ""
   username = ""
   uid = ""
+  isConnectWithMailAndPassword: boolean
   accountValue = 0
   constructor(public auth: AuthService, private dialog: MatDialog) { 
      this.auth.user.forEach(data => {
@@ -23,6 +24,7 @@ export class UserComponent implements OnInit {
       this.username = data.displayName
       this.email = data.email
       this.uid = data.uid
+      this.isConnectWithMailAndPassword = data.isConnectWithMailAndPassword
     })
   }
  openDialogusername(): void {

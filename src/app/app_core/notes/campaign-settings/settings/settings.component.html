@@ -47,8 +47,14 @@
       </div>
       <mat-toolbar class="bg-red text-white fixed" style="min-height: 40px; height: 40px; width: 100%; min-width: 100%;margin-top: 70px; left: 0; right: 0; z-index: 30; top:0" *ngIf="showBudgetToolbar">
           <mat-toolbar-row class="justify-content-between d-none d-md-flex">
-           <span class="adafri-police-12 font-weight-bolder text-white" style="margin-left: 4%"> Le budget de votre campagne est insuffisant</span>
-           <span class="adafri-police-12 font-weight-bolder text-white" style="text-decoration: underline; cursor: pointer" (click)="toggleBudgetBlock()"> Cliquez ici pour placer un budget</span>
+            <button mat-raised-button class="bg-red box-shadow-none">
+              <mat-icon class="text-white">
+                priority_high
+              </mat-icon>
+               <span class="adafri-police-12 font-weight-bolder text-white" disableRipple="true"> Le budget de votre campagne est insuffisant</span>&nbsp;<span class="adafri-police-12 font-weight-bolder text-white" style="text-decoration: underline; cursor: pointer" (click)="toggleBudgetBlock()"> Cliquez ici pour placer un budget</span>
+            </button>
+       <!--     <span class="adafri-police-12 font-weight-bolder text-white" style="margin-left: 4%"> Le budget de votre campagne est insuffisant</span>
+           <span class="adafri-police-12 font-weight-bolder text-white" style="text-decoration: underline; cursor: pointer" (click)="toggleBudgetBlock()"> Cliquez ici pour placer un budget</span> -->
            <button mat-mini-fab class="bg-red box-shadow-none float-right" (click)="closeBudgetToolBar()"><mat-icon class="text-white">close</mat-icon></button>
           </mat-toolbar-row>
            <mat-toolbar-row class="d-md-none d-sm-flex justify-content-between">
@@ -418,7 +424,7 @@
 
            <ng-container *ngIf="!blockPrincipal && !blockCreatives && blockListCreatives && !createCampaign &&  !userProfile">
             <mat-card-content style="margin-top: 5%">
-              <mat-card>
+              <mat-card class="p-0">
                        <mat-table #table [dataSource]="dataSource">
      <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef >
@@ -992,8 +998,8 @@
       <mat-cell *matCellDef="let element">{{cost}}</mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumnsCampaign"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumnsCampaign;"></mat-row>
+    <mat-header-row *matHeaderRowDef="displayedColumnsCampaign" class="p-0"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumnsCampaign;" class="p-0"></mat-row>
   </mat-table>
                   </mat-card>
                 </mat-card-content>
@@ -1130,7 +1136,7 @@
       </mat-card-actions>
     </mat-card>
         </mat-card-content>
-        <mat-card-content class="text-center">
+        <mat-card-content class="text-center p-0">
            <mat-spinner *ngIf="spinnerAddNewAdsSchedule" diameter="20" class="d-inline-block"></mat-spinner>
           <div class="text-center font-weight-bolder" style="width: 100%">
               <span *ngIf="campaignSchedule.length===0 && !spinnerAddNewAdsSchedule"><img src="assets/img/images/24-hours.svg" style="width: 36px; height: 36px">La campagne est diffusée tous les jours à tout moment</span>
@@ -1171,7 +1177,7 @@
     <!-- Symbol Column -->
     
 
-    <mat-header-row *matHeaderRowDef="displayedColumnsSchedules"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedColumnsSchedules" class="p-0"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumnsSchedules;"></mat-row>
   </mat-table>
         </mat-card-content>
@@ -1270,12 +1276,12 @@
        </mat-card-content>
       </mat-card>
     </ng-container>
-                 <mat-card class="d-inline-block box-shadow-none" style="width: 100%;">
-                  <mat-card-content>
+                 <mat-card class="d-inline-block box-shadow-none p-0" style="width: 100%;">
+                  <mat-card-content class="p-0">
                     <div class="text-center" style="width: 100%" *ngIf="placement.length===0">
                        <span class="d-inline-block font-weight-bolder adafri-police-14">Aucun emplacement</span> 
                     </div>
-                        <mat-table #table [dataSource]="placement" *ngIf="placement.length>0">
+                        <mat-table #table [dataSource]="placement" *ngIf="placement.length>0" >
     <ng-container matColumnDef="websites">
       <mat-header-cell *matHeaderCellDef> Site webs </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.item_text}}</mat-cell>
@@ -1288,7 +1294,7 @@
     </ng-container>
     
 
-    <mat-header-row *matHeaderRowDef="displayedColumnsPlacement"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedColumnsPlacement" class="p-0"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumnsPlacement;"></mat-row>
   </mat-table>
                   </mat-card-content>
@@ -1358,7 +1364,7 @@
       <mat-header-cell *matHeaderCellDef> Tranches d'âges </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.item_text}} </mat-cell>
     </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumnsAges"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedColumnsAges" class="p-0"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumnsAges;"></mat-row>
   </mat-table>
   <mat-card-actions class="">
@@ -1430,7 +1436,7 @@
       <mat-header-cell *matHeaderCellDef> Ciblage de genres </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.item_text}} </mat-cell>
     </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumnsGender"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedColumnsGender" class="p-0"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumnsGender;"></mat-row>
   </mat-table>
       </mat-card-content>
