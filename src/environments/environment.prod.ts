@@ -4,7 +4,7 @@ export const environment = {
 export const SERVER = {
   //url: "http://127.0.0.1:5000",
 
-  url: "https://adafri.comparez.co",
+  url: "https://backend.adafri.com",
   url_redirect: "https://adafri.com/#",
   confidentialite: "https://adafri.comparez.co/#/confidentialite",
   chrome: "adafri.com",

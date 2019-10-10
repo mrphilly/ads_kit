@@ -71,7 +71,7 @@ app = Flask(__name__)
 CORS(app)
 #REDIRECT_HTTPS = "http://"
 REDIRECT_HTTPS = "https://"
-URL_SERVER = "https://adafri.comparez.co"
+URL_SERVER = "https://backend.adafri.com"
 FRONT_END_URL = "https://www.adafri.com"
 #FRONT_END_URL = "http://localhost:4200"
 #URL_SERVER = "http://127.0.0.1:5000"
