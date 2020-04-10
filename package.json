@@ -36,7 +36,7 @@
     "angular-cli-ghpages": "^0.6.0-rc.1",
     "angular-fusioncharts": "^3.0.3",
     "angular4-datepicker": "^1.0.1",
-    "auth0-js": "^9.3.2",
+    "auth0-js": "^9.13.2",
     "bootstrap": "^4.1.1",
     "bootstrap-material-datetimepicker": "^2.7.3",
     "bootstrap4-fullscreen-modal": "^1.0.5",
